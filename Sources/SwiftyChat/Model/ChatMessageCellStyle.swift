@@ -54,7 +54,7 @@ public class ChatMessageCellStyle: ObservableObject {
         outgoingShadowRadius: CGFloat = 3,
         incomingTextPadding: CGFloat = 8,
         outgoingTextPadding: CGFloat = 8,
-        quickReplyUnselectedItemColor: Color = .secondary,
+        quickReplyUnselectedItemColor: Color = .primary,
         quickReplySelectedItemColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1))
     ) {
         self.incomingBorderColor = incomingBorderColor

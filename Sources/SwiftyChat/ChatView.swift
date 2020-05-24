@@ -12,19 +12,21 @@ public struct ChatView: View {
     
     @Binding public var messages: [ChatMessage]
     public var onCellTapped: (ChatMessage) -> Void
-    public var onCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
-    public var onQuickReplyItemSelected: (QuickReply) -> Void = { _ in }
+    public var onCellContextMenu: (ChatMessage) -> AnyView
+    public var onQuickReplyItemSelected: (QuickReply) -> Void
     public var inputView: (_ proxy: GeometryProxy) -> AnyView
     
     public init(
         messages: Binding<[ChatMessage]>,
         onCellTapped: @escaping (ChatMessage) -> Void = { _ in },
         onCellContextMenu: @escaping (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() },
+        onQuickReplyItemSelected: @escaping (QuickReply) -> Void = { _ in },
         inputView: @escaping (_ proxy: GeometryProxy) -> AnyView
     ) {
         self._messages = messages
         self.onCellTapped = onCellTapped
         self.onCellContextMenu = onCellContextMenu
+        self.onQuickReplyItemSelected = onQuickReplyItemSelected
         self.inputView = inputView
     }
     
