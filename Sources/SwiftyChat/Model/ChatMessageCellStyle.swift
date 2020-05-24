@@ -37,7 +37,7 @@ public class ChatMessageCellStyle: ObservableObject {
     var quickReplyUnselectedItemColor: Color
     var quickReplySelectedItemColor: Color
     
-    init(
+    public init(
         incomingBorderColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1)),
         outgoingBorderColor: Color = Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1)),
         incomingTextColor: Color = .white,

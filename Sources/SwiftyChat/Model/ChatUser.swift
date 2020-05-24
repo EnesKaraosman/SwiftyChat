@@ -16,6 +16,11 @@ public struct ChatUser {
 
     public var id = UUID()
     public var userName: String
-    public var avatar: String = "person.circle.fill"
+    public var avatar: String
 
+    public init(userName: String, avatar: String = "person.circle.fill") {
+        self.userName = userName
+        self.avatar = avatar
+    }
+    
 }

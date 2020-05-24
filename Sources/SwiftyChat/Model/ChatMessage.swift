@@ -15,7 +15,7 @@ public struct ChatMessage: Identifiable {
     public var messageKind: ChatMessageKind
     public var isSender: Bool
     
-    init(
+    public init(
         user: ChatUser,
         messageKind: ChatMessageKind,
         isSender: Bool = false
