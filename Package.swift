@@ -24,9 +24,6 @@ let package = Package(
         .target(
             name: "SwiftyChat",
             dependencies: []
-//            sources: [
-//                .init("Mock/Resources/*")
-//            ]
         )
     ]
 )

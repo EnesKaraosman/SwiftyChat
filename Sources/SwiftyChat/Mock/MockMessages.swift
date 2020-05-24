@@ -17,6 +17,8 @@ public struct MockMessages {
         [sender, chatbot].randomElement()!
     }
     
+    public static var mockImages: [UIImage] = []
+    
     public static let messages: [ChatMessage] = [
         .init(user: Self.sender, messageKind: .text("Hi, can I ask you something!"), isSender: true),
         .init(user: Self.chatbot, messageKind: .text("Of course!")),
@@ -32,16 +34,17 @@ public struct MockMessages {
         .init(user: Self.chatbot, messageKind: .text("Here what I have.."), isSender: true),
         .init(user: Self.sender, messageKind: .image(.local(UIImage(named: "portrait")!)), isSender: true),
         .init(user: Self.chatbot, messageKind: .text("😎😎")),
-        .init(user: Self.chatbot, messageKind: .text("Now it's my turn, I'll send you a link but can you open it 🤯😎\n https://github.com/EnesKaraosman/SwiftyChatbot"))
+        .init(user: Self.chatbot, messageKind: .text("Now it's my turn, I'll send you a link but can you open it 🤯😎\n https://github.com/EnesKaraosman/SwiftyChat")),
+        .init(user: Self.chatbot, messageKind: .text("Not now but maybe later.."), isSender: true)
     ]
     
     private static func generateMessage(kind: ChatMessageKind) -> ChatMessage {
         switch kind {
         case .image:
-            let randomImageName = ["landscape", "portrait"].randomElement()!
+            let randomImage = mockImages.randomElement() ?? UIImage(color: .systemGroupedBackground) ?? UIImage()
             return .init(
                 user: Self.randomUser,
-                messageKind: .image(.local(UIImage(named: randomImageName)!)),
+                messageKind: .image(.local(randomImage)),
                 isSender: Self.randomUser == Self.sender
             )
         case .text:
@@ -78,8 +81,8 @@ public struct MockMessages {
         return allCases.randomElement()!
     }
     
-    public static var generatedMessages: [ChatMessage] {
-        return (1...30).map { _ in generateMessage(kind: randomMessageKind)}
+    public static func generatedMessages(count: Int = 30) -> [ChatMessage] {
+        return (1...count).map { _ in generateMessage(kind: randomMessageKind)}
     }
     
 }
