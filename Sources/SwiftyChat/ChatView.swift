@@ -11,10 +11,22 @@ import SwiftUI
 public struct ChatView: View {
     
     @Binding public var messages: [ChatMessage]
-    public var onCellTapped: (ChatMessage) -> Void = { _ in }
+    public var onCellTapped: (ChatMessage) -> Void
     public var onCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
     public var onQuickReplyItemSelected: (QuickReply) -> Void = { _ in }
     public var inputView: (_ proxy: GeometryProxy) -> AnyView
+    
+    public init(
+        messages: Binding<[ChatMessage]>,
+        onCellTapped: @escaping (ChatMessage) -> Void = { _ in },
+        onCellContextMenu: @escaping (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() },
+        inputView: @escaping (_ proxy: GeometryProxy) -> AnyView
+    ) {
+        self._messages = messages
+        self.onCellTapped = onCellTapped
+        self.onCellContextMenu = onCellContextMenu
+        self.inputView = inputView
+    }
     
     public var body: some View {
         GeometryReader { proxy in
@@ -38,30 +50,12 @@ public struct ChatView: View {
                 
             }.keyboardAwarePadding()
         }
-        .navigationBarTitle("Swifty Chatbot", displayMode: .inline)
         .edgesIgnoringSafeArea(.bottom)
         .onAppear {
             // To remove only extra separators below the list:
             UITableView.appearance().tableFooterView = UIView()
             // To remove all separators including the actual ones:
             UITableView.appearance().separatorStyle = .none
-        }
-    }
-}
-
-struct ChatView_Previews: PreviewProvider {
-    @State static var messages = MockMessages.messages
-    static var previews: some View {
-        ChatView(messages: $messages) { proxy in
-            InputView(proxy: proxy) { (messageKind) in
-                messages.append(
-                    ChatMessage(
-                        user: MockMessages.sender,
-                        messageKind: messageKind,
-                        isSender: true
-                    )
-                )
-            }.embedInAnyView()
         }
     }
 }

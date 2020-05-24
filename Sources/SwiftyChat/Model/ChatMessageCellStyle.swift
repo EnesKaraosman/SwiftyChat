@@ -9,32 +9,72 @@
 import SwiftUI
 
 public class ChatMessageCellStyle: ObservableObject {
-
-    var incomingBorderColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1))
-    var outgoingBorderColor: Color = Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1))
     
-    var incomingTextColor: Color = .white
-    var outgoingTextColor: Color = .white
+    var incomingBorderColor: Color
+    var outgoingBorderColor: Color
     
-    var incomingBackgroundColor: Color? = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1))
-    var outgoingBackgroundColor: Color? = Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1))
+    var incomingTextColor: Color
+    var outgoingTextColor: Color
     
-    var incomingCornerRadius: CGFloat = 8
-    var outgoingCornerRadius: CGFloat = 8
+    var incomingBackgroundColor: Color
+    var outgoingBackgroundColor: Color
     
-    var incomingBorderWidth: CGFloat = 2
-    var outgoingBorderWidth: CGFloat = 2
+    var incomingCornerRadius: CGFloat
+    var outgoingCornerRadius: CGFloat
     
-    var incomingShadowColor: Color = .secondary
-    var outgoingShadowColor: Color = .secondary
+    var incomingBorderWidth: CGFloat
+    var outgoingBorderWidth: CGFloat
     
-    var incomingShadowRadius: CGFloat = 3
-    var outgoingShadowRadius: CGFloat = 3
+    var incomingShadowColor: Color
+    var outgoingShadowColor: Color
     
-    var incomingTextPadding: CGFloat = 8
-    var outgoingTextPadding: CGFloat = 8
+    var incomingShadowRadius: CGFloat
+    var outgoingShadowRadius: CGFloat
     
-    var quickReplyUnselectedItemColor: Color = .secondary
-    var quickReplySelectedItemColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1))
+    var incomingTextPadding: CGFloat
+    var outgoingTextPadding: CGFloat
+    
+    var quickReplyUnselectedItemColor: Color
+    var quickReplySelectedItemColor: Color
+    
+    init(
+        incomingBorderColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1)),
+        outgoingBorderColor: Color = Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1)),
+        incomingTextColor: Color = .white,
+        outgoingTextColor: Color = .white,
+        incomingBackgroundColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1)),
+        outgoingBackgroundColor: Color = Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1)),
+        incomingCornerRadius: CGFloat = 8,
+        outgoingCornerRadius: CGFloat = 8,
+        incomingBorderWidth: CGFloat = 2,
+        outgoingBorderWidth: CGFloat = 2,
+        incomingShadowColor: Color = .secondary,
+        outgoingShadowColor: Color = .secondary,
+        incomingShadowRadius: CGFloat = 3,
+        outgoingShadowRadius: CGFloat = 3,
+        incomingTextPadding: CGFloat = 8,
+        outgoingTextPadding: CGFloat = 8,
+        quickReplyUnselectedItemColor: Color = .secondary,
+        quickReplySelectedItemColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1))
+    ) {
+        self.incomingBorderColor = incomingBorderColor
+        self.outgoingBorderColor = outgoingBorderColor
+        self.incomingTextColor = incomingTextColor
+        self.outgoingTextColor = outgoingTextColor
+        self.incomingBackgroundColor = incomingBackgroundColor
+        self.outgoingBackgroundColor = outgoingBackgroundColor
+        self.incomingCornerRadius = incomingCornerRadius
+        self.outgoingCornerRadius = outgoingCornerRadius
+        self.incomingBorderWidth = incomingBorderWidth
+        self.outgoingBorderWidth = outgoingBorderWidth
+        self.incomingShadowColor = incomingShadowColor
+        self.outgoingShadowColor = outgoingShadowColor
+        self.incomingShadowRadius = incomingShadowRadius
+        self.outgoingShadowRadius = outgoingShadowRadius
+        self.incomingTextPadding = incomingTextPadding
+        self.outgoingTextPadding = outgoingTextPadding
+        self.quickReplyUnselectedItemColor = quickReplyUnselectedItemColor
+        self.quickReplySelectedItemColor = quickReplySelectedItemColor
+    }
     
 }

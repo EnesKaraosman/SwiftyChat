@@ -13,6 +13,11 @@ public struct InputView: View, InputViewProtocol {
     public let proxy: GeometryProxy
     public var sendAction: (ChatMessageKind) -> Void
     
+    public init(proxy: GeometryProxy, sendAction: @escaping (ChatMessageKind) -> Void) {
+        self.proxy = proxy
+        self.sendAction = sendAction
+    }
+    
     private let mainContainerHeight: CGFloat = 56
     
     @State private var textfield: String = ""

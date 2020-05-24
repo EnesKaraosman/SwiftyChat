@@ -9,8 +9,20 @@
 import Foundation
 
 public struct ChatMessage: Identifiable {
+    
     public let id = UUID()
     public var user: ChatUser
     public var messageKind: ChatMessageKind
-    public var isSender: Bool = false
+    public var isSender: Bool
+    
+    init(
+        user: ChatUser,
+        messageKind: ChatMessageKind,
+        isSender: Bool = false
+    ) {
+        self.user = user
+        self.messageKind = messageKind
+        self.isSender = isSender
+    }
+    
 }
