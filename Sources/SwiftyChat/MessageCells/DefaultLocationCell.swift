@@ -9,9 +9,20 @@
 import SwiftUI
 import struct MapKit.CLLocationCoordinate2D
 
+public struct LocationItem {
+    public var latitude: Double
+    public var longitude: Double
+    
+    public init(latitude: Double, longitude: Double) {
+        self.latitude = latitude
+        self.longitude = longitude
+    }
+    
+}
+
 public struct DefaultLocationCell: View {
     
-    public let coordinate: CLLocationCoordinate2D
+    public let location: LocationItem
     public let message: ChatMessage
     public let proxy: GeometryProxy
     @EnvironmentObject var style: ChatMessageCellStyle
@@ -21,7 +32,7 @@ public struct DefaultLocationCell: View {
     }
     
     public var body: some View {
-        MapView(coordinate: coordinate)
+        MapView(coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
         .frame(width: mapWidth, height: mapWidth)
         .cornerRadius(message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
         .overlay(

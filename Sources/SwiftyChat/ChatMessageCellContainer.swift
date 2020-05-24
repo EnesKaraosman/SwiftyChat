@@ -12,7 +12,7 @@ public struct ChatMessageCellContainer: View {
     
     public let message: ChatMessage
     public let proxy: GeometryProxy
-    public var onQuickReplyItemSelected: (QuickReply) -> Void
+    public var onQuickReplyItemSelected: (QuickReplyItem) -> Void
     
     func messageCell() -> some View {
         switch message.messageKind {
@@ -24,10 +24,10 @@ public struct ChatMessageCellContainer: View {
                 message: message
             ).embedInAnyView()
             
-        case .location(let coordinate):
+        case .location(let location):
             
             return DefaultLocationCell(
-                coordinate: coordinate,
+                location: location,
                 message: message,
                 proxy: proxy
             ).embedInAnyView()

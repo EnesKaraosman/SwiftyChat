@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import struct MapKit.CLLocationCoordinate2D
 
 public enum ImageLoadingKind {
     case local(UIImage)
@@ -23,11 +22,11 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// An image message, from local or remote
     case image(ImageLoadingKind)
     
-    /// A location message
-    case location(CLLocationCoordinate2D)
+    /// A location message, pins given location & presents on MapKit
+    case location(LocationItem)
     
     /// Multiple options, disable itself after selection.
-    case quickReply([QuickReply])
+    case quickReply([QuickReplyItem])
 
     
     public var description: String {

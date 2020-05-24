@@ -41,7 +41,7 @@ public struct MockMessages {
     private static func generateMessage(kind: ChatMessageKind) -> ChatMessage {
         switch kind {
         case .image:
-            let randomImage = mockImages.randomElement() ?? UIImage(color: .systemGroupedBackground) ?? UIImage()
+            guard let randomImage = mockImages.randomElement() else { fallthrough }
             return .init(
                 user: Self.randomUser,
                 messageKind: .image(.local(randomImage)),
@@ -55,13 +55,23 @@ public struct MockMessages {
             )
         case .quickReply:
             let quickReplies = [
-                QuickReply(title: "Option1", payload: "opt1"),
-                QuickReply(title: "Option2", payload: "opt2"),
-                QuickReply(title: "Option3", payload: "opt3")
+                QuickReplyItem(title: "Option1", payload: "opt1"),
+                QuickReplyItem(title: "Option2", payload: "opt2"),
+                QuickReplyItem(title: "Option3", payload: "opt3")
             ]
             return .init(
                 user: Self.randomUser,
                 messageKind: .quickReply(quickReplies)
+            )
+        case .location:
+            let location = LocationItem(
+                latitude: Double.random(in: -90...90),
+                longitude: Double.random(in: -90...90)
+            )
+            return .init(
+                user: Self.randomUser,
+                messageKind: .location(location),
+                isSender: Self.randomUser == Self.sender
             )
         default:
             return .init(user: Self.randomUser, messageKind: .text("Bom!"))
@@ -76,6 +86,8 @@ public struct MockMessages {
             .text(""),
             .text(""),
             .text(""),
+            .text(""),
+            .location(LocationItem(latitude: .zero, longitude: .zero)),
             .quickReply([])
         ]
         return allCases.randomElement()!

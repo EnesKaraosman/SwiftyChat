@@ -8,18 +8,23 @@
 
 import SwiftUI
 
-public struct QuickReply {
+public struct QuickReplyItem {
     public let id = UUID()
     public var title: String
     public var payload: String
+    
+    public init(title: String, payload: String) {
+        self.title = title
+        self.payload = payload
+    }
 }
 
 
 // MARK: - QuickReplyCell
 public struct QuickReplyCell: View {
     
-    public var quickReplies: [QuickReply]
-    public var quickReplySelected: (QuickReply) -> Void
+    public var quickReplies: [QuickReplyItem]
+    public var quickReplySelected: (QuickReplyItem) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var totalOptionsLength: Int {
