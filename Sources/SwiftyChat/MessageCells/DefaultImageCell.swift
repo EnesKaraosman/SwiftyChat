@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import KingfisherSwiftUI
 
 public struct DefaultImageCell: View {
     
@@ -45,7 +46,7 @@ public struct DefaultImageCell: View {
                     .stroke(
                         message.isSender ? style.incomingBorderColor : style.outgoingBorderColor,
                         lineWidth: message.isSender ? style.incomingBorderWidth : style.outgoingBorderWidth
-                    )
+                )
             )
             .shadow(
                 color: message.isSender ? style.incomingShadowColor : style.outgoingShadowColor,
@@ -56,7 +57,25 @@ public struct DefaultImageCell: View {
     
     // MARK: - case Remote Image
     private func remoteImage(url: URL) -> AnyView {
-        return EmptyView().embedInAnyView()
+        
+        return KFImage(url)
+            .resizable()
+            .scaledToFit()
+            .frame(width: imageWidth)
+            .cornerRadius(message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+                    .stroke(
+                        message.isSender ? style.incomingBorderColor : style.outgoingBorderColor,
+                        lineWidth: message.isSender ? style.incomingBorderWidth : style.outgoingBorderWidth
+                )
+            )
+            .shadow(
+                color: message.isSender ? style.incomingShadowColor : style.outgoingShadowColor,
+                radius: message.isSender ? style.incomingShadowRadius : style.outgoingShadowRadius
+            )
+            .embedInAnyView()
+        
     }
     
 }
