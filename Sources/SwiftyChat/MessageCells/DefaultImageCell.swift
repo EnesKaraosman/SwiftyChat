@@ -60,7 +60,7 @@ public struct DefaultImageCell: View {
         
         return KFImage(url)
             .resizable()
-            .scaledToFit()
+            .scaledToFill()
             .frame(width: imageWidth)
             .cornerRadius(message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
             .overlay(
