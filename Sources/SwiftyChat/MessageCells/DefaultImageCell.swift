@@ -35,10 +35,12 @@ public struct DefaultImageCell: View {
     
     // MARK: - case Local Image
     private func localImage(uiImage: UIImage) -> AnyView {
-        let isLandscape = uiImage.size.width > uiImage.size.height
+        let width = uiImage.size.width
+        let height = uiImage.size.height
+        let isLandscape = width > height
         return Image(uiImage: uiImage)
             .resizable()
-            .aspectRatio(contentMode: isLandscape ? .fit : .fill)
+            .aspectRatio(width / height, contentMode: isLandscape ? .fit : .fill)
             .frame(width: imageWidth, height: isLandscape ? nil : imageWidth)
             .cornerRadius(message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
             .overlay(

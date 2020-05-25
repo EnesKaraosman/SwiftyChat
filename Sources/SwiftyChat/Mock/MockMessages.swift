@@ -65,8 +65,8 @@ public struct MockMessages {
             )
         case .location:
             let location = LocationItem(
-                latitude: Double.random(in: -90...90),
-                longitude: Double.random(in: -90...90)
+                latitude: Double.random(in: 26...45),
+                longitude: Double.random(in: 36...42)
             )
             return .init(
                 user: Self.randomUser,
