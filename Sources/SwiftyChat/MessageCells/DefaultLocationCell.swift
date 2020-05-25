@@ -9,17 +9,6 @@
 import SwiftUI
 import struct MapKit.CLLocationCoordinate2D
 
-public struct LocationItem {
-    public var latitude: Double
-    public var longitude: Double
-    
-    public init(latitude: Double, longitude: Double) {
-        self.latitude = latitude
-        self.longitude = longitude
-    }
-    
-}
-
 public struct DefaultLocationCell: View {
     
     public let location: LocationItem

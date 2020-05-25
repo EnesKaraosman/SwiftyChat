@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct InputView: View, InputViewProtocol {
+public struct DefaultInputView: View, InputViewProtocol {
     
     public let proxy: GeometryProxy
     public var sendAction: (ChatMessageKind) -> Void
@@ -18,7 +18,7 @@ public struct InputView: View, InputViewProtocol {
         self.sendAction = sendAction
     }
     
-    private let mainContainerHeight: CGFloat = 56
+    private let mainContainerHeight: CGFloat = 50
     
     @State private var textfield: String = ""
     @State private var isKeyboardActive: Bool = false
@@ -30,7 +30,7 @@ public struct InputView: View, InputViewProtocol {
     
     public var body: some View {
         VStack {
-            HStack(spacing: 8) {
+            HStack(spacing: 16) {
                 
                 Button(action: {
                     print("plus tapped")
@@ -42,7 +42,7 @@ public struct InputView: View, InputViewProtocol {
                         .foregroundColor(.blue)
                         .frame(height: 20)
                     
-                }.padding(.leading, 8)
+                }.padding(.leading, 16)
                 
                 HStack {
                     Rectangle()
@@ -72,7 +72,7 @@ public struct InputView: View, InputViewProtocol {
                         .foregroundColor(.blue)
                         .frame(width: 24)
                     
-                }.padding(.trailing, 8)
+                }.padding(.trailing, 16)
                 
                 if isKeyboardActive {
                     Button(action: {
@@ -93,7 +93,7 @@ public struct InputView: View, InputViewProtocol {
                     }
                     .animation(.default)
                     .padding(.leading, 0)
-                    .padding(.trailing, 8)
+                    .padding(.trailing, 16)
                 }
                 
             }

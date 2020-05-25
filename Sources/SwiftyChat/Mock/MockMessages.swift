@@ -17,6 +17,12 @@ public struct MockMessages {
         [sender, chatbot].randomElement()!
     }
     
+    /// Concrete model for Location
+    private struct LocationRow: LocationItem {
+        var latitude: Double
+        var longitude: Double
+    }
+    
     public static var mockImages: [UIImage] = []
     
     public static let messages: [ChatMessage] = [
@@ -27,7 +33,7 @@ public struct MockMessages {
             messageKind: .text("Okay than i am going to ask you a long question to check how row behaves, you ready?\nWhere are you now??"),
             isSender: true
         ),
-        .init(user: Self.chatbot, messageKind: .location(.init(latitude: 41.04192, longitude: 28.966912))),
+        .init(user: Self.chatbot, messageKind: .location(LocationRow(latitude: 41.04192, longitude: 28.966912))),
         .init(user: Self.chatbot, messageKind: .text("Here is photo")),
         .init(user: Self.sender, messageKind: .image(.local(UIImage(named: "landscape")!))),
         .init(user: Self.chatbot, messageKind: .text("😲"), isSender: true),
@@ -64,9 +70,9 @@ public struct MockMessages {
                 messageKind: .quickReply(quickReplies)
             )
         case .location:
-            let location = LocationItem(
-                latitude: Double.random(in: 26...45),
-                longitude: Double.random(in: 36...42)
+            let location = LocationRow(
+                latitude: Double.random(in: 36...42),
+                longitude: Double.random(in: 26...45)
             )
             return .init(
                 user: Self.randomUser,
@@ -87,7 +93,7 @@ public struct MockMessages {
             .text(""),
             .text(""),
             .text(""),
-            .location(LocationItem(latitude: .zero, longitude: .zero)),
+            .location(LocationRow(latitude: .zero, longitude: .zero)),
             .quickReply([])
         ]
         return allCases.randomElement()!

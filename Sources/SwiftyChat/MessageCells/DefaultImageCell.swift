@@ -59,7 +59,16 @@ public struct DefaultImageCell: View {
     
     // MARK: - case Remote Image
     private func remoteImage(url: URL) -> AnyView {
-        
+        /**
+         KFImage(url)
+         .onSuccess(perform: { (result) in
+             result.image.size
+         })
+         We can grab size & manage aspect ratio via a @State property
+         but the list scroll behaviour becomes messy.
+         
+         So for now we use fixed width & scale height properly.
+         */
         return KFImage(url)
             .resizable()
             .scaledToFill()
