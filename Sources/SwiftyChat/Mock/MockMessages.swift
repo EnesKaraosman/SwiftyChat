@@ -88,6 +88,17 @@ public struct MockMessages {
                 messageKind: .location(location),
                 isSender: Self.randomUser == Self.sender
             )
+        case .contact:
+            let contacts = [
+                ContactRow(displayName: "Enes Karaosman"),
+                ContactRow(displayName: "Adam Surname"),
+                ContactRow(displayName: "Name DummySurname")
+            ]
+            return .init(
+                user: Self.randomUser,
+                messageKind: .contact(contacts.randomElement()!),
+                isSender: Self.randomUser == Self.sender
+            )
         default:
             return .init(user: Self.randomUser, messageKind: .text("Bom!"))
         }
