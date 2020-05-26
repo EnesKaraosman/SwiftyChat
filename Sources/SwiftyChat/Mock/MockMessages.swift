@@ -23,6 +23,15 @@ public struct MockMessages {
         var longitude: Double
     }
     
+    /// Concrete model for Contact
+    private struct ContactRow: ContactItem {
+        var displayName: String
+        var image: UIImage?
+        var initials: String = ""
+        var phoneNumbers: [String] = []
+        var emails: [String] = []
+    }
+    
     public static var mockImages: [UIImage] = []
     
     public static let messages: [ChatMessage] = [
@@ -44,7 +53,7 @@ public struct MockMessages {
         .init(user: Self.chatbot, messageKind: .text("Not now but maybe later.."), isSender: true)
     ]
     
-    private static func generateMessage(kind: ChatMessageKind) -> ChatMessage {
+    public static func generateMessage(kind: ChatMessageKind) -> ChatMessage {
         switch kind {
         case .image:
             guard let randomImage = mockImages.randomElement() else { fallthrough }
@@ -87,13 +96,11 @@ public struct MockMessages {
     public static var randomMessageKind: ChatMessageKind {
         let allCases: [ChatMessageKind] = [
             .image(.local(UIImage())),
-            .text(""),
-            .text(""),
-            .text(""),
-            .text(""),
-            .text(""),
-            .text(""),
+            .text(""), .text(""), .text(""),
+            .contact(ContactRow(displayName: "")),
+            .text(""), .text(""), .text(""),
             .location(LocationRow(latitude: .zero, longitude: .zero)),
+            .text(""), .text(""), .text(""),
             .quickReply([])
         ]
         return allCases.randomElement()!
