@@ -10,9 +10,9 @@ import SwiftUI
 public struct ContactCellButton: Identifiable {
     public let id = UUID()
     public let title: String
-    public let action: (ContactItem) -> Void
+    public let action: () -> Void
     
-    public init(title: String, action: @escaping (ContactItem) -> Void) {
+    public init(title: String, action: @escaping () -> Void) {
         self.title = title
         self.action = action
     }
@@ -49,9 +49,10 @@ public struct DefaultContactCell: View {
             
             ForEach(self.buttons.indices) { idx in
                 Button(self.buttons[idx].title) {}
-                    .simultaneousGesture(TapGesture().onEnded {
-                        self.buttons[idx].action(self.contact)
-                    }).frame(maxWidth: .infinity)
+                    .simultaneousGesture(
+                        TapGesture().onEnded(self.buttons[idx].action)
+                    )
+                    .frame(maxWidth: .infinity)
                 
                 if idx != self.buttons.count - 1 {
                     Divider()
