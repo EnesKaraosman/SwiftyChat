@@ -16,7 +16,7 @@ public struct ChatView: View {
     private var onMessageCellTapped: (ChatMessage) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
-    private var contactCellFooterButtons: [ContactCellButton] = []
+    private var contactCellFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton] = { _, _ in [] }
     
     public init(
         messages: Binding<[ChatMessage]>,
@@ -48,9 +48,9 @@ public struct ChatView: View {
     }
     
     /// Present contactItem's footer buttons. (ChatMessageKind.contactItem)
-    public func contactItemButtons(_ buttons: [ContactCellButton]) -> ChatView {
+    public func contactItemButtons(_ section: @escaping (ContactItem, ChatMessage) -> [ContactCellButton]) -> ChatView {
         var copy = self
-        copy.contactCellFooterButtons = buttons
+        copy.contactCellFooterSection = section
         return copy
     }
     
@@ -64,7 +64,7 @@ public struct ChatView: View {
                             message: message,
                             proxy: proxy,
                             onQuickReplyItemSelected: self.onQuickReplyItemSelected,
-                            footerButtons: self.contactCellFooterButtons
+                            footerSection: self.contactCellFooterSection
                         )
                         .onTapGesture {
                             self.onMessageCellTapped(message)

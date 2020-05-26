@@ -23,7 +23,7 @@ public struct DefaultContactCell: View {
     public let contact: ContactItem
     public let message: ChatMessage
     public let proxy: GeometryProxy
-    public let footerButtons: [ContactCellButton]
+    public let footerSection: (ContactItem, ChatMessage) -> [ContactCellButton]
     
     @EnvironmentObject var style: ChatMessageCellStyle
     
@@ -40,15 +40,20 @@ public struct DefaultContactCell: View {
             .shadow(color: .secondary, radius: 1)
     }
     
+    private var buttons: [ContactCellButton] {
+        return self.footerSection(contact, message)
+    }
+    
     private var buttonActionFooter: some View {
         HStack {
             
-            ForEach(footerButtons.indices) { idx in
-                Button(self.footerButtons[idx].title) {}
+            ForEach(self.buttons.indices) { idx in
+                Button(self.buttons[idx].title) {}
                     .simultaneousGesture(TapGesture().onEnded {
-                        self.footerButtons[idx].action(self.contact)
+                        self.buttons[idx].action(self.contact)
                     }).frame(maxWidth: .infinity)
-                if idx != self.footerButtons.count {
+                
+                if idx != self.buttons.count - 1 {
                     Divider()
                 }
             }
