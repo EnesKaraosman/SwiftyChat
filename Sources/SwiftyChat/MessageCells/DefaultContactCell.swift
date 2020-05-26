@@ -12,7 +12,7 @@ public struct ContactCellButton: Identifiable {
     public let title: String
     public let action: (ContactItem) -> Void
     
-    init(title: String, action: @escaping (ContactItem) -> Void) {
+    public init(title: String, action: @escaping (ContactItem) -> Void) {
         self.title = title
         self.action = action
     }
