@@ -19,11 +19,14 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// supports emoji 👍🏻 (auto scales if text is all about emojis)
     case text(String)
     
-    /// An image message, from local(UIImage) or remote(URL)
+    /// An image message, from local(UIImage) or remote(URL).
     case image(ImageLoadingKind)
     
-    /// A location message, pins given location & presents on MapKit
+    /// A location message, pins given location & presents on MapKit.
     case location(LocationItem)
+    
+    /// A contact message, generally for sharing purpose.
+    case contact(ContactItem)
     
     /// Multiple options, disable itself after selection.
     case quickReply([QuickReplyItem])
@@ -42,6 +45,8 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.text(\(text))"
         case .location(let location):
             return "MessageKind.location(lat: \(location.latitude), lon: \(location.longitude))"
+        case .contact(let contact):
+            return "MessageKind.contact(\(contact.displayName))"
         case .quickReply(let quickReplies):
             let options = quickReplies.map { $0.title }.joined(separator: ", ")
             return "MessageKind.quickReplies(options: \(options))"

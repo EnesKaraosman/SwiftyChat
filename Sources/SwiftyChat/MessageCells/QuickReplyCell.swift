@@ -55,7 +55,7 @@ public struct QuickReplyCell: View {
                             Capsule()
                                 .stroke(
                                     self.colors(selectedIndex: self.selectedIndex)[idx],
-                                    lineWidth: 2
+                                    lineWidth: 1
                                 )
                                 .shadow(color: Color.secondary, radius: 1)
                         )
