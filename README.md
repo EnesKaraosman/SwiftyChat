@@ -43,7 +43,7 @@ For Remote displaying images [Kingfisher](https://github.com/onevcat/Kingfisher)
 - `ChatView`
 
 ```swift
-@State var messages: [ChatMessage] = []
+@State var messages: [ChatMessage] = [] // for quick test assign MockMessages.generatedMessages()
 
 ChatView(messages: $messages) { (proxy) -> AnyView in
     // InputView here, continue reading..
