@@ -32,10 +32,11 @@ public struct DefaultContactCell: View {
     }
     
     private var contactImage: some View {
-        let profile = contact.image ?? UIImage(systemName: "person.crop.circle")!
-        return Image(uiImage: profile)
+        let profile = contact.image != nil ? Image(uiImage: contact.image!) : Image(systemName: "person.crop.circle")
+        return profile
             .resizable()
             .scaledToFit()
+            .clipShape(Circle())
             .frame(width: 50)
             .shadow(color: .secondary, radius: 1)
     }
