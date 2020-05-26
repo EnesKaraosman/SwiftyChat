@@ -49,6 +49,7 @@ public struct DefaultContactCell: View {
             
             ForEach(self.buttons.indices) { idx in
                 Button(self.buttons[idx].title) {}
+                    .buttonStyle(BorderlessButtonStyle())
                     .simultaneousGesture(
                         TapGesture().onEnded(self.buttons[idx].action)
                     )
