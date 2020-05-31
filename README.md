@@ -36,7 +36,7 @@ public enum ChatMessageKind: CustomStringConvertible {
     case quickReply([QuickReplyItem])
 }
 ```
-For Remote displaying images [Kingfisher](https://github.com/onevcat/Kingfisher) library used as dependency.
+For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](https://github.com/onevcat/Kingfisher) library used as dependency.
 
 ### Usage
 
