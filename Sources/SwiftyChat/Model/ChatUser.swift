@@ -6,9 +6,9 @@
 //  Copyright © 2020 All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-public struct ChatUser {
+public struct ChatUser: Identifiable {
 
     public static func == (lhs: ChatUser, rhs: ChatUser) -> Bool {
         lhs.id == rhs.id
@@ -16,9 +16,9 @@ public struct ChatUser {
 
     public var id = UUID()
     public var userName: String
-    public var avatar: String
+    public var avatar: UIImage?
 
-    public init(userName: String, avatar: String = "person.circle.fill") {
+    public init(userName: String, avatar: UIImage? = nil) {
         self.userName = userName
         self.avatar = avatar
     }
