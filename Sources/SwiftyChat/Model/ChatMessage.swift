@@ -19,7 +19,7 @@ public struct ChatMessage: Identifiable {
     public init(
         user: ChatUser,
         messageKind: ChatMessageKind,
-        isSender: Bool = false
+        isSender: Bool = false,
         date: Date = .init()
     ) {
         self.user = user
