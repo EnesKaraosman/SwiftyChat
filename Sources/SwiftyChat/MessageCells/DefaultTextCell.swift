@@ -17,7 +17,7 @@ public struct DefaultTextCell: View {
 
     @EnvironmentObject var style: ChatMessageCellStyle
 
-    private let enabledDetectors: [DetectorType] = [.address, .date, .phoneNumber, .url, .transitInformation, .hashtag, .mention]
+    private let enabledDetectors: [DetectorType] = [.address, .date, .phoneNumber, .url, .transitInformation]
     private var maxWidth: CGFloat {
         return UIDevice.isLandscape ? proxy.size.width * 0.8 : proxy.size.width * 0.6
     }
@@ -54,8 +54,8 @@ public struct DefaultTextCell: View {
             $0.didSelectPhoneNumber = self.action.didSelectPhoneNumber
             $0.didSelectURL = self.action.didSelectURL
             $0.didSelectTransitInformation = self.action.didSelectTransitInformation
-            $0.didSelectMention = self.action.didSelectMention
-            $0.didSelectHashtag = self.action.didSelectHashtag
+//            $0.didSelectMention = self.action.didSelectMention
+//            $0.didSelectHashtag = self.action.didSelectHashtag
             
             $0.font = .systemFont(ofSize: 17)
             $0.textColor = .white // TODO: Configure color
