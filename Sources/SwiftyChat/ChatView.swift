@@ -17,6 +17,7 @@ public struct ChatView: View {
     private var messageCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
     private var contactCellFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton] = { _, _ in [] }
+    private var onTextTappedCallback: () -> TextTappedCallback = { return TextTappedCallback() }
     
     public init(
         messages: Binding<[ChatMessage]>,
@@ -54,6 +55,13 @@ public struct ChatView: View {
         return copy
     }
     
+    /// To listen text tapped events like phone, url, date, address
+    public func onTextTappedCallback(action: @escaping () -> TextTappedCallback) -> ChatView {
+        var copy = self
+        copy.onTextTappedCallback = action
+        return copy
+    }
+    
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .bottom) {
@@ -64,7 +72,8 @@ public struct ChatView: View {
                             message: message,
                             proxy: proxy,
                             onQuickReplyItemSelected: self.onQuickReplyItemSelected,
-                            footerSection: self.contactCellFooterSection
+                            contactFooterSection: self.contactCellFooterSection,
+                            onTextTappedCallback: self.onTextTappedCallback
                         )
                         .onTapGesture {
                             self.onMessageCellTapped(message)

@@ -14,7 +14,8 @@ public struct ChatMessageCellContainer: View {
     public let proxy: GeometryProxy
     
     public let onQuickReplyItemSelected: (QuickReplyItem) -> Void
-    public let footerSection: (ContactItem, ChatMessage) -> [ContactCellButton]
+    public let contactFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton]
+    public let onTextTappedCallback: () -> TextTappedCallback
     
     func messageCell() -> some View {
         switch message.messageKind {
@@ -23,7 +24,9 @@ public struct ChatMessageCellContainer: View {
             
             return DefaultTextCell(
                 text: text,
-                message: message
+                message: message,
+                proxy: proxy,
+                callback: onTextTappedCallback
             ).embedInAnyView()
             
         case .location(let location):
@@ -48,7 +51,7 @@ public struct ChatMessageCellContainer: View {
                 contact: contact,
                 message: message,
                 proxy: proxy,
-                footerSection: footerSection
+                footerSection: contactFooterSection
             ).embedInAnyView()
             
         case .quickReply(let quickReplies):
