@@ -47,6 +47,8 @@ public struct DefaultTextCell: View {
     
     private var attributedText: some View {
         AttributedText(text: text, width: maxWidth) {
+            
+            $0.enabledDetectors = self.enabledDetectors
             $0.didSelectAddress = self.action.didSelectAddress
             $0.didSelectDate = self.action.didSelectDate
             $0.didSelectPhoneNumber = self.action.didSelectPhoneNumber
