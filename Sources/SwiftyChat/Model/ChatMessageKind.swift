@@ -30,7 +30,9 @@ public enum ChatMessageKind: CustomStringConvertible {
     
     /// Multiple options, disable itself after selection.
     case quickReply([QuickReplyItem])
-
+    
+    /// `CarouselItem`s that contains title, subtitle, image & button in a scrollable view
+    case carousel([CarouselItem])
     
     public var description: String {
         switch self {
@@ -50,6 +52,8 @@ public enum ChatMessageKind: CustomStringConvertible {
         case .quickReply(let quickReplies):
             let options = quickReplies.map { $0.title }.joined(separator: ", ")
             return "MessageKind.quickReplies(options: \(options))"
+        case .carousel(let carouselItems):
+            return "MessageKind.carousel(itemCount: \(carouselItems.count)"
         }
     }
     

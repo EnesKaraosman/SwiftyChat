@@ -18,6 +18,7 @@ public struct ChatView: View {
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
     private var contactCellFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton] = { _, _ in [] }
     private var onTextTappedCallback: () -> TextTappedCallback = { return TextTappedCallback() }
+    private var onCarouselItemAction: (URL?, ChatMessage) -> Void = { (_, _) in }
     
     public init(
         messages: Binding<[ChatMessage]>,
@@ -62,6 +63,13 @@ public struct ChatView: View {
         return copy
     }
     
+    /// Triggered when the carousel button tapped.
+    public func onCarouselItemAction(action: @escaping (URL?, ChatMessage) -> Void) -> ChatView {
+        var copy = self
+        copy.onCarouselItemAction = action
+        return copy
+    }
+    
     public var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .bottom) {
@@ -73,7 +81,8 @@ public struct ChatView: View {
                             proxy: proxy,
                             onQuickReplyItemSelected: self.onQuickReplyItemSelected,
                             contactFooterSection: self.contactCellFooterSection,
-                            onTextTappedCallback: self.onTextTappedCallback
+                            onTextTappedCallback: self.onTextTappedCallback,
+                            onCarouselItemAction: self.onCarouselItemAction
                         )
                         .onTapGesture {
                             self.onMessageCellTapped(message)

@@ -16,6 +16,7 @@ public struct ChatMessageCellContainer: View {
     public let onQuickReplyItemSelected: (QuickReplyItem) -> Void
     public let contactFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton]
     public let onTextTappedCallback: () -> TextTappedCallback
+    public let onCarouselItemAction: (URL?, ChatMessage) -> Void
     
     func messageCell() -> some View {
         switch message.messageKind {
@@ -60,7 +61,17 @@ public struct ChatMessageCellContainer: View {
                 quickReplySelected: onQuickReplyItemSelected
             ).embedInAnyView()
             
+        case .carousel(let carouselItems):
+            return DefaultCarouselCell(
+                carouselItems: carouselItems,
+                proxy: proxy,
+                message: message,
+                onCarouselItemAction: onCarouselItemAction
+            )
+            .embedInAnyView()
+            
         }
+        
     }
     
     public var body: some View {

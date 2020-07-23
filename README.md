@@ -34,6 +34,9 @@ public enum ChatMessageKind: CustomStringConvertible {
     
     /// Multiple options, disables itself after selection.
     case quickReply([QuickReplyItem])
+    
+    /// `CarouselItem`s that contains title, subtitle, image & button in a scrollable view
+    case carousel([CarouselItem])
 }
 ```
 For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](https://github.com/onevcat/Kingfisher) library used as dependency.
@@ -73,6 +76,10 @@ ChatView(messages: $messages) { (proxy) -> AnyView in
         // for a specific case, simply return EmptyView like below;
         return EmptyView().embedInAnyView()
     }
+}
+// ▼ Implement in case ChatMessageKind.carousel
+.onCarouselItemAction { (url: URL?, message: ChatMessage) in
+    // Here you can use the metadata of selected item in carousel
 }
 // ▼ Implement in case ChatMessageKind.quickReply
 .onQuickReplyItemSelected { quickReply in
