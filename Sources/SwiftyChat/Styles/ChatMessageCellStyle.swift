@@ -34,9 +34,7 @@ public class ChatMessageCellStyle: ObservableObject {
     var incomingTextPadding: CGFloat
     var outgoingTextPadding: CGFloat
     
-    var quickReplyUnselectedItemColor: Color
-    var quickReplySelectedItemColor: Color
-    
+    let quickReplyCellStyle: QuickReplyCellStyle
     let carouselCellStyle: CarouselCellStyle
     
     public init(
@@ -56,8 +54,9 @@ public class ChatMessageCellStyle: ObservableObject {
         outgoingShadowRadius: CGFloat = 3,
         incomingTextPadding: CGFloat = 8,
         outgoingTextPadding: CGFloat = 8,
-        quickReplyUnselectedItemColor: Color = .primary,
-        quickReplySelectedItemColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1)),
+        quickReplyCellStyle: QuickReplyCellStyle = QuickReplyCellStyle(
+            unselectedItemFontWeight: UIFont.Weight.semibold, padding: 8, lineWidth: 1
+        ),
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(
             cellContainerBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
             cellContainerCornerRadius: 8
@@ -82,6 +81,7 @@ public class ChatMessageCellStyle: ObservableObject {
         self.outgoingTextPadding = outgoingTextPadding
         self.quickReplyUnselectedItemColor = quickReplyUnselectedItemColor
         self.quickReplySelectedItemColor = quickReplySelectedItemColor
+        self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle
     }
     

@@ -31,13 +31,17 @@ public struct QuickReplyCell: View {
         quickReplies.map { $0.title.count }.reduce(0, +)
     }
     
+    private var cellStyle: QuickReplyCellStyle {
+        style.quickReplyCellStyle
+    }
+    
     @State private var isDisabled = false
     @State private var selectedIndex: Int?
     
     private func colors(selectedIndex: Int?) -> [Color] {
-        var colors = (1...quickReplies.count).map { _ in style.quickReplyUnselectedItemColor }
+        var colors = (1...quickReplies.count).map { _ in cellStyle.unselectedItemColor }
         if let idx = selectedIndex {
-            colors[idx] = style.quickReplySelectedItemColor
+            colors[idx] = cellStyle.selectedItemColor
         }
         return colors
     }
@@ -48,14 +52,19 @@ public struct QuickReplyCell: View {
 
                 Button(action: {}) {
                     Text(self.quickReplies[idx].title)
-                        .font(.callout)
-                        .padding(8)
+                        .fontWeight(
+                            idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight
+                        )
+                        .font(
+                            idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont
+                        )
+                        .padding(cellStyle.padding)
                         .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
                         .overlay(
                             Capsule()
                                 .stroke(
                                     self.colors(selectedIndex: self.selectedIndex)[idx],
-                                    lineWidth: 1
+                                    lineWidth: cellStyle.lineWidth
                                 )
                                 .shadow(color: Color.secondary, radius: 1)
                         )
