@@ -66,21 +66,29 @@ public struct CarouselItemView: View {
     public let callback: (URL?) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
     
+    private var carouselStyle: CarouselCellStyle {
+        style.carouselCellStyle
+    }
+    
     public var body: some View {
         VStack {
             
             KFImage(item.picture)
                 .resizable()
-                .frame(width: itemWidth, height: itemWidth)
+                .frame(width: carouselStyle.imageSize.width, height: carouselStyle.imageSize.height)
                 .scaledToFill()
             
             Group {
                 Text(item.title)
-                    .fontWeight(.semibold)
-                    .font(.title)
-                    .lineLimit(nil)
+                    .fontWeight(carouselStyle.titleFontWeight)
+                    .font(carouselStyle.titleFont)
+                    .foregroundColor(carouselStyle.titleColor)
+                    .multilineTextAlignment(.center)
                 
                 Text(item.subtitle)
+                    .fontWeight(carouselStyle.subtitleFontWeight)
+                    .font(carouselStyle.subtitleFont)
+                    .foregroundColor(carouselStyle.subtitleColor)
                     .multilineTextAlignment(.center)
                 
             }
@@ -91,16 +99,22 @@ public struct CarouselItemView: View {
                 ForEach(item.buttons) { (button) in
                     Button(action: { callback(button.url) }) {
                         Text(button.title)
-                            .fontWeight(.semibold)
+                            .fontWeight(carouselStyle.buttonTitleFontWeight)
+                            .font(carouselStyle.buttonFont)
+                            .foregroundColor(carouselStyle.buttonTitleColor)
                     }
-                    .buttonStyle(CarouselItemButtonStyle())
+                    .buttonStyle(
+                        CarouselItemButtonStyle(
+                            backgroundColor: carouselStyle.buttonBackgroundColor
+                        )
+                    )
                 }
             }
             
         }
-        .background(Color(#colorLiteral(red: 0.9617928863, green: 0.9619538188, blue: 0.9617717862, alpha: 1)))
+        .background(carouselStyle.cellContainerBackgroundColor)
         .frame(width: itemWidth)
-        .cornerRadius(isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+        .cornerRadius(carouselStyle.cellContainerCornerRadius)
 //        .overlay(
 //            RoundedRectangle(cornerRadius: isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
 //                .stroke(
