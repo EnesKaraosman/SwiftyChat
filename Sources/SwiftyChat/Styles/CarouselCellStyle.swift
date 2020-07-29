@@ -8,10 +8,8 @@
 import UIKit
 import SwiftUI
 
-public struct CarouselCellStyle {
+public struct CarouselCellStyle: CellContainerStyle {
 
-    public let imageSize: CGSize
-    
     public let titleFont: Font
     public let titleColor: Color
     public let titleFontWeight: Font.Weight
@@ -25,6 +23,10 @@ public struct CarouselCellStyle {
     public let buttonTitleFontWeight: Font.Weight
     public let buttonBackgroundColor: Color
     
+    /// Cell width in a given available proxy (GeometryReader)
+    public let cellWidth: (GeometryProxy) -> CGFloat
+    
+    // MARK: - CellContainerStyle
     public let cellBackgroundColor: Color
     public let cellCornerRadius: CGFloat
     public let cellBorderColor: Color
@@ -34,7 +36,6 @@ public struct CarouselCellStyle {
     
     /// UIKit Constructor
     public init(
-        imageSize: CGSize = .init(width: 220, height: 220),
         titleFont: UIFont = UIFont(name: "Avenir-Black", size: 27)!,
         titleColor: UIColor = .label,
         titleFontWeight: UIFont.Weight = .bold,
@@ -45,14 +46,14 @@ public struct CarouselCellStyle {
         buttonTitleColor: UIColor = .white,
         buttonBackgroundColor: UIColor = .systemBlue,
         buttonTitleFontWeight: UIFont.Weight = .semibold,
+        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.6 : 0.7) },
         cellBackgroundColor: UIColor = #colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1),
         cellCornerRadius: CGFloat = 8,
-        cellBorderColor: UIColor = .systemPink,
-        cellBorderWidth: CGFloat = 2,
-        cellShadowRadius: CGFloat = 2,
-        cellShadowColor: UIColor = .systemPurple
+        cellBorderColor: UIColor = .clear,
+        cellBorderWidth: CGFloat = 0,
+        cellShadowRadius: CGFloat = 3,
+        cellShadowColor: UIColor = .secondaryLabel
     ) {
-        self.imageSize = imageSize
         self.titleFont = Font.custom(titleFont.familyName, size: titleFont.pointSize)
         self.titleColor = Color(titleColor)
         self.titleFontWeight = Font.Weight(titleFontWeight)
@@ -63,6 +64,7 @@ public struct CarouselCellStyle {
         self.buttonTitleColor = Color(buttonTitleColor)
         self.buttonTitleFontWeight = Font.Weight(buttonTitleFontWeight)
         self.buttonBackgroundColor = Color(buttonBackgroundColor)
+        self.cellWidth = cellWidth
         self.cellBackgroundColor = Color(cellBackgroundColor)
         self.cellCornerRadius = cellCornerRadius
         self.cellBorderColor = Color(cellBorderColor)
@@ -73,7 +75,6 @@ public struct CarouselCellStyle {
     
     /// SwiftUI Constructor
     public init(
-        imageSize: CGSize = .init(width: 220, height: 220),
         titleFont: Font = Font.title,
         titleColor: Color = .primary,
         titleFontWeight: Font.Weight = .bold,
@@ -84,14 +85,14 @@ public struct CarouselCellStyle {
         buttonTitleColor: Color = .white,
         buttonBackgroundColor: Color = .blue,
         buttonTitleFontWeight: Font.Weight = .semibold,
+        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.6 : 0.7) },
         cellBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
         cellBorderWidth: CGFloat = 0,
-        cellShadowRadius: CGFloat = 0,
-        cellShadowColor: Color = .clear
+        cellShadowRadius: CGFloat = 3,
+        cellShadowColor: Color = .secondary
     ) {
-        self.imageSize = imageSize
         self.titleFont = titleFont
         self.titleColor = titleColor
         self.titleFontWeight = titleFontWeight
@@ -102,6 +103,7 @@ public struct CarouselCellStyle {
         self.buttonTitleColor = buttonTitleColor
         self.buttonTitleFontWeight = buttonTitleFontWeight
         self.buttonBackgroundColor = buttonBackgroundColor
+        self.cellWidth = cellWidth
         self.cellBackgroundColor = cellBackgroundColor
         self.cellCornerRadius = cellCornerRadius
         self.cellBorderColor = cellBorderColor

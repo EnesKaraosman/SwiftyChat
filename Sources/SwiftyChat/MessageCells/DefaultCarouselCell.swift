@@ -41,15 +41,12 @@ public struct DefaultCarouselCell: View {
     public let message: ChatMessage
     public let onCarouselItemAction: (URL?, ChatMessage) -> Void
     
-    private var itemWidth: CGFloat {
-        proxy.size.width * (UIDevice.isLandscape ? 0.6 : 0.7)
-    }
     
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
             HStack {
                 ForEach(carouselItems) { item in
-                    CarouselItemView(item: item, itemWidth: itemWidth, isSender: message.isSender) { url in
+                    CarouselItemView(item: item, proxy: proxy, isSender: message.isSender) { url in
                         onCarouselItemAction(url, message)
                     }
                 }
@@ -61,7 +58,7 @@ public struct DefaultCarouselCell: View {
 public struct CarouselItemView: View {
     
     public let item: CarouselItem
-    public let itemWidth: CGFloat
+    public let proxy: GeometryProxy
     public let isSender: Bool
     public let callback: (URL?) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
@@ -70,13 +67,16 @@ public struct CarouselItemView: View {
         style.carouselCellStyle
     }
     
+    private var itemWidth: CGFloat {
+        cellStyle.cellWidth(proxy)
+    }
+    
     public var body: some View {
         VStack {
             
             KFImage(item.picture)
                 .resizable()
-                .frame(width: cellStyle.imageSize.width, height: cellStyle.imageSize.height)
-                .scaledToFill()
+                .scaledToFit()
             
             Group {
                 Text(item.title)
