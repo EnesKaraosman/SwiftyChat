@@ -58,8 +58,8 @@ public class ChatMessageCellStyle: ObservableObject {
             unselectedItemFontWeight: UIFont.Weight.semibold, padding: 8, lineWidth: 1
         ),
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(
-            cellContainerBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
-            cellContainerCornerRadius: 8
+            cellBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
+            cellCornerRadius: 8
         )
         
     ) {
@@ -79,8 +79,6 @@ public class ChatMessageCellStyle: ObservableObject {
         self.outgoingShadowRadius = outgoingShadowRadius
         self.incomingTextPadding = incomingTextPadding
         self.outgoingTextPadding = outgoingTextPadding
-        self.quickReplyUnselectedItemColor = quickReplyUnselectedItemColor
-        self.quickReplySelectedItemColor = quickReplySelectedItemColor
         self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle
     }

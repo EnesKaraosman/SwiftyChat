@@ -66,7 +66,7 @@ public struct CarouselItemView: View {
     public let callback: (URL?) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
     
-    private var carouselStyle: CarouselCellStyle {
+    private var cellStyle: CarouselCellStyle {
         style.carouselCellStyle
     }
     
@@ -75,20 +75,20 @@ public struct CarouselItemView: View {
             
             KFImage(item.picture)
                 .resizable()
-                .frame(width: carouselStyle.imageSize.width, height: carouselStyle.imageSize.height)
+                .frame(width: cellStyle.imageSize.width, height: cellStyle.imageSize.height)
                 .scaledToFill()
             
             Group {
                 Text(item.title)
-                    .fontWeight(carouselStyle.titleFontWeight)
-                    .font(carouselStyle.titleFont)
-                    .foregroundColor(carouselStyle.titleColor)
+                    .fontWeight(cellStyle.titleFontWeight)
+                    .font(cellStyle.titleFont)
+                    .foregroundColor(cellStyle.titleColor)
                     .multilineTextAlignment(.center)
                 
                 Text(item.subtitle)
-                    .fontWeight(carouselStyle.subtitleFontWeight)
-                    .font(carouselStyle.subtitleFont)
-                    .foregroundColor(carouselStyle.subtitleColor)
+                    .fontWeight(cellStyle.subtitleFontWeight)
+                    .font(cellStyle.subtitleFont)
+                    .foregroundColor(cellStyle.subtitleColor)
                     .multilineTextAlignment(.center)
                 
             }
@@ -99,33 +99,33 @@ public struct CarouselItemView: View {
                 ForEach(item.buttons) { (button) in
                     Button(action: { callback(button.url) }) {
                         Text(button.title)
-                            .fontWeight(carouselStyle.buttonTitleFontWeight)
-                            .font(carouselStyle.buttonFont)
-                            .foregroundColor(carouselStyle.buttonTitleColor)
+                            .fontWeight(cellStyle.buttonTitleFontWeight)
+                            .font(cellStyle.buttonFont)
+                            .foregroundColor(cellStyle.buttonTitleColor)
                     }
                     .buttonStyle(
                         CarouselItemButtonStyle(
-                            backgroundColor: carouselStyle.buttonBackgroundColor
+                            backgroundColor: cellStyle.buttonBackgroundColor
                         )
                     )
                 }
             }
             
         }
-        .background(carouselStyle.cellContainerBackgroundColor)
+        .background(cellStyle.cellBackgroundColor)
         .frame(width: itemWidth)
-        .cornerRadius(carouselStyle.cellContainerCornerRadius)
-//        .overlay(
-//            RoundedRectangle(cornerRadius: isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
-//                .stroke(
-//                    isSender ? style.incomingBorderColor : style.outgoingBorderColor,
-//                    lineWidth: isSender ? style.incomingBorderWidth : style.outgoingBorderWidth
-//                )
-//        )
-//        .shadow(
-//            color: isSender ? style.incomingShadowColor : style.outgoingShadowColor,
-//            radius: isSender ? style.incomingShadowRadius : style.outgoingShadowRadius
-//        )
+        .cornerRadius(cellStyle.cellCornerRadius)
+        .overlay(
+            RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
+        )
         
     }
     

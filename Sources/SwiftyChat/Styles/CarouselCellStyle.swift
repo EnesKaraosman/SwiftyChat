@@ -25,8 +25,12 @@ public struct CarouselCellStyle {
     public let buttonTitleFontWeight: Font.Weight
     public let buttonBackgroundColor: Color
     
-    public let cellContainerBackgroundColor: Color
-    public let cellContainerCornerRadius: CGFloat
+    public let cellBackgroundColor: Color
+    public let cellCornerRadius: CGFloat
+    public let cellBorderColor: Color
+    public let cellBorderWidth: CGFloat
+    public let cellShadowRadius: CGFloat
+    public let cellShadowColor: Color
     
     /// UIKit Constructor
     public init(
@@ -41,8 +45,12 @@ public struct CarouselCellStyle {
         buttonTitleColor: UIColor = .white,
         buttonBackgroundColor: UIColor = .systemBlue,
         buttonTitleFontWeight: UIFont.Weight = .semibold,
-        cellContainerBackgroundColor: UIColor = #colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1),
-        cellContainerCornerRadius: CGFloat = 8
+        cellBackgroundColor: UIColor = #colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1),
+        cellCornerRadius: CGFloat = 8,
+        cellBorderColor: UIColor = .systemPink,
+        cellBorderWidth: CGFloat = 2,
+        cellShadowRadius: CGFloat = 2,
+        cellShadowColor: UIColor = .systemPurple
     ) {
         self.imageSize = imageSize
         self.titleFont = Font.custom(titleFont.familyName, size: titleFont.pointSize)
@@ -55,8 +63,12 @@ public struct CarouselCellStyle {
         self.buttonTitleColor = Color(buttonTitleColor)
         self.buttonTitleFontWeight = Font.Weight(buttonTitleFontWeight)
         self.buttonBackgroundColor = Color(buttonBackgroundColor)
-        self.cellContainerBackgroundColor = Color(cellContainerBackgroundColor)
-        self.cellContainerCornerRadius = cellContainerCornerRadius
+        self.cellBackgroundColor = Color(cellBackgroundColor)
+        self.cellCornerRadius = cellCornerRadius
+        self.cellBorderColor = Color(cellBorderColor)
+        self.cellBorderWidth = cellBorderWidth
+        self.cellShadowRadius = cellShadowRadius
+        self.cellShadowColor = Color(cellShadowColor)
     }
     
     /// SwiftUI Constructor
@@ -72,8 +84,12 @@ public struct CarouselCellStyle {
         buttonTitleColor: Color = .white,
         buttonBackgroundColor: Color = .blue,
         buttonTitleFontWeight: Font.Weight = .semibold,
-        cellContainerBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
-        cellContainerCornerRadius: CGFloat = 8
+        cellBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
+        cellCornerRadius: CGFloat = 8,
+        cellBorderColor: Color = .clear,
+        cellBorderWidth: CGFloat = 0,
+        cellShadowRadius: CGFloat = 0,
+        cellShadowColor: Color = .clear
     ) {
         self.imageSize = imageSize
         self.titleFont = titleFont
@@ -86,8 +102,12 @@ public struct CarouselCellStyle {
         self.buttonTitleColor = buttonTitleColor
         self.buttonTitleFontWeight = buttonTitleFontWeight
         self.buttonBackgroundColor = buttonBackgroundColor
-        self.cellContainerBackgroundColor = cellContainerBackgroundColor
-        self.cellContainerCornerRadius = cellContainerCornerRadius
+        self.cellBackgroundColor = cellBackgroundColor
+        self.cellCornerRadius = cellCornerRadius
+        self.cellBorderColor = cellBorderColor
+        self.cellBorderWidth = cellBorderWidth
+        self.cellShadowRadius = cellShadowRadius
+        self.cellShadowColor = cellShadowColor
     }
     
 }
