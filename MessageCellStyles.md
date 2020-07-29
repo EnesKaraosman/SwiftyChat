@@ -29,6 +29,9 @@ public struct CarouselCellStyle {
     public let buttonTitleFontWeight: Font.Weight
     public let buttonBackgroundColor: Color
     
+    /// Cell width in a given available proxy (GeometryReader)
+    public let cellWidth: (GeometryProxy) -> CGFloat
+    
     public let cellBackgroundColor: Color
     public let cellCornerRadius: CGFloat
     public let cellBorderColor: Color
@@ -37,4 +40,24 @@ public struct CarouselCellStyle {
     public let cellShadowColor: Color
 }
 ```
-Both UIKit & SwiftUI initializers exist.
+CarouselCellStyle has both UIKit & SwiftUI initializers.
+
+### Image
+
+![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/imageItem.png)
+
+```swift
+public struct ImageCellStyle {
+    
+    /// Cell width in a given available proxy (GeometryReader)
+    public var cellWidth: (GeometryProxy) -> CGFloat
+    
+    public let cellBackgroundColor: Color
+    public let cellCornerRadius: CGFloat
+    public let cellBorderColor: Color
+    public let cellBorderWidth: CGFloat
+    public let cellShadowRadius: CGFloat
+    public let cellShadowColor: Color
+}
+```
+ImageCellStyle has both UIKit & SwiftUI initializers.

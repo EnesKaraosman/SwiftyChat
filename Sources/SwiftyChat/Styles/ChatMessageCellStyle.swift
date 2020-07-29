@@ -34,6 +34,7 @@ public class ChatMessageCellStyle: ObservableObject {
     var incomingTextPadding: CGFloat
     var outgoingTextPadding: CGFloat
     
+    let imageCellStyle: ImageCellStyle
     let quickReplyCellStyle: QuickReplyCellStyle
     let carouselCellStyle: CarouselCellStyle
     
@@ -54,8 +55,14 @@ public class ChatMessageCellStyle: ObservableObject {
         outgoingShadowRadius: CGFloat = 3,
         incomingTextPadding: CGFloat = 8,
         outgoingTextPadding: CGFloat = 8,
+        imageCellStyle: ImageCellStyle = ImageCellStyle(
+            cellShadowRadius: 3,
+            cellShadowColor: Color.secondary
+        ),
         quickReplyCellStyle: QuickReplyCellStyle = QuickReplyCellStyle(
-            unselectedItemFontWeight: UIFont.Weight.semibold, padding: 8, lineWidth: 1
+            unselectedItemFontWeight: UIFont.Weight.semibold,
+            padding: 8,
+            lineWidth: 1
         ),
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(
             cellBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
@@ -79,6 +86,7 @@ public class ChatMessageCellStyle: ObservableObject {
         self.outgoingShadowRadius = outgoingShadowRadius
         self.incomingTextPadding = incomingTextPadding
         self.outgoingTextPadding = outgoingTextPadding
+        self.imageCellStyle = imageCellStyle
         self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle
     }

@@ -17,7 +17,11 @@ public struct DefaultImageCell: View {
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var imageWidth: CGFloat {
-        proxy.size.width * (UIDevice.isLandscape ? 0.4 : 0.8)
+        cellStyle.cellWidth(proxy)
+    }
+    
+    private var cellStyle: ImageCellStyle {
+        style.imageCellStyle
     }
     
     private var imageView: AnyView {
@@ -42,17 +46,18 @@ public struct DefaultImageCell: View {
             .resizable()
             .aspectRatio(width / height, contentMode: isLandscape ? .fit : .fill)
             .frame(width: imageWidth, height: isLandscape ? nil : imageWidth)
-            .cornerRadius(message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+            .background(cellStyle.cellBackgroundColor)
+            .cornerRadius(cellStyle.cellCornerRadius)
             .overlay(
-                RoundedRectangle(cornerRadius: message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+                RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
                     .stroke(
-                        message.isSender ? style.incomingBorderColor : style.outgoingBorderColor,
-                        lineWidth: message.isSender ? style.incomingBorderWidth : style.outgoingBorderWidth
-                )
+                        cellStyle.cellBorderColor,
+                        lineWidth: cellStyle.cellBorderWidth
+                    )
             )
             .shadow(
-                color: message.isSender ? style.incomingShadowColor : style.outgoingShadowColor,
-                radius: message.isSender ? style.incomingShadowRadius : style.outgoingShadowRadius
+                color: cellStyle.cellShadowColor,
+                radius: cellStyle.cellShadowRadius
             )
             .embedInAnyView()
     }
@@ -71,19 +76,20 @@ public struct DefaultImageCell: View {
          */
         return KFImage(url)
             .resizable()
-            .scaledToFill()
             .frame(width: imageWidth)
-            .cornerRadius(message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+            .scaledToFill()
+            .background(cellStyle.cellBackgroundColor)
+            .cornerRadius(cellStyle.cellCornerRadius)
             .overlay(
-                RoundedRectangle(cornerRadius: message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+                RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
                     .stroke(
-                        message.isSender ? style.incomingBorderColor : style.outgoingBorderColor,
-                        lineWidth: message.isSender ? style.incomingBorderWidth : style.outgoingBorderWidth
-                )
+                        cellStyle.cellBorderColor,
+                        lineWidth: cellStyle.cellBorderWidth
+                    )
             )
             .shadow(
-                color: message.isSender ? style.incomingShadowColor : style.outgoingShadowColor,
-                radius: message.isSender ? style.incomingShadowRadius : style.outgoingShadowRadius
+                color: cellStyle.cellShadowColor,
+                radius: cellStyle.cellShadowRadius
             )
             .embedInAnyView()
         

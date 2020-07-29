@@ -18,7 +18,7 @@ let package = Package(
         // Dependencies declare other packages that this package depends on.
         
         // Image downloading library
-        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "5.14.0"),
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "5.14.1"),
         
         // Introspecting underlying UIKit components
 //        .package(url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.0")
