@@ -1,5 +1,13 @@
 # SwiftyChat
 
+### Content
+* [About](#about)
+* [Quick Preview](#quick-preview)
+* [Installation](#installation)
+* [Message Kinds](#message-kinds)
+* [Usage](#usage)
+* [Style & Customization](#style-and-customization)
+
 ### About 
 
 Simple Chat Interface to quick start with [built-in](#supported-message-kind) message cells. <br>
@@ -14,7 +22,7 @@ Fully written in pure SwiftUI.
 
 SPM: https://github.com/EnesKaraosman/SwiftyChat.git
 
-### Supported Message Kind
+### Message Kinds
 
 ```swift
 public enum ChatMessageKind: CustomStringConvertible {
@@ -134,6 +142,11 @@ ChatView(messages: $messages) { (proxy) -> AnyView in
 ```
 
 For custom InputView you can cheat using Default one.
+
+
+### Style and Customization
+
+For detail documentation, visit [MessageCellStyles.md](https://github.com/EnesKaraosman/SwiftyChat/blob/master/MessageCellStyles.md)
 
 ### Notes
 

@@ -1,8 +1,9 @@
 ## MessageKinds
-* [text](#text)
-* [quickReply](#quick-reply)
-* [carousel](#carousel)
-* [contact](#contact)
+* [Text](#text)
+* [QuickReply](#quick-reply)
+* [Carousel](#carousel)
+* [Image](#image)
+* [Contact](#contact)
 
 
 ### Carousel
@@ -14,8 +15,6 @@
 ```swift
 public struct CarouselCellStyle {
 
-    public let imageSize: CGSize
-    
     public let titleFont: Font
     public let titleColor: Color
     public let titleFontWeight: Font.Weight
