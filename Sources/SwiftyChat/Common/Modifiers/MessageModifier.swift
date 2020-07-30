@@ -10,7 +10,15 @@ import SwiftUI
 
 public struct MessageModifier: ViewModifier {
     
+    public var messageKind: ChatMessageKind
     public var isSender: Bool
+    
+    private var isSpaceFreeMessageKind: Bool {
+        if case ChatMessageKind.carousel = self.messageKind {
+            return true
+        }
+        return false
+    }
     
     public func body(content: Content) -> some View {
         HStack(spacing: 0) {
@@ -18,7 +26,7 @@ public struct MessageModifier: ViewModifier {
                 Spacer(minLength: 40)
             }
             content
-            if !isSender {
+            if !isSender && !isSpaceFreeMessageKind {
                 Spacer(minLength: 40)
             }
         }.embedInAnyView()

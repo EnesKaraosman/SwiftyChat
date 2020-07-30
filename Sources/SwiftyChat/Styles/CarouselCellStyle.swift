@@ -50,7 +50,7 @@ public struct CarouselCellStyle: CellContainerStyle {
         cellBackgroundColor: UIColor = #colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: UIColor = .clear,
-        cellBorderWidth: CGFloat = 0,
+        cellBorderWidth: CGFloat = 1,
         cellShadowRadius: CGFloat = 3,
         cellShadowColor: UIColor = .secondaryLabel
     ) {
@@ -89,7 +89,7 @@ public struct CarouselCellStyle: CellContainerStyle {
         cellBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
-        cellBorderWidth: CGFloat = 0,
+        cellBorderWidth: CGFloat = 1,
         cellShadowRadius: CGFloat = 3,
         cellShadowColor: Color = .secondary
     ) {
