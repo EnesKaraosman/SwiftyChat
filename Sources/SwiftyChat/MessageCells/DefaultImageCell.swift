@@ -76,8 +76,8 @@ public struct DefaultImageCell: View {
          */
         return KFImage(url)
             .resizable()
-            .frame(width: imageWidth)
             .scaledToFill()
+            .frame(width: imageWidth)
             .background(cellStyle.cellBackgroundColor)
             .cornerRadius(cellStyle.cellCornerRadius)
             .overlay(
