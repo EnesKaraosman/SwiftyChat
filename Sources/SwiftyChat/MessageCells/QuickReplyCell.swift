@@ -53,18 +53,18 @@ public struct QuickReplyCell: View {
                 Button(action: {}) {
                     Text(self.quickReplies[idx].title)
                         .fontWeight(
-                            idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight
+                            idx == self.selectedIndex ? self.cellStyle.selectedItemFontWeight : self.cellStyle.unselectedItemFontWeight
                         )
                         .font(
-                            idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont
+                            idx == self.selectedIndex ? self.cellStyle.selectedItemFont : self.cellStyle.unselectedItemFont
                         )
-                        .padding(cellStyle.padding)
+                        .padding(self.cellStyle.padding)
                         .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
                         .overlay(
                             Capsule()
                                 .stroke(
                                     self.colors(selectedIndex: self.selectedIndex)[idx],
-                                    lineWidth: cellStyle.lineWidth
+                                    lineWidth: self.cellStyle.lineWidth
                                 )
                                 .shadow(color: Color.secondary, radius: 1)
                         )

@@ -46,8 +46,12 @@ public struct DefaultCarouselCell: View {
         ScrollView(.horizontal, showsIndicators: true) {
             HStack {
                 ForEach(carouselItems) { item in
-                    CarouselItemView(item: item, proxy: proxy, isSender: message.isSender) { url in
-                        onCarouselItemAction(url, message)
+                    CarouselItemView(
+                        item: item,
+                        proxy: self.proxy,
+                        isSender: self.message.isSender
+                    ) { url in
+                        self.onCarouselItemAction(url, self.message)
                     }
                 }
             }
@@ -97,15 +101,15 @@ public struct CarouselItemView: View {
             
             HStack {
                 ForEach(item.buttons) { (button) in
-                    Button(action: { callback(button.url) }) {
+                    Button(action: { self.callback(button.url) }) {
                         Text(button.title)
-                            .fontWeight(cellStyle.buttonTitleFontWeight)
-                            .font(cellStyle.buttonFont)
-                            .foregroundColor(cellStyle.buttonTitleColor)
+                            .fontWeight(self.cellStyle.buttonTitleFontWeight)
+                            .font(self.cellStyle.buttonFont)
+                            .foregroundColor(self.cellStyle.buttonTitleColor)
                     }
                     .buttonStyle(
                         CarouselItemButtonStyle(
-                            backgroundColor: cellStyle.buttonBackgroundColor
+                            backgroundColor: self.cellStyle.buttonBackgroundColor
                         )
                     )
                 }
@@ -118,12 +122,12 @@ public struct CarouselItemView: View {
         .overlay(
             RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
                 .stroke(
-                    cellStyle.cellBorderColor,
-                    lineWidth: cellStyle.cellBorderWidth
+                    self.cellStyle.cellBorderColor,
+                    lineWidth: self.cellStyle.cellBorderWidth
                 )
                 .shadow(
-                    color: cellStyle.cellShadowColor,
-                    radius: cellStyle.cellShadowRadius
+                    color: self.cellStyle.cellShadowColor,
+                    radius: self.cellStyle.cellShadowRadius
                 )
         )
         
