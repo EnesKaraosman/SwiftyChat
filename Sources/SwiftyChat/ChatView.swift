@@ -90,8 +90,10 @@ public struct ChatView: View {
                         .contextMenu(menuItems: {
                             self.messageCellContextMenu(message)
                         })
-                        .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
                         .modifier(AvatarModifier(isSender: message.isSender))
+                        .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
+                        .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
+                        
                     }
                 }
                 .padding(.bottom, proxy.safeAreaInsets.bottom + 56)
