@@ -91,6 +91,7 @@ public struct ChatView: View {
                             self.messageCellContextMenu(message)
                         })
                         .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
+                        .modifier(AvatarModifier(isSender: message.isSender))
                     }
                 }
                 .padding(.bottom, proxy.safeAreaInsets.bottom + 56)
