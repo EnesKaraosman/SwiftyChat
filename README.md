@@ -148,10 +148,11 @@ For custom InputView you can cheat using Default one.
 
 For detail documentation, visit [MessageCellStyles.md](https://github.com/EnesKaraosman/SwiftyChat/blob/master/MessageCellStyles.md)
 
-### Notes
+### Todo
+- [ ] Scroll To Bottom
+- [ ] User Avatar
+- [ ] HTML String support
 
-Since SwiftUI is not mature enough, I did not implement scrollToBottom feature yet.<br>
-Waiting WWDC 20 to move further.
 <br>
 Please feel free to contribute.
 
