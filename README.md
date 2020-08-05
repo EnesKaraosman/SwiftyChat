@@ -146,11 +146,11 @@ For custom InputView you can cheat using Default one.
 
 ### Style and Customization
 
-For detail documentation, visit [MessageCellStyles.md](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Styles.md)
+For detail documentation, visit [Styles.md](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Styles.md)
 
 ### Todo
 - [ ] Scroll To Bottom
-- [ ] User Avatar
+- [x] User Avatar
 - [ ] HTML String support
 
 <br>
