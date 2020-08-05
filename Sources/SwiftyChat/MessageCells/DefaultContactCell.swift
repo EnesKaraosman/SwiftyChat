@@ -28,7 +28,7 @@ public struct DefaultContactCell: View {
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var cardWidth: CGFloat {
-        proxy.size.width * (UIDevice.isLandscape ? 0.4 : 0.8)
+        proxy.size.width * (UIDevice.isLandscape ? 0.4 : 0.75)
     }
     
     private var contactImage: some View {

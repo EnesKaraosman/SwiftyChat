@@ -85,7 +85,7 @@ public struct CarouselCellStyle: CellContainerStyle {
         buttonTitleColor: Color = .white,
         buttonBackgroundColor: Color = .blue,
         buttonTitleFontWeight: Font.Weight = .semibold,
-        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.6 : 0.7) },
+        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,

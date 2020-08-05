@@ -17,23 +17,30 @@ public struct DefaultLocationCell: View {
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var mapWidth: CGFloat {
-        proxy.size.width * (UIDevice.isLandscape ? 0.4 : 0.8)
+        cellStyle.cellWidth(proxy)
+    }
+    
+    private var cellStyle: LocationCellStyle {
+        style.locationCellStyle
     }
     
     public var body: some View {
         MapView(coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
-        .frame(width: mapWidth, height: mapWidth)
-        .cornerRadius(message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+        .frame(
+            width: mapWidth,
+            height: mapWidth * cellStyle.cellAspectRatio
+        )
+        .cornerRadius(cellStyle.cellCornerRadius)
         .overlay(
-            RoundedRectangle(cornerRadius: message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius)
+            RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
                 .stroke(
-                    message.isSender ? style.incomingBorderColor : style.outgoingBorderColor,
-                    lineWidth: message.isSender ? style.incomingBorderWidth : style.outgoingBorderWidth
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
                 )
         )
         .shadow(
-            color: message.isSender ? style.incomingShadowColor : style.outgoingShadowColor,
-            radius: message.isSender ? style.incomingShadowRadius : style.outgoingShadowRadius
+            color: cellStyle.cellShadowColor,
+            radius: cellStyle.cellShadowRadius
         )
     }
     

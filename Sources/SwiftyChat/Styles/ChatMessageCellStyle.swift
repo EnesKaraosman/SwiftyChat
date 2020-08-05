@@ -49,6 +49,9 @@ public class ChatMessageCellStyle: ObservableObject {
     /// Carousel Cell Style
     let carouselCellStyle: CarouselCellStyle
     
+    /// Location Cell Style
+    let locationCellStyle: LocationCellStyle
+    
     public init(
         incomingBorderColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1)),
         outgoingBorderColor: Color = Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1)),
@@ -80,7 +83,8 @@ public class ChatMessageCellStyle: ObservableObject {
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(
             cellBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
             cellCornerRadius: 8
-        )
+        ),
+        locationCellStyle: LocationCellStyle = LocationCellStyle(cellShadowColor: .secondary)
     ) {
         self.incomingBorderColor = incomingBorderColor
         self.outgoingBorderColor = outgoingBorderColor
@@ -103,6 +107,7 @@ public class ChatMessageCellStyle: ObservableObject {
         self.imageCellStyle = imageCellStyle
         self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle
+        self.locationCellStyle = locationCellStyle
     }
     
 }
