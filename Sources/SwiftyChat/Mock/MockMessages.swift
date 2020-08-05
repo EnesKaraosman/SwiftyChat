@@ -61,19 +61,20 @@ public struct MockMessages {
     ]
     
     public static func generateMessage(kind: ChatMessageKind) -> ChatMessage {
+        let randomUser = Self.randomUser
         switch kind {
         case .image:
             guard let randomImage = mockImages.randomElement() else { fallthrough }
             return .init(
-                user: Self.randomUser,
+                user: randomUser,
                 messageKind: .image(.local(randomImage)),
-                isSender: Self.randomUser == Self.sender
+                isSender: randomUser == Self.sender
             )
         case .text:
             return .init(
-                user: Self.randomUser,
+                user: randomUser,
                 messageKind: .text(Lorem.sentence()),
-                isSender: Self.randomUser == Self.sender
+                isSender: randomUser == Self.sender
             )
         case .quickReply:
             let quickReplies = [
@@ -82,9 +83,9 @@ public struct MockMessages {
                 QuickReplyItem(title: "Option3", payload: "opt3")
             ]
             return .init(
-                user: Self.randomUser,
+                user: randomUser,
                 messageKind: .quickReply(quickReplies),
-                isSender: Self.randomUser == Self.sender
+                isSender: randomUser == Self.sender
             )
         case .location:
             let location = LocationRow(
@@ -92,9 +93,9 @@ public struct MockMessages {
                 longitude: Double.random(in: 26...45)
             )
             return .init(
-                user: Self.randomUser,
+                user: randomUser,
                 messageKind: .location(location),
-                isSender: Self.randomUser == Self.sender
+                isSender: randomUser == Self.sender
             )
         case .contact:
             let contacts = [
@@ -103,15 +104,15 @@ public struct MockMessages {
                 ContactRow(displayName: "Name DummySurname")
             ]
             return .init(
-                user: Self.randomUser,
+                user: randomUser,
                 messageKind: .contact(contacts.randomElement()!),
-                isSender: Self.randomUser == Self.sender
+                isSender: randomUser == Self.sender
             )
         default:
             return .init(
-                user: Self.randomUser,
+                user: randomUser,
                 messageKind: .text("Bom!"),
-                isSender: Self.randomUser == Self.sender
+                isSender: randomUser == Self.sender
             )
         }
     }

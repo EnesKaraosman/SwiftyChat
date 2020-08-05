@@ -92,7 +92,8 @@ public class ChatMessageCellStyle: ObservableObject {
         ),
         locationCellStyle: LocationCellStyle = LocationCellStyle(cellShadowColor: .secondary),
         incomingAvatarStyle: AvatarStyle = AvatarStyle(
-            shadowColor: UIColor.secondaryLabel
+            shadowColor: UIColor.secondaryLabel,
+            avatarPosition: .alignToMessageTop(spacing: 8)
         ),
         outgoingAvatarStyle: AvatarStyle = AvatarStyle(
 //            imageSize: .zero,

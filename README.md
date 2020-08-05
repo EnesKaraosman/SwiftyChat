@@ -10,14 +10,14 @@
 
 ### About 
 
-Simple Chat Interface to quick start with [built-in](#supported-message-kind) message cells. <br>
+Simple Chat Interface to quick start with [built-in](#message-kinds) message cells. <br>
 Fully written in pure SwiftUI.
 
 ### Quick Preview
 
 | Contact, QuickReply, Text      | Map, Image  | ContextMenu |
 :-------------------------:|:-------------------------:|:-------------------------:
-![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/contact_qp_text.png) | ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/map_image.png) |  ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/contextMenu.png)
+![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png) | ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/map_image.png) |  ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/contextMenu.png)
 ### Installation
 
 SPM: https://github.com/EnesKaraosman/SwiftyChat.git
