@@ -28,7 +28,7 @@ public struct AvatarStyle {
     public init(
         imageSize:      CGSize = .init(width: 32, height: 32),
         cornerRadius:   CGFloat = 16,
-        borderColor:    UIColor = .systemBlue,
+        borderColor:    UIColor = .systemGreen,
         borderWidth:    CGFloat = 2,
         shadowRadius:   CGFloat = 1,
         shadowColor:    UIColor = .secondaryLabel,
@@ -47,7 +47,7 @@ public struct AvatarStyle {
     public init(
         imageSize:      CGSize = .init(width: 32, height: 32),
         cornerRadius:   CGFloat = 16,
-        borderColor:    Color = .blue,
+        borderColor:    Color = .green,
         borderWidth:    CGFloat = 2,
         shadowRadius:   CGFloat = 1,
         shadowColor:    Color = .secondary,

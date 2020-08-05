@@ -1,10 +1,11 @@
-## MessageKinds
+## Styles
 * [Text](#text)
 * [QuickReply](#quick-reply)
 * [Carousel](#carousel)
 * [Image](#image)
 * [Location](#location)
 * [Contact](#contact)
+* [Avatar](#avatar)
 
 
 ### Carousel
@@ -84,3 +85,26 @@ public struct LocationCellStyle {
 }
 ```
 LocationCellStyle has both UIKit & SwiftUI initializers.
+
+### Avatar
+
+```swift
+public enum AvatarPosition {
+    case alignToMessageCenter(spacing: CGFloat)
+    case alignToMessageTop(spacing: CGFloat)
+    case alignToMessageBottom(spacing: CGFloat)
+}
+
+public struct AvatarStyle {
+    public let imageSize:      CGSize  // default = CGSize(width: 32, height: 32)
+    public let cornerRadius:   CGFloat // default = 16
+    public let borderColor:    Color   // default = .green
+    public let borderWidth:    CGFloat // default = 2
+    public let shadowRadius:   CGFloat // default = 1
+    public let shadowColor:    Color   // default = .secondary
+    public let avatarPosition: AvatarPosition 
+    // default = .alignToMessageBottom(spacing: 8)
+}
+```
+
+AvatarStyle has both UIKit & SwiftUI initializers.
