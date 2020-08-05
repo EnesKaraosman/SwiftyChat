@@ -52,6 +52,12 @@ public class ChatMessageCellStyle: ObservableObject {
     /// Location Cell Style
     let locationCellStyle: LocationCellStyle
     
+    /// Incoming Avatar Style
+    let incomingAvatarStyle: AvatarStyle
+    
+    /// Outgoing Avatar Style
+    let outgoingAvatarStyle: AvatarStyle
+    
     public init(
         incomingBorderColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1)),
         outgoingBorderColor: Color = Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1)),
@@ -69,7 +75,7 @@ public class ChatMessageCellStyle: ObservableObject {
         outgoingShadowRadius: CGFloat = 3,
         incomingTextPadding: CGFloat = 8,
         outgoingTextPadding: CGFloat = 8,
-        incomingCellEdgeInsets: EdgeInsets? = .init(top: 16, leading: 8, bottom: 16, trailing: 8),
+        incomingCellEdgeInsets: EdgeInsets? = nil,
         outgoingCellEdgeInsets: EdgeInsets? = nil,
         imageCellStyle: ImageCellStyle = ImageCellStyle(
             cellShadowRadius: 3,
@@ -84,7 +90,14 @@ public class ChatMessageCellStyle: ObservableObject {
             cellBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
             cellCornerRadius: 8
         ),
-        locationCellStyle: LocationCellStyle = LocationCellStyle(cellShadowColor: .secondary)
+        locationCellStyle: LocationCellStyle = LocationCellStyle(cellShadowColor: .secondary),
+        incomingAvatarStyle: AvatarStyle = AvatarStyle(
+            shadowColor: UIColor.secondaryLabel
+        ),
+        outgoingAvatarStyle: AvatarStyle = AvatarStyle(
+//            imageSize: .zero,
+            borderColor: UIColor.clear
+        )
     ) {
         self.incomingBorderColor = incomingBorderColor
         self.outgoingBorderColor = outgoingBorderColor
@@ -108,6 +121,8 @@ public class ChatMessageCellStyle: ObservableObject {
         self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle
         self.locationCellStyle = locationCellStyle
+        self.incomingAvatarStyle = incomingAvatarStyle
+        self.outgoingAvatarStyle = outgoingAvatarStyle
     }
     
 }

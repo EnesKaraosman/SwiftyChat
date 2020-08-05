@@ -8,40 +8,44 @@
 import SwiftUI
 import KingfisherSwiftUI
 
-public enum AvatarPosition {
-    case onLeftBottom(spacing: CGFloat)
-    case onLeftMid(spacing: CGFloat)
-    case onLeftTop(spacing: CGFloat)
-    case onRightBottom(spacing: CGFloat)
-    case onRightMid(spacing: CGFloat)
-    case onRightTop(spacing: CGFloat)
-}
-
 public struct AvatarModifier: ViewModifier {
     
-    public var isSender: Bool
-    public var user: ChatUser = ChatUser(
-        userName: "Enes",
-        avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
-    )
-    public var incomingAvatarPosition: AvatarPosition = .onLeftBottom(spacing: 8)
-    public var outgoingAvatarPosition: AvatarPosition = .onRightTop(spacing: 8)
+    public let message: ChatMessage
+    @EnvironmentObject var style: ChatMessageCellStyle
+
+    private var isSender: Bool { message.isSender }
     
-    private var onSideBottom: some View {
+    private var user: ChatUser { message.user }
+    
+    private var incomingAvatarStyle: AvatarStyle { style.incomingAvatarStyle }
+    
+    private var outgoingAvatarStyle: AvatarStyle { style.outgoingAvatarStyle }
+    
+    private var incomingAvatarPosition: AvatarPosition { incomingAvatarStyle.avatarPosition }
+    
+    private var outgoingAvatarPosition: AvatarPosition { outgoingAvatarStyle.avatarPosition }
+
+    /// Current avatar style
+    private var currentStyle: AvatarStyle { isSender ? outgoingAvatarStyle : incomingAvatarStyle }
+    
+    /// Current avatar position
+    private var currentAvatarPosition: AvatarPosition { isSender ? outgoingAvatarPosition : incomingAvatarPosition }
+    
+    private var onMessageBottom: some View {
         VStack {
             Spacer()
             avatar
         }
     }
     
-    private var onSideTop: some View {
+    private var onMessageTop: some View {
         VStack {
             avatar
             Spacer()
         }
     }
     
-    private var onSideMid: some View {
+    private var onMessageCenter: some View {
         VStack {
             Spacer()
             avatar
@@ -52,21 +56,36 @@ public struct AvatarModifier: ViewModifier {
     private var avatar: some View {
         avatarImage
             .overlay(
-                Circle()
-                    .stroke(Color.red, lineWidth: 2)
+                RoundedRectangle(cornerRadius: currentStyle.cornerRadius)
+                    .stroke(
+                        currentStyle.borderColor,
+                        lineWidth: currentStyle.borderWidth
+                    )
+                    .shadow(
+                        color: currentStyle.shadowColor,
+                        radius: currentStyle.shadowRadius
+                    )
             )
     }
     
     private var avatarImage: some View {
         Group {
-            if user.avatarURL != nil {
+            if user.avatarURL != nil && currentStyle.imageSize.width > 0 {
                 KFImage(user.avatarURL)
                     .resizable()
-                    .frame(width: 40, height: 40)
-            } else if user.avatar != nil {
+                    .frame(
+                        width: currentStyle.imageSize.width,
+                        height: currentStyle.imageSize.height
+                    )
+                    .scaledToFit()
+            } else if user.avatar != nil && currentStyle.imageSize.width > 0 {
                 Image(uiImage: user.avatar!)
                     .resizable()
-                    .frame(width: 40, height: 40)
+                    .frame(
+                        width: currentStyle.imageSize.width,
+                        height: currentStyle.imageSize.height
+                    )
+                    .scaledToFit()
             } else {
                 EmptyView()
             }
@@ -74,41 +93,29 @@ public struct AvatarModifier: ViewModifier {
     }
     
     private var positionedAvatar: some View {
-        let position = isSender ? self.outgoingAvatarPosition : self.incomingAvatarPosition
-        switch position {
-        case .onLeftTop: return onSideTop.embedInAnyView()
-        case .onLeftMid: return onSideMid.embedInAnyView()
-        case .onLeftBottom: return onSideBottom.embedInAnyView()
-        case .onRightTop: return onSideTop.embedInAnyView()
-        case .onRightMid: return onSideMid.embedInAnyView()
-        case .onRightBottom: return onSideBottom.embedInAnyView()
+        switch currentAvatarPosition {
+        case .alignToMessageTop: return onMessageTop.embedInAnyView()
+        case .alignToMessageCenter: return onMessageCenter.embedInAnyView()
+        case .alignToMessageBottom: return onMessageBottom.embedInAnyView()
         }
     }
     
     private var avatarSpacing: CGFloat {
-        let position = isSender ? self.outgoingAvatarPosition : self.incomingAvatarPosition
-        switch position {
-        case .onLeftTop(let spacing): return spacing
-        case .onLeftMid(let spacing): return spacing
-        case .onLeftBottom(let spacing): return spacing
-        case .onRightTop(let spacing): return spacing
-        case .onRightMid(let spacing): return spacing
-        case .onRightBottom(let spacing): return spacing
+        switch currentAvatarPosition {
+        case .alignToMessageTop(let spacing): return spacing
+        case .alignToMessageCenter(let spacing): return spacing
+        case .alignToMessageBottom(let spacing): return spacing
         }
     }
     
     public func body(content: Content) -> some View {
-        Group {
+        HStack(spacing: avatarSpacing) {
             if !isSender {
-                HStack(spacing: avatarSpacing) {
-                    positionedAvatar.zIndex(2)
-                    content
-                }
-            } else {
-                HStack(spacing: avatarSpacing) {
-                    content
-                    positionedAvatar.zIndex(2)
-                }
+                positionedAvatar.zIndex(2)
+            }
+            content
+            if isSender {
+                positionedAvatar.zIndex(2)
             }
         }
     }

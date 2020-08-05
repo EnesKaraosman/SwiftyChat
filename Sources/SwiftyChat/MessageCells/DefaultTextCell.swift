@@ -19,7 +19,7 @@ public struct DefaultTextCell: View {
 
     private let enabledDetectors: [DetectorType] = [.address, .date, .phoneNumber, .url, .transitInformation]
     private var maxWidth: CGFloat {
-        return UIDevice.isLandscape ? proxy.size.width * 0.8 : proxy.size.width * 0.6
+        proxy.size.width * (UIDevice.isLandscape ? 0.75 : 0.6)
     }
     
     private var action: TextTappedCallback {

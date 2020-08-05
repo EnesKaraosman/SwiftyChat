@@ -8,7 +8,7 @@
 
 import UIKit
 
-public struct ChatUser: Identifiable {
+public struct ChatUser: Identifiable, Equatable {
 
     public static func == (lhs: ChatUser, rhs: ChatUser) -> Bool {
         lhs.id == rhs.id
