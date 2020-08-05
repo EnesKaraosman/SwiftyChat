@@ -7,11 +7,18 @@
 //
 
 import class UIKit.UIImage
+import Foundation
 
 public struct MockMessages {
     
-    public static let sender = ChatUser(userName: "Sender")
-    public static let chatbot = ChatUser(userName: "Chatbot")
+    public static let sender = ChatUser(
+        userName: "Sender",
+        avatarURL: URL(string: "https://ebbot.ai/wp-content/uploads/2020/04/Ebbot-Sa%CC%88ljsa%CC%88l.png")
+    )
+    public static let chatbot = ChatUser(
+        userName: "Chatbot",
+        avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
+    )
     
     private static var randomUser: ChatUser {
         [sender, chatbot].randomElement()!
@@ -44,13 +51,13 @@ public struct MockMessages {
         ),
         .init(user: Self.chatbot, messageKind: .location(LocationRow(latitude: 41.04192, longitude: 28.966912))),
         .init(user: Self.chatbot, messageKind: .text("Here is photo")),
-        .init(user: Self.sender, messageKind: .image(.local(UIImage(named: "landscape")!))),
-        .init(user: Self.chatbot, messageKind: .text("😲"), isSender: true),
-        .init(user: Self.chatbot, messageKind: .text("Here what I have.."), isSender: true),
+        .init(user: Self.sender, messageKind: .image(.local(UIImage(named: "landscape")!)), isSender: true),
+        .init(user: Self.chatbot, messageKind: .text("😲")),
+        .init(user: Self.chatbot, messageKind: .text("Here what I have..")),
         .init(user: Self.sender, messageKind: .image(.local(UIImage(named: "portrait")!)), isSender: true),
         .init(user: Self.chatbot, messageKind: .text("😎😎")),
         .init(user: Self.chatbot, messageKind: .text("Now it's my turn, I'll send you a link but can you open it 🤯😎\n https://github.com/EnesKaraosman/SwiftyChat")),
-        .init(user: Self.chatbot, messageKind: .text("Not now but maybe later.."), isSender: true)
+        .init(user: Self.sender, messageKind: .text("Not now but maybe later.."), isSender: true)
     ]
     
     public static func generateMessage(kind: ChatMessageKind) -> ChatMessage {
@@ -76,7 +83,8 @@ public struct MockMessages {
             ]
             return .init(
                 user: Self.randomUser,
-                messageKind: .quickReply(quickReplies)
+                messageKind: .quickReply(quickReplies),
+                isSender: Self.randomUser == Self.sender
             )
         case .location:
             let location = LocationRow(
@@ -100,7 +108,11 @@ public struct MockMessages {
                 isSender: Self.randomUser == Self.sender
             )
         default:
-            return .init(user: Self.randomUser, messageKind: .text("Bom!"))
+            return .init(
+                user: Self.randomUser,
+                messageKind: .text("Bom!"),
+                isSender: Self.randomUser == Self.sender
+            )
         }
     }
     

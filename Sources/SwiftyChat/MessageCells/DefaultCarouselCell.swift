@@ -116,11 +116,11 @@ public struct CarouselItemView: View {
             }
             
         }
-        .background(cellStyle.cellBackgroundColor)
+        .background(self.cellStyle.cellBackgroundColor)
         .frame(width: itemWidth)
-        .cornerRadius(cellStyle.cellCornerRadius)
+        .cornerRadius(self.cellStyle.cellCornerRadius)
         .overlay(
-            RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+            RoundedRectangle(cornerRadius: self.cellStyle.cellCornerRadius)
                 .stroke(
                     self.cellStyle.cellBorderColor,
                     lineWidth: self.cellStyle.cellBorderWidth

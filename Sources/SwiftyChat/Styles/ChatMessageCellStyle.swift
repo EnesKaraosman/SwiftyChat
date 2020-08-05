@@ -34,9 +34,29 @@ public class ChatMessageCellStyle: ObservableObject {
     var incomingTextPadding: CGFloat
     var outgoingTextPadding: CGFloat
     
+    /// Cell container inset for incoming messages
+    let incomingCellEdgeInsets: EdgeInsets?
+    
+    /// Cell container inset for outgoing messages
+    let outgoingCellEdgeInsets: EdgeInsets?
+    
+    /// Image Cell Style
     let imageCellStyle: ImageCellStyle
+    
+    /// Quick Reply Cell Style
     let quickReplyCellStyle: QuickReplyCellStyle
+    
+    /// Carousel Cell Style
     let carouselCellStyle: CarouselCellStyle
+    
+    /// Location Cell Style
+    let locationCellStyle: LocationCellStyle
+    
+    /// Incoming Avatar Style
+    let incomingAvatarStyle: AvatarStyle
+    
+    /// Outgoing Avatar Style
+    let outgoingAvatarStyle: AvatarStyle
     
     public init(
         incomingBorderColor: Color = Color(#colorLiteral(red: 0.4539314508, green: 0.6435066462, blue: 0.3390129805, alpha: 1)),
@@ -55,6 +75,8 @@ public class ChatMessageCellStyle: ObservableObject {
         outgoingShadowRadius: CGFloat = 3,
         incomingTextPadding: CGFloat = 8,
         outgoingTextPadding: CGFloat = 8,
+        incomingCellEdgeInsets: EdgeInsets? = nil,
+        outgoingCellEdgeInsets: EdgeInsets? = nil,
         imageCellStyle: ImageCellStyle = ImageCellStyle(
             cellShadowRadius: 3,
             cellShadowColor: Color.secondary
@@ -67,8 +89,15 @@ public class ChatMessageCellStyle: ObservableObject {
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(
             cellBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
             cellCornerRadius: 8
+        ),
+        locationCellStyle: LocationCellStyle = LocationCellStyle(cellShadowColor: .secondary),
+        incomingAvatarStyle: AvatarStyle = AvatarStyle(
+            shadowColor: UIColor.secondaryLabel
+        ),
+        outgoingAvatarStyle: AvatarStyle = AvatarStyle(
+//            imageSize: .zero,
+            borderColor: UIColor.clear
         )
-        
     ) {
         self.incomingBorderColor = incomingBorderColor
         self.outgoingBorderColor = outgoingBorderColor
@@ -86,9 +115,14 @@ public class ChatMessageCellStyle: ObservableObject {
         self.outgoingShadowRadius = outgoingShadowRadius
         self.incomingTextPadding = incomingTextPadding
         self.outgoingTextPadding = outgoingTextPadding
+        self.incomingCellEdgeInsets = incomingCellEdgeInsets
+        self.outgoingCellEdgeInsets = outgoingCellEdgeInsets
         self.imageCellStyle = imageCellStyle
         self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle
+        self.locationCellStyle = locationCellStyle
+        self.incomingAvatarStyle = incomingAvatarStyle
+        self.outgoingAvatarStyle = outgoingAvatarStyle
     }
     
 }

@@ -8,19 +8,27 @@
 
 import UIKit
 
-public struct ChatUser: Identifiable {
+public struct ChatUser: Identifiable, Equatable {
 
     public static func == (lhs: ChatUser, rhs: ChatUser) -> Bool {
         lhs.id == rhs.id
     }
 
-    public var id = UUID()
+    public let id = UUID().uuidString
+    
+    /// Username
     public var userName: String
+    
+    /// User's chat profile image, considered if `avatarURL` is nil
     public var avatar: UIImage?
+    
+    /// User's chat profile image URL
+    public var avatarURL: URL?
 
-    public init(userName: String, avatar: UIImage? = nil) {
+    public init(userName: String, avatarURL: URL? = nil, avatar: UIImage? = nil) {
         self.userName = userName
         self.avatar = avatar
+        self.avatarURL = avatarURL
     }
     
 }

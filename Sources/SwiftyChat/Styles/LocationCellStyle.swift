@@ -1,18 +1,17 @@
 //
-//  ImageCellStyle.swift
+//  LocationCellStyle.swift
 //  
 //
-//  Created by Enes Karaosman on 29.07.2020.
+//  Created by Enes Karaosman on 5.08.2020.
 //
 
 import SwiftUI
 
-public struct ImageCellStyle: CellContainerStyle {
+public struct LocationCellStyle {
     
     public var cellWidth: (GeometryProxy) -> CGFloat
     
-    // MARK: - CellContainerStyles
-    public let cellBackgroundColor: Color
+    public let cellAspectRatio: CGFloat
     public let cellCornerRadius: CGFloat
     public let cellBorderColor: Color
     public let cellBorderWidth: CGFloat
@@ -22,7 +21,7 @@ public struct ImageCellStyle: CellContainerStyle {
     /// UIKit Constructor
     public init(
         cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
-        cellBackgroundColor: UIColor = #colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1),
+        cellAspectRatio:  CGFloat = 0.7,
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: UIColor = .clear,
         cellBorderWidth: CGFloat = 0,
@@ -30,7 +29,7 @@ public struct ImageCellStyle: CellContainerStyle {
         cellShadowColor: UIColor = .secondaryLabel
     ) {
         self.cellWidth = cellWidth
-        self.cellBackgroundColor = Color(cellBackgroundColor)
+        self.cellAspectRatio = cellAspectRatio
         self.cellCornerRadius = cellCornerRadius
         self.cellBorderColor = Color(cellBorderColor)
         self.cellBorderWidth = cellBorderWidth
@@ -41,15 +40,15 @@ public struct ImageCellStyle: CellContainerStyle {
     /// SwiftUI Constructor
     public init(
         cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
-        cellBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
+        cellAspectRatio:  CGFloat = 0.7,
         cellCornerRadius: CGFloat = 8,
-        cellBorderColor: Color = .clear,
-        cellBorderWidth: CGFloat = 0,
+        cellBorderColor:  Color = .clear,
+        cellBorderWidth:  CGFloat = 0,
         cellShadowRadius: CGFloat = 2,
-        cellShadowColor: Color = .secondary
+        cellShadowColor:  Color = .secondary
     ) {
         self.cellWidth = cellWidth
-        self.cellBackgroundColor = cellBackgroundColor
+        self.cellAspectRatio = cellAspectRatio
         self.cellCornerRadius = cellCornerRadius
         self.cellBorderColor = cellBorderColor
         self.cellBorderWidth = cellBorderWidth
