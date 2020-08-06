@@ -69,10 +69,12 @@ struct DeviceOrientationBasedView<Content: View>: View {
     }
     
     var body: some View {
-        if model.orientation == .portrait {
-            portrait
-        } else {
-            landscape
+        Group {
+            if model.orientation == .portrait {
+                portrait
+            } else {
+                landscape
+            }
         }
     }
 }
