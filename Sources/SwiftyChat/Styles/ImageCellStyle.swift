@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct ImageCellStyle: CellContainerStyle {
     
-    public var cellWidth: (GeometryProxy) -> CGFloat
+    public var cellWidth: (CGSize) -> CGFloat
     
     // MARK: - CellContainerStyles
     public let cellBackgroundColor: Color
@@ -21,7 +21,7 @@ public struct ImageCellStyle: CellContainerStyle {
     
     /// UIKit Constructor
     public init(
-        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: UIColor = #colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: UIColor = .clear,
@@ -40,7 +40,7 @@ public struct ImageCellStyle: CellContainerStyle {
     
     /// SwiftUI Constructor
     public init(
-        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,

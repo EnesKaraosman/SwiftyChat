@@ -22,13 +22,13 @@ public struct DefaultContactCell: View {
     
     public let contact: ContactItem
     public let message: ChatMessage
-    public let proxy: GeometryProxy
+    public let size: CGSize
     public let footerSection: (ContactItem, ChatMessage) -> [ContactCellButton]
     
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var cardWidth: CGFloat {
-        proxy.size.width * (UIDevice.isLandscape ? 0.4 : 0.75)
+        size.width * (UIDevice.isLandscape ? 0.4 : 0.75)
     }
     
     private var contactImage: some View {

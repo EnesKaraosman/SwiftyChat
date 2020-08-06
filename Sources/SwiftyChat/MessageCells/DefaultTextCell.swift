@@ -12,14 +12,14 @@ public struct DefaultTextCell: View {
     
     public let text: String
     public let message: ChatMessage
-    public let proxy: GeometryProxy
+    public let size: CGSize
     public let callback: () -> TextTappedCallback
 
     @EnvironmentObject var style: ChatMessageCellStyle
 
     private let enabledDetectors: [DetectorType] = [.address, .date, .phoneNumber, .url, .transitInformation]
     private var maxWidth: CGFloat {
-        proxy.size.width * (UIDevice.isLandscape ? 0.75 : 0.6)
+        size.width * (UIDevice.isLandscape ? 0.75 : 0.6)
     }
     
     private var action: TextTappedCallback {

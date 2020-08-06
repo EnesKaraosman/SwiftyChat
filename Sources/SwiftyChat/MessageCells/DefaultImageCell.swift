@@ -13,11 +13,11 @@ public struct DefaultImageCell: View {
     
     public let message: ChatMessage
     public let imageLoadingType: ImageLoadingKind
-    public let proxy: GeometryProxy
+    public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var imageWidth: CGFloat {
-        cellStyle.cellWidth(proxy)
+        cellStyle.cellWidth(size)
     }
     
     private var cellStyle: ImageCellStyle {

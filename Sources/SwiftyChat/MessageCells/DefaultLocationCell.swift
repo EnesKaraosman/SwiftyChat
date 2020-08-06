@@ -13,11 +13,11 @@ public struct DefaultLocationCell: View {
     
     public let location: LocationItem
     public let message: ChatMessage
-    public let proxy: GeometryProxy
+    public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var mapWidth: CGFloat {
-        cellStyle.cellWidth(proxy)
+        cellStyle.cellWidth(size)
     }
     
     private var cellStyle: LocationCellStyle {

@@ -24,7 +24,7 @@ public struct CarouselCellStyle: CellContainerStyle {
     public let buttonBackgroundColor: Color
     
     /// Cell width in a given available proxy (GeometryReader)
-    public let cellWidth: (GeometryProxy) -> CGFloat
+    public let cellWidth: (CGSize) -> CGFloat
     
     // MARK: - CellContainerStyle
     public let cellBackgroundColor: Color
@@ -46,7 +46,7 @@ public struct CarouselCellStyle: CellContainerStyle {
         buttonTitleColor: UIColor = .white,
         buttonBackgroundColor: UIColor = .systemBlue,
         buttonTitleFontWeight: UIFont.Weight = .semibold,
-        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.6 : 0.7) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.6 : 0.7) },
         cellBackgroundColor: UIColor = #colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: UIColor = .clear,
@@ -85,7 +85,7 @@ public struct CarouselCellStyle: CellContainerStyle {
         buttonTitleColor: Color = .white,
         buttonBackgroundColor: Color = .blue,
         buttonTitleFontWeight: Font.Weight = .semibold,
-        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,

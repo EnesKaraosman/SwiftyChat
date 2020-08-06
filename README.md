@@ -2,6 +2,7 @@
 
 ### Content
 * [About](#about)
+* [Features](#features)
 * [Quick Preview](#quick-preview)
 * [Installation](#installation)
 * [Message Kinds](#message-kinds)
@@ -13,9 +14,16 @@
 Simple Chat Interface to quick start with [built-in](#message-kinds) message cells. <br>
 Fully written in pure SwiftUI.
 
+### Features
+- [x] User Avatar (with different position options, optional usage)
+- [x] Landscape orientation  support (autoscales message cells with the given `cellWidth` property, if exists)
+- [ ] Scroll To Bottom
+- [ ] HTML String support
+
+
 ### Quick Preview
 
-| Contact, QuickReply, Text      | Map, Image  | ContextMenu |
+| Contact, QuickReply, Text, Carousel      | Map, Image  | ContextMenu |
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png) | ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/map_image.png) |  ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/contextMenu.png)
 ### Installation
@@ -147,11 +155,6 @@ For custom InputView you can cheat using Default one.
 ### Style and Customization
 
 For detail documentation, visit [Styles.md](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Styles.md)
-
-### Todo
-- [ ] Scroll To Bottom
-- [x] User Avatar
-- [ ] HTML String support
 
 <br>
 Please feel free to contribute.

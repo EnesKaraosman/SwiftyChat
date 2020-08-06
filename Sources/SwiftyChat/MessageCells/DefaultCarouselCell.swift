@@ -37,7 +37,7 @@ public struct CarouselItem: Identifiable {
 public struct DefaultCarouselCell: View {
     
     public let carouselItems: [CarouselItem]
-    public let proxy: GeometryProxy
+    public let size: CGSize
     public let message: ChatMessage
     public let onCarouselItemAction: (URL?, ChatMessage) -> Void
     
@@ -48,7 +48,7 @@ public struct DefaultCarouselCell: View {
                 ForEach(carouselItems) { item in
                     CarouselItemView(
                         item: item,
-                        proxy: self.proxy,
+                        size: self.size,
                         isSender: self.message.isSender
                     ) { url in
                         self.onCarouselItemAction(url, self.message)
@@ -62,7 +62,7 @@ public struct DefaultCarouselCell: View {
 public struct CarouselItemView: View {
     
     public let item: CarouselItem
-    public let proxy: GeometryProxy
+    public let size: CGSize
     public let isSender: Bool
     public let callback: (URL?) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
@@ -72,7 +72,7 @@ public struct CarouselItemView: View {
     }
     
     private var itemWidth: CGFloat {
-        cellStyle.cellWidth(proxy)
+        cellStyle.cellWidth(size)
     }
     
     public var body: some View {

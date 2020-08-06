@@ -96,7 +96,7 @@ public class ChatMessageCellStyle: ObservableObject {
             avatarPosition: .alignToMessageTop(spacing: 8)
         ),
         outgoingAvatarStyle: AvatarStyle = AvatarStyle(
-//            imageSize: .zero,
+            imageSize: .zero,
             borderColor: UIColor.clear
         )
     ) {

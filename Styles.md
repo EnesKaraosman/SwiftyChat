@@ -30,9 +30,9 @@ public struct CarouselCellStyle {
     public let buttonTitleFontWeight: Font.Weight // default = .semibold
     public let buttonBackgroundColor: Color       // default = .blue
     
-    /// Cell width in a given available proxy (GeometryReader)
-    public let cellWidth: (GeometryProxy) -> CGFloat
-    // default = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
+    /// Cell width in a given available size
+    public let cellWidth: (CGSize) -> CGFloat
+    // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
     
     public let cellBackgroundColor: Color   // default = a whitish color
     public let cellCornerRadius:    CGFloat // default = 8
@@ -51,9 +51,9 @@ CarouselCellStyle has both UIKit & SwiftUI initializers.
 ```swift
 public struct ImageCellStyle {
     
-    /// Cell width in a given available proxy (GeometryReader)
-    public var cellWidth: (GeometryProxy) -> CGFloat
-    // default = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
+    /// Cell width in a given available size
+    public let cellWidth: (CGSize) -> CGFloat
+    // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
     
     public let cellBackgroundColor: Color    // default = a whitish color
     public let cellCornerRadius:    CGFloat  // default = 8
@@ -72,9 +72,9 @@ ImageCellStyle has both UIKit & SwiftUI initializers.
 ```swift
 public struct LocationCellStyle {
     
-    /// Cell width in a given available proxy (GeometryReader)
-    public var cellWidth: (GeometryProxy) -> CGFloat
-    // default = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
+    /// Cell width in a given available size
+    public let cellWidth: (CGSize) -> CGFloat
+    // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
     
     public let cellAspectRatio:  CGFloat   // default = 0.7
     public let cellCornerRadius: CGFloat   // default = 8

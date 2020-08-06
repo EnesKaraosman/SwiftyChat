@@ -11,7 +11,7 @@ import SwiftUI
 public struct ChatMessageCellContainer: View {
     
     public let message: ChatMessage
-    public let proxy: GeometryProxy
+    public let size: CGSize
     
     public let onQuickReplyItemSelected: (QuickReplyItem) -> Void
     public let contactFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton]
@@ -26,7 +26,7 @@ public struct ChatMessageCellContainer: View {
             return DefaultTextCell(
                 text: text,
                 message: message,
-                proxy: proxy,
+                size: size,
                 callback: onTextTappedCallback
             ).embedInAnyView()
             
@@ -35,7 +35,7 @@ public struct ChatMessageCellContainer: View {
             return DefaultLocationCell(
                 location: location,
                 message: message,
-                proxy: proxy
+                size: size
             ).embedInAnyView()
             
         case .image(let imageLoadingType):
@@ -43,7 +43,7 @@ public struct ChatMessageCellContainer: View {
             return DefaultImageCell(
                 message: message,
                 imageLoadingType: imageLoadingType,
-                proxy: proxy
+                size: size
             ).embedInAnyView()
             
         case .contact(let contact):
@@ -51,7 +51,7 @@ public struct ChatMessageCellContainer: View {
             return DefaultContactCell(
                 contact: contact,
                 message: message,
-                proxy: proxy,
+                size: size,
                 footerSection: contactFooterSection
             ).embedInAnyView()
             
@@ -64,7 +64,7 @@ public struct ChatMessageCellContainer: View {
         case .carousel(let carouselItems):
             return DefaultCarouselCell(
                 carouselItems: carouselItems,
-                proxy: proxy,
+                size: size,
                 message: message,
                 onCarouselItemAction: onCarouselItemAction
             )

@@ -71,37 +71,11 @@ public struct ChatView: View {
     }
     
     public var body: some View {
-        GeometryReader { proxy in
-            ZStack(alignment: .bottom) {
-                
-                List {
-                    ForEach(self.messages) { message in
-                        ChatMessageCellContainer(
-                            message: message,
-                            proxy: proxy,
-                            onQuickReplyItemSelected: self.onQuickReplyItemSelected,
-                            contactFooterSection: self.contactCellFooterSection,
-                            onTextTappedCallback: self.onTextTappedCallback,
-                            onCarouselItemAction: self.onCarouselItemAction
-                        )
-                        .onTapGesture {
-                            self.onMessageCellTapped(message)
-                        }
-                        .contextMenu(menuItems: {
-                            self.messageCellContextMenu(message)
-                        })
-                        .modifier(AvatarModifier(message: message))
-                        .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
-                        .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
-                        
-                    }
-                }
-                .padding(.bottom, proxy.safeAreaInsets.bottom + 56)
-                
-                self.inputView(proxy)
-                
-            }.keyboardAwarePadding()
-        }
+        DeviceOrientationBasedView(
+            portrait: { GeometryReader { self.body(in: $0) } },
+            landscape: { GeometryReader { self.body(in: $0) } }
+        )
+        .environmentObject(OrientationInfo())
         .edgesIgnoringSafeArea(.bottom)
         .onAppear {
             // To remove only extra separators below the list:
@@ -109,6 +83,42 @@ public struct ChatView: View {
             // To remove all separators including the actual ones:
             UITableView.appearance().separatorStyle = .none
         }
+    }
+    
+    // MARK: - Body in geometry
+    private func body(in geometry: GeometryProxy) -> some View {
+        ZStack(alignment: .bottom) {
+            List {
+                ForEach(self.messages) { message in
+                    self.chatMessageCellContainer(in: geometry.size, with: message)
+                }
+            }
+            .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
+
+            self.inputView(geometry)
+
+        }.keyboardAwarePadding()
+    }
+    
+    // MARK: - List Item
+    private func chatMessageCellContainer(in size: CGSize, with message: ChatMessage) -> some View {
+        ChatMessageCellContainer(
+            message: message,
+            size: size,
+            onQuickReplyItemSelected: self.onQuickReplyItemSelected,
+            contactFooterSection: self.contactCellFooterSection,
+            onTextTappedCallback: self.onTextTappedCallback,
+            onCarouselItemAction: self.onCarouselItemAction
+        )
+        .onTapGesture {
+            self.onMessageCellTapped(message)
+        }
+        .contextMenu(menuItems: {
+            self.messageCellContextMenu(message)
+        })
+        .modifier(AvatarModifier(message: message))
+        .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
+        .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
     }
     
 }

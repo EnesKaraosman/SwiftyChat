@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct LocationCellStyle {
     
-    public var cellWidth: (GeometryProxy) -> CGFloat
+    public var cellWidth: (CGSize) -> CGFloat
     
     public let cellAspectRatio: CGFloat
     public let cellCornerRadius: CGFloat
@@ -20,7 +20,7 @@ public struct LocationCellStyle {
     
     /// UIKit Constructor
     public init(
-        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
         cellAspectRatio:  CGFloat = 0.7,
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: UIColor = .clear,
@@ -39,7 +39,7 @@ public struct LocationCellStyle {
     
     /// SwiftUI Constructor
     public init(
-        cellWidth: @escaping (GeometryProxy) -> CGFloat = { $0.size.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
         cellAspectRatio:  CGFloat = 0.7,
         cellCornerRadius: CGFloat = 8,
         cellBorderColor:  Color = .clear,
