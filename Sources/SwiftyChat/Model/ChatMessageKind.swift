@@ -53,7 +53,7 @@ public enum ChatMessageKind: CustomStringConvertible {
             let options = quickReplies.map { $0.title }.joined(separator: ", ")
             return "MessageKind.quickReplies(options: \(options))"
         case .carousel(let carouselItems):
-            return "MessageKind.carousel(itemCount: \(carouselItems.count)"
+            return "MessageKind.carousel(itemCount: \(carouselItems.count))"
         }
     }
     

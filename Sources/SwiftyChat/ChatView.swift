@@ -18,7 +18,7 @@ public struct ChatView: View {
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
     private var contactCellFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton] = { _, _ in [] }
     private var onTextTappedCallback: () -> TextTappedCallback = { return TextTappedCallback() }
-    private var onCarouselItemAction: (URL?, ChatMessage) -> Void = { (_, _) in }
+    private var onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void = { (_, _) in }
     
     public init(
         messages: Binding<[ChatMessage]>,
@@ -64,7 +64,7 @@ public struct ChatView: View {
     }
     
     /// Triggered when the carousel button tapped.
-    public func onCarouselItemAction(action: @escaping (URL?, ChatMessage) -> Void) -> ChatView {
+    public func onCarouselItemAction(action: @escaping (CarouselItemButton, ChatMessage) -> Void) -> ChatView {
         var copy = self
         copy.onCarouselItemAction = action
         return copy

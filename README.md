@@ -94,7 +94,7 @@ ChatView(messages: $messages) { (proxy) -> AnyView in
     }
 }
 // ▼ Implement in case ChatMessageKind.carousel
-.onCarouselItemAction { (url: URL?, message: ChatMessage) in
+.onCarouselItemAction { (button: CarouselItemButton, message: ChatMessage) in
     // Here you can use the metadata of selected item in carousel
 }
 // ▼ Implement in case ChatMessageKind.quickReply

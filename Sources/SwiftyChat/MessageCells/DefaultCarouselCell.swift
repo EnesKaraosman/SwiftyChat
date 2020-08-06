@@ -39,7 +39,7 @@ public struct DefaultCarouselCell: View {
     public let carouselItems: [CarouselItem]
     public let size: CGSize
     public let message: ChatMessage
-    public let onCarouselItemAction: (URL?, ChatMessage) -> Void
+    public let onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void
     
     
     public var body: some View {
@@ -50,8 +50,8 @@ public struct DefaultCarouselCell: View {
                         item: item,
                         size: self.size,
                         isSender: self.message.isSender
-                    ) { url in
-                        self.onCarouselItemAction(url, self.message)
+                    ) { button in
+                        self.onCarouselItemAction(button, self.message)
                     }
                 }
             }
@@ -64,7 +64,7 @@ public struct CarouselItemView: View {
     public let item: CarouselItem
     public let size: CGSize
     public let isSender: Bool
-    public let callback: (URL?) -> Void
+    public let callback: (CarouselItemButton) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var cellStyle: CarouselCellStyle {
@@ -101,7 +101,7 @@ public struct CarouselItemView: View {
             
             HStack {
                 ForEach(item.buttons) { (button) in
-                    Button(action: { self.callback(button.url) }) {
+                    Button(action: { self.callback(button) }) {
                         Text(button.title)
                             .fontWeight(self.cellStyle.buttonTitleFontWeight)
                             .font(self.cellStyle.buttonFont)
