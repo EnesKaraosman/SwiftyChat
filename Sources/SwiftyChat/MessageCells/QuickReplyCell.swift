@@ -46,8 +46,13 @@ public struct QuickReplyCell: View {
         return colors
     }
     
+    private func itemBackground(for index: Int) -> some View {
+        let backgroundColor: Color = (index == self.selectedIndex ? self.cellStyle.selectedItemBackgroundColor : self.cellStyle.unselectedItemBackgroundColor)
+        return backgroundColor.cornerRadius(self.cellStyle.itemCornerRadius)
+    }
+    
     public var body: some View {
-        conditionalStack(isVStack: totalOptionsLength > 30) {
+        conditionalStack(isVStack: totalOptionsLength > self.cellStyle.characterLimitToChangeStackOrientation) {
             ForEach(0..<quickReplies.count) { idx in
 
                 Button(action: {}) {
@@ -58,15 +63,20 @@ public struct QuickReplyCell: View {
                         .font(
                             idx == self.selectedIndex ? self.cellStyle.selectedItemFont : self.cellStyle.unselectedItemFont
                         )
-                        .padding(self.cellStyle.padding)
+                        .padding(self.cellStyle.itemPadding)
+                        .frame(height: self.cellStyle.itemHeight)
+                        .background(self.itemBackground(for: idx))
                         .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
                         .overlay(
-                            Capsule()
+                            RoundedRectangle(cornerRadius: self.cellStyle.itemCornerRadius)
                                 .stroke(
                                     self.colors(selectedIndex: self.selectedIndex)[idx],
-                                    lineWidth: self.cellStyle.lineWidth
+                                    lineWidth: self.cellStyle.itemBorderWidth
                                 )
-                                .shadow(color: Color.secondary, radius: 1)
+                                .shadow(
+                                    color: self.cellStyle.itemShadowColor,
+                                    radius: self.cellStyle.itemShadowRadius
+                                )
                         )
                 }
                 .simultaneousGesture(

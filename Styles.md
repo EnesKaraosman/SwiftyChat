@@ -8,11 +8,40 @@
 * [Avatar](#avatar)
 
 
+### QuickReply
+
+![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/quickReplyItem.png)
+
+```swift
+public struct QuickReplyCellStyle {
+
+    /// If the total characters of all item's title is greater than this value, VStack is used instead of HStack
+    public let characterLimitToChangeStackOrientation: Int
+    
+    public let selectedItemColor: Color // default = .green
+    public let selectedItemFont: Font   // default = .callout
+    public let selectedItemFontWeight: Font.Weight // default = .semibold
+    public let selectedItemBackgroundColor: Color  // default = Color.green.opacity(0.3)
+
+    public let unselectedItemColor: Color // default = .primary
+    public let unselectedItemFont: Font   // default = .callout
+    public let unselectedItemFontWeight: Font.Weight // default = .semibold
+    public let unselectedItemBackgroundColor: Color  // default = .clear
+
+    public let itemPadding:         CGFloat // default = 8
+    public let itemBorderWidth:     CGFloat // default = 1
+    public let itemHeight:          CGFloat // default = 40
+    public let itemCornerRadius:    CGFloat // default = 4
+    public let itemShadowColor:     Color   // default = .secondary
+    public let itemShadowRadius:    CGFloat // default = 1
+    public let itemBackgroundColor: Color   // default = .clear
+    
+}
+```
+
 ### Carousel
 
 ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/carouselItem.png)
-
-<br>
 
 ```swift
 public struct CarouselCellStyle {

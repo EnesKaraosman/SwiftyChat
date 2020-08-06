@@ -82,9 +82,7 @@ public class ChatMessageCellStyle: ObservableObject {
             cellShadowColor: Color.secondary
         ),
         quickReplyCellStyle: QuickReplyCellStyle = QuickReplyCellStyle(
-            unselectedItemFontWeight: UIFont.Weight.semibold,
-            padding: 8,
-            lineWidth: 1
+            unselectedItemFontWeight: UIFont.Weight.semibold
         ),
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(
             cellBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
