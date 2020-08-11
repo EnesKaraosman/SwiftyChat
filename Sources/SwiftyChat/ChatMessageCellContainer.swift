@@ -23,7 +23,7 @@ public struct ChatMessageCellContainer: View {
             
         case .text(let text):
             
-            return DefaultTextCell(
+            return TextCell(
                 text: text,
                 message: message,
                 size: size,
@@ -32,7 +32,7 @@ public struct ChatMessageCellContainer: View {
             
         case .location(let location):
             
-            return DefaultLocationCell(
+            return LocationCell(
                 location: location,
                 message: message,
                 size: size
@@ -40,7 +40,7 @@ public struct ChatMessageCellContainer: View {
             
         case .image(let imageLoadingType):
             
-            return DefaultImageCell(
+            return ImageCell(
                 message: message,
                 imageLoadingType: imageLoadingType,
                 size: size
@@ -48,7 +48,7 @@ public struct ChatMessageCellContainer: View {
             
         case .contact(let contact):
             
-            return DefaultContactCell(
+            return ContactCell(
                 contact: contact,
                 message: message,
                 size: size,
@@ -62,7 +62,7 @@ public struct ChatMessageCellContainer: View {
             ).embedInAnyView()
             
         case .carousel(let carouselItems):
-            return DefaultCarouselCell(
+            return CarouselCell(
                 carouselItems: carouselItems,
                 size: size,
                 message: message,

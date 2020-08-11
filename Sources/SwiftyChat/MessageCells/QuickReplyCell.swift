@@ -8,19 +8,6 @@
 
 import SwiftUI
 
-public struct QuickReplyItem {
-    public let id = UUID()
-    public var title: String
-    public var payload: String
-    
-    public init(title: String, payload: String) {
-        self.title = title
-        self.payload = payload
-    }
-}
-
-
-// MARK: - QuickReplyCell
 public struct QuickReplyCell: View {
     
     public var quickReplies: [QuickReplyItem]

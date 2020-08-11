@@ -9,7 +9,7 @@
 import SwiftUI
 import KingfisherSwiftUI
 
-public struct DefaultImageCell: View {
+public struct ImageCell: View {
     
     public let message: ChatMessage
     public let imageLoadingType: ImageLoadingKind

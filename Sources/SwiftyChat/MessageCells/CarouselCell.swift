@@ -10,31 +10,24 @@ import KingfisherSwiftUI
 
 public struct CarouselItemButton: Identifiable {
     public let id = UUID()
-    public let url: URL?
     public let title: String
+    public let url: URL?
+    public let payload: String?
     
-    public init(title: String, url: URL?) {
+    public init(title: String, url: URL? = nil, payload: String? = nil) {
         self.title = title
         self.url = url
+        self.payload = payload
     }
 }
 
-public struct CarouselItem: Identifiable {
-    public let id = UUID()
-    public let title: String
-    public let picture: URL?
-    public let subtitle: String
-    public let buttons: [CarouselItemButton]
-    
-    public init(title: String, subtitle: String, imageURL: URL?, buttons: [CarouselItemButton]) {
-        self.title = title
-        self.subtitle = subtitle
-        self.picture = imageURL
-        self.buttons = buttons
+extension CarouselItem {
+    var id: String {
+        (imageURL?.absoluteString ?? "").appending(subtitle)
     }
 }
 
-public struct DefaultCarouselCell: View {
+public struct CarouselCell: View {
     
     public let carouselItems: [CarouselItem]
     public let size: CGSize
@@ -45,7 +38,7 @@ public struct DefaultCarouselCell: View {
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
             HStack {
-                ForEach(carouselItems) { item in
+                ForEach(carouselItems, id: \.id) { item in
                     CarouselItemView(
                         item: item,
                         size: self.size,
@@ -78,7 +71,7 @@ public struct CarouselItemView: View {
     public var body: some View {
         VStack {
             
-            KFImage(item.picture)
+            KFImage(item.imageURL)
                 .resizable()
                 .scaledToFit()
             

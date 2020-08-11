@@ -31,7 +31,7 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// Multiple options, disable itself after selection.
     case quickReply([QuickReplyItem])
     
-    /// `CarouselItem`s that contains title, subtitle, image & button in a scrollable view
+    /// `CarouselItem` contains title, subtitle, image & button in a scrollable view
     case carousel([CarouselItem])
     
     public var description: String {

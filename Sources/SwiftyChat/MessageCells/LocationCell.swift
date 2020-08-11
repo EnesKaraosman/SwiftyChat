@@ -9,7 +9,7 @@
 import SwiftUI
 import struct MapKit.CLLocationCoordinate2D
 
-public struct DefaultLocationCell: View {
+public struct LocationCell: View {
     
     public let location: LocationItem
     public let message: ChatMessage

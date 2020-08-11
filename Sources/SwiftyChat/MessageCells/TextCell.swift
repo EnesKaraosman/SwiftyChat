@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct DefaultTextCell: View {
+public struct TextCell: View {
     
     public let text: String
     public let message: ChatMessage

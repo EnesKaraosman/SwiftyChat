@@ -18,7 +18,7 @@ public struct ContactCellButton: Identifiable {
     }
 }
 
-public struct DefaultContactCell: View {
+public struct ContactCell: View {
     
     public let contact: ContactItem
     public let message: ChatMessage
