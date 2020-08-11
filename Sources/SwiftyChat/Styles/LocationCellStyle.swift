@@ -18,26 +18,6 @@ public struct LocationCellStyle {
     public let cellShadowRadius: CGFloat
     public let cellShadowColor: Color
     
-    /// UIKit Constructor
-    public init(
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
-        cellAspectRatio:  CGFloat = 0.7,
-        cellCornerRadius: CGFloat = 8,
-        cellBorderColor: UIColor = .clear,
-        cellBorderWidth: CGFloat = 0,
-        cellShadowRadius: CGFloat = 2,
-        cellShadowColor: UIColor = .secondaryLabel
-    ) {
-        self.cellWidth = cellWidth
-        self.cellAspectRatio = cellAspectRatio
-        self.cellCornerRadius = cellCornerRadius
-        self.cellBorderColor = Color(cellBorderColor)
-        self.cellBorderWidth = cellBorderWidth
-        self.cellShadowRadius = cellShadowRadius
-        self.cellShadowColor = Color(cellShadowColor)
-    }
-    
-    /// SwiftUI Constructor
     public init(
         cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
         cellAspectRatio:  CGFloat = 0.7,

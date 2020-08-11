@@ -27,18 +27,42 @@ public struct DefaultContactCell: View {
     
     @EnvironmentObject var style: ChatMessageCellStyle
     
-    private var cardWidth: CGFloat {
-        size.width * (UIDevice.isLandscape ? 0.4 : 0.75)
+    private var cellStyle: ContactCellStyle {
+        style.contactCellStyle
     }
     
+    private var cardWidth: CGFloat {
+        cellStyle.cellWidth(size)
+    }
+    
+    // MARK: - Image
     private var contactImage: some View {
-        let profile = contact.image != nil ? Image(uiImage: contact.image!) : Image(systemName: "person.crop.circle")
+        
+        let imageStyle = cellStyle.imageStyle
+        let profile = contact.image != nil ?
+            Image(uiImage: contact.image!)
+                .resizable()
+                .embedInAnyView() :
+            EmptyView().embedInAnyView()
+        
         return profile
-            .resizable()
+            .frame(
+                width: imageStyle.imageSize.width,
+                height: imageStyle.imageSize.height
+            )
             .scaledToFit()
-            .clipShape(Circle())
-            .frame(width: 50)
-            .shadow(color: .secondary, radius: 1)
+            .cornerRadius(imageStyle.cornerRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: imageStyle.cornerRadius)
+                    .stroke(
+                        imageStyle.borderColor,
+                        lineWidth: imageStyle.borderWidth
+                    )
+                    .shadow(
+                        color: imageStyle.shadowColor,
+                        radius: imageStyle.shadowRadius
+                    )
+            )
     }
     
     private var buttons: [ContactCellButton] {
@@ -65,17 +89,15 @@ public struct DefaultContactCell: View {
         .frame(height: 40)
     }
     
+    // MARK: - Body
     public var body: some View {
         
         VStack(spacing: 0) {
             
             HStack {
-                
-                contactImage
-                
-                Text(contact.displayName)
+                self.contactImage
+                self.fullNameLabel
                 Spacer()
-                
                 Image(systemName: "chevron.right")
                     .shadow(color: .secondary, radius: 1)
                 
@@ -83,11 +105,10 @@ public struct DefaultContactCell: View {
             
             Spacer()
             Divider()
-            
-            buttonActionFooter
+            self.buttonActionFooter
             
         }
-        .frame(width: self.cardWidth, height: 130)
+        .frame(width: self.cardWidth)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(
@@ -100,6 +121,14 @@ public struct DefaultContactCell: View {
                 )
         )
         
+    }
+    
+    // MARK: - Fullname Label
+    private var fullNameLabel: some View {
+        Text(contact.displayName)
+            .font(cellStyle.fullNameLabelStyle.font)
+            .fontWeight(cellStyle.fullNameLabelStyle.fontWeight)
+            .foregroundColor(cellStyle.fullNameLabelStyle.textColor)
     }
     
 }

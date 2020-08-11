@@ -17,6 +17,7 @@ public struct MockMessages {
     )
     public static let chatbot = ChatUser(
         userName: "Chatbot",
+//        avatar: #imageLiteral(resourceName: "avatar")
         avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
     )
     

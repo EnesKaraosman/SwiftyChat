@@ -16,49 +16,14 @@ public enum AvatarPosition {
 
 public struct AvatarStyle {
     
-    public let imageSize:      CGSize
-    public let cornerRadius:   CGFloat
-    public let borderColor:    Color
-    public let borderWidth:    CGFloat
-    public let shadowRadius:   CGFloat
-    public let shadowColor:    Color
+    public let imageStyle: CommonImageStyle
     public let avatarPosition: AvatarPosition
     
-    /// UIKit initializer
     public init(
-        imageSize:      CGSize = .init(width: 32, height: 32),
-        cornerRadius:   CGFloat = 16,
-        borderColor:    UIColor = .systemGreen,
-        borderWidth:    CGFloat = 2,
-        shadowRadius:   CGFloat = 1,
-        shadowColor:    UIColor = .secondaryLabel,
-        avatarPosition: AvatarPosition = .alignToMessageBottom(spacing: 8)
-    ) {
-        self.imageSize = imageSize
-        self.cornerRadius = cornerRadius
-        self.borderColor = Color(borderColor)
-        self.borderWidth = borderWidth
-        self.shadowRadius = shadowRadius
-        self.shadowColor = Color(shadowColor)
-        self.avatarPosition = avatarPosition
-    }
-    
-    /// SwiftUI initializer
-    public init(
-        imageSize:      CGSize = .init(width: 32, height: 32),
-        cornerRadius:   CGFloat = 16,
-        borderColor:    Color = .green,
-        borderWidth:    CGFloat = 2,
-        shadowRadius:   CGFloat = 1,
-        shadowColor:    Color = .secondary,
+        imageStyle: CommonImageStyle = CommonImageStyle(),
         avatarPosition: AvatarPosition = .alignToMessageCenter(spacing: 8)
     ) {
-        self.imageSize = imageSize
-        self.cornerRadius = cornerRadius
-        self.borderColor = borderColor
-        self.borderWidth = borderWidth
-        self.shadowRadius = shadowRadius
-        self.shadowColor = shadowColor
+        self.imageStyle = imageStyle
         self.avatarPosition = avatarPosition
     }
     

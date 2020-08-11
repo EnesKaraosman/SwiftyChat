@@ -84,15 +84,15 @@ public struct CarouselItemView: View {
             
             Group {
                 Text(item.title)
-                    .fontWeight(cellStyle.titleFontWeight)
-                    .font(cellStyle.titleFont)
-                    .foregroundColor(cellStyle.titleColor)
+                    .fontWeight(cellStyle.titleLabelStyle.fontWeight)
+                    .font(cellStyle.titleLabelStyle.font)
+                    .foregroundColor(cellStyle.titleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
                 
                 Text(item.subtitle)
-                    .fontWeight(cellStyle.subtitleFontWeight)
-                    .font(cellStyle.subtitleFont)
-                    .foregroundColor(cellStyle.subtitleColor)
+                    .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
+                    .font(cellStyle.subtitleLabelStyle.font)
+                    .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
                 
             }

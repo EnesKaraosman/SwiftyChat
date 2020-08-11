@@ -15,8 +15,9 @@
 ```swift
 public struct QuickReplyCellStyle {
 
-    /// If the total characters of all item's title is greater than this value, VStack is used instead of HStack
+    /// If the total characters of all item's title is greater than this value, items ordered vertically
     public let characterLimitToChangeStackOrientation: Int
+    // default = 30
     
     public let selectedItemColor: Color // default = .green
     public let selectedItemFont: Font   // default = .callout
@@ -31,10 +32,9 @@ public struct QuickReplyCellStyle {
     public let itemPadding:         CGFloat // default = 8
     public let itemBorderWidth:     CGFloat // default = 1
     public let itemHeight:          CGFloat // default = 40
-    public let itemCornerRadius:    CGFloat // default = 4
+    public let itemCornerRadius:    CGFloat // default = 8
     public let itemShadowColor:     Color   // default = .secondary
     public let itemShadowRadius:    CGFloat // default = 1
-    public let itemBackgroundColor: Color   // default = .clear
     
 }
 ```
@@ -46,13 +46,11 @@ public struct QuickReplyCellStyle {
 ```swift
 public struct CarouselCellStyle {
 
-    public let titleFont: Font                 // default = .title
-    public let titleColor: Color               // default = .primary
-    public let titleFontWeight: Font.Weight    // default = .bold
+    public let titleLabelStyle: CommonLabelStyle 
+    // default = font: .title, color: .primary, fontWeight: .bold
     
-    public let subtitleFont: Font              // default = .body
-    public let subtitleColor: Color            // default = .secondary
-    public let subtitleFontWeight: Font.Weight // default = .regular
+    public let subtitleLabelStyle: CommonLabelStyle
+    // default = font: .body, color: .secondary, fontWeight: .regular
     
     public let buttonFont: Font                   // default = .body
     public let buttonTitleColor: Color            // default = .white
@@ -63,7 +61,9 @@ public struct CarouselCellStyle {
     public let cellWidth: (CGSize) -> CGFloat
     // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
     
-    public let cellBackgroundColor: Color   // default = a whitish color
+    public let cellBackgroundColor: Color   
+    // default = Color.secondary.opacity(0.2)
+    
     public let cellCornerRadius:    CGFloat // default = 8
     public let cellBorderColor:     Color   // default = .clear
     public let cellBorderWidth:     CGFloat // default = 1
@@ -71,7 +71,6 @@ public struct CarouselCellStyle {
     public let cellShadowColor:     Color   // default = .secondary
 }
 ```
-CarouselCellStyle has both UIKit & SwiftUI initializers.
 
 ### Image
 
@@ -84,15 +83,16 @@ public struct ImageCellStyle {
     public let cellWidth: (CGSize) -> CGFloat
     // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
     
-    public let cellBackgroundColor: Color    // default = a whitish color
+    public let cellBackgroundColor: Color    
+    // default = Color.secondary.opacity(0.1)
+    
     public let cellCornerRadius:    CGFloat  // default = 8
     public let cellBorderColor:     Color    // default = .clear
     public let cellBorderWidth:     CGFloat  // default = 0
-    public let cellShadowRadius:    CGFloat  // default = 2
+    public let cellShadowRadius:    CGFloat  // default = 3
     public let cellShadowColor:     Color    // default = .secondary
 }
 ```
-ImageCellStyle has both UIKit & SwiftUI initializers.
 
 ### Location
 
@@ -113,7 +113,24 @@ public struct LocationCellStyle {
     public let cellShadowColor:  Color     // default = .secondary
 }
 ```
-LocationCellStyle has both UIKit & SwiftUI initializers.
+
+### Contact
+
+![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/contactItem.png)
+
+```swift
+public struct ContactCellStyle {
+
+    public let cellWidth: (CGSize) -> CGFloat
+    //default = { $0.width * (UIDevice.isLandscape ? 0.45 : 0.75) }
+    
+    public let imageStyle: CommonImageStyle
+    
+    public let fullNameLabelStyle: CommonLabelStyle
+    // default = font: .body, color: .primary, fontWeight: .semibold
+    
+}
+```
 
 ### Avatar
 
@@ -125,15 +142,9 @@ public enum AvatarPosition {
 }
 
 public struct AvatarStyle {
-    public let imageSize:      CGSize  // default = CGSize(width: 32, height: 32)
-    public let cornerRadius:   CGFloat // default = 16
-    public let borderColor:    Color   // default = .green
-    public let borderWidth:    CGFloat // default = 2
-    public let shadowRadius:   CGFloat // default = 1
-    public let shadowColor:    Color   // default = .secondary
+    public let imageStyle: CommonImageStyle
     public let avatarPosition: AvatarPosition 
     // default = .alignToMessageBottom(spacing: 8)
 }
 ```
 
-AvatarStyle has both UIKit & SwiftUI initializers.

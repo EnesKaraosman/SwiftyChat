@@ -54,38 +54,33 @@ public struct AvatarModifier: ViewModifier {
     }
     
     private var avatar: some View {
-        avatarImage
+        let imageStyle = currentStyle.imageStyle
+        return avatarImage
+            .frame(
+                width: imageStyle.imageSize.width,
+                height: imageStyle.imageSize.height
+            )
+            .scaledToFit()
+            .cornerRadius(imageStyle.cornerRadius)
             .overlay(
-                RoundedRectangle(cornerRadius: currentStyle.cornerRadius)
+                RoundedRectangle(cornerRadius: imageStyle.cornerRadius)
                     .stroke(
-                        currentStyle.borderColor,
-                        lineWidth: currentStyle.borderWidth
+                        imageStyle.borderColor,
+                        lineWidth: imageStyle.borderWidth
                     )
                     .shadow(
-                        color: currentStyle.shadowColor,
-                        radius: currentStyle.shadowRadius
+                        color: imageStyle.shadowColor,
+                        radius: imageStyle.shadowRadius
                     )
             )
     }
     
     private var avatarImage: some View {
         Group {
-            if user.avatarURL != nil && currentStyle.imageSize.width > 0 {
-                KFImage(user.avatarURL)
-                    .resizable()
-                    .frame(
-                        width: currentStyle.imageSize.width,
-                        height: currentStyle.imageSize.height
-                    )
-                    .scaledToFit()
-            } else if user.avatar != nil && currentStyle.imageSize.width > 0 {
-                Image(uiImage: user.avatar!)
-                    .resizable()
-                    .frame(
-                        width: currentStyle.imageSize.width,
-                        height: currentStyle.imageSize.height
-                    )
-                    .scaledToFit()
+            if user.avatarURL != nil && currentStyle.imageStyle.imageSize.width > 0 {
+                KFImage(user.avatarURL).resizable()
+            } else if user.avatar != nil && currentStyle.imageStyle.imageSize.width > 0 {
+                Image(uiImage: user.avatar!).resizable()
             } else {
                 EmptyView()
             }

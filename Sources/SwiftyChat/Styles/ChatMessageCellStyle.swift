@@ -40,6 +40,9 @@ public class ChatMessageCellStyle: ObservableObject {
     /// Cell container inset for outgoing messages
     let outgoingCellEdgeInsets: EdgeInsets?
     
+    /// Contact Cell Style
+    let contactCellStyle: ContactCellStyle
+    
     /// Image Cell Style
     let imageCellStyle: ImageCellStyle
     
@@ -77,25 +80,14 @@ public class ChatMessageCellStyle: ObservableObject {
         outgoingTextPadding: CGFloat = 8,
         incomingCellEdgeInsets: EdgeInsets? = nil,
         outgoingCellEdgeInsets: EdgeInsets? = nil,
-        imageCellStyle: ImageCellStyle = ImageCellStyle(
-            cellShadowRadius: 3,
-            cellShadowColor: Color.secondary
-        ),
-        quickReplyCellStyle: QuickReplyCellStyle = QuickReplyCellStyle(
-            unselectedItemFontWeight: UIFont.Weight.semibold
-        ),
-        carouselCellStyle: CarouselCellStyle = CarouselCellStyle(
-            cellBackgroundColor: UIColor.secondaryLabel.withAlphaComponent(0.05),
-            cellCornerRadius: 8
-        ),
-        locationCellStyle: LocationCellStyle = LocationCellStyle(cellShadowColor: .secondary),
-        incomingAvatarStyle: AvatarStyle = AvatarStyle(
-            shadowColor: UIColor.secondaryLabel,
-            avatarPosition: .alignToMessageTop(spacing: 8)
-        ),
+        contactCellStyle: ContactCellStyle = ContactCellStyle(),
+        imageCellStyle: ImageCellStyle = ImageCellStyle(),
+        quickReplyCellStyle: QuickReplyCellStyle = QuickReplyCellStyle(),
+        carouselCellStyle: CarouselCellStyle = CarouselCellStyle(),
+        locationCellStyle: LocationCellStyle = LocationCellStyle(),
+        incomingAvatarStyle: AvatarStyle = AvatarStyle(),
         outgoingAvatarStyle: AvatarStyle = AvatarStyle(
-            imageSize: .zero,
-            borderColor: UIColor.clear
+            imageStyle: CommonImageStyle(imageSize: .zero)
         )
     ) {
         self.incomingBorderColor = incomingBorderColor
@@ -116,6 +108,7 @@ public class ChatMessageCellStyle: ObservableObject {
         self.outgoingTextPadding = outgoingTextPadding
         self.incomingCellEdgeInsets = incomingCellEdgeInsets
         self.outgoingCellEdgeInsets = outgoingCellEdgeInsets
+        self.contactCellStyle = contactCellStyle
         self.imageCellStyle = imageCellStyle
         self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle

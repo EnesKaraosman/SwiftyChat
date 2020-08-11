@@ -8,15 +8,10 @@
 import UIKit
 import SwiftUI
 
-public struct CarouselCellStyle: CellContainerStyle {
+public struct CarouselCellStyle: CommonViewStyle {
 
-    public let titleFont: Font
-    public let titleColor: Color
-    public let titleFontWeight: Font.Weight
-    
-    public let subtitleFont: Font
-    public let subtitleColor: Color
-    public let subtitleFontWeight: Font.Weight
+    public let titleLabelStyle: CommonLabelStyle
+    public let subtitleLabelStyle: CommonLabelStyle
     
     public let buttonFont: Font
     public let buttonTitleColor: Color
@@ -34,71 +29,30 @@ public struct CarouselCellStyle: CellContainerStyle {
     public let cellShadowRadius: CGFloat
     public let cellShadowColor: Color
     
-    /// UIKit Constructor
     public init(
-        titleFont: UIFont = UIFont(name: "Avenir-Black", size: 27)!,
-        titleColor: UIColor = .label,
-        titleFontWeight: UIFont.Weight = .bold,
-        subtitleFont: UIFont = .boldSystemFont(ofSize: 16),
-        subtitleColor: UIColor = .secondaryLabel,
-        subtitleFontWeight: UIFont.Weight = .regular,
-        buttonFont: UIFont = .boldSystemFont(ofSize: 17),
-        buttonTitleColor: UIColor = .white,
-        buttonBackgroundColor: UIColor = .systemBlue,
-        buttonTitleFontWeight: UIFont.Weight = .semibold,
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.6 : 0.7) },
-        cellBackgroundColor: UIColor = #colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1),
-        cellCornerRadius: CGFloat = 8,
-        cellBorderColor: UIColor = .clear,
-        cellBorderWidth: CGFloat = 1,
-        cellShadowRadius: CGFloat = 3,
-        cellShadowColor: UIColor = .secondaryLabel
-    ) {
-        self.titleFont = Font.custom(titleFont.familyName, size: titleFont.pointSize)
-        self.titleColor = Color(titleColor)
-        self.titleFontWeight = Font.Weight(titleFontWeight)
-        self.subtitleFont = Font.custom(subtitleFont.familyName, size: subtitleFont.pointSize)
-        self.subtitleColor = Color(subtitleColor)
-        self.subtitleFontWeight = Font.Weight(subtitleFontWeight)
-        self.buttonFont = Font.custom(buttonFont.familyName, size: buttonFont.pointSize)
-        self.buttonTitleColor = Color(buttonTitleColor)
-        self.buttonTitleFontWeight = Font.Weight(buttonTitleFontWeight)
-        self.buttonBackgroundColor = Color(buttonBackgroundColor)
-        self.cellWidth = cellWidth
-        self.cellBackgroundColor = Color(cellBackgroundColor)
-        self.cellCornerRadius = cellCornerRadius
-        self.cellBorderColor = Color(cellBorderColor)
-        self.cellBorderWidth = cellBorderWidth
-        self.cellShadowRadius = cellShadowRadius
-        self.cellShadowColor = Color(cellShadowColor)
-    }
-    
-    /// SwiftUI Constructor
-    public init(
-        titleFont: Font = Font.title,
-        titleColor: Color = .primary,
-        titleFontWeight: Font.Weight = .bold,
-        subtitleFont: Font = .body,
-        subtitleColor: Color = .secondary,
-        subtitleFontWeight: Font.Weight = .regular,
+        titleLabelStyle: CommonLabelStyle = CommonLabelStyle(
+            font: .title,
+            textColor: .primary,
+            fontWeight: .bold
+        ),
+        subtitleLabelStyle: CommonLabelStyle = CommonLabelStyle(
+            font: .body,
+            textColor: .secondary
+        ),
         buttonFont: Font = .body,
         buttonTitleColor: Color = .white,
         buttonBackgroundColor: Color = .blue,
         buttonTitleFontWeight: Font.Weight = .semibold,
         cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
-        cellBackgroundColor: Color = Color(#colorLiteral(red: 0.9607108235, green: 0.9608257413, blue: 0.9606717229, alpha: 1)),
+        cellBackgroundColor: Color = Color.secondary.opacity(0.2),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
         cellBorderWidth: CGFloat = 1,
         cellShadowRadius: CGFloat = 3,
         cellShadowColor: Color = .secondary
     ) {
-        self.titleFont = titleFont
-        self.titleColor = titleColor
-        self.titleFontWeight = titleFontWeight
-        self.subtitleFont = subtitleFont
-        self.subtitleColor = subtitleColor
-        self.subtitleFontWeight = subtitleFontWeight
+        self.titleLabelStyle = titleLabelStyle
+        self.subtitleLabelStyle = subtitleLabelStyle
         self.buttonFont = buttonFont
         self.buttonTitleColor = buttonTitleColor
         self.buttonTitleFontWeight = buttonTitleFontWeight

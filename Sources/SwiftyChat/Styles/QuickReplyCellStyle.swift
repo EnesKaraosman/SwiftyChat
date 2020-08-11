@@ -29,42 +29,6 @@ public struct QuickReplyCellStyle {
     public let itemShadowColor: Color
     public let itemShadowRadius: CGFloat
     
-    /// UIKit constructor
-    public init(
-        characterLimitToChangeStackOrientation: Int = 30,
-        selectedItemColor: UIColor = .systemGreen,
-        selectedItemFont: UIFont = .systemFont(ofSize: 16),
-        selectedItemFontWeight: UIFont.Weight = .semibold,
-        selectedItemBackgroundColor: UIColor = UIColor.systemGreen.withAlphaComponent(0.3),
-        unselectedItemColor: UIColor = .label,
-        unselectedItemFont: UIFont = .systemFont(ofSize: 16),
-        unselectedItemFontWeight: UIFont.Weight = .regular,
-        unselectedItemBackgroundColor: UIColor = .clear,
-        itemPadding: CGFloat = 8,
-        itemBorderWidth: CGFloat = 1,
-        itemHeight: CGFloat = 40,
-        itemCornerRadius: CGFloat = 8,
-        itemShadowColor: UIColor = .secondaryLabel,
-        itemShadowRadius: CGFloat = 1
-    ) {
-        self.characterLimitToChangeStackOrientation = characterLimitToChangeStackOrientation
-        self.selectedItemColor = Color(selectedItemColor)
-        self.selectedItemFont = Font.custom(selectedItemFont.familyName, size: selectedItemFont.pointSize)
-        self.selectedItemFontWeight = Font.Weight(selectedItemFontWeight)
-        self.selectedItemBackgroundColor = Color(selectedItemBackgroundColor)
-        self.unselectedItemColor = Color(unselectedItemColor)
-        self.unselectedItemFont = Font.custom(unselectedItemFont.familyName, size: selectedItemFont.pointSize)
-        self.unselectedItemFontWeight = Font.Weight(unselectedItemFontWeight)
-        self.unselectedItemBackgroundColor = Color(unselectedItemBackgroundColor)
-        self.itemPadding = itemPadding
-        self.itemBorderWidth = itemBorderWidth
-        self.itemHeight = itemHeight
-        self.itemCornerRadius = itemCornerRadius
-        self.itemShadowColor = Color(itemShadowColor)
-        self.itemShadowRadius = itemShadowRadius
-    }
-    
-    /// SwiftUI constructor
     public init(
         characterLimitToChangeStackOrientation: Int = 30,
         selectedItemColor: Color = .green,
