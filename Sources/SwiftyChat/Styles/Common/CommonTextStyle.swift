@@ -1,5 +1,5 @@
 //
-//  CommonLabelStyle.swift
+//  CommonTextStyle.swift
 //  
 //
 //  Created by Enes Karaosman on 11.08.2020.
@@ -7,19 +7,19 @@
 
 import SwiftUI
 
-public struct CommonLabelStyle {
+public struct CommonTextStyle {
     
-    public let font: Font
     public let textColor: Color
+    public let font: Font
     public let fontWeight: Font.Weight
     
     public init(
-        font: Font = .body,
         textColor: Color = .primary,
+        font: Font = .body,
         fontWeight: Font.Weight = .regular
     ) {
-        self.font = font
         self.textColor = textColor
+        self.font = font
         self.fontWeight = fontWeight
     }
     

@@ -109,15 +109,19 @@ public struct ContactCell: View {
             
         }
         .frame(width: self.cardWidth)
+        .background(
+            cellStyle.cellBackgroundColor
+                .cornerRadius(cellStyle.cellCornerRadius)
+        )
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(
-                    message.isSender ? style.incomingBorderColor : style.outgoingBorderColor,
-                    lineWidth: 2
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
                 )
                 .shadow(
-                    color: message.isSender ? style.incomingShadowColor : style.outgoingShadowColor,
-                    radius: 2
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
                 )
         )
         

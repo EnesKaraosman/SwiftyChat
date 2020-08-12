@@ -7,6 +7,29 @@
 * [Contact](#contact)
 * [Avatar](#avatar)
 
+### Text
+
+![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/textItem.png)
+
+```swift
+public struct TextCellStyle: CommonViewStyle {
+
+    public let textStyle: CommonTextStyle
+    // default = textColor: .white, font: .body, fontWeight: .regular
+    
+    public let textPadding: CGFloat // default = 10
+
+    public let cellBackgroundColor: Color
+    // default = Color(UIColor.systemPurple).opacity(0.8)
+
+    public let cellCornerRadius: CGFloat // default = 8
+    public let cellBorderColor: Color    // default = .clear
+    public let cellBorderWidth: CGFloat  // default = 1
+    public let cellShadowRadius: CGFloat // default = 3
+    public let cellShadowColor: Color    // default = .secondary
+
+}
+```
 
 ### QuickReply
 
@@ -44,13 +67,13 @@ public struct QuickReplyCellStyle {
 ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/carouselItem.png)
 
 ```swift
-public struct CarouselCellStyle {
+public struct CarouselCellStyle: CommonViewStyle {
 
-    public let titleLabelStyle: CommonLabelStyle 
-    // default = font: .title, color: .primary, fontWeight: .bold
+    public let titleLabelStyle: CommonTextStyle 
+    // default = textColor: .primary, font: .title, fontWeight: .bold
     
-    public let subtitleLabelStyle: CommonLabelStyle
-    // default = font: .body, color: .secondary, fontWeight: .regular
+    public let subtitleLabelStyle: CommonTextStyle
+    // default = textColor: .secondary, font: .body, fontWeight: .regular
     
     public let buttonFont: Font                   // default = .body
     public let buttonTitleColor: Color            // default = .white
@@ -119,15 +142,25 @@ public struct LocationCellStyle {
 ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/contactItem.png)
 
 ```swift
-public struct ContactCellStyle {
+public struct ContactCellStyle: CommonViewStyle {
 
     public let cellWidth: (CGSize) -> CGFloat
     //default = { $0.width * (UIDevice.isLandscape ? 0.45 : 0.75) }
     
     public let imageStyle: CommonImageStyle
     
-    public let fullNameLabelStyle: CommonLabelStyle
-    // default = font: .body, color: .primary, fontWeight: .semibold
+    public let fullNameLabelStyle: CommonTextStyle
+    // default = textColor: .primary, font: .body, fontWeight: .semibold
+    
+    // CellContainerStyle
+    public let cellBackgroundColor: Color
+    // default = Color.secondary.opacity(0.05)
+    
+    public let cellCornerRadius: CGFloat // default = 8
+    public let cellBorderColor: Color    // default = .clear
+    public let cellBorderWidth: CGFloat  // default = 1
+    public let cellShadowRadius: CGFloat // default = 1
+    public let cellShadowColor: Color    // default = .secondary
     
 }
 ```

@@ -101,7 +101,7 @@ public struct MockMessages {
             )
             
         case .quickReply:
-            let quickReplies: [QuickReplyRow] = (0...Int.random(in: 1...4)).map { idx in
+            let quickReplies: [QuickReplyRow] = (1...Int.random(in: 2...4)).map { idx in
                 return QuickReplyRow(title: "Option.\(idx)", payload: "opt\(idx)")
             }
             return .init(

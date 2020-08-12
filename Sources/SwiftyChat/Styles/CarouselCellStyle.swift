@@ -10,8 +10,8 @@ import SwiftUI
 
 public struct CarouselCellStyle: CommonViewStyle {
 
-    public let titleLabelStyle: CommonLabelStyle
-    public let subtitleLabelStyle: CommonLabelStyle
+    public let titleLabelStyle: CommonTextStyle
+    public let subtitleLabelStyle: CommonTextStyle
     
     public let buttonFont: Font
     public let buttonTitleColor: Color
@@ -30,21 +30,21 @@ public struct CarouselCellStyle: CommonViewStyle {
     public let cellShadowColor: Color
     
     public init(
-        titleLabelStyle: CommonLabelStyle = CommonLabelStyle(
-            font: .title,
+        titleLabelStyle: CommonTextStyle = CommonTextStyle(
             textColor: .primary,
+            font: .title,
             fontWeight: .bold
         ),
-        subtitleLabelStyle: CommonLabelStyle = CommonLabelStyle(
-            font: .body,
-            textColor: .secondary
+        subtitleLabelStyle: CommonTextStyle = CommonTextStyle(
+            textColor: .secondary,
+            font: .body
         ),
         buttonFont: Font = .body,
         buttonTitleColor: Color = .white,
         buttonBackgroundColor: Color = .blue,
         buttonTitleFontWeight: Font.Weight = .semibold,
         cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
-        cellBackgroundColor: Color = Color.secondary.opacity(0.2),
+        cellBackgroundColor: Color = Color.secondary.opacity(0.1),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
         cellBorderWidth: CGFloat = 1,

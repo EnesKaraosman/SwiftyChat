@@ -12,9 +12,10 @@ import SwiftUI
 public struct EmojiModifier: ViewModifier {
     
     public let text: String
+    public let defaultFont: Font
 
     private var font: Font? {
-        var _font: Font?
+        var _font: Font = self.defaultFont
         if text.containsOnlyEmoji {
             let count = text.count
             switch count {
@@ -25,7 +26,7 @@ public struct EmojiModifier: ViewModifier {
             case 3:
                 _font = .system(size: 25)
             default:
-                _font = .body
+                _font = self.defaultFont
             }
         }
         return _font

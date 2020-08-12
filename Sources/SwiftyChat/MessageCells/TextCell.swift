@@ -16,6 +16,10 @@ public struct TextCell: View {
     public let callback: () -> TextTappedCallback
 
     @EnvironmentObject var style: ChatMessageCellStyle
+    
+    private var cellStyle: TextCellStyle {
+        message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
+    }
 
     private let enabledDetectors: [DetectorType] = [.address, .date, .phoneNumber, .url, .transitInformation]
     private var maxWidth: CGFloat {
@@ -29,20 +33,24 @@ public struct TextCell: View {
     // MARK: - Default Text
     private var defaultText: some View {
         Text(text)
-        .foregroundColor(message.isSender ? style.incomingTextColor : style.outgoingTextColor)
-        .padding(message.isSender ? style.incomingTextPadding : style.outgoingTextPadding)
-        .lineLimit(nil)
-        .background(message.isSender ? style.incomingBackgroundColor : style.outgoingBackgroundColor)
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius
+            .fontWeight(cellStyle.textStyle.fontWeight)
+            .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+            .lineLimit(nil)
+            .foregroundColor(cellStyle.textStyle.textColor)
+            .padding(cellStyle.textPadding)
+            .background(cellStyle.cellBackgroundColor)
+            .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
+            .overlay(
+                RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+                    .stroke(
+                        cellStyle.cellBorderColor,
+                        lineWidth: cellStyle.cellBorderWidth
+                    )
+                    .shadow(
+                        color: cellStyle.cellShadowColor,
+                        radius: cellStyle.cellShadowRadius
+                    )
             )
-        )
-        .shadow(
-            color: message.isSender ? style.incomingShadowColor : style.outgoingShadowColor,
-            radius: message.isSender ? style.incomingShadowRadius : style.outgoingShadowRadius
-        )
-        .modifier(EmojiModifier(text: text))
     }
     
     private var attributedText: some View {
@@ -61,16 +69,19 @@ public struct TextCell: View {
             $0.textColor = .white // TODO: Configure color
             $0.textAlignment = self.message.isSender ? .right : .left
         }
-        .padding(message.isSender ? style.incomingTextPadding : style.outgoingTextPadding)
-        .background(message.isSender ? style.incomingBackgroundColor : style.outgoingBackgroundColor)
-        .clipShape(
-            RoundedRectangle(
-                cornerRadius: message.isSender ? style.incomingCornerRadius : style.outgoingCornerRadius
-            )
-        )
-        .shadow(
-            color: message.isSender ? style.incomingShadowColor : style.outgoingShadowColor,
-            radius: message.isSender ? style.incomingShadowRadius : style.outgoingShadowRadius
+        .padding(cellStyle.textPadding)
+        .background(cellStyle.cellBackgroundColor)
+        .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
+        .overlay(
+            RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
         )
     }
     
