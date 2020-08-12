@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import struct MapKit.CLLocationCoordinate2D
+import MapKit
 
 public struct LocationCell: View {
     
@@ -25,7 +25,13 @@ public struct LocationCell: View {
     }
     
     public var body: some View {
-        MapView(coordinate: CLLocationCoordinate2D(latitude: location.latitude, longitude: location.longitude))
+        Group {
+            if #available(iOS 14.0, *) {
+                self.mapView
+            } else {
+                self.uiViewRepresentableMapView
+            }
+        }
         .frame(
             width: mapWidth,
             height: mapWidth * cellStyle.cellAspectRatio
@@ -42,6 +48,48 @@ public struct LocationCell: View {
             color: cellStyle.cellShadowColor,
             radius: cellStyle.cellShadowRadius
         )
+    }
+    
+    // MARK: - Wrapped Map view (for below iOS 14 versions)
+    private var uiViewRepresentableMapView: some View {
+        MapView(
+            coordinate: CLLocationCoordinate2D(
+                latitude: location.latitude,
+                longitude: location.longitude
+            )
+        )
+    }
+    
+    @available(iOS 14.0, *)
+    private var mapView: some View {
+        Map(
+            coordinateRegion: .constant(
+                MKCoordinateRegion(
+                    center: .init(latitude: location.latitude, longitude: location.longitude),
+                    span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
+                )
+            ),
+            interactionModes: MapInteractionModes.zoom,
+            showsUserLocation: false,
+            annotationItems: [
+                LocationRow(
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                )
+            ],
+            annotationContent: { place in
+                MapMarker(coordinate: place.coordinate)
+            }
+        )
+    }
+    
+    private struct LocationRow: LocationItem, Identifiable {
+        let id: String = UUID().uuidString
+        var latitude: Double
+        var longitude: Double
+        var coordinate: CLLocationCoordinate2D {
+            CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        }
     }
     
 }
