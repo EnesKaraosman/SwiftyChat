@@ -14,16 +14,19 @@ public struct TextCell: View {
     public let message: ChatMessage
     public let size: CGSize
     public let callback: () -> TextTappedCallback
-
+    
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
     }
-
-    private let enabledDetectors: [DetectorType] = [.address, .date, .phoneNumber, .url, .transitInformation]
+    
+    private let enabledDetectors: [DetectorType] = [
+        .address, .date, .phoneNumber, .url, .transitInformation
+    ]
+    
     private var maxWidth: CGFloat {
-        size.width * (UIDevice.isLandscape ? 0.75 : 0.6)
+        size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
     }
     
     private var action: TextTappedCallback {
@@ -45,16 +48,18 @@ public struct TextCell: View {
                     .stroke(
                         cellStyle.cellBorderColor,
                         lineWidth: cellStyle.cellBorderWidth
-                    )
+                )
                     .shadow(
                         color: cellStyle.cellShadowColor,
                         radius: cellStyle.cellShadowRadius
-                    )
-            )
+                )
+        )
     }
     
     private var attributedText: some View {
-        AttributedText(text: text, width: maxWidth) {
+        let textStyle = cellStyle.attributedTextStyle
+        
+        return AttributedText(text: text, width: maxWidth) {
             
             $0.enabledDetectors = self.enabledDetectors
             $0.didSelectAddress = self.action.didSelectAddress
@@ -62,11 +67,11 @@ public struct TextCell: View {
             $0.didSelectPhoneNumber = self.action.didSelectPhoneNumber
             $0.didSelectURL = self.action.didSelectURL
             $0.didSelectTransitInformation = self.action.didSelectTransitInformation
-//            $0.didSelectMention = self.action.didSelectMention
-//            $0.didSelectHashtag = self.action.didSelectHashtag
+            //            $0.didSelectMention = self.action.didSelectMention
+            //            $0.didSelectHashtag = self.action.didSelectHashtag
             
-            $0.font = .systemFont(ofSize: 17)
-            $0.textColor = .white // TODO: Configure color
+            $0.font = textStyle.font.withWeight(textStyle.fontWeight)
+            $0.textColor = textStyle.textColor
             $0.textAlignment = self.message.isSender ? .right : .left
         }
         .padding(cellStyle.textPadding)
@@ -77,17 +82,20 @@ public struct TextCell: View {
                 .stroke(
                     cellStyle.cellBorderColor,
                     lineWidth: cellStyle.cellBorderWidth
-                )
+            )
                 .shadow(
                     color: cellStyle.cellShadowColor,
                     radius: cellStyle.cellShadowRadius
-                )
+            )
         )
     }
     
     public var body: some View {
         Group {
-            if AttributeDetective(text: text, enabledDetectors: enabledDetectors).doesContain() {
+            if AttributeDetective(
+                text: text,
+                enabledDetectors: enabledDetectors
+            ).doesContain() || text.containsHtml() {
                 self.attributedText
             } else {
                 self.defaultText

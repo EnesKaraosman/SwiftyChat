@@ -18,9 +18,15 @@ public struct AttributedText: UIViewRepresentable {
     public func makeUIView(context: UIViewRepresentableContext<Self>) -> UILabel { UILabel() }
     
     public func updateUIView(_ uiView: UILabel, context: UIViewRepresentableContext<Self>) {
-        uiView.text = text
-        uiView.preferredMaxLayoutWidth = width
-        uiView.sizeToFit()
-        configuration(uiView)
+        DispatchQueue.main.async {
+            if let attributedText = self.text.htmlToAttributedString {
+                uiView.attributedText = attributedText
+            } else {
+                uiView.text = self.text
+            }
+            self.configuration(uiView)
+            uiView.preferredMaxLayoutWidth = self.width
+            uiView.sizeToFit()
+        }
     }
 }

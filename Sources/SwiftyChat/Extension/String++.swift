@@ -37,15 +37,16 @@ internal extension String {
 }
 
 internal extension String {
-    func htmlAttributedString() -> NSAttributedString? {
-        guard let data = self.data(using: String.Encoding.utf16, allowLossyConversion: false) else { return nil }
-        guard let html = try? NSMutableAttributedString(
-            data: data,
-            options: [.documentType: NSAttributedString.DocumentType.html],
-            documentAttributes: nil
-        ) else { return nil }
-        return html
+    
+    var htmlToAttributedString: NSAttributedString? {
+        guard let data = data(using: .utf8) else { return nil }
+        do {
+            return try NSAttributedString(data: data, options: [.documentType: NSAttributedString.DocumentType.html, .characterEncoding:String.Encoding.utf8.rawValue], documentAttributes: nil)
+        } catch {
+            return nil
+        }
     }
+    
     func containsHtml() -> Bool {
         
         let range = NSRange(location: 0, length: self.utf16.count)
