@@ -17,7 +17,7 @@ public struct ChatView: View {
     private var messageCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
     private var contactCellFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton] = { _, _ in [] }
-    private var onTextTappedCallback: () -> TextTappedCallback = { return TextTappedCallback() }
+    private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
     private var onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void = { (_, _) in }
     
     public init(
@@ -57,9 +57,9 @@ public struct ChatView: View {
     }
     
     /// To listen text tapped events like phone, url, date, address
-    public func onTextTappedCallback(action: @escaping () -> TextTappedCallback) -> ChatView {
+    public func onAttributedTextTappedCallback(action: @escaping () -> AttributedTextTappedCallback) -> ChatView {
         var copy = self
-        copy.onTextTappedCallback = action
+        copy.onAttributedTextTappedCallback = action
         return copy
     }
     
@@ -107,7 +107,7 @@ public struct ChatView: View {
             size: size,
             onQuickReplyItemSelected: self.onQuickReplyItemSelected,
             contactFooterSection: self.contactCellFooterSection,
-            onTextTappedCallback: self.onTextTappedCallback,
+            onTextTappedCallback: self.onAttributedTextTappedCallback,
             onCarouselItemAction: self.onCarouselItemAction
         )
         .onTapGesture {

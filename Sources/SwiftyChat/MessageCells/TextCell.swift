@@ -13,7 +13,7 @@ public struct TextCell: View {
     public let text: String
     public let message: ChatMessage
     public let size: CGSize
-    public let callback: () -> TextTappedCallback
+    public let callback: () -> AttributedTextTappedCallback
     
     @EnvironmentObject var style: ChatMessageCellStyle
     
@@ -29,7 +29,7 @@ public struct TextCell: View {
         size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
     }
     
-    private var action: TextTappedCallback {
+    private var action: AttributedTextTappedCallback {
         return callback()
     }
     

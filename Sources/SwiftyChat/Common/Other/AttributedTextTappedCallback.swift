@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct TextTappedCallback {
+public struct AttributedTextTappedCallback {
     
     public var didSelectAddress: (_ addressComponents: [String: String]) -> Void
     public var didSelectDate: (_ date: Date) -> Void

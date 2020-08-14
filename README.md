@@ -15,10 +15,10 @@ Simple Chat Interface to quick start with [built-in](#message-kinds) message cel
 Fully written in pure SwiftUI.
 
 ### Features
-- [x] User Avatar (with different position options, optional usage)
+- [x] HTML String support (that contains address, date, phoneNumber, url, text is automatically scanned)
 - [x] Landscape orientation  support (autoscales message cells with the given `cellWidth` property, if exists)
+- [x] User Avatar (with different position options, optional usage)
 - [ ] Scroll To Bottom
-- [ ] HTML String support
 
 
 ### Quick Preview
@@ -75,6 +75,15 @@ ChatView(messages: $messages) { (proxy) -> AnyView in
     switch message.messageKind {
         case ..
     }
+}
+// ▼ Optional, Implement to be notified when related attributed text typed
+// like address, date, phoneNumber, url
+.onAttributedTextTappedCallback {
+    AttributedTextTappedCallback(
+        didSelectDate: { print($0) },
+        didSelectPhoneNumber: { print($0) },
+        didSelectURL: { print($0) }
+    )
 }
 // ▼ Optional
 .messageCellContextMenu { message -> AnyView in

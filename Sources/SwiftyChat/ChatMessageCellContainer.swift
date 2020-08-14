@@ -15,7 +15,7 @@ public struct ChatMessageCellContainer: View {
     
     public let onQuickReplyItemSelected: (QuickReplyItem) -> Void
     public let contactFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton]
-    public let onTextTappedCallback: () -> TextTappedCallback
+    public let onTextTappedCallback: () -> AttributedTextTappedCallback
     public let onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void
     
     func messageCell() -> some View {
