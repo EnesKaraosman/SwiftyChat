@@ -20,6 +20,7 @@ Fully written in pure SwiftUI.
 - [x] Landscape orientation  support (autoscales message cells with the given `cellWidth` property, if exists)
 - [x] User Avatar (with different position options, optional usage)
 - [ ] Scroll To Bottom
+- [ ] Dismiss keyboard (by swiping or tapping outside)
 
 
 ### Quick Preview
