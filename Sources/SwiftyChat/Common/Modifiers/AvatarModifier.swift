@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
 
 public struct AvatarModifier: ViewModifier {
     
@@ -78,7 +77,7 @@ public struct AvatarModifier: ViewModifier {
     private var avatarImage: some View {
         Group {
             if user.avatarURL != nil && currentStyle.imageStyle.imageSize.width > 0 {
-                KFImage(user.avatarURL).resizable()
+                Image(uiImage: .checkmark).resizable()
             } else if user.avatar != nil && currentStyle.imageStyle.imageSize.width > 0 {
                 Image(uiImage: user.avatar!).resizable()
             } else {

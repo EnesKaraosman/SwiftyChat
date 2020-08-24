@@ -7,7 +7,6 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
 
 public struct ImageCell: View {
     
@@ -74,7 +73,7 @@ public struct ImageCell: View {
          
          So for now we use fixed width & scale height properly.
          */
-        return KFImage(url)
+        return Image(uiImage: .checkmark)
             .resizable()
             .scaledToFill()
             .frame(width: imageWidth)

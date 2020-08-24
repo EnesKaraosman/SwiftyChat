@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
 
 public struct CarouselItemButton: Identifiable {
     public let id = UUID()
@@ -71,7 +70,7 @@ public struct CarouselItemView: View {
     public var body: some View {
         VStack {
             
-            KFImage(item.imageURL)
+            Image(uiImage: .checkmark)
                 .resizable()
                 .scaledToFit()
             
