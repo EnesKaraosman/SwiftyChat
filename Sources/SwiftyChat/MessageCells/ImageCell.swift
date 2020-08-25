@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SDWebImageSwiftUI
 
 public struct ImageCell: View {
     
@@ -73,9 +74,9 @@ public struct ImageCell: View {
          
          So for now we use fixed width & scale height properly.
          */
-        return Image(uiImage: .checkmark)
+        return WebImage(url: url)
             .resizable()
-            .scaledToFill()
+            .scaledToFit()
             .frame(width: imageWidth)
             .background(cellStyle.cellBackgroundColor)
             .cornerRadius(cellStyle.cellCornerRadius)
@@ -95,4 +96,3 @@ public struct ImageCell: View {
     }
     
 }
-

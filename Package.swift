@@ -6,7 +6,8 @@ import PackageDescription
 let package = Package(
     name: "SwiftyChat",
     platforms: [
-        .iOS(.v13)
+        .iOS(.v13),
+        .macOS(.v10_15)
     ],
     products: [
         // Products define the executables and libraries produced by a package, and make them visible to other packages.
@@ -19,7 +20,8 @@ let package = Package(
         
         // Image downloading library
         
-//        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "1.5.0")
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "1.5.0"),
+        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.8.0")
         
         // Introspecting underlying UIKit components
 //        .package(url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.0")
@@ -30,7 +32,7 @@ let package = Package(
         .target(
             name: "SwiftyChat",
             dependencies: [
-//                .byName(name: "Introspect")
+                "SDWebImageSwiftUI", "SDWebImage"
             ]
         )
     ]
