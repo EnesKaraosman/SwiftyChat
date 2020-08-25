@@ -79,6 +79,7 @@ public struct AvatarModifier: ViewModifier {
         Group {
             if user.avatarURL != nil && currentStyle.imageStyle.imageSize.width > 0 {
                 WebImage(url: user.avatarURL!)
+                    .placeholder(content:  { Text("Loading…") })
                     .resizable()
             } else if user.avatar != nil && currentStyle.imageStyle.imageSize.width > 0 {
                 Image(uiImage: user.avatar!).resizable()
