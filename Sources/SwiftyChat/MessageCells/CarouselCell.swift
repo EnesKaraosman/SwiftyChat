@@ -95,7 +95,8 @@ public struct CarouselItemView: View {
                 
             }
             .fixedSize(horizontal: false, vertical: true)
-            .padding(8)
+            .padding([.top, .bottom], 12.5)
+            .padding([.leading, .trailing], 18)
             
             HStack {
                 ForEach(item.buttons) { (button) in
