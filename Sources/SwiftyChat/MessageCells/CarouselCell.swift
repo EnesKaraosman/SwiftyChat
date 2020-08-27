@@ -86,17 +86,19 @@ public struct CarouselItemView: View {
                     .font(cellStyle.titleLabelStyle.font)
                     .foregroundColor(cellStyle.titleLabelStyle.textColor)
                     .multilineTextAlignment(.leading)
+                    .padding([.top, .bottom], 12.5)
+                    .padding([.leading, .trailing], 18)
                 
                 Text(item.subtitle)
                     .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
                     .font(cellStyle.subtitleLabelStyle.font)
                     .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
                     .multilineTextAlignment(.leading)
+                    .padding([.bottom], 12.5)
+                    .padding([.leading, .trailing], 18)
                 
             }
             .fixedSize(horizontal: false, vertical: true)
-            .padding([.top, .bottom], 12.5)
-            .padding([.leading, .trailing], 18)
             
             HStack {
                 ForEach(item.buttons) { (button) in
