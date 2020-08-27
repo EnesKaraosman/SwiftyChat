@@ -72,7 +72,7 @@ public struct CarouselItemView: View {
     }
     
     public var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             
             
             WebImage(url: item.imageURL)
