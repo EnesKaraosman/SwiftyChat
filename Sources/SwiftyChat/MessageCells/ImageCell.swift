@@ -15,6 +15,7 @@ public struct ImageCell: View {
     public let imageLoadingType: ImageLoadingKind
     public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
+    @State var isAnimating: Bool = true
     
     private var imageWidth: CGFloat {
         cellStyle.cellWidth(size)
@@ -74,7 +75,7 @@ public struct ImageCell: View {
          
          So for now we use fixed width & scale height properly.
          */
-        return WebImage(url: url)
+        return WebImage(url: url, isAnimating: $isAnimating)
             .resizable()
             .scaledToFit()
             .frame(width: imageWidth)

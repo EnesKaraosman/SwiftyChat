@@ -34,6 +34,7 @@ public struct CarouselCell: View {
     public let message: ChatMessage
     public let onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void
     
+    @State var isAnimating: Bool = true
     
     public var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
@@ -42,10 +43,9 @@ public struct CarouselCell: View {
                     CarouselItemView(
                         item: item,
                         size: self.size,
-                        isSender: self.message.isSender
-                    ) { button in
-                        self.onCarouselItemAction(button, self.message)
-                    }
+                        isSender: self.message.isSender,
+                        callback: { button in self.onCarouselItemAction(button, self.message) },
+                        isAnimating: self.$isAnimating)
                 }
             }
         }
@@ -59,6 +59,7 @@ public struct CarouselItemView: View {
     public let isSender: Bool
     public let callback: (CarouselItemButton) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
+    @Binding var isAnimating: Bool
     
     private var cellStyle: CarouselCellStyle {
         style.carouselCellStyle
@@ -75,8 +76,10 @@ public struct CarouselItemView: View {
         VStack(alignment: .leading) {
             
             
-            WebImage(url: item.imageURL)
+            WebImage(url: item.imageURL, isAnimating: $isAnimating)
+                .placeholder { Text("…") }
                 .resizable()
+                
             .frame(width: itemWidth, height: 167)
                 .clipped()
                 .scaledToFill()
