@@ -12,6 +12,8 @@ public struct AvatarModifier: ViewModifier {
     
     public let message: ChatMessage
     @EnvironmentObject var style: ChatMessageCellStyle
+    
+    @State var isAnimating: Bool = true
 
     private var isSender: Bool { message.isSender }
     
@@ -82,7 +84,7 @@ public struct AvatarModifier: ViewModifier {
     private var avatarImage: some View {
         Group {
             if user.avatarURL != nil && currentStyle.imageStyle.imageSize.width > 0 {
-                WebImage(url: user.avatarURL!)
+                WebImage(url: user.avatarURL!, isAnimating: $isAnimating)
                     .placeholder(content:  { Text("Loading…") })
                     .resizable()
             } else if user.avatar != nil && currentStyle.imageStyle.imageSize.width > 0 {
