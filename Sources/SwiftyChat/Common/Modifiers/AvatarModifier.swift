@@ -45,6 +45,10 @@ public struct AvatarModifier: ViewModifier {
         }
     }
     
+    private var onMessageTopLeft: some View {
+        avatar
+    }
+    
     private var onMessageCenter: some View {
         VStack {
             Spacer()
@@ -94,27 +98,37 @@ public struct AvatarModifier: ViewModifier {
         case .alignToMessageTop: return onMessageTop.embedInAnyView()
         case .alignToMessageCenter: return onMessageCenter.embedInAnyView()
         case .alignToMessageBottom: return onMessageBottom.embedInAnyView()
+        case .alignToMessageTopLeft: return onMessageTopLeft.embedInAnyView()
         }
     }
     
-    private var avatarSpacing: CGFloat {
+    private var avatarSpacing: CGPoint {
         switch currentAvatarPosition {
-        case .alignToMessageTop(let spacing): return spacing
-        case .alignToMessageCenter(let spacing): return spacing
-        case .alignToMessageBottom(let spacing): return spacing
+        case .alignToMessageTop(let spacing): return .init(x: 0, y: spacing)
+        case .alignToMessageCenter(let spacing): return .init(x: 0, y: spacing)
+        case .alignToMessageBottom(let spacing): return .init(x: 0, y: spacing)
+        case .alignToMessageTopLeft(let offset): return offset
         }
     }
     
     public func body(content: Content) -> some View {
-        HStack(spacing: avatarSpacing) {
-            if !isSender {
+        if case .alignToMessageTopLeft = currentAvatarPosition {
+            return ZStack {
+                content
                 positionedAvatar.zIndex(2)
-            }
-            content
-            if isSender {
-                positionedAvatar.zIndex(2)
-            }
+            }.embedInAnyView()
+        } else {
+            return HStack(spacing: avatarSpacing.x) {
+                if !isSender {
+                    positionedAvatar.zIndex(2)
+                }
+                content
+                if isSender {
+                    positionedAvatar.zIndex(2)
+                }
+            }.embedInAnyView()
         }
+        
     }
     
 }

@@ -11,6 +11,7 @@ public enum AvatarPosition {
     case alignToMessageCenter(spacing: CGFloat)
     case alignToMessageTop(spacing: CGFloat)
     case alignToMessageBottom(spacing: CGFloat)
+    case alignToMessageTopLeft(offset: CGPoint)
 //    case onMessageBottomCorner(spacing: CGFloat)
 }
 
