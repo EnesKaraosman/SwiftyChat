@@ -67,6 +67,9 @@ public struct CarouselItemView: View {
     private var itemWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
+    private var itemHeight: CGFloat {
+        cellStyle.cellHeight(size)
+    }
     
     public var body: some View {
         VStack {
@@ -81,13 +84,13 @@ public struct CarouselItemView: View {
                     .fontWeight(cellStyle.titleLabelStyle.fontWeight)
                     .font(cellStyle.titleLabelStyle.font)
                     .foregroundColor(cellStyle.titleLabelStyle.textColor)
-                    .multilineTextAlignment(.center)
+                    .multilineTextAlignment(.leading)
                 
                 Text(item.subtitle)
                     .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
                     .font(cellStyle.subtitleLabelStyle.font)
                     .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
-                    .multilineTextAlignment(.center)
+                    .multilineTextAlignment(.leading)
                 
             }
             .fixedSize(horizontal: false, vertical: true)
@@ -111,7 +114,7 @@ public struct CarouselItemView: View {
             
         }
         .background(self.cellStyle.cellBackgroundColor)
-        .frame(width: itemWidth)
+        .frame(width: itemWidth, height: itemHeight)
         .cornerRadius(self.cellStyle.cellCornerRadius)
         .overlay(
             RoundedRectangle(cornerRadius: self.cellStyle.cellCornerRadius)

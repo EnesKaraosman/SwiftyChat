@@ -20,6 +20,7 @@ public struct CarouselCellStyle: CommonViewStyle {
     
     /// Cell width in a given available proxy (GeometryReader)
     public let cellWidth: (CGSize) -> CGFloat
+    public let cellHeight: (CGSize) -> CGFloat
     
     // MARK: - CellContainerStyle
     public let cellBackgroundColor: Color
@@ -44,6 +45,7 @@ public struct CarouselCellStyle: CommonViewStyle {
         buttonBackgroundColor: Color = .blue,
         buttonTitleFontWeight: Font.Weight = .semibold,
         cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellHeight: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: Color = Color.secondary.opacity(0.1),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
@@ -58,6 +60,7 @@ public struct CarouselCellStyle: CommonViewStyle {
         self.buttonTitleFontWeight = buttonTitleFontWeight
         self.buttonBackgroundColor = buttonBackgroundColor
         self.cellWidth = cellWidth
+        self.cellHeight = cellHeight
         self.cellBackgroundColor = cellBackgroundColor
         self.cellCornerRadius = cellCornerRadius
         self.cellBorderColor = cellBorderColor
