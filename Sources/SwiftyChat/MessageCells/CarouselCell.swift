@@ -115,6 +115,7 @@ public struct CarouselItemView: View {
         }
         .background(self.cellStyle.cellBackgroundColor)
         .frame(width: itemWidth, height: itemHeight)
+        .clipped()
         .cornerRadius(self.cellStyle.cellCornerRadius)
         .overlay(
             RoundedRectangle(cornerRadius: self.cellStyle.cellCornerRadius)
