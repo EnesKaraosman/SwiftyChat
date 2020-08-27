@@ -77,6 +77,7 @@ public struct CarouselItemView: View {
             
             WebImage(url: item.imageURL)
                 .resizable()
+            .frame(width: itemWidth, height: 167)
                 .clipped()
                 .scaledToFill()
             
