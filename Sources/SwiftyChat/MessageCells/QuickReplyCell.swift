@@ -44,45 +44,56 @@ public struct QuickReplyCell: View {
     
     public var body: some View {
         conditionalStack(isVStack: totalOptionsLength > self.cellStyle.characterLimitToChangeStackOrientation) {
-            ForEach(0..<quickReplies.count) { idx in
+            return ForEach(0..<quickReplies.count) { idx -> AnyView in
 
-                Button(action: {}) {
-                    Text(self.quickReplies[idx].title)
-                        .fontWeight(
-                            idx == self.selectedIndex ? self.cellStyle.selectedItemFontWeight : self.cellStyle.unselectedItemFontWeight
-                        )
-                        .font(
-                            idx == self.selectedIndex ? self.cellStyle.selectedItemFont : self.cellStyle.unselectedItemFont
-                        )
-                        .padding(self.cellStyle.itemPadding)
-                        .frame(height: self.cellStyle.itemHeight)
-                        .background(self.itemBackground(for: idx))
-                        .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
-                        .overlay(
-                            RoundedRectangle(cornerRadius: self.cellStyle.itemCornerRadius)
-                                .stroke(
-                                    self.colors(selectedIndex: self.selectedIndex)[idx],
-                                    lineWidth: idx == self.selectedIndex ?
-                                        self.cellStyle.selectedItemBorderWidth :
-                                        self.cellStyle.unselectedItemBorderWidth
-                                )
-                                .shadow(
-                                    color: idx == self.selectedIndex ?
-                                        self.cellStyle.selectedItemShadowColor :
-                                        self.cellStyle.unselectedItemShadowColor,
-                                    radius: idx == self.selectedIndex ?
-                                        self.cellStyle.selectedItemShadowRadius :
-                                        self.cellStyle.unselectedItemShadowRadius
-                                )
-                        )
-                }
-                .simultaneousGesture(
-                    TapGesture().onEnded { _ in
-                        self.selectedIndex = idx
-                        self.isDisabled = true
-                        self.quickReplySelected(self.quickReplies[idx])
+                let isSelected: Bool = idx == self.selectedIndex
+                let fontWeight: Font.Weight = isSelected ?
+                    self.cellStyle.selectedItemFontWeight :
+                    self.cellStyle.unselectedItemFontWeight
+                let font: Font = isSelected ?
+                    self.cellStyle.selectedItemFont :
+                    self.cellStyle.unselectedItemFont
+                let borderWidth: CGFloat = isSelected ?
+                    self.cellStyle.selectedItemBorderWidth :
+                    self.cellStyle.unselectedItemBorderWidth
+                let shadowColor: Color = isSelected ?
+                    self.cellStyle.selectedItemShadowColor :
+                    self.cellStyle.unselectedItemShadowColor
+                let shadowRadius: CGFloat = isSelected ?
+                    self.cellStyle.selectedItemShadowRadius :
+                    self.cellStyle.unselectedItemShadowRadius
+                let cornerRadius: CGFloat = isSelected ?
+                    self.cellStyle.selectedItemCornerRadius :
+                    self.cellStyle.unselectedItemCornerRadius
+                
+                
+                let button =
+                    Button(action: {}) {
+                        Text(self.quickReplies[idx].title)
+                            .fontWeight(fontWeight)
+                            .font(font)
+                            .padding(self.cellStyle.itemPadding)
+                            .frame(height: self.cellStyle.itemHeight)
+                            .background(self.itemBackground(for: idx))
+                            .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
+                            .overlay(
+                                RoundedRectangle(cornerRadius: cornerRadius)
+                                    .stroke(
+                                        self.colors(selectedIndex: self.selectedIndex)[idx],
+                                        lineWidth: borderWidth
+                                    )
+                                    .shadow(color: shadowColor, radius: shadowRadius)
+                            )
                     }
-                )
+                    .simultaneousGesture(
+                        TapGesture().onEnded { _ in
+                            self.selectedIndex = idx
+                            self.isDisabled = true
+                            self.quickReplySelected(self.quickReplies[idx])
+                        }
+                    )
+                
+                return AnyView(button)
                 
             }
         }.disabled(isDisabled)
