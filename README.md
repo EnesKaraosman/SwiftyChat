@@ -19,8 +19,8 @@ Fully written in pure SwiftUI.
 - [x] Attributed string support that contains address, date, phoneNumber, url (text is automatically scanned)
 - [x] Landscape orientation  support (autoscales message cells with the given `cellWidth` property, if exists)
 - [x] User Avatar (with different position options, optional usage)
-- [ ] Scroll To Bottom
-- [ ] Dismiss keyboard (by swiping or tapping outside)
+- [x] Dismiss keyboard (on tapping outside).
+- [ ] Scroll To Bottom.
 
 
 ### Quick Preview

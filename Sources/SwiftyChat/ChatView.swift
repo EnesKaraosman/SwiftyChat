@@ -97,7 +97,9 @@ public struct ChatView: View {
 
             self.inputView(geometry)
 
-        }.keyboardAwarePadding()
+        }
+        .keyboardAwarePadding()
+        .dismissKeyboardOnTappingOutside()
     }
     
     // MARK: - List Item
