@@ -17,14 +17,15 @@ public struct QuickReplyCellStyle {
     public let selectedItemFontWeight: Font.Weight
     public let selectedItemBackgroundColor: Color
     public let selectedItemBorderWidth: CGFloat
+    public let selectedItemBorderColor: Color
     public let selectedItemCornerRadius: CGFloat
     public let selectedItemShadowColor: Color
     public let selectedItemShadowRadius: CGFloat
     
-    public let unselectedItemColor: Color
+    public let unselectedItemColor: [[Color]]
     public let unselectedItemFont: Font
     public let unselectedItemFontWeight: Font.Weight
-    public let unselectedItemBackgroundColor: Color
+    public let unselectedItemBackgroundColor: [[Color]]
     public let unselectedItemBorderWidth: CGFloat
     public let unselectedItemCornerRadius: CGFloat
     public let unselectedItemShadowColor: Color
@@ -39,15 +40,16 @@ public struct QuickReplyCellStyle {
         selectedItemColor: Color = .green,
         selectedItemFont: Font = .callout,
         selectedItemFontWeight: Font.Weight = .semibold,
-        selectedItemBackgroundColor: Color = Color.green.opacity(0.3),
+        selectedItemBackgroundColor: Color = Color.black,
         selectedItemBorderWidth: CGFloat = 0,
+        selectedItemBorderColor: Color = .white,
         selectedItemCornerRadius: CGFloat = 8,
         selectedItemShadowColor: Color = .secondary,
         selectedItemShadowRadius: CGFloat = 1,
-        unselectedItemColor: Color = .primary,
+        unselectedItemColor: [[Color]] = [[.primary]],
         unselectedItemFont: Font = .callout,
         unselectedItemFontWeight: Font.Weight = .semibold,
-        unselectedItemBackgroundColor: Color = .clear,
+        unselectedItemBackgroundColor: [[Color]] = [[.clear]],
         unselectedItemBorderWidth: CGFloat = 0,
         unselectedItemCornerRadius: CGFloat = 8,
         unselectedItemShadowColor: Color = .secondary,
@@ -62,6 +64,7 @@ public struct QuickReplyCellStyle {
         self.selectedItemFontWeight = selectedItemFontWeight
         self.selectedItemBackgroundColor = selectedItemBackgroundColor
         self.selectedItemBorderWidth = selectedItemBorderWidth
+        self.selectedItemBorderColor = selectedItemBorderColor
         self.selectedItemCornerRadius = selectedItemCornerRadius
         self.selectedItemShadowColor = selectedItemShadowColor
         self.selectedItemShadowRadius = selectedItemShadowRadius
@@ -69,13 +72,13 @@ public struct QuickReplyCellStyle {
         self.unselectedItemFont = unselectedItemFont
         self.unselectedItemFontWeight = unselectedItemFontWeight
         self.unselectedItemBackgroundColor = unselectedItemBackgroundColor
-        self.unselectedItemBorderWidth = selectedItemBorderWidth
-        self.unselectedItemCornerRadius = selectedItemCornerRadius
-        self.unselectedItemShadowColor = selectedItemShadowColor
+        self.unselectedItemBorderWidth = unselectedItemBorderWidth
+        self.unselectedItemCornerRadius = unselectedItemCornerRadius
+        self.unselectedItemShadowColor = unselectedItemShadowColor
         self.unselectedItemShadowRadius = unselectedItemShadowRadius
         self.itemPadding = itemPadding
-        self.itemHeight = itemHeight
         self.itemWidth = itemWidth
+        self.itemHeight = itemHeight
     }
     
 }
