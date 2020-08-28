@@ -31,6 +31,7 @@ public struct QuickReplyCellStyle {
     public let unselectedItemShadowRadius: CGFloat
     
     public let itemPadding: CGFloat
+    public let itemWidth: CGFloat?
     public let itemHeight: CGFloat
     
     public init(
@@ -52,6 +53,7 @@ public struct QuickReplyCellStyle {
         unselectedItemShadowColor: Color = .secondary,
         unselectedItemShadowRadius: CGFloat = 1,
         itemPadding: CGFloat = 8,
+        itemWidth: CGFloat? = 215,
         itemHeight: CGFloat = 40
     ) {
         self.characterLimitToChangeStackOrientation = characterLimitToChangeStackOrientation
@@ -73,6 +75,7 @@ public struct QuickReplyCellStyle {
         self.unselectedItemShadowRadius = unselectedItemShadowRadius
         self.itemPadding = itemPadding
         self.itemHeight = itemHeight
+        self.itemWidth = itemWidth
     }
     
 }

@@ -73,7 +73,7 @@ public struct QuickReplyCell: View {
                             .fontWeight(fontWeight)
                             .font(font)
                             .padding(self.cellStyle.itemPadding)
-                            .frame(height: self.cellStyle.itemHeight)
+                            .frame(width: self.cellStyle.itemWidth, height: self.cellStyle.itemHeight)
                             .background(self.itemBackground(for: idx))
                             .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
                             .overlay(
