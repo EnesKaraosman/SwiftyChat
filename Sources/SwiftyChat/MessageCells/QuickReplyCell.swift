@@ -90,6 +90,9 @@ public struct QuickReplyCell: View {
                 let borderWidth: CGFloat = isSelected ?
                     self.cellStyle.selectedItemBorderWidth :
                     self.cellStyle.unselectedItemBorderWidth
+                let borderColor: Color = isSelected ?
+                        self.cellStyle.selectedItemBorderColor :
+                        .clear
                 let shadowColor: Color = isSelected ?
                     self.cellStyle.selectedItemShadowColor :
                     self.cellStyle.unselectedItemShadowColor
@@ -113,7 +116,7 @@ public struct QuickReplyCell: View {
                             .overlay(
                                 RoundedRectangle(cornerRadius: cornerRadius)
                                     .stroke(
-                                        color,
+                                        borderColor,
                                         lineWidth: borderWidth
                                     )
                                     .shadow(color: shadowColor, radius: shadowRadius)
