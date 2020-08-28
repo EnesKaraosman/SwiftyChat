@@ -36,7 +36,7 @@ public struct QuickReplyCell: View {
     private func itemBackground(for index: Int) -> some View {
         let backgroundColor: Color = (index == self.selectedIndex ? self.cellStyle.selectedItemBackgroundColor : self.cellStyle.unselectedItemBackgroundColor)
         
-        return backgroundColor.cornerRadius(idx == self.selectedIndex ?
+        return backgroundColor.cornerRadius(index == self.selectedIndex ?
             self.cellStyle.selectedItemCornerRadius :
             self.cellStyle.unselectedItemCornerRadius
         )
