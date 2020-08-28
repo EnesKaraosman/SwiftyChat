@@ -35,7 +35,11 @@ public struct QuickReplyCell: View {
     
     private func itemBackground(for index: Int) -> some View {
         let backgroundColor: Color = (index == self.selectedIndex ? self.cellStyle.selectedItemBackgroundColor : self.cellStyle.unselectedItemBackgroundColor)
-        return backgroundColor.cornerRadius(self.cellStyle.itemCornerRadius)
+        
+        return backgroundColor.cornerRadius(idx == self.selectedIndex ?
+            self.cellStyle.selectedItemCornerRadius :
+            self.cellStyle.unselectedItemCornerRadius
+        )
     }
     
     public var body: some View {
@@ -58,11 +62,17 @@ public struct QuickReplyCell: View {
                             RoundedRectangle(cornerRadius: self.cellStyle.itemCornerRadius)
                                 .stroke(
                                     self.colors(selectedIndex: self.selectedIndex)[idx],
-                                    lineWidth: self.cellStyle.itemBorderWidth
+                                    lineWidth: idx == self.selectedIndex ?
+                                        self.cellStyle.selectedItemBorderWidth :
+                                        self.cellStyle.unselectedItemBorderWidth
                                 )
                                 .shadow(
-                                    color: self.cellStyle.itemShadowColor,
-                                    radius: self.cellStyle.itemShadowRadius
+                                    color: idx == self.selectedIndex ?
+                                        self.cellStyle.selectedItemShadowColor :
+                                        self.cellStyle.unselectedItemShadowColor,
+                                    radius: idx == self.selectedIndex ?
+                                        self.cellStyle.selectedItemShadowRadius :
+                                        self.cellStyle.unselectedItemShadowRadius
                                 )
                         )
                 }
