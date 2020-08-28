@@ -26,17 +26,20 @@ public struct QuickReplyCell: View {
     @State private var selectedIndex: Int?
     
     private func colors(selectedIndex: Int?) -> [Color] {
-        let count = quickReplies.count
         let colorMatrix = (1...quickReplies.count).map { idx -> [Color] in
             if let selectedIndex = selectedIndex, idx == selectedIndex {
                 return [self.cellStyle.selectedItemColor]
             }
             let colorMatrix: [[Color]] = self.cellStyle.unselectedItemColor
+            let count = colorMatrix.count
+            if idx >= count {
+                return colorMatrix[idx % count]
+            }
             let itemColors = colorMatrix[idx]
             return itemColors
         }
         
-        return colorMatrix[count - 1]
+        return colorMatrix[selectedIndex ?? 0]
     }
     
     private func itemBackground(for index: Int) -> some View {
@@ -46,10 +49,15 @@ public struct QuickReplyCell: View {
                 .cornerRadius(self.cellStyle.selectedItemCornerRadius)
         }
         
-        let count = quickReplies.count
         let colorMatrix: [[Color]] = self.cellStyle.unselectedItemBackgroundColor
+        let count = colorMatrix.count
         
-        let backgroundColors = colorMatrix[count - 1]
+        let backgroundColors: [Color]
+        if index >= count {
+            backgroundColors = colorMatrix[index % count]
+        } else {
+            backgroundColors = colorMatrix[count - 1]
+        }
         
         let backgroundColor = backgroundColors[index]
         
