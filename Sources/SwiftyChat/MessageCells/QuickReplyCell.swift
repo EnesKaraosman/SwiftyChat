@@ -25,6 +25,15 @@ public struct QuickReplyCell: View {
     @State private var isDisabled = false
     @State private var selectedIndex: Int?
     
+    private func color(for index: Int, selectedIndex: Int?) -> Color {
+        let colors = self.colors(selectedIndex: selectedIndex)
+        let count = colors.count
+        if index >= count {
+            return colors[index % count]
+        }
+        return colors[index]
+    }
+    
     private func colors(selectedIndex: Int?) -> [Color] {
         let colorMatrix = (1...quickReplies.count).map { idx -> [Color] in
             if let selectedIndex = selectedIndex, idx == selectedIndex {
@@ -91,7 +100,7 @@ public struct QuickReplyCell: View {
                     self.cellStyle.selectedItemCornerRadius :
                     self.cellStyle.unselectedItemCornerRadius
                 
-                
+                let color = self.color(for: idx, selectedIndex: self.selectedIndex)
                 let button =
                     Button(action: {}) {
                         Text(self.quickReplies[idx].title)
@@ -100,11 +109,11 @@ public struct QuickReplyCell: View {
                             .padding(self.cellStyle.itemPadding)
                             .frame(width: self.cellStyle.itemWidth, height: self.cellStyle.itemHeight)
                             .background(self.itemBackground(for: idx))
-                            .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
+                            .foregroundColor(color)
                             .overlay(
                                 RoundedRectangle(cornerRadius: cornerRadius)
                                     .stroke(
-                                        self.colors(selectedIndex: self.selectedIndex)[idx],
+                                        color,
                                         lineWidth: borderWidth
                                     )
                                     .shadow(color: shadowColor, radius: shadowRadius)
