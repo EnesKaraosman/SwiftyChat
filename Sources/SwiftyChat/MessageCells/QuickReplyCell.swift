@@ -124,6 +124,7 @@ public struct QuickReplyCell: View {
                             .lineLimit(5)
                             .multilineTextAlignment(.center)
                     }
+                    .frame(width: self.cellStyle.itemWidth, height: self.cellStyle.itemHeight)
                     .lineLimit(5)
                     .multilineTextAlignment(.center)
                     .simultaneousGesture(
