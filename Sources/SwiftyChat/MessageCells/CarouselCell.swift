@@ -125,7 +125,9 @@ public struct CarouselItemView: View {
         .cornerRadius(self.cellStyle.cellCornerRadius)
         .simultaneousGesture(
             TapGesture().onEnded { _ in
-//                self.callback(button)
+                if let button = self.item.buttons.first {
+                    self.callback(button)
+                }
             }
         )
         .overlay(
