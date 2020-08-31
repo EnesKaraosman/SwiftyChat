@@ -109,7 +109,6 @@ public struct QuickReplyCell: View {
                         Text(self.quickReplies[idx].title)
                             .fontWeight(fontWeight)
                             .font(font)
-                            .padding(self.cellStyle.itemPadding)
                             .background(self.itemBackground(for: idx))
                             .foregroundColor(color)
                             .overlay(
@@ -123,6 +122,7 @@ public struct QuickReplyCell: View {
                             .lineLimit(5)
                             .multilineTextAlignment(.center)
                     }
+                    .padding(self.cellStyle.itemPadding)
                     .frame(width: self.cellStyle.itemWidth, height: self.cellStyle.itemHeight)
                     .lineLimit(5)
                     .multilineTextAlignment(.center)
