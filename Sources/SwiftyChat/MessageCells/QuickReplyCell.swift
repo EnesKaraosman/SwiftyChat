@@ -121,8 +121,8 @@ public struct QuickReplyCell: View {
                                     )
                                     .shadow(color: shadowColor, radius: shadowRadius)
                             )
-                            .lineLimit(nil)
-                            .multilineTextAlignment(.leading)
+                            .lineLimit(5)
+                            .multilineTextAlignment(.center)
                     }
                     .simultaneousGesture(
                         TapGesture().onEnded { _ in
