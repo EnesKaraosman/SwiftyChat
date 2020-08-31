@@ -114,11 +114,13 @@ public struct AvatarModifier: ViewModifier {
     }
     
     public func body(content: Content) -> some View {
-        if case .alignToMessageTopLeft = currentAvatarPosition {
-            return ZStack {
+        if case .alignToMessageTopLeft(let offset) = currentAvatarPosition {
+            return ZStack(alignment: .topLeading) {
                 content
-                positionedAvatar.zIndex(2)
-            }.embedInAnyView()
+                positionedAvatar.zIndex(2).offset(x: offset.x, y: offset.y)
+            }
+            .padding(10)
+            .embedInAnyView()
         } else {
             return HStack(spacing: avatarSpacing.x) {
                 if !isSender {
