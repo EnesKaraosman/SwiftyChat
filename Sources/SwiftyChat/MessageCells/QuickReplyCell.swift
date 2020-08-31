@@ -121,12 +121,16 @@ public struct QuickReplyCell: View {
                                     )
                                     .shadow(color: shadowColor, radius: shadowRadius)
                             )
+                            .lineLimit(nil)
+                            .multilineTextAlignment(.leading)
                     }
                     .simultaneousGesture(
                         TapGesture().onEnded { _ in
-                            self.selectedIndex = idx
-                            self.isDisabled = true
-                            self.quickReplySelected(self.quickReplies[idx])
+                            withAnimation {
+                                self.selectedIndex = idx
+                                self.isDisabled = true
+                                self.quickReplySelected(self.quickReplies[idx])
+                            }
                         }
                     )
                 

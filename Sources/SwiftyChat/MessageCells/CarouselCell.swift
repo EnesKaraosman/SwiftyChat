@@ -79,8 +79,7 @@ public struct CarouselItemView: View {
             WebImage(url: item.imageURL, isAnimating: $isAnimating)
                 .placeholder { Text("…") }
                 .resizable()
-                
-            .frame(width: itemWidth, height: 167)
+                .frame(width: itemWidth, height: 167)
                 .clipped()
                 .scaledToFill()
             
@@ -124,6 +123,11 @@ public struct CarouselItemView: View {
         .frame(width: itemWidth, height: itemHeight)
         .clipped()
         .cornerRadius(self.cellStyle.cellCornerRadius)
+        .simultaneousGesture(
+            TapGesture().onEnded { _ in
+//                self.callback(button)
+            }
+        )
         .overlay(
             RoundedRectangle(cornerRadius: self.cellStyle.cellCornerRadius)
                 .stroke(
