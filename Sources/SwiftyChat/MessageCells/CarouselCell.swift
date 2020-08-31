@@ -104,7 +104,7 @@ public struct CarouselItemView: View {
             
             HStack {
                 ForEach(item.buttons) { (button) in
-                    Button(action: { self.callback(button) }) {
+                    Button(action: { /*self.callback(button)*/ }) {
                         Text(button.title)
                             .fontWeight(self.cellStyle.buttonTitleFontWeight)
                             .font(self.cellStyle.buttonFont)
