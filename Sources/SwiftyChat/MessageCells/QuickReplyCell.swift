@@ -44,7 +44,7 @@ public struct QuickReplyCell: View {
             if idx >= count {
                 return colorMatrix[idx % count]
             }
-            let itemColors = colorMatrix[idx]
+            let itemColors = colorMatrix[idx % count]
             return itemColors
         }
         
@@ -68,7 +68,7 @@ public struct QuickReplyCell: View {
             backgroundColors = colorMatrix[count - 1]
         }
         
-        let backgroundColor = backgroundColors[index]
+        let backgroundColor = backgroundColors[index % count]
         
         return backgroundColor.cornerRadius(index == self.selectedIndex ?
             self.cellStyle.selectedItemCornerRadius :
