@@ -109,22 +109,24 @@ public struct QuickReplyCell: View {
                         Text(self.quickReplies[idx].title)
                             .fontWeight(fontWeight)
                             .font(font)
-                            .background(self.itemBackground(for: idx))
-                            .foregroundColor(color)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: cornerRadius)
-                                    .stroke(
-                                        borderColor,
-                                        lineWidth: borderWidth
-                                    )
-                                    .shadow(color: shadowColor, radius: shadowRadius)
-                            )
                             .padding(self.cellStyle.itemPadding)
-                            .frame(width: self.cellStyle.itemWidth, height: self.cellStyle.itemHeight)
                             .scaledToFill()
                             .minimumScaleFactor(0.5)
                             .lineLimit(1)
+                            .frame(
+                                width: self.cellStyle.itemWidth,
+                                height: self.cellStyle.itemHeight)
                     }
+                    .background(self.itemBackground(for: idx))
+                    .foregroundColor(color)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: cornerRadius)
+                            .stroke(
+                                borderColor,
+                                lineWidth: borderWidth
+                            )
+                            .shadow(color: shadowColor, radius: shadowRadius)
+                    )
                     .simultaneousGesture(
                         TapGesture().onEnded { _ in
                             self.isDisabled = true
