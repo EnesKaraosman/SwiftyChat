@@ -27,12 +27,12 @@ extension CarouselItem {
     }
 }
 
-public struct CarouselCell: View {
+public struct CarouselCell<Message: ChatMessage>: View {
     
     public let carouselItems: [CarouselItem]
     public let size: CGSize
-    public let message: ChatMessage
-    public let onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void
+    public let message: Message
+    public let onCarouselItemAction: (CarouselItemButton, Message) -> Void
     
     
     public var body: some View {

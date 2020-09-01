@@ -8,15 +8,15 @@
 
 import SwiftUI
 
-public struct ChatMessageCellContainer: View {
+public struct ChatMessageCellContainer<Message: ChatMessage>: View {
     
-    public let message: ChatMessage
+    public let message: Message
     public let size: CGSize
     
     public let onQuickReplyItemSelected: (QuickReplyItem) -> Void
-    public let contactFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton]
+    public let contactFooterSection: (ContactItem, Message) -> [ContactCellButton]
     public let onTextTappedCallback: () -> AttributedTextTappedCallback
-    public let onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void
+    public let onCarouselItemAction: (CarouselItemButton, Message) -> Void
     
     func messageCell() -> some View {
         switch message.messageKind {

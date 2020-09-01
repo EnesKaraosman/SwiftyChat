@@ -18,12 +18,12 @@ public struct ContactCellButton: Identifiable {
     }
 }
 
-public struct ContactCell: View {
+public struct ContactCell<Message: ChatMessage>: View {
     
     public let contact: ContactItem
-    public let message: ChatMessage
+    public let message: Message
     public let size: CGSize
-    public let footerSection: (ContactItem, ChatMessage) -> [ContactCellButton]
+    public let footerSection: (ContactItem, Message) -> [ContactCellButton]
     
     @EnvironmentObject var style: ChatMessageCellStyle
     

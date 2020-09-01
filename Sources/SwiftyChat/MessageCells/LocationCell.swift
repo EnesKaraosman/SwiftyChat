@@ -9,10 +9,10 @@
 import SwiftUI
 import MapKit
 
-public struct LocationCell: View {
+public struct LocationCell<Message: ChatMessage>: View {
     
     public let location: LocationItem
-    public let message: ChatMessage
+    public let message: Message
     public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
     

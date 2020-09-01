@@ -64,7 +64,7 @@ For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](ht
 - `ChatView`
 
 ```swift
-@State var messages: [ChatMessage] = [] // for quick test assign MockMessages.generatedMessages()
+@State var messages: [MockMessages.ChatMessageItem] = [] // for quick test assign MockMessages.generatedMessages()
 
 ChatView(messages: $messages) { (proxy) -> AnyView in
     // InputView here, continue reading..

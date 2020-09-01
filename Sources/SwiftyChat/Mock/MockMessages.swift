@@ -11,6 +11,26 @@ import Foundation
 
 public struct MockMessages {
     
+    public enum Kind {
+        case Text
+        case Image
+        case Location
+        case Contact
+        case QuickReply
+        case Carousel
+        
+        private var messageKind: ChatMessageKind {
+            switch self {
+            case .Text: return .text("")
+            case .Image: return .image(.remote(URL(string: "")!))
+            case .Location: return .location(LocationRow(latitude: .nan, longitude: .nan))
+            case .Contact: return .contact(ContactRow(displayName: ""))
+            case .QuickReply: return .quickReply([])
+            case .Carousel: return .carousel([CarouselRow(title: "", imageURL: nil, subtitle: "", buttons: [])])
+            }
+        }
+    }
+    
     // MARK: - Concrete model for Location
     private struct LocationRow: LocationItem {
         var latitude: Double
@@ -40,11 +60,34 @@ public struct MockMessages {
         var buttons: [CarouselItemButton]
     }
     
-    public static let sender = ChatUser(
+    // MARK: - Concrete model for ChatMessage
+    public struct ChatMessageItem: ChatMessage {
+        
+        public let id = UUID()
+        public var user: ChatUser
+        public var messageKind: ChatMessageKind
+        public var isSender: Bool
+        public var date: Date
+
+        public init(
+            user: ChatUser,
+            messageKind: ChatMessageKind,
+            isSender: Bool = false,
+            date: Date = .init()
+        ) {
+            self.user = user
+            self.messageKind = messageKind
+            self.isSender = isSender
+            self.date = date
+        }
+    }
+    
+    public static var sender: ChatUser = .init(
         userName: "Sender",
         avatarURL: URL(string: "https://ebbot.ai/wp-content/uploads/2020/04/Ebbot-Sa%CC%88ljsa%CC%88l.png")
     )
-    public static let chatbot = ChatUser(
+    
+    public static var chatbot: ChatUser = .init(
         userName: "Chatbot",
         //        avatar: #imageLiteral(resourceName: "avatar")
         avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
@@ -54,28 +97,29 @@ public struct MockMessages {
         [sender, chatbot].randomElement()!
     }
     
-    
     public static var mockImages: [UIImage] = []
     
-    public static func generateMessage(kind: ChatMessageKind) -> ChatMessage {
+    public static func generateMessage(kind: MockMessages.Kind) -> ChatMessageItem {
         let randomUser = Self.randomUser
         switch kind {
-        case .image:
+        
+        case .Image:
             guard let randomImage = mockImages.randomElement() else { fallthrough }
-            return .init(
+            return ChatMessageItem(
                 user: randomUser,
                 messageKind: .image(.local(randomImage)),
                 isSender: randomUser == Self.sender
             )
-        case .text:
-            return .init(
+            
+        case .Text:
+            return ChatMessageItem(
                 user: randomUser,
                 messageKind: .text(Lorem.sentence()),
                 isSender: randomUser == Self.sender
             )
             
-        case .carousel:
-            return .init(
+        case .Carousel:
+            return ChatMessageItem(
                 user: Self.chatbot,
                 messageKind: .carousel([
                     CarouselRow(
@@ -100,38 +144,41 @@ public struct MockMessages {
                 isSender: false
             )
             
-        case .quickReply:
+        case .QuickReply:
             let quickReplies: [QuickReplyRow] = (1...Int.random(in: 2...4)).map { idx in
                 return QuickReplyRow(title: "Option.\(idx)", payload: "opt\(idx)")
             }
-            return .init(
+            return ChatMessageItem(
                 user: randomUser,
                 messageKind: .quickReply(quickReplies),
                 isSender: randomUser == Self.sender
             )
-        case .location:
+            
+        case .Location:
             let location = LocationRow(
                 latitude: Double.random(in: 36...42),
                 longitude: Double.random(in: 26...45)
             )
-            return .init(
+            return ChatMessageItem(
                 user: randomUser,
                 messageKind: .location(location),
                 isSender: randomUser == Self.sender
             )
-        case .contact:
+            
+        case .Contact:
             let contacts = [
                 ContactRow(displayName: "Enes Karaosman"),
                 ContactRow(displayName: "Adam Surname"),
                 ContactRow(displayName: "Name DummySurname")
             ]
-            return .init(
+            return ChatMessageItem(
                 user: randomUser,
                 messageKind: .contact(contacts.randomElement()!),
                 isSender: randomUser == Self.sender
             )
+            
         default:
-            return .init(
+            return ChatMessageItem(
                 user: randomUser,
                 messageKind: .text("Bom!"),
                 isSender: randomUser == Self.sender
@@ -139,21 +186,21 @@ public struct MockMessages {
         }
     }
     
-    public static var randomMessageKind: ChatMessageKind {
-        let allCases: [ChatMessageKind] = [
-            .image(.local(UIImage())),
-            .text(""), .text(""), .text(""),
-            .contact(ContactRow(displayName: "")),
-            .text(""), .text(""), .text(""),
-            .carousel([]),
-            .location(LocationRow(latitude: .zero, longitude: .zero)),
-            .text(""), .text(""), .text(""),
-            .quickReply([])
+    public static var randomMessageKind: MockMessages.Kind {
+        let allCases: [MockMessages.Kind] = [
+            .Image,
+            .Text, .Text, .Text,
+            .Contact,
+            .Text, .Text, .Text,
+            .Carousel,
+            .Location,
+            .Text, .Text, .Text,
+            .QuickReply
         ]
         return allCases.randomElement()!
     }
     
-    public static func generatedMessages(count: Int = 30) -> [ChatMessage] {
+    public static func generatedMessages(count: Int = 30) -> [ChatMessageItem] {
         return (1...count).map { _ in generateMessage(kind: randomMessageKind)}
     }
     

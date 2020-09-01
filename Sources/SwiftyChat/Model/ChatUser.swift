@@ -8,6 +8,19 @@
 
 import UIKit
 
+//public protocol ChatUser: Identifiable, Equatable {
+//
+//    /// Username
+//    var userName: String { get }
+//
+//    /// User's chat profile image, considered if `avatarURL` is nil
+//    var avatar: UIImage? { get }
+//
+//    /// User's chat profile image URL
+//    var avatarURL: URL? { get }
+//
+//}
+
 public struct ChatUser: Identifiable, Equatable {
 
     public static func == (lhs: ChatUser, rhs: ChatUser) -> Bool {

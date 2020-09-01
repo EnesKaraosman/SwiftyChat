@@ -8,10 +8,10 @@
 
 import SwiftUI
 
-public struct TextCell: View {
+public struct TextCell<Message: ChatMessage>: View {
     
     public let text: String
-    public let message: ChatMessage
+    public let message: Message
     public let size: CGSize
     public let callback: () -> AttributedTextTappedCallback
     

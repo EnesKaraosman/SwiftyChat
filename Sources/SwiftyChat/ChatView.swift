@@ -8,20 +8,20 @@
 
 import SwiftUI
 
-public struct ChatView: View {
+public struct ChatView<Message: ChatMessage>: View {
     
-    @Binding public var messages: [ChatMessage]
+    @Binding public var messages: [Message]
     public var inputView: (_ proxy: GeometryProxy) -> AnyView
 
-    private var onMessageCellTapped: (ChatMessage) -> Void = { msg in print(msg.messageKind) }
-    private var messageCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
+    private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
+    private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
-    private var contactCellFooterSection: (ContactItem, ChatMessage) -> [ContactCellButton] = { _, _ in [] }
+    private var contactCellFooterSection: (ContactItem, Message) -> [ContactCellButton] = { _, _ in [] }
     private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
-    private var onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void = { (_, _) in }
+    private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     
     public init(
-        messages: Binding<[ChatMessage]>,
+        messages: Binding<[Message]>,
         inputView: @escaping (_ proxy: GeometryProxy) -> AnyView
     ) {
         self._messages = messages
@@ -29,14 +29,14 @@ public struct ChatView: View {
     }
     
     /// Triggered when a ChatMessage is tapped.
-    public func onMessageCellTapped(_ action: @escaping (ChatMessage) -> Void) -> ChatView {
+    public func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> ChatView {
         var copy = self
         copy.onMessageCellTapped = action
         return copy
     }
     
     /// Present ContextMenu when a message cell is long pressed.
-    public func messageCellContextMenu(_ action: @escaping (ChatMessage) -> AnyView) -> ChatView {
+    public func messageCellContextMenu(_ action: @escaping (Message) -> AnyView) -> ChatView {
         var copy = self
         copy.messageCellContextMenu = action
         return copy
@@ -50,7 +50,7 @@ public struct ChatView: View {
     }
     
     /// Present contactItem's footer buttons. (ChatMessageKind.contactItem)
-    public func contactItemButtons(_ section: @escaping (ContactItem, ChatMessage) -> [ContactCellButton]) -> ChatView {
+    public func contactItemButtons(_ section: @escaping (ContactItem, Message) -> [ContactCellButton]) -> ChatView {
         var copy = self
         copy.contactCellFooterSection = section
         return copy
@@ -64,7 +64,7 @@ public struct ChatView: View {
     }
     
     /// Triggered when the carousel button tapped.
-    public func onCarouselItemAction(action: @escaping (CarouselItemButton, ChatMessage) -> Void) -> ChatView {
+    public func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> ChatView {
         var copy = self
         copy.onCarouselItemAction = action
         return copy
@@ -103,7 +103,7 @@ public struct ChatView: View {
     }
     
     // MARK: - List Item
-    private func chatMessageCellContainer(in size: CGSize, with message: ChatMessage) -> some View {
+    private func chatMessageCellContainer(in size: CGSize, with message: Message) -> some View {
         ChatMessageCellContainer(
             message: message,
             size: size,

@@ -9,9 +9,9 @@
 import SwiftUI
 import KingfisherSwiftUI
 
-public struct ImageCell: View {
+public struct ImageCell<Message: ChatMessage>: View {
     
-    public let message: ChatMessage
+    public let message: Message
     public let imageLoadingType: ImageLoadingKind
     public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
