@@ -120,6 +120,7 @@ public struct CarouselItemView: View {
                             .fontWeight(self.cellStyle.buttonTitleFontWeight)
                             .font(self.cellStyle.buttonFont)
                             .foregroundColor(self.cellStyle.buttonTitleColor)
+                            .scaledToFit()
                     }
                     .buttonStyle(
                         CarouselItemButtonStyle(
