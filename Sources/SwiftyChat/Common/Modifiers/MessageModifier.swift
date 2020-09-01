@@ -29,6 +29,6 @@ public struct MessageModifier: ViewModifier {
             if !isSender && !isSpaceFreeMessageKind {
                 Spacer(minLength: 10)
             }
-        }.embedInAnyView()
+        }.transition(isSender ? .move(edge: .leading) : .slide).embedInAnyView()
     }
 }

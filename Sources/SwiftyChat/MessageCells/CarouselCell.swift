@@ -45,7 +45,8 @@ public struct CarouselCell: View {
                         size: self.size,
                         isSender: self.message.isSender,
                         callback: { button in self.onCarouselItemAction(button, self.message) },
-                        isAnimating: self.$isAnimating)
+                        isAnimating: self.$isAnimating
+                    ).padding(.all, 11.5)
                 }
             }
         }
@@ -76,29 +77,40 @@ public struct CarouselItemView: View {
         VStack(alignment: .leading) {
             
             WebImage(url: item.imageURL, isAnimating: $isAnimating)
-                .placeholder { Text("…") }
                 .resizable()
-                .clipped()
                 .aspectRatio(contentMode: .fill)
-                .frame(width: itemWidth, height: itemWidth * 0.776)
+                .frame(
+                    minWidth: itemWidth,
+                    idealWidth: itemWidth,
+                    maxWidth: itemWidth,
+                    minHeight: itemWidth * 0.776,
+                    idealHeight: itemWidth * 0.776,
+                    maxHeight: itemWidth,
+                    alignment: .center
+                )
+                .clipped()
             
             Group {
-                Text(item.title)
-                    .fontWeight(cellStyle.titleLabelStyle.fontWeight)
-                    .font(cellStyle.titleLabelStyle.font)
-                    .foregroundColor(cellStyle.titleLabelStyle.textColor)
-                    .multilineTextAlignment(.leading)
-                    .padding([.top, .bottom], 12.5)
+                if !item.title.isEmpty {
+                    Text(item.title)
+                        .fontWeight(cellStyle.titleLabelStyle.fontWeight)
+                        .font(cellStyle.titleLabelStyle.font)
+                        .foregroundColor(cellStyle.titleLabelStyle.textColor)
+                        .multilineTextAlignment(.leading)
+                        .padding([.top, .bottom], 12.5)
+                }
                 
-                Text(item.subtitle)
-                    .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
-                    .font(cellStyle.subtitleLabelStyle.font)
-                    .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
-                    .multilineTextAlignment(.leading)
-                    .padding([.bottom], 12.5)
+                if !item.subtitle.isEmpty {
+                    Text(item.subtitle)
+                        .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
+                        .font(cellStyle.subtitleLabelStyle.font)
+                        .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
+                        .multilineTextAlignment(.leading)
+                        .padding([.bottom], 12.5)
+                }
                 
             }
-            .fixedSize(horizontal: false, vertical: true)
+            .frame(minHeight: 46.3, idealHeight: 64)
             .padding([.leading, .trailing], 18)
             
             HStack {
@@ -111,7 +123,8 @@ public struct CarouselItemView: View {
                     }
                     .buttonStyle(
                         CarouselItemButtonStyle(
-                            backgroundColor: self.cellStyle.buttonBackgroundColor
+                            backgroundColor: self.cellStyle.buttonBackgroundColor,
+                            height: self.cellStyle.buttonHeight
                         )
                     )
                 }
