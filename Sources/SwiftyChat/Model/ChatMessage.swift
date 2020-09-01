@@ -8,7 +8,10 @@
 
 import Foundation
 
-public struct ChatMessage: Identifiable {
+public struct ChatMessage: Identifiable, Equatable {
+    public static func == (lhs: ChatMessage, rhs: ChatMessage) -> Bool {
+        return lhs.id == rhs.id
+    }
     
     public let id = UUID()
     public var user: ChatUser
