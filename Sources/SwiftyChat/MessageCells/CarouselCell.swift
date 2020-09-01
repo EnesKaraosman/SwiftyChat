@@ -75,13 +75,12 @@ public struct CarouselItemView: View {
     public var body: some View {
         VStack(alignment: .leading) {
             
-            
             WebImage(url: item.imageURL, isAnimating: $isAnimating)
                 .placeholder { Text("…") }
                 .resizable()
-                .frame(width: itemWidth, height: 167)
                 .clipped()
-                .scaledToFill()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: itemWidth, height: itemWidth * 0.776)
             
             Group {
                 Text(item.title)
@@ -116,13 +115,13 @@ public struct CarouselItemView: View {
                         )
                     )
                 }
-            }
+            }.padding(0)
             
         }
         .background(self.cellStyle.cellBackgroundColor)
         .frame(width: itemWidth, height: itemHeight)
-        .clipped()
         .cornerRadius(self.cellStyle.cellCornerRadius)
+        .clipped()
         .simultaneousGesture(
             TapGesture().onEnded { _ in
                 if let button = self.item.buttons.first {

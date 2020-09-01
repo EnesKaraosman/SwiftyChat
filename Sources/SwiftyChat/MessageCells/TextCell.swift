@@ -72,6 +72,11 @@ public struct TextCell: View {
             
             $0.font = textStyle.font.withWeight(textStyle.fontWeight)
             $0.textColor = textStyle.textColor
+            $0.setAttributes([
+                NSAttributedString.Key.foregroundColor: textStyle.tintColor,
+                NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue,
+                NSAttributedString.Key.underlineColor: textStyle.tintColor
+            ], detector: .url)
             $0.textAlignment = self.message.isSender ? .right : .left
         }
         .padding(cellStyle.textPadding)
