@@ -66,7 +66,9 @@ For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](ht
 ```swift
 @State var messages: [MockMessages.ChatMessageItem] = [] // for quick test assign MockMessages.generatedMessages()
 
-ChatView(messages: $messages) { (proxy) -> AnyView in
+// ChatMessageItem & ChatUserItem is a sample objects/structs 
+// that conforms `ChatMessage` & `ChatUser` protocols.
+ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem> { (proxy) -> AnyView in
     // InputView here, continue reading..
 }
 // ▼ Optional
@@ -164,6 +166,48 @@ For custom InputView you can cheat using Default one.
 
 
 ### Style and Customization
+
+```swift
+public class ChatMessageCellStyle: ObservableObject {
+    
+    /// Incoming Text Style
+    let incomingTextStyle: TextCellStyle
+    
+    /// Outgoing Text Style
+    let outgoingTextStyle: TextCellStyle
+    
+    /// Cell container inset for incoming messages
+    let incomingCellEdgeInsets: EdgeInsets?
+    
+    /// Cell container inset for outgoing messages
+    let outgoingCellEdgeInsets: EdgeInsets?
+    
+    /// Contact Cell Style
+    let contactCellStyle: ContactCellStyle
+    
+    /// Image Cell Style
+    let imageCellStyle: ImageCellStyle
+    
+    /// Quick Reply Cell Style
+    let quickReplyCellStyle: QuickReplyCellStyle
+    
+    /// Carousel Cell Style
+    let carouselCellStyle: CarouselCellStyle
+    
+    /// Location Cell Style
+    let locationCellStyle: LocationCellStyle
+    
+    /// Incoming Avatar Style
+    let incomingAvatarStyle: AvatarStyle
+    
+    /// Outgoing Avatar Style
+    let outgoingAvatarStyle: AvatarStyle
+    
+}
+```
+
+You must initiate this class to build a proper style & inject it as `environmentObject`, <br>
+All styles has default initializer; <br>
 
 For detail documentation, visit [Styles.md](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Styles.md)
 

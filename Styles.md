@@ -1,3 +1,45 @@
+
+## ChatMessageCellStyle
+
+```swift
+public class ChatMessageCellStyle: ObservableObject {
+    
+    /// Incoming Text Style
+    let incomingTextStyle: TextCellStyle
+    
+    /// Outgoing Text Style
+    let outgoingTextStyle: TextCellStyle
+    
+    /// Cell container inset for incoming messages
+    let incomingCellEdgeInsets: EdgeInsets?
+    
+    /// Cell container inset for outgoing messages
+    let outgoingCellEdgeInsets: EdgeInsets?
+    
+    /// Contact Cell Style
+    let contactCellStyle: ContactCellStyle
+    
+    /// Image Cell Style
+    let imageCellStyle: ImageCellStyle
+    
+    /// Quick Reply Cell Style
+    let quickReplyCellStyle: QuickReplyCellStyle
+    
+    /// Carousel Cell Style
+    let carouselCellStyle: CarouselCellStyle
+    
+    /// Location Cell Style
+    let locationCellStyle: LocationCellStyle
+    
+    /// Incoming Avatar Style
+    let incomingAvatarStyle: AvatarStyle
+    
+    /// Outgoing Avatar Style
+    let outgoingAvatarStyle: AvatarStyle
+    
+}
+```
+
 ## Styles
 * [Text](#text)
 * [QuickReply](#quick-reply)

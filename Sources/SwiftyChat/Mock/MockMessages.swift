@@ -64,13 +64,13 @@ public struct MockMessages {
     public struct ChatMessageItem: ChatMessage {
         
         public let id = UUID()
-        public var user: ChatUser
+        public var user: ChatUserItem
         public var messageKind: ChatMessageKind
         public var isSender: Bool
         public var date: Date
 
         public init(
-            user: ChatUser,
+            user: ChatUserItem,
             messageKind: ChatMessageKind,
             isSender: Bool = false,
             date: Date = .init()
@@ -82,18 +82,44 @@ public struct MockMessages {
         }
     }
     
-    public static var sender: ChatUser = .init(
+    // MARK: - Concrete model for ChatUser
+    public struct ChatUserItem: ChatUser {
+
+        public static func == (lhs: ChatUserItem, rhs: ChatUserItem) -> Bool {
+            lhs.id == rhs.id
+        }
+
+        public let id = UUID().uuidString
+        
+        /// Username
+        public var userName: String
+        
+        /// User's chat profile image, considered if `avatarURL` is nil
+        public var avatar: UIImage?
+        
+        /// User's chat profile image URL
+        public var avatarURL: URL?
+
+        public init(userName: String, avatarURL: URL? = nil, avatar: UIImage? = nil) {
+            self.userName = userName
+            self.avatar = avatar
+            self.avatarURL = avatarURL
+        }
+        
+    }
+    
+    public static var sender: ChatUserItem = .init(
         userName: "Sender",
         avatarURL: URL(string: "https://ebbot.ai/wp-content/uploads/2020/04/Ebbot-Sa%CC%88ljsa%CC%88l.png")
     )
     
-    public static var chatbot: ChatUser = .init(
+    public static var chatbot: ChatUserItem = .init(
         userName: "Chatbot",
         //        avatar: #imageLiteral(resourceName: "avatar")
         avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
     )
     
-    private static var randomUser: ChatUser {
+    private static var randomUser: ChatUserItem {
         [sender, chatbot].randomElement()!
     }
     

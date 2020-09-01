@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct ChatView<Message: ChatMessage>: View {
+public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @Binding public var messages: [Message]
     public var inputView: (_ proxy: GeometryProxy) -> AnyView
@@ -118,7 +118,7 @@ public struct ChatView<Message: ChatMessage>: View {
         .contextMenu(menuItems: {
             self.messageCellContextMenu(message)
         })
-        .modifier(AvatarModifier(message: message))
+        .modifier(AvatarModifier<Message, User>(message: message))
         .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
     }

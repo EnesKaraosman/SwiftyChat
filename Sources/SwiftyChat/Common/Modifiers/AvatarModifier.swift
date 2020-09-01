@@ -8,14 +8,14 @@
 import SwiftUI
 import KingfisherSwiftUI
 
-public struct AvatarModifier<Message: ChatMessage>: ViewModifier {
+public struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier {
     
     public let message: Message
     @EnvironmentObject var style: ChatMessageCellStyle
 
     private var isSender: Bool { message.isSender }
     
-    private var user: ChatUser { message.user }
+    private var user: User { message.user as! User }
     
     private var incomingAvatarStyle: AvatarStyle { style.incomingAvatarStyle }
     
