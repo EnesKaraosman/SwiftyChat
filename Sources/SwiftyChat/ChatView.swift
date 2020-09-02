@@ -118,6 +118,7 @@ public struct ChatView: View {
                         self.tableViewFinderOverlay
                             .frame(width: 0, height: 0)
                     )
+                    .listRowBackground(Color.black)
             }
             .overlay(
                 // the scrolling has to be done via the binding `indexPathToSetVisible`
