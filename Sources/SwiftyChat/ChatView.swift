@@ -86,10 +86,9 @@ public struct ChatView: View {
     
     public var body: some View {
         DeviceOrientationBasedView(
-            portrait: { NavigationView { GeometryReader { self.body(in: $0) } } },
-            landscape: { NavigationView { GeometryReader { self.body(in: $0) } } }
-        ).navigationBarHidden(true)
-        .navigationBarTitle("")
+            portrait: { GeometryReader { self.body(in: $0) } },
+            landscape: { GeometryReader { self.body(in: $0) } }
+        )
         .environmentObject(OrientationInfo())
         .edgesIgnoringSafeArea(.bottom)
         .onAppear {
