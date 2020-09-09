@@ -16,7 +16,8 @@ public struct ChatView: View {
     @State var indexPathToSetVisible: IndexPath?
     @Binding public var messages: [ChatMessage]
     public var inputView: (_ proxy: GeometryProxy) -> AnyView
-
+    public let geometryProxy: GeometryProxy
+    
     private var onMessageCellTapped: (ChatMessage) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
@@ -26,10 +27,12 @@ public struct ChatView: View {
     
     public init(
         messages: Binding<[ChatMessage]>,
+        geometryProxy: GeometryProxy,
         inputView: @escaping (_ proxy: GeometryProxy) -> AnyView,
         autoScroll: Bool = true
     ) {
         self._messages = messages
+        self.geometryProxy = geometryProxy
         self.inputView = inputView
         self.autoScroll = autoScroll
     }
@@ -86,8 +89,8 @@ public struct ChatView: View {
     
     public var body: some View {
         DeviceOrientationBasedView(
-            portrait: { GeometryReader { self.body(in: $0) } },
-            landscape: { GeometryReader { self.body(in: $0) } }
+            portrait: { self.body(in: self.geometryProxy) },
+            landscape: { self.body(in: self.geometryProxy) }
         )
         .environmentObject(OrientationInfo())
         .edgesIgnoringSafeArea(.bottom)
