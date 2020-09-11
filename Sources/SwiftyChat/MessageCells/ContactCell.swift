@@ -22,7 +22,7 @@ public struct ContactCell: View {
     
     public let contact: ContactItem
     public let message: ChatMessage
-    public let size: CGSize = .init(width: 320, height: 320)
+    public let size: CGSize
     public let footerSection: (ContactItem, ChatMessage) -> [ContactCellButton]
     
     @EnvironmentObject var style: ChatMessageCellStyle

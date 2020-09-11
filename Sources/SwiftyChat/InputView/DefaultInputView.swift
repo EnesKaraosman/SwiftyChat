@@ -10,9 +10,11 @@ import SwiftUI
 
 public struct DefaultInputView: View, InputViewProtocol {
     
+    public let proxy: GeometryProxy
     public var sendAction: (ChatMessageKind) -> Void
     
-    public init(sendAction: @escaping (ChatMessageKind) -> Void) {
+    public init(proxy: GeometryProxy, sendAction: @escaping (ChatMessageKind) -> Void) {
+        self.proxy = proxy
         self.sendAction = sendAction
     }
     
@@ -98,7 +100,7 @@ public struct DefaultInputView: View, InputViewProtocol {
             .frame(height: mainContainerHeight)
             
         }
-        .frame(height: mainContainerHeight)
+        .frame(height: proxy.safeAreaInsets.bottom + mainContainerHeight)
         .background(
             Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1)).sheet(isPresented: $presentCameraSheet) {
                 ImagePicker(sourceType: self.sourceType) { (image) in

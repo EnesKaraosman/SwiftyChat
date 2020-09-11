@@ -15,7 +15,7 @@ public struct ChatView: View {
     @State var lastMessage: ChatMessage?
     @State var indexPathToSetVisible: IndexPath?
     @Binding public var messages: [ChatMessage]
-    public var inputView: () -> AnyView
+    public var inputView: (_ proxy: GeometryProxy) -> AnyView
 
     private var onMessageCellTapped: (ChatMessage) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
@@ -26,7 +26,7 @@ public struct ChatView: View {
     
     public init(
         messages: Binding<[ChatMessage]>,
-        inputView: @escaping () -> AnyView,
+        inputView: @escaping (_ proxy: GeometryProxy) -> AnyView,
         autoScroll: Bool = true
     ) {
         self._messages = messages
@@ -86,10 +86,11 @@ public struct ChatView: View {
     
     public var body: some View {
         DeviceOrientationBasedView(
-            portrait: { self.innerContent() },
-            landscape: { self.innerContent() }
+            portrait: { GeometryReader { self.body(in: $0) } },
+            landscape: { GeometryReader { self.body(in: $0) } }
         )
         .environmentObject(OrientationInfo())
+        .edgesIgnoringSafeArea(.bottom)
         .onAppear {
             // To remove only extra separators below the list:
             UITableView.appearance().tableFooterView = UIView()
@@ -107,10 +108,10 @@ public struct ChatView: View {
     }
     
     // MARK: - Body in geometry
-    private func innerContent() -> some View {
-        func list() -> some View {
+    private func body(in geometry: GeometryProxy) -> some View {
+        ZStack(alignment: .bottom) {
             List(messages) { message in
-                self.chatMessageCellContainer(with: message)
+                self.chatMessageCellContainer(in: geometry.size, with: message)
                     .overlay(
                         // we need this to grab the reference to the table view that we want to programmatically scroll
                         // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
@@ -119,25 +120,16 @@ public struct ChatView: View {
                     )
                     .listRowBackground(Color.black)
             }
-            .padding(.bottom, 56)
-        }
-        
-        return ZStack(alignment: .bottom) {
-            
-            if autoScroll {
-                list()
-                .overlay(
-                    // the scrolling has to be done via the binding `indexPathToSetVisible`
-                    ScrollManagerView(
-                        scrollManager: scrollManager,
-                        indexPathToSetVisible: $indexPathToSetVisible
-                    ).frame(width: 0, height: 0)
-                )
-            } else {
-                list()
-            }
+            .overlay(
+                // the scrolling has to be done via the binding `indexPathToSetVisible`
+                ScrollManagerView(
+                    scrollManager: scrollManager,
+                    indexPathToSetVisible: $indexPathToSetVisible
+                ).frame(width: 0, height: 0)
+            )
+            .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
 
-            self.inputView()
+            self.inputView(geometry)
 
         }.keyboardAwarePadding()
         .overlay(Group { () -> EmptyView in
@@ -157,9 +149,10 @@ public struct ChatView: View {
     }
     
     // MARK: - List Item
-    private func chatMessageCellContainer(with message: ChatMessage) -> some View {
+    private func chatMessageCellContainer(in size: CGSize, with message: ChatMessage) -> some View {
         ChatMessageCellContainer(
             message: message,
+            size: size,
             onQuickReplyItemSelected: self.onQuickReplyItemSelected,
             contactFooterSection: self.contactCellFooterSection,
             onTextTappedCallback: self.onAttributedTextTappedCallback,

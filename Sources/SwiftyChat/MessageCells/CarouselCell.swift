@@ -30,7 +30,7 @@ extension CarouselItem {
 public struct CarouselCell: View {
     
     public let carouselItems: [CarouselItem]
-    public let size: CGSize = .init(width: 320, height: 320)
+    public let size: CGSize
     public let message: ChatMessage
     public let onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void
     

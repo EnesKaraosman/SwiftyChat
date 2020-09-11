@@ -13,7 +13,7 @@ public struct LocationCell: View {
     
     public let location: LocationItem
     public let message: ChatMessage
-    public let size: CGSize = .init(width: 320, height: 320)
+    public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var mapWidth: CGFloat {
