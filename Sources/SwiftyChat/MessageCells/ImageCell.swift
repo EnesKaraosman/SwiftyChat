@@ -13,7 +13,7 @@ public struct ImageCell: View {
     
     public let message: ChatMessage
     public let imageLoadingType: ImageLoadingKind
-    public let size: CGSize
+    public let size: CGSize = .init(width: 320, height: 320)
     @EnvironmentObject var style: ChatMessageCellStyle
     @State var isAnimating: Bool = true
     
