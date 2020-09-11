@@ -161,7 +161,6 @@ public struct ChatView: View {
             onTextTappedCallback: self.onAttributedTextTappedCallback,
             onCarouselItemAction: self.onCarouselItemAction
         )
-        .id(message.id)
         .onTapGesture {
             self.onMessageCellTapped(message)
         }
