@@ -11,7 +11,6 @@ import SwiftUI
 public struct ChatView: View {
 
     let autoScroll: Bool
-    let scrollManager = ScrollManager()
     @State var lastMessage: ChatMessage?
     @State var indexPathToSetVisible: IndexPath?
     @Binding public var messages: [ChatMessage]
@@ -75,14 +74,6 @@ public struct ChatView: View {
         copy.onCarouselItemAction = action
         return copy
     }
-
-    var tableViewFinderOverlay: AnyView {
-        // we only need to add one overlay view to find the parent table view, we don't want an overlay view on each row
-        if scrollManager.tableView == nil {
-            return AnyView(TableViewFinder(scrollManager: scrollManager))
-        }
-        return AnyView(EmptyView())
-    }
     
     public var body: some View {
         DeviceOrientationBasedView(
@@ -112,40 +103,17 @@ public struct ChatView: View {
         ZStack(alignment: .bottom) {
             List(messages) { message in
                 self.chatMessageCellContainer(in: geometry.size, with: message)
-                    .overlay(
-                        // we need this to grab the reference to the table view that we want to programmatically scroll
-                        // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
-                        self.tableViewFinderOverlay
-                            .frame(width: 0, height: 0)
-                    )
                     .listRowBackground(Color.black)
+                    .rotationEffect(.radians(.pi))
+                    .scaleEffect(x: -1, y: 1, anchor: .center)
             }
-            .overlay(
-                // the scrolling has to be done via the binding `indexPathToSetVisible`
-                ScrollManagerView(
-                    scrollManager: scrollManager,
-                    indexPathToSetVisible: $indexPathToSetVisible
-                ).frame(width: 0, height: 0)
-            )
             .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
+            .rotationEffect(.radians(.pi))
+            .scaleEffect(x: -1, y: 1, anchor: .center)
 
             self.inputView(geometry)
 
         }.keyboardAwarePadding()
-        .overlay(Group { () -> EmptyView in
-            
-            if let currentLastMessage = messages.last {
-                let endIndexPath = IndexPath(row: max(0, messages.count - 1), section: 0)
-                if currentLastMessage != self.lastMessage {
-                    DispatchQueue.main.async {
-                        self.lastMessage = currentLastMessage
-                        self.indexPathToSetVisible = endIndexPath
-                    }
-                }
-            }
-            
-            return EmptyView()
-        })
     }
     
     // MARK: - List Item
