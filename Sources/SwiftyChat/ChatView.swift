@@ -110,15 +110,17 @@ public struct ChatView: View {
     // MARK: - Body in geometry
     private func body(in geometry: GeometryProxy) -> some View {
         ZStack(alignment: .bottom) {
-            List(messages) { message in
-                self.chatMessageCellContainer(in: geometry.size, with: message)
-                    .overlay(
-                        // we need this to grab the reference to the table view that we want to programmatically scroll
-                        // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
-                        self.tableViewFinderOverlay
-                            .frame(width: 0, height: 0)
-                    )
-                    .listRowBackground(Color.black)
+            List {
+                ForEach(messages, id: \.self) { message in
+                    self.chatMessageCellContainer(in: geometry.size, with: message)
+                        .overlay(
+                            // we need this to grab the reference to the table view that we want to programmatically scroll
+                            // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
+                            self.tableViewFinderOverlay
+                                .frame(width: 0, height: 0)
+                        )
+                        .listRowBackground(Color.clear)
+                }
             }
             .overlay(
                 // the scrolling has to be done via the binding `indexPathToSetVisible`
