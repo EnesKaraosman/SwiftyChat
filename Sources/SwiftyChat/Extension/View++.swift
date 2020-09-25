@@ -21,8 +21,14 @@ public extension View {
         return AnyView(self)
     }
     
+    @ViewBuilder
     func keyboardAwarePadding() -> some View {
-        ModifiedContent(content: self, modifier: KeyboardAwareModifier())
+        if #available(iOS 14.0, *) {
+            // no-op
+            self
+        } else {
+            ModifiedContent(content: self, modifier: KeyboardAwareModifier())
+        }
     }
     
     func conditionalModifier<M1: ViewModifier, M2: ViewModifier>
