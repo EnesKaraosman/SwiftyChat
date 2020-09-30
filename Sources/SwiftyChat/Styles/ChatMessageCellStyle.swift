@@ -17,10 +17,10 @@ public class ChatMessageCellStyle: ObservableObject {
     let outgoingTextStyle: TextCellStyle
     
     /// Cell container inset for incoming messages
-    let incomingCellEdgeInsets: EdgeInsets?
+    let incomingCellEdgeInsets: EdgeInsets
     
     /// Cell container inset for outgoing messages
-    let outgoingCellEdgeInsets: EdgeInsets?
+    let outgoingCellEdgeInsets: EdgeInsets
     
     /// Contact Cell Style
     let contactCellStyle: ContactCellStyle
@@ -58,8 +58,8 @@ public class ChatMessageCellStyle: ObservableObject {
                 fontWeight: .bold
             )
         ),
-        incomingCellEdgeInsets: EdgeInsets? = nil,
-        outgoingCellEdgeInsets: EdgeInsets? = nil,
+        incomingCellEdgeInsets: EdgeInsets = EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4),
+        outgoingCellEdgeInsets: EdgeInsets = EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4),
         contactCellStyle: ContactCellStyle = ContactCellStyle(),
         imageCellStyle: ImageCellStyle = ImageCellStyle(),
         quickReplyCellStyle: QuickReplyCellStyle = QuickReplyCellStyle(),

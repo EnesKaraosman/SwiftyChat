@@ -12,12 +12,12 @@ public struct CellEdgeInsetsModifier: ViewModifier {
     public let isSender: Bool
     @EnvironmentObject var style: ChatMessageCellStyle
     
-    private var insets: EdgeInsets? {
+    private var insets: EdgeInsets {
         isSender ? style.outgoingCellEdgeInsets : style.incomingCellEdgeInsets
     }
     
     public func body(content: Content) -> some View {
-        content.listRowInsets(insets)
+        content.padding(insets)
     }
     
 }
