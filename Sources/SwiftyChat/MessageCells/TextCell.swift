@@ -58,7 +58,18 @@ public struct TextCell<Message: ChatMessage>: View {
     
     private var attributedText: some View {
         let textStyle = cellStyle.attributedTextStyle
+        
+        let attributes = AZTextFrameAttributes(
+            string: text,
+            width: maxWidth,
+            font: cellStyle.attributedTextStyle.font
+        )
+
+        let textHeight = attributes.calculatedTextHeight()
+        
         let frame = text.frameSize(maxWidth: maxWidth, maxHeight: nil)
+        let textWidth = frame.width
+        
         
         return AttributedText(text: text, width: maxWidth) {
             
@@ -75,7 +86,7 @@ public struct TextCell<Message: ChatMessage>: View {
             $0.textColor = textStyle.textColor
             $0.textAlignment = self.message.isSender ? .right : .left
         }
-        .frame(width: frame.width, height: frame.height)
+        .frame(width: textWidth, height: textHeight)
         .padding(cellStyle.textPadding)
         .background(cellStyle.cellBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
