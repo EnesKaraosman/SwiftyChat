@@ -45,19 +45,20 @@ public struct TextCell<Message: ChatMessage>: View {
             .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
             .overlay(
                 RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
-                    .stroke(
-                        cellStyle.cellBorderColor,
-                        lineWidth: cellStyle.cellBorderWidth
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
                 )
-                    .shadow(
-                        color: cellStyle.cellShadowColor,
-                        radius: cellStyle.cellShadowRadius
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
                 )
-        )
+            )
     }
     
     private var attributedText: some View {
         let textStyle = cellStyle.attributedTextStyle
+        let frame = text.frameSize(maxWidth: maxWidth, maxHeight: nil)
         
         return AttributedText(text: text, width: maxWidth) {
             
@@ -74,18 +75,19 @@ public struct TextCell<Message: ChatMessage>: View {
             $0.textColor = textStyle.textColor
             $0.textAlignment = self.message.isSender ? .right : .left
         }
+        .frame(width: frame.width, height: frame.height)
         .padding(cellStyle.textPadding)
         .background(cellStyle.cellBackgroundColor)
         .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
-                .stroke(
-                    cellStyle.cellBorderColor,
-                    lineWidth: cellStyle.cellBorderWidth
+            .stroke(
+                cellStyle.cellBorderColor,
+                lineWidth: cellStyle.cellBorderWidth
             )
-                .shadow(
-                    color: cellStyle.cellShadowColor,
-                    radius: cellStyle.cellShadowRadius
+            .shadow(
+                color: cellStyle.cellShadowColor,
+                radius: cellStyle.cellShadowRadius
             )
         )
     }

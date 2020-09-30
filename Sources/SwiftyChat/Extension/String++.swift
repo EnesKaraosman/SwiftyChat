@@ -54,6 +54,19 @@ internal extension String {
         
         return regex.firstMatch(in: self, options: [], range: range) != nil
     }
+    
+    func frameSize(maxWidth: CGFloat? = nil, maxHeight: CGFloat? = nil) -> CGSize {
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: UIFont.preferredFont(forTextStyle: .body)
+        ]
+        let attributedText = NSAttributedString(string: self, attributes: attributes)
+        let width = maxWidth != nil ? min(maxWidth!, CGFloat.greatestFiniteMagnitude) : CGFloat.greatestFiniteMagnitude
+        let height = maxHeight != nil ? min(maxHeight!, CGFloat.greatestFiniteMagnitude) : CGFloat.greatestFiniteMagnitude
+        let constraintBox = CGSize(width: width, height: height)
+        let rect = attributedText.boundingRect(with: constraintBox, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).integral
+        return rect.size
+    }
+    
 }
 
 internal extension NSAttributedString {
