@@ -11,7 +11,7 @@ import SwiftUI
 public struct ChatView: View {
 
     let autoScroll: Bool
-    let scrollManager = ScrollManager()
+    @State var scrollManager = ScrollManager()
     @State var lastMessage: ChatMessage?
     @State var indexPathToSetVisible: IndexPath?
     @Binding public var messages: [ChatMessage]
