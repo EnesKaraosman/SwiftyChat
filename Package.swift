@@ -33,5 +33,6 @@ let package = Package(
 //                .byName(name: "Introspect")
             ]
         )
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )
