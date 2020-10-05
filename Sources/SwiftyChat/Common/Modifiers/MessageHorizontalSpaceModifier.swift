@@ -14,7 +14,7 @@ internal struct MessageHorizontalSpaceModifier: ViewModifier {
     public var isSender: Bool
     
     private var isSpaceFreeMessageKind: Bool {
-        if case ChatMessageKind.carousel = self.messageKind {
+        if case ChatMessageKind.carousel = messageKind {
             return true
         }
         return false

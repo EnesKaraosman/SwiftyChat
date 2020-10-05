@@ -15,14 +15,14 @@ internal struct EmojiModifier: ViewModifier {
     public let defaultFont: Font
 
     private var font: Font? {
-        var _font: Font = self.defaultFont
+        var _font: Font = defaultFont
         if text.containsOnlyEmoji {
             let count = text.count
             switch count {
             case 1: _font = .system(size: 50)
             case 2: _font = .system(size: 38)
             case 3: _font = .system(size: 25)
-            default: _font = self.defaultFont
+            default: _font = defaultFont
             }
         }
         return _font

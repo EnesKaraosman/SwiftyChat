@@ -19,13 +19,13 @@ public struct AttributedText: UIViewRepresentable {
     
     public func updateUIView(_ uiView: UILabel, context: UIViewRepresentableContext<Self>) {
         DispatchQueue.main.async {
-            if let attributedText = self.text.htmlToAttributedString {
+            if let attributedText = text.htmlToAttributedString {
                 uiView.attributedText = attributedText
             } else {
-                uiView.text = self.text
+                uiView.text = text
             }
-            self.configuration(uiView)
-            uiView.preferredMaxLayoutWidth = self.width
+            configuration(uiView)
+            uiView.preferredMaxLayoutWidth = width
             uiView.sizeToFit()
         }
     }

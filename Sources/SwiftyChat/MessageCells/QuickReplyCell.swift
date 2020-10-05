@@ -34,43 +34,39 @@ public struct QuickReplyCell: View {
     }
     
     private func itemBackground(for index: Int) -> some View {
-        let backgroundColor: Color = (index == self.selectedIndex ? self.cellStyle.selectedItemBackgroundColor : self.cellStyle.unselectedItemBackgroundColor)
-        return backgroundColor.cornerRadius(self.cellStyle.itemCornerRadius)
+        let backgroundColor: Color = (index == selectedIndex ? cellStyle.selectedItemBackgroundColor : cellStyle.unselectedItemBackgroundColor)
+        return backgroundColor.cornerRadius(cellStyle.itemCornerRadius)
     }
     
     public var body: some View {
-        conditionalStack(isVStack: totalOptionsLength > self.cellStyle.characterLimitToChangeStackOrientation) {
+        conditionalStack(isVStack: totalOptionsLength > cellStyle.characterLimitToChangeStackOrientation) {
             ForEach(0..<quickReplies.count) { idx in
 
                 Button(action: {}) {
-                    Text(self.quickReplies[idx].title)
-                        .fontWeight(
-                            idx == self.selectedIndex ? self.cellStyle.selectedItemFontWeight : self.cellStyle.unselectedItemFontWeight
-                        )
-                        .font(
-                            idx == self.selectedIndex ? self.cellStyle.selectedItemFont : self.cellStyle.unselectedItemFont
-                        )
-                        .padding(self.cellStyle.itemPadding)
-                        .frame(height: self.cellStyle.itemHeight)
-                        .background(self.itemBackground(for: idx))
-                        .foregroundColor(self.colors(selectedIndex: self.selectedIndex)[idx])
+                    Text(quickReplies[idx].title)
+                        .fontWeight(idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight)
+                        .font(idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont)
+                        .padding(cellStyle.itemPadding)
+                        .frame(height: cellStyle.itemHeight)
+                        .background(itemBackground(for: idx))
+                        .foregroundColor(colors(selectedIndex: selectedIndex)[idx])
                         .overlay(
-                            RoundedRectangle(cornerRadius: self.cellStyle.itemCornerRadius)
+                            RoundedRectangle(cornerRadius: cellStyle.itemCornerRadius)
                                 .stroke(
-                                    self.colors(selectedIndex: self.selectedIndex)[idx],
-                                    lineWidth: self.cellStyle.itemBorderWidth
+                                    colors(selectedIndex: selectedIndex)[idx],
+                                    lineWidth: cellStyle.itemBorderWidth
                                 )
                                 .shadow(
-                                    color: self.cellStyle.itemShadowColor,
-                                    radius: self.cellStyle.itemShadowRadius
+                                    color: cellStyle.itemShadowColor,
+                                    radius: cellStyle.itemShadowRadius
                                 )
                         )
                 }
                 .simultaneousGesture(
                     TapGesture().onEnded { _ in
-                        self.selectedIndex = idx
-                        self.isDisabled = true
-                        self.quickReplySelected(self.quickReplies[idx])
+                        selectedIndex = idx
+                        isDisabled = true
+                        quickReplySelected(quickReplies[idx])
                     }
                 )
                 

@@ -31,38 +31,38 @@ public struct DefaultInputView: View, InputViewProtocol {
     public var body: some View {
         HStack(spacing: 16) {
             
-            self.moreButton
-            self.inputField
-            self.cameraButton
+            moreButton
+            inputField
+            cameraButton
             
             if isKeyboardActive {
-                self.sendButton
+                sendButton
             }
             
         }
         .frame(height: proxy.safeAreaInsets.bottom + mainContainerHeight)
         .background(
             Color(#colorLiteral(red: 0.2179558277, green: 0.202344358, blue: 0.2716280818, alpha: 1)).sheet(isPresented: $presentCameraSheet) {
-                ImagePicker(sourceType: self.sourceType) { (image) in
+                ImagePicker(sourceType: sourceType) { (image) in
                     self.sendAction(.image(.local(image)))
                 }
             }
         )
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { (_) in
             withAnimation {
-                self.isKeyboardActive = true
+                isKeyboardActive = true
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { (_) in
             withAnimation(.easeOut(duration: 0.1)) {
-                self.isKeyboardActive = false
+                isKeyboardActive = false
             }
         }
         .actionSheet(isPresented: $moreActionSheet) { () -> ActionSheet in
             ActionSheet(title: Text("More"), message: nil, buttons: [
                 .default(Text("Gallery"), action: {
-                    self.sourceType = .photoLibrary
-                    self.presentCameraSheet = true
+                    sourceType = .photoLibrary
+                    presentCameraSheet = true
                 }),
                 .cancel()
             ])
@@ -89,8 +89,8 @@ public struct DefaultInputView: View, InputViewProtocol {
     private var sendButton: some View {
         Button(action: {
             print("send tapped")
-            self.sendAction(.text(self.textfield))
-            self.textfield.removeAll()
+            sendAction(.text(textfield))
+            textfield.removeAll()
         }) {
             
             Image(systemName: "paperplane.fill")
@@ -112,7 +112,7 @@ public struct DefaultInputView: View, InputViewProtocol {
     private var cameraButton: some View {
         Button(action: {
             print("camera tapped")
-            self.presentCameraSheet = true
+            presentCameraSheet = true
         }) {
             Image(systemName: "camera")
                 .resizable()
@@ -127,7 +127,7 @@ public struct DefaultInputView: View, InputViewProtocol {
     private var moreButton: some View {
         Button(action: {
             print("plus tapped")
-            self.moreActionSheet = true
+            moreActionSheet = true
         }) {
             Image(systemName: "plus")
                 .resizable()

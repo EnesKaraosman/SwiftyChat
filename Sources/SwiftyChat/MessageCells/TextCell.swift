@@ -73,18 +73,18 @@ public struct TextCell<Message: ChatMessage>: View {
         
         return AttributedText(text: text, width: maxWidth) {
             
-            $0.enabledDetectors = self.enabledDetectors
-            $0.didSelectAddress = self.action.didSelectAddress
-            $0.didSelectDate = self.action.didSelectDate
-            $0.didSelectPhoneNumber = self.action.didSelectPhoneNumber
-            $0.didSelectURL = self.action.didSelectURL
-            $0.didSelectTransitInformation = self.action.didSelectTransitInformation
+            $0.enabledDetectors = enabledDetectors
+            $0.didSelectAddress = action.didSelectAddress
+            $0.didSelectDate = action.didSelectDate
+            $0.didSelectPhoneNumber = action.didSelectPhoneNumber
+            $0.didSelectURL = action.didSelectURL
+            $0.didSelectTransitInformation = action.didSelectTransitInformation
             //            $0.didSelectMention = self.action.didSelectMention
             //            $0.didSelectHashtag = self.action.didSelectHashtag
             
             $0.font = textStyle.font.withWeight(textStyle.fontWeight)
             $0.textColor = textStyle.textColor
-            $0.textAlignment = self.message.isSender ? .right : .left
+            $0.textAlignment = message.isSender ? .right : .left
         }
         .frame(width: textWidth, height: textHeight)
         .padding(cellStyle.textPadding)
@@ -108,9 +108,9 @@ public struct TextCell<Message: ChatMessage>: View {
             text: text,
             enabledDetectors: enabledDetectors
         ).doesContain() || text.containsHtml() {
-            self.attributedText
+            attributedText
         } else {
-            self.defaultText
+            defaultText
         }
     }
     

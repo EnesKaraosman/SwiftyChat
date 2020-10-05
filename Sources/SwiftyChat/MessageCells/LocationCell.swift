@@ -25,13 +25,7 @@ public struct LocationCell<Message: ChatMessage>: View {
     }
     
     public var body: some View {
-        Group {
-            if #available(iOS 14.0, *) {
-                self.builtInMapView
-            } else {
-                self.uiViewRepresentableMapView
-            }
-        }
+        mapView
         .frame(
             width: mapWidth,
             height: mapWidth * cellStyle.cellAspectRatio
@@ -48,6 +42,14 @@ public struct LocationCell<Message: ChatMessage>: View {
             color: cellStyle.cellShadowColor,
             radius: cellStyle.cellShadowRadius
         )
+    }
+    
+    @ViewBuilder private var mapView: some View {
+        if #available(iOS 14.0, *) {
+            self.builtInMapView
+        } else {
+            self.uiViewRepresentableMapView
+        }
     }
     
     // MARK: - Wrapped Map view (for below iOS 14 versions)

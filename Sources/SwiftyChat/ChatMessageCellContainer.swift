@@ -18,57 +18,52 @@ public struct ChatMessageCellContainer<Message: ChatMessage>: View {
     public let onTextTappedCallback: () -> AttributedTextTappedCallback
     public let onCarouselItemAction: (CarouselItemButton, Message) -> Void
     
-    func messageCell() -> some View {
+    @ViewBuilder func messageCell() -> some View {
         switch message.messageKind {
             
         case .text(let text):
-            
-            return TextCell(
+            TextCell(
                 text: text,
                 message: message,
                 size: size,
                 callback: onTextTappedCallback
-            ).embedInAnyView()
+            )
             
         case .location(let location):
-            
-            return LocationCell(
+            LocationCell(
                 location: location,
                 message: message,
                 size: size
-            ).embedInAnyView()
+            )
             
         case .image(let imageLoadingType):
-            
-            return ImageCell(
+            ImageCell(
                 message: message,
                 imageLoadingType: imageLoadingType,
                 size: size
-            ).embedInAnyView()
+            )
             
         case .contact(let contact):
-            
-            return ContactCell(
+            ContactCell(
                 contact: contact,
                 message: message,
                 size: size,
                 footerSection: contactFooterSection
-            ).embedInAnyView()
+            )
             
         case .quickReply(let quickReplies):
-            return QuickReplyCell(
+            QuickReplyCell(
                 quickReplies: quickReplies,
                 quickReplySelected: onQuickReplyItemSelected
-            ).embedInAnyView()
+            )
             
         case .carousel(let carouselItems):
-            return CarouselCell(
+            CarouselCell(
                 carouselItems: carouselItems,
                 size: size,
                 message: message,
                 onCarouselItemAction: onCarouselItemAction
             )
-            .embedInAnyView()
             
         }
         

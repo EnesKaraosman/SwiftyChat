@@ -41,15 +41,16 @@ public struct CarouselCell<Message: ChatMessage>: View {
                 ForEach(carouselItems, id: \.id) { item in
                     CarouselItemView(
                         item: item,
-                        size: self.size,
-                        isSender: self.message.isSender
+                        size: size,
+                        isSender: message.isSender
                     ) { button in
-                        self.onCarouselItemAction(button, self.message)
+                        onCarouselItemAction(button, message)
                     }
                 }
             }
         }
     }
+    
 }
 
 public struct CarouselItemView: View {
@@ -94,33 +95,33 @@ public struct CarouselItemView: View {
             
             HStack {
                 ForEach(item.buttons) { (button) in
-                    Button(action: { self.callback(button) }) {
+                    Button(action: { callback(button) }) {
                         Text(button.title)
-                            .fontWeight(self.cellStyle.buttonTitleFontWeight)
-                            .font(self.cellStyle.buttonFont)
-                            .foregroundColor(self.cellStyle.buttonTitleColor)
+                            .fontWeight(cellStyle.buttonTitleFontWeight)
+                            .font(cellStyle.buttonFont)
+                            .foregroundColor(cellStyle.buttonTitleColor)
                     }
                     .buttonStyle(
                         CarouselItemButtonStyle(
-                            backgroundColor: self.cellStyle.buttonBackgroundColor
+                            backgroundColor: cellStyle.buttonBackgroundColor
                         )
                     )
                 }
             }
             
         }
-        .background(self.cellStyle.cellBackgroundColor)
+        .background(cellStyle.cellBackgroundColor)
         .frame(width: itemWidth)
-        .cornerRadius(self.cellStyle.cellCornerRadius)
+        .cornerRadius(cellStyle.cellCornerRadius)
         .overlay(
-            RoundedRectangle(cornerRadius: self.cellStyle.cellCornerRadius)
+            RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
                 .stroke(
-                    self.cellStyle.cellBorderColor,
-                    lineWidth: self.cellStyle.cellBorderWidth
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
                 )
                 .shadow(
-                    color: self.cellStyle.cellShadowColor,
-                    radius: self.cellStyle.cellShadowRadius
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
                 )
         )
         

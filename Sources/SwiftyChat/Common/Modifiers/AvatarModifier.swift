@@ -76,10 +76,10 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
     }
     
     @ViewBuilder private var avatarImage: some View {
-        if user.avatarURL != nil && currentStyle.imageStyle.imageSize.width > 0 {
-            KFImage(user.avatarURL).resizable()
-        } else if user.avatar != nil && currentStyle.imageStyle.imageSize.width > 0 {
-            Image(uiImage: user.avatar!).resizable()
+        if let imageURL = user.avatarURL, currentStyle.imageStyle.imageSize.width > 0 {
+            KFImage(imageURL).resizable()
+        } else if let avatar = user.avatar, currentStyle.imageStyle.imageSize.width > 0 {
+            Image(uiImage: avatar).resizable()
         }
     }
     

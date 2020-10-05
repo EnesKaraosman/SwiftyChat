@@ -22,10 +22,10 @@ final class OrientationInfo: ObservableObject {
     init() {
         // fairly arbitrary starting value for 'flat' orientations
         if UIDevice.current.orientation.isLandscape {
-            self.orientation = .landscape
+            orientation = .landscape
         }
         else {
-            self.orientation = .portrait
+            orientation = .portrait
         }
         
         // unowned self because we unregister before self becomes invalid
@@ -34,10 +34,10 @@ final class OrientationInfo: ObservableObject {
                 return
             }
             if device.orientation.isPortrait {
-                self.orientation = .portrait
+                orientation = .portrait
             }
             else if device.orientation.isLandscape {
-                self.orientation = .landscape
+                orientation = .landscape
             }
         }
     }
@@ -68,13 +68,11 @@ struct DeviceOrientationBasedView<Content: View>: View {
         self.landscape = landscape()
     }
     
-    var body: some View {
-        Group {
-            if model.orientation == .portrait {
-                portrait
-            } else {
-                landscape
-            }
+    @ViewBuilder var body: some View {
+        if model.orientation == .portrait {
+            portrait
+        } else {
+            landscape
         }
     }
 }

@@ -26,8 +26,8 @@ public struct ImageCell<Message: ChatMessage>: View {
     
     @ViewBuilder private var imageView: some View {
         switch imageLoadingType {
-        case .local(let image): self.localImage(uiImage: image)
-        case .remote(let remoteUrl): self.remoteImage(url: remoteUrl)
+        case .local(let image): localImage(uiImage: image)
+        case .remote(let remoteUrl): remoteImage(url: remoteUrl)
         }
     }
     

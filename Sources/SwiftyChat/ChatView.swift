@@ -30,11 +30,49 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     public var body: some View {
         DeviceOrientationBasedView(
-            portrait: { GeometryReader { self.body(in: $0) } },
-            landscape: { GeometryReader { self.body(in: $0) } }
+            portrait: { GeometryReader { body(in: $0) } },
+            landscape: { GeometryReader { body(in: $0) } }
         )
         .environmentObject(OrientationInfo())
         .edgesIgnoringSafeArea(.bottom)
+    }
+    
+    // MARK: - Body in geometry
+    private func body(in geometry: GeometryProxy) -> some View {
+        ZStack(alignment: .bottom) {
+                    
+            if #available(iOS 14.0, *) {
+                iOS14Body(in: geometry)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
+            } else {
+                iOS14Fallback(in: geometry)
+                    .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
+            }
+
+            inputView(geometry)
+
+        }
+        .keyboardAwarePadding()
+        .dismissKeyboardOnTappingOutside()
+    }
+    
+    @available(iOS 14.0, *)
+    private func iOS14Body(in geometry: GeometryProxy) -> some View {
+        ScrollView {
+            ScrollViewReader { proxy in
+                LazyVStack {
+                    ForEach(messages) { message in
+                        chatMessageCellContainer(in: geometry.size, with: message)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func iOS14Fallback(in geometry: GeometryProxy) -> some View {
+        List(messages) { message in
+            chatMessageCellContainer(in: geometry.size, with: message)
+        }
         .onAppear {
             // To remove only extra separators below the list:
             UITableView.appearance().tableFooterView = UIView()
@@ -43,41 +81,20 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         }
     }
     
-    // MARK: - Body in geometry
-    private func body(in geometry: GeometryProxy) -> some View {
-        ZStack(alignment: .bottom) {
-            List {
-                ForEach(self.messages) { message in
-                    self.chatMessageCellContainer(in: geometry.size, with: message)
-                }
-            }
-            .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
-
-            self.inputView(geometry)
-
-        }
-        .keyboardAwarePadding()
-        .dismissKeyboardOnTappingOutside()
-    }
-    
     // MARK: - List Item
     private func chatMessageCellContainer(in size: CGSize, with message: Message) -> some View {
         ChatMessageCellContainer(
             message: message,
             size: size,
-            onQuickReplyItemSelected: self.onQuickReplyItemSelected,
-            contactFooterSection: self.contactCellFooterSection,
-            onTextTappedCallback: self.onAttributedTextTappedCallback,
-            onCarouselItemAction: self.onCarouselItemAction
+            onQuickReplyItemSelected: onQuickReplyItemSelected,
+            contactFooterSection: contactCellFooterSection,
+            onTextTappedCallback: onAttributedTextTappedCallback,
+            onCarouselItemAction: onCarouselItemAction
         )
-        .onTapGesture {
-            self.onMessageCellTapped(message)
-        }
-        .contextMenu(menuItems: {
-            self.messageCellContextMenu(message)
-        })
+        .onTapGesture { onMessageCellTapped(message) }
+        .contextMenu(menuItems: { messageCellContextMenu(message) })
         .modifier(AvatarModifier<Message, User>(message: message))
-        .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
+        .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
     }
     
@@ -86,32 +103,32 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
 public extension ChatView {
     
     /// Triggered when a ChatMessage is tapped.
-    func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> ChatView {
+    func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> Self {
         then({ $0.onMessageCellTapped = action })
     }
     
     /// Present ContextMenu when a message cell is long pressed.
-    func messageCellContextMenu(_ action: @escaping (Message) -> AnyView) -> ChatView {
+    func messageCellContextMenu(_ action: @escaping (Message) -> AnyView) -> Self {
         then({ $0.messageCellContextMenu = action })
     }
     
     /// Triggered when a quickReplyItem is selected (ChatMessageKind.quickReply)
-    func onQuickReplyItemSelected(_ action: @escaping (QuickReplyItem) -> Void) -> ChatView {
+    func onQuickReplyItemSelected(_ action: @escaping (QuickReplyItem) -> Void) -> Self {
         then({ $0.onQuickReplyItemSelected = action })
     }
     
     /// Present contactItem's footer buttons. (ChatMessageKind.contactItem)
-    func contactItemButtons(_ section: @escaping (ContactItem, Message) -> [ContactCellButton]) -> ChatView {
+    func contactItemButtons(_ section: @escaping (ContactItem, Message) -> [ContactCellButton]) -> Self {
         then({ $0.contactCellFooterSection = section })
     }
     
     /// To listen text tapped events like phone, url, date, address
-    func onAttributedTextTappedCallback(action: @escaping () -> AttributedTextTappedCallback) -> ChatView {
+    func onAttributedTextTappedCallback(action: @escaping () -> AttributedTextTappedCallback) -> Self {
         then({ $0.onAttributedTextTappedCallback = action })
     }
     
     /// Triggered when the carousel button tapped.
-    func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> ChatView {
+    func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> Self {
         then({ $0.onCarouselItemAction = action })
     }
     

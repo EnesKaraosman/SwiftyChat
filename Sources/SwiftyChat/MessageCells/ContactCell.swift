@@ -65,21 +65,21 @@ public struct ContactCell<Message: ChatMessage>: View {
     }
     
     private var buttons: [ContactCellButton] {
-        return self.footerSection(contact, message)
+        return footerSection(contact, message)
     }
     
     private var buttonActionFooter: some View {
         HStack {
             
-            ForEach(self.buttons.indices) { idx in
-                Button(self.buttons[idx].title) {}
+            ForEach(buttons.indices) { idx in
+                Button(buttons[idx].title) {}
                     .buttonStyle(BorderlessButtonStyle())
                     .simultaneousGesture(
-                        TapGesture().onEnded(self.buttons[idx].action)
+                        TapGesture().onEnded(buttons[idx].action)
                     )
                     .frame(maxWidth: .infinity)
                 
-                if idx != self.buttons.count - 1 {
+                if idx != buttons.count - 1 {
                     Divider()
                 }
             }
@@ -94,8 +94,8 @@ public struct ContactCell<Message: ChatMessage>: View {
         VStack(spacing: 0) {
             
             HStack {
-                self.contactImage
-                self.fullNameLabel
+                contactImage
+                fullNameLabel
                 Spacer()
                 Image(systemName: "chevron.right")
                     .shadow(color: .secondary, radius: 1)
@@ -104,10 +104,10 @@ public struct ContactCell<Message: ChatMessage>: View {
             
             Spacer()
             Divider()
-            self.buttonActionFooter
+            buttonActionFooter
             
         }
-        .frame(width: self.cardWidth)
+        .frame(width: cardWidth)
         .background(
             cellStyle.cellBackgroundColor
                 .cornerRadius(cellStyle.cellCornerRadius)

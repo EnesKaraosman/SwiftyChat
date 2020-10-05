@@ -30,7 +30,7 @@ public struct KeyboardAwareModifier: ViewModifier {
             .padding(.bottom, keyboardHeight)
             .onReceive(keyboardHeightPublisher) { height in
                 withAnimation(.easeOut(duration: 0.2)) {
-                    self.keyboardHeight = height
+                    keyboardHeight = height
                 }
             }
     }
