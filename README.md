@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.0.2-blue)
+![Version](https://img.shields.io/badge/version-1.0.3-blue)
 ![Swift 5.3](https://img.shields.io/badge/Swift-5.3-orange.svg)
 
 # SwiftyChat
