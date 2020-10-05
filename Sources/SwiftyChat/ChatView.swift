@@ -9,14 +9,20 @@
 import SwiftUI
 
 public struct ChatView: View {
-
+    
     let autoScroll: Bool
-    @State var scrollManager = ScrollManager()
-    @State var lastMessage: ChatMessage?
-    @State var indexPathToSetVisible: IndexPath?
+    let localUser: ChatUser
     @Binding public var messages: [ChatMessage]
+    @Binding public var typingUser: ChatUser?
     public var inputView: (_ proxy: GeometryProxy) -> AnyView
-
+    
+    
+    //iOS 13 scroll hacks
+    @State private var scrollManager = ScrollManager()
+    @State private var lastMessage: ChatMessage?
+    @State private var indexPathToSetVisible: IndexPath?
+    @State private var wasTyping: Bool = false
+    
     private var onMessageCellTapped: (ChatMessage) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (ChatMessage) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
@@ -25,11 +31,15 @@ public struct ChatView: View {
     private var onCarouselItemAction: (CarouselItemButton, ChatMessage) -> Void = { (_, _) in }
     
     public init(
+        localUser: ChatUser,
         messages: Binding<[ChatMessage]>,
+        typingUser: Binding<ChatUser?>,
         inputView: @escaping (_ proxy: GeometryProxy) -> AnyView,
         autoScroll: Bool = true
     ) {
+        self.localUser = localUser
         self._messages = messages
+        self._typingUser = typingUser
         self.inputView = inputView
         self.autoScroll = autoScroll
     }
@@ -75,7 +85,7 @@ public struct ChatView: View {
         copy.onCarouselItemAction = action
         return copy
     }
-
+    
     var tableViewFinderOverlay: AnyView {
         // we only need to add one overlay view to find the parent table view, we don't want an overlay view on each row
         if scrollManager.tableView == nil {
@@ -99,26 +109,51 @@ public struct ChatView: View {
         }
     }
     
-    struct BindingView: View {
-        @Binding var messages: [ChatMessage]
-        
-        var body: some View {
-            return EmptyView()
-        }
-    }
-    
     // MARK: - Body in geometry
     private func body(in geometry: GeometryProxy) -> some View {
         ZStack(alignment: .bottom) {
-            List(messages) { message in
-                self.chatMessageCellContainer(in: geometry.size, with: message)
-                    .overlay(
-                        // we need this to grab the reference to the table view that we want to programmatically scroll
-                        // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
-                        self.tableViewFinderOverlay
-                            .frame(width: 0, height: 0)
-                    )
-                    .listRowBackground(Color.black)
+            messagesView(geometry: geometry)
+                .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
+            self.inputView(geometry)
+        }.keyboardAwarePadding()
+    }
+    
+    private func messagesView(geometry: GeometryProxy) -> some View {
+        if #available(iOS 14.0, *) {
+            return ScrollView {
+                ScrollViewReader { proxy in
+                    LazyVStack {
+                        ForEach(messages.indices, id: \.self) { index in
+                            VStack {
+                                self.chatMessageCellContainer(in: geometry.size, with: messages[index])
+                                typingView(for: index)
+                            }
+                            .id(index)
+                            .onChange(of: messages) { _ in
+                                scrollToBottom(with: proxy)
+                            }
+                            .onChange(of: typingUser) { _ in
+                                scrollToBottom(with: proxy)
+                            }
+                        }
+                    }
+                }
+            }
+            .padding()
+            .embedInAnyView()
+        } else {
+            return List(messages.indices, id: \.self) { index in
+                VStack {
+                    self.chatMessageCellContainer(in: geometry.size, with: messages[index])
+                        .overlay(
+                            // we need this to grab the reference to the table view that we want to programmatically scroll
+                            // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
+                            self.tableViewFinderOverlay
+                                .frame(width: 0, height: 0)
+                        )
+                        .listRowBackground(Color.black)
+                    typingView(for: index)
+                }
             }
             .overlay(
                 // the scrolling has to be done via the binding `indexPathToSetVisible`
@@ -127,25 +162,33 @@ public struct ChatView: View {
                     indexPathToSetVisible: $indexPathToSetVisible
                 ).frame(width: 0, height: 0)
             )
-            .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
-
-            self.inputView(geometry)
-
-        }.keyboardAwarePadding()
-        .overlay(Group { () -> EmptyView in
-            
-            if let currentLastMessage = messages.last {
-                let endIndexPath = IndexPath(row: max(0, messages.count - 1), section: 0)
-                if currentLastMessage != self.lastMessage {
-                    DispatchQueue.main.async {
-                        self.lastMessage = currentLastMessage
-                        self.indexPathToSetVisible = endIndexPath
+            .overlay(Group { () -> EmptyView in
+                
+                if let currentLastMessage = messages.last {
+                    let endIndexPath = IndexPath(row: max(0, messages.count - 1), section: 0)
+                    if currentLastMessage != self.lastMessage || (typingUser != nil && !wasTyping) {
+                        DispatchQueue.main.async {
+                            self.lastMessage = currentLastMessage
+                            self.indexPathToSetVisible = endIndexPath
+                            self.wasTyping = typingUser != nil
+                        }
                     }
                 }
-            }
+                
+                return EmptyView()
+            })
             
-            return EmptyView()
-        })
+            .embedInAnyView()
+        }
+    }
+    
+    @ViewBuilder
+    private func typingView(for index: Int) -> some View {
+        if let typingUser = typingUser, index == messages.index(before: messages.endIndex) {
+            TypingMessageView(isSender: typingUser != localUser, user: typingUser)
+        } else {
+            EmptyView()
+        }
     }
     
     // MARK: - List Item
@@ -168,6 +211,12 @@ public struct ChatView: View {
         .modifier(AvatarModifier(message: message))
         .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
+        .animation(nil)
+    }
+    
+    @available(iOS 14.0, *)
+    private func scrollToBottom(with proxy: ScrollViewProxy) {
+        withAnimation {  proxy.scrollTo(messages.indices.last) }
     }
     
 }
