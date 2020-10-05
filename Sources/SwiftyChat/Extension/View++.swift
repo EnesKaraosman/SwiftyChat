@@ -17,6 +17,14 @@ public func conditionalStack<Content: View>(isVStack: Bool, content: () -> Conte
 
 public extension View {
     
+    @inlinable
+    func then(_ body: (inout Self) -> Void) -> Self {
+        var result = self
+        body(&result)
+        return result
+    }
+    
+    @inlinable
     func embedInAnyView() -> AnyView {
         return AnyView(self)
     }

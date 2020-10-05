@@ -28,48 +28,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         self.inputView = inputView
     }
     
-    /// Triggered when a ChatMessage is tapped.
-    public func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> ChatView {
-        var copy = self
-        copy.onMessageCellTapped = action
-        return copy
-    }
-    
-    /// Present ContextMenu when a message cell is long pressed.
-    public func messageCellContextMenu(_ action: @escaping (Message) -> AnyView) -> ChatView {
-        var copy = self
-        copy.messageCellContextMenu = action
-        return copy
-    }
-    
-    /// Triggered when a quickReplyItem is selected (ChatMessageKind.quickReply)
-    public func onQuickReplyItemSelected(_ action: @escaping (QuickReplyItem) -> Void) -> ChatView {
-        var copy = self
-        copy.onQuickReplyItemSelected = action
-        return copy
-    }
-    
-    /// Present contactItem's footer buttons. (ChatMessageKind.contactItem)
-    public func contactItemButtons(_ section: @escaping (ContactItem, Message) -> [ContactCellButton]) -> ChatView {
-        var copy = self
-        copy.contactCellFooterSection = section
-        return copy
-    }
-    
-    /// To listen text tapped events like phone, url, date, address
-    public func onAttributedTextTappedCallback(action: @escaping () -> AttributedTextTappedCallback) -> ChatView {
-        var copy = self
-        copy.onAttributedTextTappedCallback = action
-        return copy
-    }
-    
-    /// Triggered when the carousel button tapped.
-    public func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> ChatView {
-        var copy = self
-        copy.onCarouselItemAction = action
-        return copy
-    }
-    
     public var body: some View {
         DeviceOrientationBasedView(
             portrait: { GeometryReader { self.body(in: $0) } },
@@ -121,6 +79,40 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .modifier(AvatarModifier<Message, User>(message: message))
         .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
+    }
+    
+}
+
+public extension ChatView {
+    
+    /// Triggered when a ChatMessage is tapped.
+    func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> ChatView {
+        then({ $0.onMessageCellTapped = action })
+    }
+    
+    /// Present ContextMenu when a message cell is long pressed.
+    func messageCellContextMenu(_ action: @escaping (Message) -> AnyView) -> ChatView {
+        then({ $0.messageCellContextMenu = action })
+    }
+    
+    /// Triggered when a quickReplyItem is selected (ChatMessageKind.quickReply)
+    func onQuickReplyItemSelected(_ action: @escaping (QuickReplyItem) -> Void) -> ChatView {
+        then({ $0.onQuickReplyItemSelected = action })
+    }
+    
+    /// Present contactItem's footer buttons. (ChatMessageKind.contactItem)
+    func contactItemButtons(_ section: @escaping (ContactItem, Message) -> [ContactCellButton]) -> ChatView {
+        then({ $0.contactCellFooterSection = section })
+    }
+    
+    /// To listen text tapped events like phone, url, date, address
+    func onAttributedTextTappedCallback(action: @escaping () -> AttributedTextTappedCallback) -> ChatView {
+        then({ $0.onAttributedTextTappedCallback = action })
+    }
+    
+    /// Triggered when the carousel button tapped.
+    func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> ChatView {
+        then({ $0.onCarouselItemAction = action })
     }
     
 }
