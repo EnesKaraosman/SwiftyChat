@@ -24,12 +24,10 @@ public struct ImageCell<Message: ChatMessage>: View {
         style.imageCellStyle
     }
     
-    private var imageView: AnyView {
+    @ViewBuilder private var imageView: some View {
         switch imageLoadingType {
-        case .local(let image):
-            return self.localImage(uiImage: image)
-        case .remote(let remoteUrl):
-            return self.remoteImage(url: remoteUrl)
+        case .local(let image): self.localImage(uiImage: image)
+        case .remote(let remoteUrl): self.remoteImage(url: remoteUrl)
         }
     }
     
@@ -38,11 +36,12 @@ public struct ImageCell<Message: ChatMessage>: View {
     }
     
     // MARK: - case Local Image
-    private func localImage(uiImage: UIImage) -> AnyView {
+    @ViewBuilder private func localImage(uiImage: UIImage) -> some View {
         let width = uiImage.size.width
         let height = uiImage.size.height
         let isLandscape = width > height
-        return Image(uiImage: uiImage)
+        
+        Image(uiImage: uiImage)
             .resizable()
             .aspectRatio(width / height, contentMode: isLandscape ? .fit : .fill)
             .frame(width: imageWidth, height: isLandscape ? nil : imageWidth)
@@ -59,11 +58,10 @@ public struct ImageCell<Message: ChatMessage>: View {
                 color: cellStyle.cellShadowColor,
                 radius: cellStyle.cellShadowRadius
             )
-            .embedInAnyView()
     }
     
     // MARK: - case Remote Image
-    private func remoteImage(url: URL) -> AnyView {
+    @ViewBuilder private func remoteImage(url: URL) -> some View {
         /**
          KFImage(url)
          .onSuccess(perform: { (result) in
@@ -74,7 +72,7 @@ public struct ImageCell<Message: ChatMessage>: View {
          
          So for now we use fixed width & scale height properly.
          */
-        return KFImage(url)
+        KFImage(url)
             .resizable()
             .scaledToFill()
             .frame(width: imageWidth)
@@ -91,7 +89,6 @@ public struct ImageCell<Message: ChatMessage>: View {
                 color: cellStyle.cellShadowColor,
                 radius: cellStyle.cellShadowRadius
             )
-            .embedInAnyView()
         
     }
     

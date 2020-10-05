@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  MessageLabel.swift
 //  
 //
 //  Created by Enes Karaosman on 3.06.2020.

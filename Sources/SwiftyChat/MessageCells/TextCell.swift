@@ -103,16 +103,14 @@ public struct TextCell<Message: ChatMessage>: View {
         )
     }
     
-    public var body: some View {
-        Group {
-            if AttributeDetective(
-                text: text,
-                enabledDetectors: enabledDetectors
-            ).doesContain() || text.containsHtml() {
-                self.attributedText
-            } else {
-                self.defaultText
-            }
+    @ViewBuilder public var body: some View {
+        if AttributeDetective(
+            text: text,
+            enabledDetectors: enabledDetectors
+        ).doesContain() || text.containsHtml() {
+            self.attributedText
+        } else {
+            self.defaultText
         }
     }
     

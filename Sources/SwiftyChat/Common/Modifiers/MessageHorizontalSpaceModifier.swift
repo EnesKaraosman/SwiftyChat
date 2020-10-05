@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct MessageModifier: ViewModifier {
+internal struct MessageHorizontalSpaceModifier: ViewModifier {
     
     public var messageKind: ChatMessageKind
     public var isSender: Bool
@@ -29,6 +29,6 @@ public struct MessageModifier: ViewModifier {
             if !isSender && !isSpaceFreeMessageKind {
                 Spacer(minLength: 10)
             }
-        }.embedInAnyView()
+        }
     }
 }

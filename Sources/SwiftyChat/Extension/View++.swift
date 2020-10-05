@@ -26,30 +26,26 @@ public extension View {
     
     @inlinable
     func embedInAnyView() -> AnyView {
-        return AnyView(self)
+        AnyView(self)
     }
     
     func keyboardAwarePadding() -> some View {
         ModifiedContent(content: self, modifier: KeyboardAwareModifier())
     }
     
-    func conditionalModifier<M1: ViewModifier, M2: ViewModifier>
+    @ViewBuilder func conditionalModifier<M1: ViewModifier, M2: ViewModifier>
         (on condition: Bool, trueCase: M1, falseCase: M2) -> some View {
-        Group {
-            if condition {
-                self.modifier(trueCase)
-            } else {
-                self.modifier(falseCase)
-            }
+        if condition {
+            self.modifier(trueCase)
+        } else {
+            self.modifier(falseCase)
         }
     }
     
-    func conditionalModifier<M: ViewModifier>
+    @ViewBuilder func conditionalModifier<M: ViewModifier>
         (on condition: Bool, trueCase: M) -> some View {
-        Group {
-            if condition {
-                self.modifier(trueCase)
-            }
+        if condition {
+            self.modifier(trueCase)
         }
     }
     

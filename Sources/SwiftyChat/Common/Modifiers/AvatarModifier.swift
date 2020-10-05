@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  AvatarModifier.swift
 //  
 //
 //  Created by Enes Karaosman on 30.07.2020.
@@ -8,7 +8,7 @@
 import SwiftUI
 import KingfisherSwiftUI
 
-public struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier {
+internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier {
     
     public let message: Message
     @EnvironmentObject var style: ChatMessageCellStyle
@@ -31,21 +31,21 @@ public struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier
     /// Current avatar position
     private var currentAvatarPosition: AvatarPosition { isSender ? outgoingAvatarPosition : incomingAvatarPosition }
     
-    private var onMessageBottom: some View {
+    private var alignToMessageBottom: some View {
         VStack {
             Spacer()
             avatar
         }
     }
     
-    private var onMessageTop: some View {
+    private var alignToMessageTop: some View {
         VStack {
             avatar
             Spacer()
         }
     }
     
-    private var onMessageCenter: some View {
+    private var alignToMessageCenter: some View {
         VStack {
             Spacer()
             avatar
@@ -75,23 +75,19 @@ public struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier
             )
     }
     
-    private var avatarImage: some View {
-        Group {
-            if user.avatarURL != nil && currentStyle.imageStyle.imageSize.width > 0 {
-                KFImage(user.avatarURL).resizable()
-            } else if user.avatar != nil && currentStyle.imageStyle.imageSize.width > 0 {
-                Image(uiImage: user.avatar!).resizable()
-            } else {
-                EmptyView()
-            }
+    @ViewBuilder private var avatarImage: some View {
+        if user.avatarURL != nil && currentStyle.imageStyle.imageSize.width > 0 {
+            KFImage(user.avatarURL).resizable()
+        } else if user.avatar != nil && currentStyle.imageStyle.imageSize.width > 0 {
+            Image(uiImage: user.avatar!).resizable()
         }
     }
     
-    private var positionedAvatar: some View {
+    @ViewBuilder private var positionedAvatar: some View {
         switch currentAvatarPosition {
-        case .alignToMessageTop: return onMessageTop.embedInAnyView()
-        case .alignToMessageCenter: return onMessageCenter.embedInAnyView()
-        case .alignToMessageBottom: return onMessageBottom.embedInAnyView()
+        case .alignToMessageTop: alignToMessageTop
+        case .alignToMessageCenter: alignToMessageCenter
+        case .alignToMessageBottom: alignToMessageBottom
         }
     }
     
@@ -105,13 +101,9 @@ public struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier
     
     public func body(content: Content) -> some View {
         HStack(spacing: avatarSpacing) {
-            if !isSender {
-                positionedAvatar.zIndex(2)
-            }
+            if !isSender { positionedAvatar.zIndex(2) }
             content
-            if isSender {
-                positionedAvatar.zIndex(2)
-            }
+            if isSender { positionedAvatar.zIndex(2) }
         }
     }
     

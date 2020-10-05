@@ -31,38 +31,37 @@ public struct ContactCell<Message: ChatMessage>: View {
         style.contactCellStyle
     }
     
+    private var imageStyle: CommonImageStyle {
+        cellStyle.imageStyle
+    }
+    
     private var cardWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
     
     // MARK: - Image
-    private var contactImage: some View {
-        
-        let imageStyle = cellStyle.imageStyle
-        let profile = contact.image != nil ?
-            Image(uiImage: contact.image!)
+    @ViewBuilder private var contactImage: some View {
+        if let contactImage = contact.image {
+            Image(uiImage: contactImage)
                 .resizable()
-                .embedInAnyView() :
-            EmptyView().embedInAnyView()
-        
-        return profile
-            .frame(
-                width: imageStyle.imageSize.width,
-                height: imageStyle.imageSize.height
-            )
-            .scaledToFit()
-            .cornerRadius(imageStyle.cornerRadius)
-            .overlay(
-                RoundedRectangle(cornerRadius: imageStyle.cornerRadius)
-                    .stroke(
-                        imageStyle.borderColor,
-                        lineWidth: imageStyle.borderWidth
-                    )
-                    .shadow(
-                        color: imageStyle.shadowColor,
-                        radius: imageStyle.shadowRadius
-                    )
-            )
+                .frame(
+                    width: imageStyle.imageSize.width,
+                    height: imageStyle.imageSize.height
+                )
+                .scaledToFit()
+                .cornerRadius(imageStyle.cornerRadius)
+                .overlay(
+                    RoundedRectangle(cornerRadius: imageStyle.cornerRadius)
+                        .stroke(
+                            imageStyle.borderColor,
+                            lineWidth: imageStyle.borderWidth
+                        )
+                        .shadow(
+                            color: imageStyle.shadowColor,
+                            radius: imageStyle.shadowRadius
+                        )
+                )
+        }
     }
     
     private var buttons: [ContactCellButton] {

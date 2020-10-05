@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct CellEdgeInsetsModifier: ViewModifier {
+internal struct CellEdgeInsetsModifier: ViewModifier {
     
     public let isSender: Bool
     @EnvironmentObject var style: ChatMessageCellStyle

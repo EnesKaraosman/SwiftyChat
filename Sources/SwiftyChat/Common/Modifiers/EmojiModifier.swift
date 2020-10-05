@@ -9,7 +9,7 @@
 import SwiftUI
 
 /// Modifies the content if text contains emoji
-public struct EmojiModifier: ViewModifier {
+internal struct EmojiModifier: ViewModifier {
     
     public let text: String
     public let defaultFont: Font
@@ -19,22 +19,17 @@ public struct EmojiModifier: ViewModifier {
         if text.containsOnlyEmoji {
             let count = text.count
             switch count {
-            case 1:
-                _font = .system(size: 50)
-            case 2:
-                _font = .system(size: 38)
-            case 3:
-                _font = .system(size: 25)
-            default:
-                _font = self.defaultFont
+            case 1: _font = .system(size: 50)
+            case 2: _font = .system(size: 38)
+            case 3: _font = .system(size: 25)
+            default: _font = self.defaultFont
             }
         }
         return _font
     }
     
     public func body(content: Content) -> some View {
-        return content
-        .font(font)
+        content.font(font)
     }
     
 }

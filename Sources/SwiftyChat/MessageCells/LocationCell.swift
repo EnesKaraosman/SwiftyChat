@@ -25,13 +25,13 @@ public struct LocationCell<Message: ChatMessage>: View {
     }
     
     public var body: some View {
-//        Group {
-//            if #available(iOS 14.0, *) {
-//                self.mapView
-//            } else {
+        Group {
+            if #available(iOS 14.0, *) {
+                self.builtInMapView
+            } else {
                 self.uiViewRepresentableMapView
-//            }
-//        }
+            }
+        }
         .frame(
             width: mapWidth,
             height: mapWidth * cellStyle.cellAspectRatio
@@ -60,37 +60,36 @@ public struct LocationCell<Message: ChatMessage>: View {
         )
     }
     
-    // TODO: Release after Xcode 12 stable
-//    @available(iOS 14.0, *)
-//    private var mapView: some View {
-//        Map(
-//            coordinateRegion: .constant(
-//                MKCoordinateRegion(
-//                    center: .init(latitude: location.latitude, longitude: location.longitude),
-//                    span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
-//                )
-//            ),
-//            interactionModes: MapInteractionModes.zoom,
-//            showsUserLocation: false,
-//            annotationItems: [
-//                LocationRow(
-//                    latitude: location.latitude,
-//                    longitude: location.longitude
-//                )
-//            ],
-//            annotationContent: { place in
-//                MapMarker(coordinate: place.coordinate)
-//            }
-//        )
-//    }
-//
-//    private struct LocationRow: LocationItem, Identifiable {
-//        let id: String = UUID().uuidString
-//        var latitude: Double
-//        var longitude: Double
-//        var coordinate: CLLocationCoordinate2D {
-//            CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
-//        }
-//    }
+    @available(iOS 14.0, *)
+    private var builtInMapView: some View {
+        Map(
+            coordinateRegion: .constant(
+                MKCoordinateRegion(
+                    center: .init(latitude: location.latitude, longitude: location.longitude),
+                    span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03)
+                )
+            ),
+            interactionModes: MapInteractionModes.zoom,
+            showsUserLocation: false,
+            annotationItems: [
+                LocationRow(
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                )
+            ],
+            annotationContent: { place in
+                MapMarker(coordinate: place.coordinate)
+            }
+        )
+    }
+
+    private struct LocationRow: LocationItem, Identifiable {
+        let id: String = UUID().uuidString
+        var latitude: Double
+        var longitude: Double
+        var coordinate: CLLocationCoordinate2D {
+            CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        }
+    }
     
 }
