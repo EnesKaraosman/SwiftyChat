@@ -31,7 +31,8 @@ let package = Package(
             dependencies: [
                 .product(name: "KingfisherSwiftUI", package: "Kingfisher"),
 //                .byName(name: "Introspect")
-            ]
+            ],
+            exclude: ["Demo/Preview"]
         )
     ],
     swiftLanguageVersions: [.v5]
