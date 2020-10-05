@@ -176,8 +176,8 @@ public class ChatMessageCellStyle: ObservableObject {
     let incomingTextStyle: TextCellStyle
     let outgoingTextStyle: TextCellStyle
     
-    let incomingCellEdgeInsets: EdgeInsets?
-    let outgoingCellEdgeInsets: EdgeInsets?
+    let incomingCellEdgeInsets: EdgeInsets
+    let outgoingCellEdgeInsets: EdgeInsets
     
     let contactCellStyle: ContactCellStyle
     
