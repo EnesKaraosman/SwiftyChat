@@ -10,8 +10,8 @@ import SwiftUI
 
 public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
-    @Binding public var messages: [Message]
-    public var inputView: (_ proxy: GeometryProxy) -> AnyView
+    @Binding private var messages: [Message]
+    private var inputView: (_ proxy: GeometryProxy) -> AnyView
 
     private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
@@ -67,6 +67,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
             }
         }
+        .background(Color.clear)
     }
     
     private func iOS14Fallback(in geometry: GeometryProxy) -> some View {
@@ -78,6 +79,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             UITableView.appearance().tableFooterView = UIView()
             // To remove all separators including the actual ones:
             UITableView.appearance().separatorStyle = .none
+            
+            // To clear background colors to allow library user set himself
+            UITableView.appearance().backgroundColor = .clear
+            UITableViewCell.appearance().backgroundColor = .clear
         }
     }
     
