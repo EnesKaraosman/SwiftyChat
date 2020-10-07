@@ -10,10 +10,10 @@ import SwiftUI
 
 public struct ChatView: View {
     
-    let autoScroll: Bool
     let localUser: ChatUser
     @Binding public var messages: [ChatMessage]
     @Binding public var typingUser: ChatUser?
+    @Binding public var scrollIndex: Int?
     public var inputView: (_ proxy: GeometryProxy) -> AnyView
     
     
@@ -34,14 +34,14 @@ public struct ChatView: View {
         localUser: ChatUser,
         messages: Binding<[ChatMessage]>,
         typingUser: Binding<ChatUser?>,
-        inputView: @escaping (_ proxy: GeometryProxy) -> AnyView,
-        autoScroll: Bool = true
+        scrollIndex: Binding<Int?> = .constant(nil),
+        inputView: @escaping (_ proxy: GeometryProxy) -> AnyView
     ) {
         self.localUser = localUser
         self._messages = messages
         self._typingUser = typingUser
+        self._scrollIndex = scrollIndex
         self.inputView = inputView
-        self.autoScroll = autoScroll
     }
     
     /// Triggered when a ChatMessage is tapped.
@@ -113,15 +113,14 @@ public struct ChatView: View {
     private func body(in geometry: GeometryProxy) -> some View {
         ZStack(alignment: .bottom) {
             messagesView(geometry: geometry)
-                .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             self.inputView(geometry)
         }.keyboardAwarePadding()
     }
     
     private func messagesView(geometry: GeometryProxy) -> some View {
         if #available(iOS 14.0, *) {
-            return ScrollView {
-                ScrollViewReader { proxy in
+            return ScrollViewReader { proxy in
+                ScrollView {
                     LazyVStack {
                         ForEach(messages.indices, id: \.self) { index in
                             VStack {
@@ -129,12 +128,14 @@ public struct ChatView: View {
                                 typingView(for: index)
                             }
                             .id(index)
-                            .onChange(of: messages) { _ in
-                                scrollToBottom(with: proxy)
-                            }
-                            .onChange(of: typingUser) { _ in
-                                scrollToBottom(with: proxy)
-                            }
+                        }.onChange(of: scrollIndex) { index in
+                            scrollToIndex(index, with: proxy)
+                        }
+                        .onChange(of: messages) { _ in
+                            scrollToBottom(with: proxy)
+                        }
+                        .onChange(of: typingUser) { _ in
+                            scrollToBottom(with: proxy)
                         }
                     }
                 }
@@ -155,26 +156,25 @@ public struct ChatView: View {
                     typingView(for: index)
                 }
             }
-            .overlay(
+            .background(
                 // the scrolling has to be done via the binding `indexPathToSetVisible`
                 ScrollManagerView(
                     scrollManager: scrollManager,
                     indexPathToSetVisible: $indexPathToSetVisible
-                ).frame(width: 0, height: 0)
+                )
             )
             .overlay(Group { () -> EmptyView in
+                guard let currentLastMessage = messages.last else { return EmptyView() }
+                let endIndexPath = IndexPath(row: max(0, messages.count - 1), section: 0)
+                guard currentLastMessage != self.lastMessage ||
+                        (typingUser != nil && !wasTyping)
+                else { return EmptyView() }
                 
-                if let currentLastMessage = messages.last {
-                    let endIndexPath = IndexPath(row: max(0, messages.count - 1), section: 0)
-                    if currentLastMessage != self.lastMessage || (typingUser != nil && !wasTyping) {
-                        DispatchQueue.main.async {
-                            self.lastMessage = currentLastMessage
-                            self.indexPathToSetVisible = endIndexPath
-                            self.wasTyping = typingUser != nil
-                        }
-                    }
+                DispatchQueue.main.async {
+                    self.lastMessage = currentLastMessage
+                    self.indexPathToSetVisible = endIndexPath
+                    self.wasTyping = typingUser != nil
                 }
-                
                 return EmptyView()
             })
             
@@ -216,7 +216,11 @@ public struct ChatView: View {
     
     @available(iOS 14.0, *)
     private func scrollToBottom(with proxy: ScrollViewProxy) {
-        withAnimation {  proxy.scrollTo(messages.indices.last) }
+        withAnimation { scrollToIndex(messages.indices.last, with: proxy) }
     }
     
+    @available(iOS 14.0, *)
+    private func scrollToIndex(_ index: Int?, with proxy: ScrollViewProxy) {
+        withAnimation { proxy.scrollTo(index) }
+    }
 }
