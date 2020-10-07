@@ -74,7 +74,9 @@ public struct ScrollManagerView: UIViewRepresentable {
     
     
     public func makeUIView(context: Context) -> UIView {
-        let view = UIView()
+        let view = SizeObservingView() {
+            scrollManager.tableView?.scrollToBottom()
+        }
         
         return view
     }
@@ -90,4 +92,28 @@ public struct ScrollManagerView: UIViewRepresentable {
         }
     }
     
+}
+
+private class SizeObservingView: UIView {
+    var onChange: () -> ()
+    
+    init(onChange: @escaping () -> ()) {
+        self.onChange = onChange
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override var frame: CGRect {
+        didSet { onChange() }
+    }
+}
+
+private extension UIScrollView {
+    func scrollToBottom() {
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height)
+        setContentOffset(bottomOffset, animated: true)
+    }
 }
