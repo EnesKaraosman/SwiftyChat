@@ -107,12 +107,16 @@ private class SizeObservingView: UIView {
     }
     
     override var frame: CGRect {
-        didSet { onChange() }
+        didSet {
+            guard frame != oldValue else { return }
+            onChange()
+        }
     }
 }
 
 private extension UIScrollView {
     func scrollToBottom() {
+        guard contentSize.height > bounds.size.height else { return }
         let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height)
         setContentOffset(bottomOffset, animated: true)
     }
