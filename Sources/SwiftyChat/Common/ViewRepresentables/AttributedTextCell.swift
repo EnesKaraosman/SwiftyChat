@@ -1,5 +1,5 @@
 //
-//  AttributedText.swift
+//  AttributedTextCell.swift
 //  
 //
 //  Created by Enes Karaosman on 3.06.2020.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-public struct AttributedText: UIViewRepresentable {
+internal struct AttributedTextCell: UIViewRepresentable {
 
     public typealias UILabel = MessageLabel
 
