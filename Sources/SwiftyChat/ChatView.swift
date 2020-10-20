@@ -11,7 +11,7 @@ import SwiftUI
 public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @Binding private var messages: [Message]
-    private var inputView: (_ proxy: GeometryProxy) -> AnyView
+    private var inputView: () -> AnyView
 
     private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
@@ -22,7 +22,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     public init(
         messages: Binding<[Message]>,
-        inputView: @escaping (_ proxy: GeometryProxy) -> AnyView
+        inputView: @escaping () -> AnyView
     ) {
         self._messages = messages
         self.inputView = inputView
@@ -49,7 +49,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             }
 
-            inputView(geometry)
+            inputView()
 
         }
         .keyboardAwarePadding()

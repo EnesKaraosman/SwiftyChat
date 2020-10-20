@@ -71,7 +71,7 @@ public struct TextCell<Message: ChatMessage>: View {
         let textWidth = frame.width
         
         
-        return AttributedText(text: text, width: maxWidth) {
+        return AttributedTextCell(text: text, width: maxWidth) {
             
             $0.enabledDetectors = enabledDetectors
             $0.didSelectAddress = action.didSelectAddress
