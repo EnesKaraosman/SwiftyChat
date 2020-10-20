@@ -68,7 +68,7 @@ For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](ht
 - `ChatView`
 
 Here below is minimum code required to get started (see up & running)<br> 
-For detail, visit example project [here](../master/Example/)
+For detail, visit example project [here](../master/SwiftyChatExample/SwiftyChatExample)
 
 ```swift
 @State var messages: [MockMessages.ChatMessageItem] = [] // for quick test assign MockMessages.generatedMessages()
