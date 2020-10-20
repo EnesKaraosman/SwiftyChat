@@ -39,7 +39,7 @@ SPM: https://github.com/EnesKaraosman/SwiftyChat.git
 ### Message Kinds
 
 ```swift
-public enum ChatMessageKind: CustomStringConvertible {
+public enum ChatMessageKind {
     
     /// A text message,
     /// supports emoji 👍🏻 (auto scales if text is all about emojis)
@@ -131,9 +131,6 @@ ChatView(messages: $messages) {
 ...
 ```
 
-For custom InputView you can cheat using Default one.
-
-
 ### Style and Customization
 
 ```swift
@@ -167,10 +164,10 @@ All styles has default initializer; <br>
 For detail documentation, visit [Styles.md](../master/Styles.md)
 
 <br>
-Please feel free to contribute.
+Please feel free to contribute.<br>
 * Create PR for a feature/bug you'd like to add/fix.
 
 ### Inspiration
 
-A UIKit Chat library [MessageKit](https://github.com/MessageKit/MessageKit).
-SwiftUI library [Nio](https://github.com/niochat/nio).
+* UIKit library [MessageKit](https://github.com/MessageKit/MessageKit).
+* SwiftUI library [Nio](https://github.com/niochat/nio).
