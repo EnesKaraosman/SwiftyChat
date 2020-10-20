@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.0.3-blue)
+![Version](https://img.shields.io/badge/version-1.1.0-blue)
 ![Swift 5.3](https://img.shields.io/badge/Swift-5.3-orange.svg)
 
 # SwiftyChat
@@ -23,6 +23,7 @@ Fully written in pure SwiftUI.
 - [x] Landscape orientation  support (autoscales message cells with the given `cellWidth` property, if exists)
 - [x] User Avatar (with different position options, optional usage)
 - [x] Dismiss keyboard (on tapping outside).
+- [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
 - [ ] Scroll To Bottom.
 
 
@@ -30,7 +31,7 @@ Fully written in pure SwiftUI.
 
 | Contact, QuickReply, Text, Carousel      | Map, Image  | ContextMenu |
 :-------------------------:|:-------------------------:|:-------------------------:
-![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png) | ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/map_image.png) |  ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/contextMenu.png)
+![](../master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png) | ![](../master/Sources/SwiftyChat/Demo/Preview/map_image.png) |  ![](../master/Sources/SwiftyChat/Demo/Preview/contextMenu.png)
 ### Installation
 
 SPM: https://github.com/EnesKaraosman/SwiftyChat.git
@@ -66,66 +67,16 @@ For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](ht
 
 - `ChatView`
 
+Here below is minimum code required to get started (see up & running)<br> 
+For detail, visit example project [here](../master/Example/)
+
 ```swift
 @State var messages: [MockMessages.ChatMessageItem] = [] // for quick test assign MockMessages.generatedMessages()
 
 // ChatMessageItem & ChatUserItem is a sample objects/structs 
 // that conforms `ChatMessage` & `ChatUser` protocols.
-ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem> { (proxy) -> AnyView in
+ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem> {
     // InputView here, continue reading..
-}
-// ▼ Optional
-.onMessageCellTapped { message in
-    // You may trigger .sheet here
-    // To display images in a full screen for example.
-    // Or open MapView for ChatMessageKind.location case
-    switch message.messageKind {
-        case ..
-    }
-}
-// ▼ Optional, Implement to be notified when related attributed text typed
-// like address, date, phoneNumber, url
-.onAttributedTextTappedCallback {
-    AttributedTextTappedCallback(
-        didSelectDate: { print($0) },
-        didSelectPhoneNumber: { print($0) },
-        didSelectURL: { print($0) }
-    )
-}
-// ▼ Optional
-.messageCellContextMenu { message -> AnyView in
-    switch message.messageKind {
-    case .text(let text):
-        return Button(action: {
-            print("Forward Context Menu tapped!!")
-            // Forward text
-        }) {
-            Text("Forward")
-            Image(systemName: "arrowshape.turn.up.right")
-        }.embedInAnyView()
-    default:
-        // If you don't want to implement contextMenu action 
-        // for a specific case, simply return EmptyView like below;
-        return EmptyView().embedInAnyView()
-    }
-}
-// ▼ Implement in case ChatMessageKind.carousel
-.onCarouselItemAction { (button: CarouselItemButton, message: ChatMessage) in
-    // Here you can use the metadata of selected item in carousel
-}
-// ▼ Implement in case ChatMessageKind.quickReply
-.onQuickReplyItemSelected { quickReply in
-    // You may add new item to `messages`
-    // Or send an information about it via network.
-}
-// ▼ Implement in case ChatMessageKind.contact
-.contactItemButtons { (contact, message) -> [ContactCellButton] in
-    return [
-        .init(title: "Save", action: {
-            print(contact.displayName)
-        })
-        ... or more
-    ]
 }
 // ▼ Required
 .environmentObject(
@@ -139,27 +90,42 @@ ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem> { (proxy) -> A
 
 - `InputView`
 
-You can investigate existing `DefaultInputView` in project. <br>You can use it if it suits your need, or create a new one.<br>It's quite easy to add custom *InputView*
+You can investigate existing `BasicInputView` in project. <br>You can use it if it suits your need, or create a new one.<br>
+Recommended way is just clone this `BasicInputView` and modify (ex. add camera icon etc.)
 ```swift
-DefaultInputView(
-    // Pass ChatView's proxy (GeometryReader in ChatView)
-    proxy: GeometryProxy, 
-    sendAction: (ChatMessageKind) -> Void
-)
+
+@State private var contentSizeThatFits: CGSize = .zero
+private var messageEditorHeight: CGFloat {
+    min(
+        self.contentSizeThatFits.height,
+        0.25 * UIScreen.main.bounds.height
+    )
+}
+
+var inputBarView: some View {
+    BasicInputView(
+        message: $message, // Typed text.
+        isEditing: $isEditing,
+        placeholder: "Type something",
+        onCommit: { messageKind in
+            self.messages.append(
+                .init(user: MockMessages.sender, messageKind: messageKind, isSender: true)
+            )
+        }
+    )
+    .onPreferenceChange(ContentSizeThatFitsKey.self) {
+        self.contentSizeThatFits = $0
+    }
+    .frame(height: self.messageEditorHeight)
+    .padding(8)
+    .background(Color.primary.colorInvert())
+    // ▼ An extension that wraps view inside AnyView
+    .embedInAnyView()
+}
 
 // Pass in ChatView
-ChatView(messages: $messages) { (proxy) -> AnyView in
-    DefaultInputView(proxy: proxy) { (messageKind) in
-        let newMessage = ChatMessage(
-            user: .., 
-            messageKind: messageKind, 
-            isSender: true
-        )
-        messages.append(newMessage)
-    }
-    .edgesIgnoringSafeArea(.all)
-    // ▼ An extension that wraps view inside AnyView
-    .embedInAnyView() 
+ChatView(messages: $messages) {
+    inputBarView 
 }
 ...
 ...
@@ -198,12 +164,13 @@ public class ChatMessageCellStyle: ObservableObject {
 You must initiate this class to build a proper style & inject it as `environmentObject`, <br>
 All styles has default initializer; <br>
 
-For detail documentation, visit [Styles.md](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Styles.md)
+For detail documentation, visit [Styles.md](../master/Styles.md)
 
 <br>
 Please feel free to contribute.
-
+* Create PR for a feature/bug you'd like to add/fix.
 
 ### Inspiration
 
 A UIKit Chat library [MessageKit](https://github.com/MessageKit/MessageKit).
+SwiftUI library [Nio](https://github.com/niochat/nio).
