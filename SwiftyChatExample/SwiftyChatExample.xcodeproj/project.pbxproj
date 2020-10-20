@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,6 +13,7 @@
 		F4D55CCC253F263000DA8FF0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4D55CCB253F263000DA8FF0 /* Assets.xcassets */; };
 		F4D55CCF253F263000DA8FF0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4D55CCE253F263000DA8FF0 /* Preview Assets.xcassets */; };
 		F4D55CD2253F263000DA8FF0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D55CD0253F263000DA8FF0 /* LaunchScreen.storyboard */; };
+		F4D55D6D253F436400DA8FF0 /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = F4D55D6C253F436400DA8FF0 /* SwiftyChat */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4D55D6D253F436400DA8FF0 /* SwiftyChat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -91,6 +93,9 @@
 			dependencies = (
 			);
 			name = SwiftyChatExample;
+			packageProductDependencies = (
+				F4D55D6C253F436400DA8FF0 /* SwiftyChat */,
+			);
 			productName = SwiftyChatExample;
 			productReference = F4D55CC2253F262F00DA8FF0 /* SwiftyChatExample.app */;
 			productType = "com.apple.product-type.application";
@@ -118,6 +123,9 @@
 				Base,
 			);
 			mainGroup = F4D55CB9253F262F00DA8FF0;
+			packageReferences = (
+				F4D55D6B253F436400DA8FF0 /* XCRemoteSwiftPackageReference "SwiftyChat" */,
+			);
 			productRefGroup = F4D55CC3253F262F00DA8FF0 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -345,6 +353,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		F4D55D6B253F436400DA8FF0 /* XCRemoteSwiftPackageReference "SwiftyChat" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/EnesKaraosman/SwiftyChat.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		F4D55D6C253F436400DA8FF0 /* SwiftyChat */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = F4D55D6B253F436400DA8FF0 /* XCRemoteSwiftPackageReference "SwiftyChat" */;
+			productName = SwiftyChat;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = F4D55CBA253F262F00DA8FF0 /* Project object */;
 }
