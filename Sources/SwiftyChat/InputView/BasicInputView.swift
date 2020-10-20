@@ -8,111 +8,88 @@
 import SwiftUI
 
 public struct BasicInputView: View {
-
-    @Binding private var text: String
+    
+    @Binding private var message: String
     @Binding private var isEditing: Bool
-
-    @State private var contentSizeThatFits: CGSize
-
     private let placeholder: String
-    private let textAttributes: TextAttributes
 
-    private let onEditingChanged: ((Bool) -> Void)?
-    private let onSend: (() -> Void)
+    @State private var contentSizeThatFits: CGSize = .zero
 
     internal var internalAttributedMessage: Binding<NSAttributedString> {
         Binding<NSAttributedString>(
             get: {
                 NSAttributedString(
-                    string: self.text,
+                    string: self.message,
                     attributes: [
                         NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body),
                         NSAttributedString.Key.foregroundColor: UIColor.label,
                     ]
                 )
             },
-            set: { self.text = $0.string }
+            set: { self.message = $0.string }
         )
     }
 
-    private var placeholderInset: EdgeInsets {
-        .init(top: 8.0, leading: 8.0, bottom: 8.0, trailing: 8.0)
-    }
-
-    private var textContainerInset: UIEdgeInsets {
-        .init(top: 8, left: 0.0, bottom: 8, right: 0.0)
-    }
-
-    private var lineFragmentPadding: CGFloat {
-        8.0
-    }
-
+    private var onCommit: ((ChatMessageKind) -> Void)?
+    
     public init(
-        text: Binding<String>,
-        placeholder: String = "",
+        message: Binding<String>,
         isEditing: Binding<Bool>,
-        textAttributes: TextAttributes = .init(),
-        onEditingChanged: ((Bool) -> Void)? = nil,
-        onSend: @escaping (() -> Void)
+        placeholder: String = "",
+        onCommit: @escaping (ChatMessageKind) -> Void
     ) {
-        self._text = text
+        self._message = message
         self.placeholder = placeholder
         self._isEditing = isEditing
         self._contentSizeThatFits = State(initialValue: .zero)
-        self.textAttributes = textAttributes
-        self.onEditingChanged = onEditingChanged
-        self.onSend = onSend
+        self.onCommit = onCommit
     }
 
-    public var body: some View {
-        HStack {
-            inputBar
-            sendButton
-        }
+    private var messageEditorHeight: CGFloat {
+        min(
+            self.contentSizeThatFits.height,
+            0.25 * UIScreen.main.bounds.height
+        )
     }
 
-    @ViewBuilder var inputBar: some View {
-        AttributedText(
-            attributedText: internalAttributedMessage,
-            isEditing: $isEditing,
-            textAttributes: textAttributes,
-            onEditingChanged: onEditingChanged,
-            onCommit: nil
+    var messageEditorView: some View {
+        MultilineTextField(
+            attributedText: self.internalAttributedMessage,
+            placeholder: placeholder,
+            isEditing: self.$isEditing
         )
         .onPreferenceChange(ContentSizeThatFitsKey.self) {
             self.contentSizeThatFits = $0
         }
-        .frame(
-            idealHeight: self.contentSizeThatFits.height
-        )
-        .background(placeholderView, alignment: .topLeading)
-        .background(
-            RoundedRectangle(cornerRadius: 10.0)
-                .stroke()
-        )
+        .frame(height: self.messageEditorHeight)
     }
 
-    @ViewBuilder var placeholderView: some View {
-        if text.isEmpty {
-            Text(placeholder).foregroundColor(Color(UIColor.lightGray))
-                .padding(placeholderInset)
+    var sendButton: some View {
+        Button(action: {
+            self.onCommit?(.text(message))
+            self.message.removeAll()
+        }, label: {
+            Circle().fill(Color(.systemBlue))
+                .frame(width: 36, height: 36)
+                .overlay(
+                    Image(systemName: "paperplane.fill")
+                        .resizable()
+                        .foregroundColor(.white)
+                        .offset(x: -1, y: 1)
+                        .padding(8)
+                )
+        })
+        .disabled(message.isEmpty)
+    }
+
+    public var body: some View {
+        VStack {
+            Divider()
+            HStack {
+                self.messageEditorView
+                self.sendButton
+            }
         }
     }
-
-    @ViewBuilder var sendButton: some View {
-        Button(action: {
-            if !text.isEmpty {
-                onSend()
-            }
-            text.removeAll()
-        }, label: {
-            Image(systemName: "paperplane.fill")
-                .imageScale(.large)
-                .foregroundColor(.blue)
-                .frame(width: 36, height: 36)
-                .offset(x: -1, y: 1)
-                .background(Circle().fill(Color.white))
-        })
-    }
-
+    
 }
