@@ -5,7 +5,7 @@ Released on 2020-10-21.
 
 #### Added
 - Scroll to bottom functionality for iOS14+
-  - User proper initializer, with the has `scrollToBottom`
+  - User proper initializer, with the one has `scrollToBottom`
 
 ---
 
