@@ -20,13 +20,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     
-    public init(
-        messages: Binding<[Message]>,
-        inputView: @escaping () -> AnyView
-    ) {
-        self._messages = messages
-        self.inputView = inputView
-    }
+    @available(iOS 14.0, *)
+    @Binding private var scrollToBottom: Bool
     
     public var body: some View {
         DeviceOrientationBasedView(
@@ -65,6 +60,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         chatMessageCellContainer(in: geometry.size, with: message)
                     }
                 }
+                .onChange(of: scrollToBottom) { value in
+                    if value {
+                        withAnimation {
+                            proxy.scrollTo(messages.last?.id)
+                        }
+                        scrollToBottom = false
+                    }
+                }
             }
         }
         .background(Color.clear)
@@ -101,6 +104,41 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .modifier(AvatarModifier<Message, User>(message: message))
         .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
+        .id(message.id)
+    }
+    
+}
+
+// MARK: - Initializers
+public extension ChatView {
+    
+    /// Initialize
+    /// - Parameters:
+    ///   - messages: Messages to display
+    ///   - inputView: inputView view to provide message
+    init(
+        messages: Binding<[Message]>,
+        inputView: @escaping () -> AnyView
+    ) {
+        self._messages = messages
+        self.inputView = inputView
+        self._scrollToBottom = .constant(false)
+    }
+    
+    /// iOS 14 initializer, for supporting scrollToBottom
+    /// - Parameters:
+    ///   - messages: Messages to display
+    ///   - scrollToBottom: set to `true` to scrollToBottom
+    ///   - inputView: inputView view to provide message
+    @available(iOS 14.0, *)
+    init(
+        messages: Binding<[Message]>,
+        scrollToBottom: Binding<Bool>,
+        inputView: @escaping () -> AnyView
+    ) {
+        self._messages = messages
+        self.inputView = inputView
+        self._scrollToBottom = scrollToBottom
     }
     
 }
