@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		F4D3ECCB253FFAE100226E0C /* BasicExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D3ECC8253FFAE100226E0C /* BasicExampleView.swift */; };
+		F4D3ECCC253FFAE100226E0C /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D3ECC9253FFAE100226E0C /* ChatListView.swift */; };
+		F4D3ECCD253FFAE100226E0C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D3ECCA253FFAE100226E0C /* Extensions.swift */; };
 		F4D55CC6253F262F00DA8FF0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D55CC5253F262F00DA8FF0 /* AppDelegate.swift */; };
 		F4D55CC8253F262F00DA8FF0 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D55CC7253F262F00DA8FF0 /* SceneDelegate.swift */; };
 		F4D55CCA253F262F00DA8FF0 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D55CC9253F262F00DA8FF0 /* ContentView.swift */; };
@@ -17,6 +20,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		F4D3ECC8253FFAE100226E0C /* BasicExampleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicExampleView.swift; sourceTree = "<group>"; };
+		F4D3ECC9253FFAE100226E0C /* ChatListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatListView.swift; sourceTree = "<group>"; };
+		F4D3ECCA253FFAE100226E0C /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		F4D55CC2253F262F00DA8FF0 /* SwiftyChatExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftyChatExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D55CC5253F262F00DA8FF0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D55CC7253F262F00DA8FF0 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +64,9 @@
 		F4D55CC4253F262F00DA8FF0 /* SwiftyChatExample */ = {
 			isa = PBXGroup;
 			children = (
+				F4D3ECC8253FFAE100226E0C /* BasicExampleView.swift */,
+				F4D3ECC9253FFAE100226E0C /* ChatListView.swift */,
+				F4D3ECCA253FFAE100226E0C /* Extensions.swift */,
 				F4D55CC5253F262F00DA8FF0 /* AppDelegate.swift */,
 				F4D55CC7253F262F00DA8FF0 /* SceneDelegate.swift */,
 				F4D55CC9253F262F00DA8FF0 /* ContentView.swift */,
@@ -154,7 +163,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4D55CC6253F262F00DA8FF0 /* AppDelegate.swift in Sources */,
+				F4D3ECCD253FFAE100226E0C /* Extensions.swift in Sources */,
+				F4D3ECCC253FFAE100226E0C /* ChatListView.swift in Sources */,
 				F4D55CC8253F262F00DA8FF0 /* SceneDelegate.swift in Sources */,
+				F4D3ECCB253FFAE100226E0C /* BasicExampleView.swift in Sources */,
 				F4D55CCA253F262F00DA8FF0 /* ContentView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -299,6 +311,7 @@
 				DEVELOPMENT_TEAM = L9DND36YTU;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SwiftyChatExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -320,6 +333,7 @@
 				DEVELOPMENT_TEAM = L9DND36YTU;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SwiftyChatExample/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
