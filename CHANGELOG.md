@@ -16,5 +16,3 @@ Released on 2020-10-20.
 - Multiline InputBarView added.
   - Investigate `BasicInputBarView`.
 - Example project added.
-
----
