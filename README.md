@@ -24,7 +24,8 @@ Fully written in pure SwiftUI.
 - [x] User Avatar (with different position options, optional usage)
 - [x] Dismiss keyboard (on tapping outside).
 - [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
-- [ ] Scroll To Bottom.
+- [ ] Swipe to dismiss keyboard.
+- [ ] Scroll to bottom.
 
 
 ### Quick Preview
@@ -80,7 +81,7 @@ ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem> {
 }
 // ▼ Required
 .environmentObject(
-    // All parameters iniatilazed by default, 
+    // All parameters initialized by default, 
     // change as you want.
     ChatMessageCellStyle()
 )
@@ -94,6 +95,9 @@ You can investigate existing `BasicInputView` in project. <br>You can use it if 
 Recommended way is just clone this `BasicInputView` and modify (ex. add camera icon etc.)
 ```swift
 
+// InputBarView variables
+@State private var message = ""
+@State private var isEditing = false
 @State private var contentSizeThatFits: CGSize = .zero
 private var messageEditorHeight: CGFloat {
     min(
@@ -118,7 +122,10 @@ var inputBarView: some View {
     }
     .frame(height: self.messageEditorHeight)
     .padding(8)
+    .padding(.bottom, isEditing ? 0 : 8)
+    .accentColor(.chatBlue)
     .background(Color.primary.colorInvert())
+    .animation(.linear)
     // ▼ An extension that wraps view inside AnyView
     .embedInAnyView()
 }
