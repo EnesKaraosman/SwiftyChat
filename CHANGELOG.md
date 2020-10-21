@@ -1,5 +1,4 @@
 # Change Log
----
 
 ## [1.2.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.2.0)
 Released on 2020-10-21.
