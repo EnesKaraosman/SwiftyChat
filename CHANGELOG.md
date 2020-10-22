@@ -16,3 +16,11 @@ Released on 2020-10-20.
 - Multiline InputBarView added.
   - Investigate `BasicInputBarView`.
 - Example project added.
+
+---
+
+## [1.0.4](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.0.4)
+Released on 2020-10-6.
+
+#### Added
+- You can now set the background of `ChatView`.
