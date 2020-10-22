@@ -31,9 +31,26 @@ Fully written in pure SwiftUI.
 
 ### Quick Preview
 
-| Contact, QuickReply, Text, Carousel      | Map, Image  | ContextMenu |
+<details>
+  <summary>Basic Example</summary>
+    
+  | Text (Light)      | Text (Dark)  |
+:-------------------------:|:-------------------------:|
+<img src="../master/Sources/SwiftyChat/Demo/Preview/basic-1.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-2.png" width="240"/>
+<img src="../master/Sources/SwiftyChat/Demo/Preview/basic-3.png" height="240"/>
+
+</details>
+
+<details>
+  <summary>Advanced Example</summary>
+    
+  | Contact, QuickReply, Text, Carousel      | Map, Image  | ContextMenu |
 :-------------------------:|:-------------------------:|:-------------------------:
-![](../master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png) | ![](../master/Sources/SwiftyChat/Demo/Preview/map_image.png) |  ![](../master/Sources/SwiftyChat/Demo/Preview/contextMenu.png)
+<img src="../master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/map_image.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/contextMenu.png" width="240"/>
+
+</details>
+
+
 ### Installation
 
 SPM: https://github.com/EnesKaraosman/SwiftyChat.git
