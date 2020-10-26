@@ -128,6 +128,9 @@ public struct ChatView: View {
                                 typingView(for: index)
                             }
                             .id(index)
+                            .padding([.leading, .trailing], 16)
+                            .padding(.bottom, index == messages.endIndex ? 24 : 6)
+                            .padding(.top, index == 0 ? 24 : 6)
                         }.onChange(of: scrollIndex) { index in
                             scrollToIndex(index, with: proxy)
                         }
@@ -140,7 +143,6 @@ public struct ChatView: View {
                     }
                 }
             }
-            .padding()
             .embedInAnyView()
         } else {
             return List(messages.indices, id: \.self) { index in
@@ -155,6 +157,9 @@ public struct ChatView: View {
                         .listRowBackground(Color.black)
                     typingView(for: index)
                 }
+                .padding([.leading, .trailing], 16)
+                .padding(.bottom, index == messages.endIndex ? 24 : 6)
+                .padding(.top, index == 0 ? 24 : 6)
             }
             .background(
                 // the scrolling has to be done via the binding `indexPathToSetVisible`
