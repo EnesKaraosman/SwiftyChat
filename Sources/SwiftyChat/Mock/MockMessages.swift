@@ -6,8 +6,10 @@
 //  Copyright © 2020 All rights reserved.
 //
 
-import class UIKit.UIImage
+import UIKit
 import Foundation
+
+private let demoURL = URL(string: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")!
 
 public struct MockMessages {
     
@@ -18,6 +20,7 @@ public struct MockMessages {
         case Contact
         case QuickReply
         case Carousel
+        case Video
         
         private var messageKind: ChatMessageKind {
             switch self {
@@ -27,6 +30,7 @@ public struct MockMessages {
             case .Contact: return .contact(ContactRow(displayName: ""))
             case .QuickReply: return .quickReply([])
             case .Carousel: return .carousel([CarouselRow(title: "", imageURL: nil, subtitle: "", buttons: [])])
+            case .Video: return .video(VideoRow(url: nil, image: nil, placeholderImage: .init(), size: .zero))
             }
         }
     }
@@ -58,6 +62,14 @@ public struct MockMessages {
         var imageURL: URL?
         var subtitle: String
         var buttons: [CarouselItemButton]
+    }
+    
+    // MARK: - Concrete model for Video
+    private struct VideoRow: VideoItem {
+        var url: URL?
+        var image: UIImage?
+        var placeholderImage: UIImage
+        var size: CGSize
     }
     
     // MARK: - Concrete model for ChatMessage
@@ -203,6 +215,14 @@ public struct MockMessages {
                 isSender: randomUser == Self.sender
             )
             
+        case .Video:
+            let videoItem = VideoRow(url: demoURL, image: nil, placeholderImage: .init(), size: .zero)
+            return ChatMessageItem(
+                user: randomUser,
+                messageKind: .video(videoItem),
+                isSender: randomUser == Self.sender
+            )
+            
         default:
             return ChatMessageItem(
                 user: randomUser,
@@ -221,6 +241,7 @@ public struct MockMessages {
             .Carousel,
             .Location,
             .Text, .Text, .Text,
+            .Video,
             .QuickReply
         ]
         return allCases.randomElement()!

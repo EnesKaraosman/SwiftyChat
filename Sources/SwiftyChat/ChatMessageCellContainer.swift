@@ -65,6 +65,13 @@ public struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 onCarouselItemAction: onCarouselItemAction
             )
             
+        case .video(let videoItem):
+            VideoCell(
+                media: videoItem,
+                message: message,
+                size: size
+            )
+            
         }
         
     }
