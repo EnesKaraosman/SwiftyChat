@@ -12,7 +12,7 @@ import UIKit
 public protocol VideoItem {
 
     /// The url where the media is located.
-    var url: URL? { get }
+    var url: URL { get }
 
     /// The image.
     var image: UIImage? { get }
