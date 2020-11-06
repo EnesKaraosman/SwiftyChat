@@ -29,6 +29,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             landscape: { GeometryReader { body(in: $0) } }
         )
         .environmentObject(OrientationInfo())
+        .environmentObject(VideoManager())
         .edgesIgnoringSafeArea(.bottom)
     }
     
@@ -43,6 +44,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 iOS14Fallback(in: geometry)
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             }
+            
+            PIPVideoCell()
 
             inputView()
 

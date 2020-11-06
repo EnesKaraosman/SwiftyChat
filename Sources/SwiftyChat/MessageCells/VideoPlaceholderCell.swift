@@ -10,26 +10,74 @@ import VideoPlayer
 import AVFoundation
 import SwiftUIEKtensions
 
-public struct VideoCell<Message: ChatMessage>: View {
+
+class VideoManager: ObservableObject {
+    @Published var selectedVideoItem: VideoItem?
+}
+
+public struct PIPVideoCell: View {
     
-    public let media: VideoItem
-    public let message: Message
-    public let size: CGSize
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @EnvironmentObject var videoManager: VideoManager
     
-    @State private var time: CMTime = .zero {
-        didSet {
-            withAnimation {
-                currentSecond = time.seconds
-            }
+    var message = MockMessages.generateMessage(kind: .Video)
+
+    public init() { }
+    
+    @ViewBuilder private var video: some View {
+        if let videoItem = videoManager.selectedVideoItem {
+            VideoPlayerContainer(media: videoItem, size: .zero)
         }
     }
-    @State private var play: Bool = false
+    
+    public var body: some View {
+        GeometryReader { geometry in
+            video
+            .frame(height: geometry.size.height / 3)
+            .cornerRadius(20)
+            .padding()
+            .position(location)
+            .gesture(simpleDrag(in: geometry))
+        }
+        .animation(.linear(duration: 0.3))
+    }
+    
+    @State private var location: CGPoint = CGPoint(x: 200, y: 100)
+    @GestureState private var startLocation: CGPoint? = nil // 1
+    
+    func simpleDrag(in geometry: GeometryProxy) -> some Gesture {
+        DragGesture()
+            .onChanged { value in
+                var newLocation = startLocation ?? location // 3
+                newLocation.x += value.translation.width
+                newLocation.y += value.translation.height
+                self.location = newLocation
+            }.updating($startLocation) { (value, startLocation, transaction) in
+                startLocation = startLocation ?? location // 2
+            }
+            .onEnded { (value) in
+                let videoFrameHeight: CGFloat = 200
+                if self.location.y > (geometry.size.height - videoFrameHeight) / 2 {
+                    self.location = CGPoint(x: geometry.size.width / 2, y: geometry.size.height - videoFrameHeight)
+                } else {
+                    self.location = CGPoint(x: geometry.size.width / 2, y: videoFrameHeight / 2)
+                }
+            }
+    }
+    
+}
+
+internal struct VideoPlayerContainer: View {
+    
+    public let media: VideoItem
+    public let size: CGSize
+    @EnvironmentObject var style: ChatMessageCellStyle
+    @EnvironmentObject var videoManager: VideoManager
+    
+    @State private var time: CMTime = .zero
+    @State private var play: Bool = true
     @State private var autoReplay: Bool = false
     @State private var mute: Bool = false
     @State private var totalDuration: Double = 0
-    
-    @State private var currentSecond: Double = 0
     @State private var waitingOverlayToHide: Bool = false
     
     @State private var showOverlay: Bool = false {
@@ -46,8 +94,6 @@ public struct VideoCell<Message: ChatMessage>: View {
         }
     }
     
-    @State private var showThumbnail: Bool = true
-    
     public var body: some View {
         ZStack(alignment: .bottom) {
             videoPlayer
@@ -59,32 +105,7 @@ public struct VideoCell<Message: ChatMessage>: View {
             .onDisappear { self.play = false }
             
             videoOverlay
-            thumbnailView
         }
-    }
-    
-    // MARK: - Thumbnail
-    private var thumbnailView: some View {
-        Image(uiImage: media.placeholderImage)
-            .resizable()
-            .aspectRatio(1.78, contentMode: .fit)
-            .cornerRadius(16)
-            .blur(radius: 3)
-            .overlay(
-                Image(systemName: "play.circle.fill")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 40)
-                    .foregroundColor(.secondary)
-                    .onTapGesture {
-                        withAnimation {
-                            showThumbnail = false
-                            play = true
-                            showOverlay = true
-                        }
-                    }
-            )
-            .hidden(!showThumbnail)
     }
     
     // MARK: - VideoPlayer
@@ -116,10 +137,33 @@ public struct VideoCell<Message: ChatMessage>: View {
     // MARK: - Overlay
     private var videoOverlay: some View {
         VStack(spacing: 0) {
+//            HStack {
+//                RoundedRectangle(cornerRadius: 16)
+//                    .frame(width: 60, height: 50)
+//                    .foregroundColor(.secondary)
+//                    .overlay(
+//                        Image(systemName: "xmark")
+//                            .resizable()
+//                            .scaledToFit()
+//                            .frame(width: 30)
+//                            .foregroundColor(.white)
+//                    )
+//                    .onTapGesture {
+//                        self.play = false
+//                    }
+//                Spacer()
+//            }
             Spacer()
             VStack(spacing: 1) {
                 Slider(
-                    value: $currentSecond.didSet(execute: currentSecondSliderValueChanged),
+                    value: Binding(
+                        get: { time.seconds },
+                        set: {
+                            self.time = CMTimeMakeWithSeconds(
+                                $0, preferredTimescale: self.time.timescale
+                            )
+                        }
+                    ),
                     in: 0...totalDuration
                 )
                 .padding(.horizontal)
@@ -174,13 +218,6 @@ public struct VideoCell<Message: ChatMessage>: View {
         .hidden(!showOverlay)
     }
     
-    private func currentSecondSliderValueChanged(value: Double) {
-        self.time = CMTimeMakeWithSeconds(
-            value,
-            preferredTimescale: self.time.timescale
-        )
-    }
-    
     private func getTimeString() -> String {
         let m = Int(time.seconds / 60)
         let s = Int(time.seconds.truncatingRemainder(dividingBy: 60))
@@ -192,6 +229,71 @@ public struct VideoCell<Message: ChatMessage>: View {
         let m = Int(totalSecondsRemaining / 60)
         let s = Int(totalSecondsRemaining.truncatingRemainder(dividingBy: 60))
         return String(format: "-%d:%02d", arguments: [m, s])
+    }
+    
+}
+
+
+/// When play button is tapped, it lets videoManager know about VideoItem
+/// So manager knows when to display actual videoPlayer above `ChatView`
+public struct VideoPlaceholderCell<Message: ChatMessage>: View {
+    
+    public let media: VideoItem
+    public let message: Message
+    public let size: CGSize
+    
+    @EnvironmentObject var style: ChatMessageCellStyle
+    @EnvironmentObject var videoManager: VideoManager
+    
+    @State private var showPlayButton: Bool = true
+    
+    public var body: some View {
+        thumbnailView
+    }
+    
+    // MARK: - Thumbnail
+    private var thumbnailView: some View {
+        Image(uiImage: media.placeholderImage)
+            .resizable()
+            .aspectRatio(1.78, contentMode: .fit)
+            .cornerRadius(16)
+            .blur(radius: 3)
+            .overlay(thumbnailOverlay)
+    }
+    
+    private var playButton: some View {
+        Image(systemName: "play.circle.fill")
+            .resizable()
+            .scaledToFit()
+            .frame(width: 40)
+            .foregroundColor(.secondary)
+            .onTapGesture {
+                withAnimation {
+                    showPlayButton = false
+                    videoManager.selectedVideoItem = media
+                }
+            }
+    }
+    
+    private var pipMessageView: some View {
+        VStack {
+            Image(systemName: "rectangle.on.rectangle.angled")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 40)
+            Text("Bu video resim içinde resim olarak oynuyor.")
+                .padding(.horizontal, 100)
+                .multilineTextAlignment(.center)
+        }
+        .foregroundColor(.white)
+    }
+    
+    @ViewBuilder private var thumbnailOverlay: some View {
+        if showPlayButton {
+            playButton
+        } else {
+            pipMessageView
+        }
     }
     
 }

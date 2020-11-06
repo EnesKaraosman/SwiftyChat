@@ -66,7 +66,7 @@ public struct ChatMessageCellContainer<Message: ChatMessage>: View {
             )
             
         case .video(let videoItem):
-            VideoCell(
+            VideoPlaceholderCell(
                 media: videoItem,
                 message: message,
                 size: size

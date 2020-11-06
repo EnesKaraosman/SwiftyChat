@@ -37,6 +37,9 @@ public class ChatMessageCellStyle: ObservableObject {
     /// Location Cell Style
     let locationCellStyle: LocationCellStyle
     
+    /// Video Cell Style
+    let videoCellStyle: VideoCellStyle
+    
     /// Incoming Avatar Style
     let incomingAvatarStyle: AvatarStyle
     
@@ -65,6 +68,7 @@ public class ChatMessageCellStyle: ObservableObject {
         quickReplyCellStyle: QuickReplyCellStyle = QuickReplyCellStyle(),
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(),
         locationCellStyle: LocationCellStyle = LocationCellStyle(),
+        videoCellStyle: VideoCellStyle = VideoCellStyle(),
         incomingAvatarStyle: AvatarStyle = AvatarStyle(),
         outgoingAvatarStyle: AvatarStyle = AvatarStyle(
             imageStyle: CommonImageStyle(imageSize: .zero)
@@ -79,6 +83,7 @@ public class ChatMessageCellStyle: ObservableObject {
         self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle
         self.locationCellStyle = locationCellStyle
+        self.videoCellStyle = videoCellStyle
         self.incomingAvatarStyle = incomingAvatarStyle
         self.outgoingAvatarStyle = outgoingAvatarStyle
     }
