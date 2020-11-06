@@ -25,8 +25,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     public var body: some View {
         DeviceOrientationBasedView(
-            portrait: { GeometryReader { body(in: $0) } },
-            landscape: { GeometryReader { body(in: $0) } }
+            portrait: { GeometryReader(content: body(in:)) },
+            landscape: { GeometryReader(content: body(in:)) }
         )
         .environmentObject(OrientationInfo())
         .environmentObject(VideoManager())
@@ -38,14 +38,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         ZStack(alignment: .bottom) {
                     
             if #available(iOS 14.0, *) {
-                iOS14Body(in: geometry)
+                iOS14Body(in: geometry.size)
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             } else {
-                iOS14Fallback(in: geometry)
+                iOS14Fallback(in: geometry.size)
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             }
             
-            PIPVideoCell()
+            PIPVideoCell(parentSize: geometry.size)
 
             inputView()
 
@@ -55,12 +55,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     @available(iOS 14.0, *)
-    private func iOS14Body(in geometry: GeometryProxy) -> some View {
+    private func iOS14Body(in size: CGSize) -> some View {
         ScrollView {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
-                        chatMessageCellContainer(in: geometry.size, with: message)
+                        chatMessageCellContainer(in: size, with: message)
                     }
                 }
                 .onChange(of: scrollToBottom) { value in
@@ -76,9 +76,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .background(Color.clear)
     }
     
-    private func iOS14Fallback(in geometry: GeometryProxy) -> some View {
+    private func iOS14Fallback(in size: CGSize) -> some View {
         List(messages) { message in
-            chatMessageCellContainer(in: geometry.size, with: message)
+            chatMessageCellContainer(in: size, with: message)
         }
         .onAppear {
             // To remove only extra separators below the list:

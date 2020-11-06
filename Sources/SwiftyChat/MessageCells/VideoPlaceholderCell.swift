@@ -17,11 +17,12 @@ class VideoManager: ObservableObject {
 
 public struct PIPVideoCell: View {
     
+    private let parentSize: CGSize
     @EnvironmentObject var videoManager: VideoManager
-    
-    var message = MockMessages.generateMessage(kind: .Video)
 
-    public init() { }
+    public init(parentSize: CGSize) {
+        self.parentSize = parentSize
+    }
     
     @ViewBuilder private var video: some View {
         if let videoItem = videoManager.selectedVideoItem {
@@ -29,37 +30,43 @@ public struct PIPVideoCell: View {
         }
     }
     
+    private var videoFrameHeight: CGFloat {
+        parentSize.height / 3
+    }
+    
     public var body: some View {
-        GeometryReader { geometry in
-            video
-            .frame(height: geometry.size.height / 3)
+        video
+            .frame(height: videoFrameHeight)
             .cornerRadius(20)
             .padding()
             .position(location)
-            .gesture(simpleDrag(in: geometry))
-        }
-        .animation(.linear(duration: 0.3))
+            .gesture(simpleDrag(in: parentSize))
+            .animation(.linear(duration: 0.3))
+            .onAppear {
+                self.location = CGPoint(x: parentSize.width / 2, y: videoFrameHeight / 3)
+            }
     }
     
     @State private var location: CGPoint = CGPoint(x: 200, y: 100)
-    @GestureState private var startLocation: CGPoint? = nil // 1
+    @GestureState private var startLocation: CGPoint? = nil
     
-    func simpleDrag(in geometry: GeometryProxy) -> some Gesture {
+    func simpleDrag(in size: CGSize) -> some Gesture {
         DragGesture()
             .onChanged { value in
-                var newLocation = startLocation ?? location // 3
+                var newLocation = startLocation ?? location
                 newLocation.x += value.translation.width
                 newLocation.y += value.translation.height
                 self.location = newLocation
-            }.updating($startLocation) { (value, startLocation, transaction) in
-                startLocation = startLocation ?? location // 2
+            }
+            .updating($startLocation) { (value, startLocation, transaction) in
+                startLocation = startLocation ?? location
             }
             .onEnded { (value) in
-                let videoFrameHeight: CGFloat = 200
-                if self.location.y > (geometry.size.height - videoFrameHeight) / 2 {
-                    self.location = CGPoint(x: geometry.size.width / 2, y: geometry.size.height - videoFrameHeight)
+                if self.location.y > (size.height - videoFrameHeight) / 2 {
+                    let inputViewOffset: CGFloat = 60
+                    self.location = CGPoint(x: size.width / 2, y: size.height - (videoFrameHeight / 2) - inputViewOffset)
                 } else {
-                    self.location = CGPoint(x: geometry.size.width / 2, y: videoFrameHeight / 2)
+                    self.location = CGPoint(x: size.width / 2, y: videoFrameHeight / 3)
                 }
             }
     }
