@@ -8,7 +8,6 @@
 import SwiftUI
 import VideoPlayer
 import AVFoundation
-import Combine
 import SwiftUIEKtensions
 
 public struct VideoCell<Message: ChatMessage>: View {
@@ -18,8 +17,14 @@ public struct VideoCell<Message: ChatMessage>: View {
     public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
     
+    @State private var time: CMTime = .zero {
+        didSet {
+            withAnimation {
+                currentSecond = time.seconds
+            }
+        }
+    }
     @State private var play: Bool = false
-    @State private var time: CMTime = .zero
     @State private var autoReplay: Bool = false
     @State private var mute: Bool = false
     @State private var totalDuration: Double = 0
@@ -166,9 +171,6 @@ public struct VideoCell<Message: ChatMessage>: View {
             )
             
         }
-        .onReceive(Just(time), perform: { _time in
-            self.currentSecond = _time.seconds
-        })
         .hidden(!showOverlay)
     }
     
