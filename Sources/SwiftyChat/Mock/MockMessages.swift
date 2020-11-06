@@ -9,7 +9,14 @@
 import UIKit
 import Foundation
 
-private let demoURL = URL(string: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")!
+internal extension UIColor {
+    func image(_ size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { rendererContext in
+            self.setFill()
+            rendererContext.fill(CGRect(origin: .zero, size: size))
+        }
+    }
+}
 
 public struct MockMessages {
     
@@ -216,19 +223,18 @@ public struct MockMessages {
             )
             
         case .Video:
-            let videoItem = VideoRow(url: demoURL, image: nil, placeholderImage: .init(), size: .zero)
+            let videoItem = VideoRow(
+                url: URL(string: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")!,
+                image: nil,
+                placeholderImage: UIColor.systemOrange.withAlphaComponent(0.4).image(),
+                size: .zero
+            )
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .video(videoItem),
                 isSender: randomUser == Self.sender
             )
             
-        default:
-            return ChatMessageItem(
-                user: randomUser,
-                messageKind: .text("Bom!"),
-                isSender: randomUser == Self.sender
-            )
         }
     }
     

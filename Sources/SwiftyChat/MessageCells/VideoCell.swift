@@ -9,6 +9,7 @@ import SwiftUI
 import VideoPlayer
 import AVFoundation
 import Combine
+import SwiftUIEKtensions
 
 public struct VideoCell<Message: ChatMessage>: View {
     
@@ -24,22 +25,66 @@ public struct VideoCell<Message: ChatMessage>: View {
     @State private var totalDuration: Double = 0
     
     @State private var currentSecond: Double = 0
+    @State private var waitingOverlayToHide: Bool = false
     
-    public var body: some View {
-        videoPlayer
-        .padding()
-        .overlay(
-            VStack {
-                Spacer()
-                videoOverlay
+    @State private var showOverlay: Bool = false {
+        didSet {
+            if showOverlay && !waitingOverlayToHide {
+                waitingOverlayToHide = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                    withAnimation {
+                        showOverlay = false
+                        waitingOverlayToHide = false
+                    }
+                }
             }
-            .padding()
-        )
-        .onDisappear { self.play = false }
+        }
     }
     
+    @State private var showThumbnail: Bool = true
+    
+    public var body: some View {
+        ZStack(alignment: .bottom) {
+            videoPlayer
+            .onTapGesture {
+                withAnimation {
+                    showOverlay.toggle()
+                }
+            }
+            .onDisappear { self.play = false }
+            
+            videoOverlay
+            thumbnailView
+        }
+    }
+    
+    // MARK: - Thumbnail
+    private var thumbnailView: some View {
+        Image(uiImage: media.placeholderImage)
+            .resizable()
+            .aspectRatio(1.78, contentMode: .fit)
+            .cornerRadius(16)
+            .blur(radius: 3)
+            .overlay(
+                Image(systemName: "play.circle.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 40)
+                    .foregroundColor(.secondary)
+                    .onTapGesture {
+                        withAnimation {
+                            showThumbnail = false
+                            play = true
+                            showOverlay = true
+                        }
+                    }
+            )
+            .hidden(!showThumbnail)
+    }
+    
+    // MARK: - VideoPlayer
     private var videoPlayer: some View {
-        VideoPlayer(url: media.url, play: $play, time: $time)
+        VideoPlayer.init(url: media.url, play: $play, time: $time)
             .autoReplay(autoReplay)
             .mute(mute)
             .onBufferChanged { progress in print("onBufferChanged \(progress)") }
@@ -66,64 +111,65 @@ public struct VideoCell<Message: ChatMessage>: View {
     // MARK: - Overlay
     private var videoOverlay: some View {
         VStack(spacing: 0) {
-        
-            Slider(
-                value: $currentSecond.didSet(execute: currentSecondSliderValueChanged),
-                in: 0...totalDuration
-            )
-            .padding(.horizontal)
-            
-            HStack {
-                Text(getTimeString()).fontWeight(.semibold)
-                Spacer()
-                Text(getRemainingDurationString()).fontWeight(.semibold)
-            }
-            .padding(.horizontal)
-            .font(.footnote)
-            
-            HStack {
-                Button(action: {
-                    self.time = CMTimeMakeWithSeconds(max(0, self.time.seconds - 10), preferredTimescale: self.time.timescale)
-                }, label: {
+            Spacer()
+            VStack(spacing: 1) {
+                Slider(
+                    value: $currentSecond.didSet(execute: currentSecondSliderValueChanged),
+                    in: 0...totalDuration
+                )
+                .padding(.horizontal)
+                .accentColor(.red)
+                
+                HStack {
+                    Text(getTimeString()).fontWeight(.semibold)
+                    Spacer()
+                    Text(getRemainingDurationString()).fontWeight(.semibold)
+                }
+                .padding(.horizontal)
+                .font(.footnote)
+                
+                HStack {
+                    
                     Image(systemName: "gobackward.10")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 30, height: 30)
-                })
-                .frame(minWidth: 0, maxWidth: .infinity)
-                
-                Button(action: {
-                    self.play.toggle()
-                }, label: {
+                        .onTapGesture {
+                            self.time = CMTimeMakeWithSeconds(max(0, self.time.seconds - 10), preferredTimescale: self.time.timescale)
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                    
+                    
                     Image(systemName: self.play ? "pause.circle.fill" : "play.circle.fill")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 30, height: 30)
-                })
-                .frame(minWidth: 0, maxWidth: .infinity)
-                
-                Button(action: {
-                    self.time = CMTimeMakeWithSeconds(min(self.totalDuration, self.time.seconds + 10), preferredTimescale: self.time.timescale)
-                }, label: {
+                        .onTapGesture { self.play.toggle() }
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                    
                     Image(systemName: "goforward.10")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 30, height: 30)
-                })
-                .frame(minWidth: 0, maxWidth: .infinity)
-                
+                        .onTapGesture {
+                            self.time = CMTimeMakeWithSeconds(min(self.totalDuration, self.time.seconds + 10), preferredTimescale: self.time.timescale)
+                        }
+                        .frame(minWidth: 0, maxWidth: .infinity)
+                    
+                }
+                .padding(.vertical, 4)
             }
-            .padding(.vertical, 4)
+            .background(
+                Color.secondary.colorInvert()
+                    .blur(radius: 2)
+                    .cornerRadius(16)
+            )
             
         }
-        .background(
-            Color.secondary
-                .blur(radius: 2)
-                .cornerRadius(16)
-        )
         .onReceive(Just(time), perform: { _time in
             self.currentSecond = _time.seconds
         })
+        .hidden(!showOverlay)
     }
     
     private func currentSecondSliderValueChanged(value: Double) {

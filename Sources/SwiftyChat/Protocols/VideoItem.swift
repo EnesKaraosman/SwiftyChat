@@ -17,7 +17,7 @@ public protocol VideoItem {
     /// The image.
     var image: UIImage? { get }
 
-    /// A placeholder image for when the image is obtained asychronously.
+    /// A placeholder image for when the image is obtained asynchronously.
     var placeholderImage: UIImage { get }
 
     /// The size of the media item.
