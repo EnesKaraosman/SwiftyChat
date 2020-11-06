@@ -10,23 +10,25 @@ import VideoPlayer
 import AVFoundation
 import SwiftUIEKtensions
 
-
-class VideoManager: ObservableObject {
+class VideoManager<Message: ChatMessage>: ObservableObject {
+    
     @Published var selectedVideoItem: VideoItem?
+    @Published var message: Message?
+    
+    func flushState() {
+        selectedVideoItem = nil
+        message = nil
+    }
 }
 
-public struct PIPVideoCell: View {
+public struct PIPVideoCell<Message: ChatMessage>: View {
     
-    private let parentSize: CGSize
-    @EnvironmentObject var videoManager: VideoManager
+    public let parentSize: CGSize
+    @EnvironmentObject var videoManager: VideoManager<Message>
 
-    public init(parentSize: CGSize) {
-        self.parentSize = parentSize
-    }
-    
     @ViewBuilder private var video: some View {
-        if let videoItem = videoManager.selectedVideoItem {
-            VideoPlayerContainer(media: videoItem, size: .zero)
+        if let videoItem = videoManager.selectedVideoItem, let message = videoManager.message {
+            VideoPlayerContainer<Message>(media: videoItem, message: message, size: parentSize)
         }
     }
     
@@ -43,7 +45,7 @@ public struct PIPVideoCell: View {
             .gesture(simpleDrag(in: parentSize))
             .animation(.linear(duration: 0.3))
             .onAppear {
-                self.location = CGPoint(x: parentSize.width / 2, y: videoFrameHeight / 3)
+                self.location = CGPoint(x: parentSize.width / 2, y: videoFrameHeight / 2)
             }
     }
     
@@ -66,19 +68,20 @@ public struct PIPVideoCell: View {
                     let inputViewOffset: CGFloat = 60
                     self.location = CGPoint(x: size.width / 2, y: size.height - (videoFrameHeight / 2) - inputViewOffset)
                 } else {
-                    self.location = CGPoint(x: size.width / 2, y: videoFrameHeight / 3)
+                    self.location = CGPoint(x: size.width / 2, y: videoFrameHeight / 2)
                 }
             }
     }
     
 }
 
-internal struct VideoPlayerContainer: View {
+internal struct VideoPlayerContainer<Message: ChatMessage>: View {
     
     public let media: VideoItem
+    public let message: Message
     public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
-    @EnvironmentObject var videoManager: VideoManager
+    @EnvironmentObject var videoManager: VideoManager<Message>
     
     @State private var time: CMTime = .zero
     @State private var play: Bool = true
@@ -144,22 +147,10 @@ internal struct VideoPlayerContainer: View {
     // MARK: - Overlay
     private var videoOverlay: some View {
         VStack(spacing: 0) {
-//            HStack {
-//                RoundedRectangle(cornerRadius: 16)
-//                    .frame(width: 60, height: 50)
-//                    .foregroundColor(.secondary)
-//                    .overlay(
-//                        Image(systemName: "xmark")
-//                            .resizable()
-//                            .scaledToFit()
-//                            .frame(width: 30)
-//                            .foregroundColor(.white)
-//                    )
-//                    .onTapGesture {
-//                        self.play = false
-//                    }
-//                Spacer()
-//            }
+            HStack {
+                closeButton
+                Spacer()
+            }
             Spacer()
             VStack(spacing: 1) {
                 Slider(
@@ -175,6 +166,7 @@ internal struct VideoPlayerContainer: View {
                 )
                 .padding(.horizontal)
                 .accentColor(.red)
+                .gesture(DragGesture()) // << To avoid outer dragGesture, slider & position both was changing
                 
                 HStack {
                     Text(getTimeString()).fontWeight(.semibold)
@@ -222,7 +214,25 @@ internal struct VideoPlayerContainer: View {
             )
             
         }
+        .aspectRatio(1.78, contentMode: .fit)
         .hidden(!showOverlay)
+    }
+    
+    // MARK: - VideoOverlayComponents
+    private var closeButton: some View {
+        Color.secondary.colorInvert()
+            .cornerRadius(16)
+            .frame(width: 60, height: 50)
+            .overlay(
+                Image(systemName: "xmark")
+                    .resizable()
+                    .scaledToFit()
+                    .padding()
+                    .foregroundColor(Color.white)
+            )
+            .onTapGesture {
+                self.videoManager.flushState()
+            }
     }
     
     private func getTimeString() -> String {
@@ -250,9 +260,7 @@ public struct VideoPlaceholderCell<Message: ChatMessage>: View {
     public let size: CGSize
     
     @EnvironmentObject var style: ChatMessageCellStyle
-    @EnvironmentObject var videoManager: VideoManager
-    
-    @State private var showPlayButton: Bool = true
+    @EnvironmentObject var videoManager: VideoManager<Message>
     
     public var body: some View {
         thumbnailView
@@ -276,8 +284,9 @@ public struct VideoPlaceholderCell<Message: ChatMessage>: View {
             .foregroundColor(.secondary)
             .onTapGesture {
                 withAnimation {
-                    showPlayButton = false
+                    videoManager.flushState()
                     videoManager.selectedVideoItem = media
+                    videoManager.message = message
                 }
             }
     }
@@ -289,17 +298,17 @@ public struct VideoPlaceholderCell<Message: ChatMessage>: View {
                 .scaledToFit()
                 .frame(width: 40)
             Text("Bu video resim içinde resim olarak oynuyor.")
-                .padding(.horizontal, 100)
+                .padding(.horizontal, 60)
                 .multilineTextAlignment(.center)
         }
         .foregroundColor(.white)
     }
     
     @ViewBuilder private var thumbnailOverlay: some View {
-        if showPlayButton {
-            playButton
-        } else {
+        if videoManager.selectedVideoItem != nil && videoManager.message?.id == message.id {
             pipMessageView
+        } else {
+            playButton
         }
     }
     

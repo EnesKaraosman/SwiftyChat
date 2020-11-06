@@ -29,7 +29,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             landscape: { GeometryReader(content: body(in:)) }
         )
         .environmentObject(OrientationInfo())
-        .environmentObject(VideoManager())
+        .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
     }
     
@@ -45,7 +45,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             }
             
-            PIPVideoCell(parentSize: geometry.size)
+            PIPVideoCell<Message>(parentSize: geometry.size)
 
             inputView()
 
