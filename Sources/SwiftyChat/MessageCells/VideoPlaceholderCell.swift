@@ -9,14 +9,21 @@ import SwiftUI
 import VideoPlayer
 import AVFoundation
 import SwiftUIEKtensions
+import KingfisherSwiftUI
 
 class VideoManager<Message: ChatMessage>: ObservableObject {
     
-    @Published var selectedVideoItem: VideoItem?
     @Published var message: Message?
+    var videoItem: VideoItem? {
+        if let message = message {
+            if case let ChatMessageKind.video(videoItem) = message.messageKind {
+                return videoItem
+            }
+        }
+        return nil
+    }
     
     func flushState() {
-        selectedVideoItem = nil
         message = nil
     }
 }
@@ -27,7 +34,7 @@ public struct PIPVideoCell<Message: ChatMessage>: View {
     @EnvironmentObject var videoManager: VideoManager<Message>
 
     @ViewBuilder private var video: some View {
-        if let videoItem = videoManager.selectedVideoItem, let message = videoManager.message {
+        if let message = videoManager.message, let videoItem = videoManager.videoItem {
             VideoPlayerContainer<Message>(media: videoItem, message: message, size: parentSize)
         }
     }
@@ -43,7 +50,7 @@ public struct PIPVideoCell<Message: ChatMessage>: View {
             .padding()
             .position(location)
             .gesture(simpleDrag(in: parentSize))
-            .animation(.linear(duration: 0.3))
+            .animation(.linear(duration: 0.1))
             .onAppear {
                 self.location = CGPoint(x: parentSize.width / 2, y: videoFrameHeight / 2)
             }
@@ -112,7 +119,10 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
                     showOverlay.toggle()
                 }
             }
-            .onDisappear { self.play = false }
+            .onDisappear {
+                self.play = false
+                print("☠️ VideoContainer disappear..!!")
+            }
             
             videoOverlay
         }
@@ -262,19 +272,67 @@ public struct VideoPlaceholderCell<Message: ChatMessage>: View {
     @EnvironmentObject var style: ChatMessageCellStyle
     @EnvironmentObject var videoManager: VideoManager<Message>
     
+    private var cellStyle: ImageCellStyle {
+        style.imageCellStyle
+    }
+    
+    private var imageWidth: CGFloat {
+        cellStyle.cellWidth(size)
+    }
+    
     public var body: some View {
         thumbnailView
+            .blur(radius: 5)
+            .overlay(thumbnailOverlay)
+    }
+    
+    @ViewBuilder private var thumbnailView: some View {
+        switch media.placeholderImage {
+        case .local(let image): localImage(uiImage: image)
+        case .remote(let remoteUrl): remoteImage(url: remoteUrl)
+        }
+    }
+    
+    // MARK: - case Local Image
+    @ViewBuilder private func localImage(uiImage: UIImage) -> some View {
+        let width = uiImage.size.width
+        let height = uiImage.size.height
+        let isLandscape = width > height
+        
+        Image(uiImage: uiImage)
+            .resizable()
+            .aspectRatio(width / height, contentMode: isLandscape ? .fit : .fill)
+//            .frame(width: imageWidth, height: isLandscape ? nil : imageWidth)
+    }
+    
+    // MARK: - case Remote Image
+    @ViewBuilder private func remoteImage(url: URL) -> some View {
+        /**
+         KFImage(url)
+         .onSuccess(perform: { (result) in
+             result.image.size
+         })
+         We can grab size & manage aspect ratio via a @State property
+         but the list scroll behaviour becomes messy.
+         
+         So for now we use fixed width & scale height properly.
+         */
+        KFImage(url)
+            .resizable()
+            .scaledToFill()
+            .frame(width: imageWidth)
+        
     }
     
     // MARK: - Thumbnail
-    private var thumbnailView: some View {
-        Image(uiImage: media.placeholderImage)
-            .resizable()
-            .aspectRatio(1.78, contentMode: .fit)
-            .cornerRadius(16)
-            .blur(radius: 3)
-            .overlay(thumbnailOverlay)
-    }
+//    private var thumbnailView: some View {
+//        Image(uiImage: media.placeholderImage)
+//            .resizable()
+//            .aspectRatio(1.78, contentMode: .fit)
+//            .cornerRadius(16)
+//            .blur(radius: 3)
+//            .overlay(thumbnailOverlay)
+//    }
     
     private var playButton: some View {
         Image(systemName: "play.circle.fill")
@@ -285,8 +343,9 @@ public struct VideoPlaceholderCell<Message: ChatMessage>: View {
             .onTapGesture {
                 withAnimation {
                     videoManager.flushState()
-                    videoManager.selectedVideoItem = media
-                    videoManager.message = message
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                        videoManager.message = message
+                    }
                 }
             }
     }
@@ -298,6 +357,7 @@ public struct VideoPlaceholderCell<Message: ChatMessage>: View {
                 .scaledToFit()
                 .frame(width: 40)
             Text("Bu video resim içinde resim olarak oynuyor.")
+                .font(.footnote)
                 .padding(.horizontal, 60)
                 .multilineTextAlignment(.center)
         }
@@ -305,7 +365,7 @@ public struct VideoPlaceholderCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder private var thumbnailOverlay: some View {
-        if videoManager.selectedVideoItem != nil && videoManager.message?.id == message.id {
+        if videoManager.videoItem != nil && videoManager.message?.id == message.id {
             pipMessageView
         } else {
             playButton

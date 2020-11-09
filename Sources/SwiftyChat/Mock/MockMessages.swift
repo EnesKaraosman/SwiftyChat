@@ -37,7 +37,7 @@ public struct MockMessages {
             case .Contact: return .contact(ContactRow(displayName: ""))
             case .QuickReply: return .quickReply([])
             case .Carousel: return .carousel([CarouselRow(title: "", imageURL: nil, subtitle: "", buttons: [])])
-            case .Video: return .video(VideoRow(url: URL(string: "")!, image: nil, placeholderImage: .init(), size: .zero))
+            case .Video: return .video(VideoRow(url: URL(string: "")!, placeholderImage: .remote(URL(string: "")!)))
             }
         }
     }
@@ -74,9 +74,9 @@ public struct MockMessages {
     // MARK: - Concrete model for Video
     private struct VideoRow: VideoItem {
         var url: URL
-        var image: UIImage?
-        var placeholderImage: UIImage
-        var size: CGSize
+//        var image: UIImage?
+        var placeholderImage: ImageLoadingKind
+//        var size: CGSize
     }
     
     // MARK: - Concrete model for ChatMessage
@@ -225,9 +225,7 @@ public struct MockMessages {
         case .Video:
             let videoItem = VideoRow(
                 url: URL(string: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")!,
-                image: nil,
-                placeholderImage: UIColor.systemOrange.withAlphaComponent(0.4).image(),
-                size: .zero
+                placeholderImage: .remote(URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg")!)
             )
             return ChatMessageItem(
                 user: randomUser,

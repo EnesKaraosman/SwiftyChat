@@ -15,12 +15,12 @@ public protocol VideoItem {
     var url: URL { get }
 
     /// The image.
-    var image: UIImage? { get }
+//    var image: UIImage? { get }
 
     /// A placeholder image for when the image is obtained asynchronously.
-    var placeholderImage: UIImage { get }
+    var placeholderImage: ImageLoadingKind { get }
 
     /// The size of the media item.
-    var size: CGSize { get }
+//    var size: CGSize { get }
 
 }
