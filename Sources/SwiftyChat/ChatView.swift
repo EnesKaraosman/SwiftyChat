@@ -46,7 +46,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             }
             
-            PIPVideoCell<Message>(parentSize: geometry.size)
+            PIPVideoCell<Message>()
 
             inputView()
 
