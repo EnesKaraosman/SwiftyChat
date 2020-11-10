@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import SwiftUIEKtensions
 
 internal struct PIPVideoCell<Message: ChatMessage>: View {
     
     public let parentSize: CGSize
     @EnvironmentObject var videoManager: VideoManager<Message>
+    @EnvironmentObject var model: DeviceOrientationInfo
     
     @State private var location: CGPoint = CGPoint(x: 200, y: 100)
     @GestureState private var startLocation: CGPoint? = nil
@@ -34,16 +36,16 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     }
     
     /// When we set .position(), sets its center to given point
-    func rePositionVideoFrame(corner: Corner) {
+    func rePositionVideoFrame(toCorner: Corner) {
         let inputViewOffset: CGFloat = 60
         let _horizontalPadding = horizontalPadding
-        switch corner {
+        switch toCorner {
         case .leftTop: location = .init(
             x: (videoFrameWidth / 2) + (_horizontalPadding / 2),
             y: videoFrameHeight / 2
         )
         case .leftBottom: location = .init(
-            x: (videoFrameWidth / 2) + (_hosrizontalPadding / 2),
+            x: (videoFrameWidth / 2) + (_horizontalPadding / 2),
             y: parentSize.height - videoFrameHeight / 2 - inputViewOffset
         )
         case .rightTop: location = .init(
@@ -64,7 +66,11 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
             .position(location)
             .gesture(simpleDrag)
             .animation(.linear(duration: 0.1))
-            .onAppear { rePositionVideoFrame(corner: .leftTop) }
+//            .onReceive(model.$orientation, perform: { _ in
+//                print("*** orientation change received!!")
+//                rePositionVideoFrame(corner: .leftTop)
+//            })
+            .onAppear { rePositionVideoFrame(toCorner: .leftTop) }
     }
     
     @ViewBuilder private var video: some View {
@@ -88,15 +94,15 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
             .onEnded { (value) in
                 if self.location.y > midY {
                     if self.location.x > midX {
-                        rePositionVideoFrame(corner: .rightBottom)
+                        rePositionVideoFrame(toCorner: .rightBottom)
                     } else {
-                        rePositionVideoFrame(corner: .leftBottom)
+                        rePositionVideoFrame(toCorner: .leftBottom)
                     }
                 } else {
                     if self.location.x > midX {
-                        rePositionVideoFrame(corner: .rightTop)
+                        rePositionVideoFrame(toCorner: .rightTop)
                     } else {
-                        rePositionVideoFrame(corner: .leftTop)
+                        rePositionVideoFrame(toCorner: .leftTop)
                     }
                 }
             }

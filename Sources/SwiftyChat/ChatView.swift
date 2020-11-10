@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftUIEKtensions
 
 public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
@@ -28,7 +29,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             portrait: { GeometryReader(content: body(in:)) },
             landscape: { GeometryReader(content: body(in:)) }
         )
-        .environmentObject(OrientationInfo())
+        .environmentObject(DeviceOrientationInfo())
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
     }
@@ -41,7 +42,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 iOS14Body(in: geometry.size)
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             } else {
-                iOS14Fallback(in: geometry.size)
+                iOS14Fallback(in: geometry.size) // AttributeGraph precondition failure: invalid input index: 2.
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             }
             
