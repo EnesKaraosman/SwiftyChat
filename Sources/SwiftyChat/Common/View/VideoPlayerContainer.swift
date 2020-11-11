@@ -112,9 +112,11 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
                 .gesture(DragGesture()) // << To avoid outer dragGesture, slider & position both was changing
                 
                 HStack {
-                    Text(getTimeString()).fontWeight(.semibold)
+                    Text(self.time.seconds.formatSecondsToHMS())
+                        .fontWeight(.semibold)
                     Spacer()
-                    Text(getRemainingDurationString()).fontWeight(.semibold)
+                    Text(self.totalDuration.formatSecondsToHMS())
+                        .fontWeight(.semibold)
                 }
                 .padding(.horizontal)
                 .font(.footnote)
@@ -175,19 +177,6 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
             .onTapGesture {
                 self.videoManager.flushState()
             }
-    }
-    
-    private func getTimeString() -> String {
-        let m = Int(time.seconds / 60)
-        let s = Int(time.seconds.truncatingRemainder(dividingBy: 60))
-        return String(format: "%d:%02d", arguments: [m, s])
-    }
-    
-    private func getRemainingDurationString() -> String {
-        let totalSecondsRemaining = totalDuration - time.seconds
-        let m = Int(totalSecondsRemaining / 60)
-        let s = Int(totalSecondsRemaining.truncatingRemainder(dividingBy: 60))
-        return String(format: "-%d:%02d", arguments: [m, s])
     }
     
 }
