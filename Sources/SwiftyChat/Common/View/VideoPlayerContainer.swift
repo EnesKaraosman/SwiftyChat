@@ -56,12 +56,7 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
                     showOverlay.toggle()
                 }
             }
-            .onDisappear {
-                self.play = false
-                print("☠️ VideoContainer disappear..!!")
-                print(videoManager.message?.messageKind.description)
-                print("******")
-            }
+            .onDisappear { self.play = false }
             
             videoOverlay
         }

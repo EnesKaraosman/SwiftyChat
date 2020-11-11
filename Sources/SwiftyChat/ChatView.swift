@@ -25,34 +25,36 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @Binding private var scrollToBottom: Bool
     
     public var body: some View {
-        DeviceOrientationBasedView(
-            portrait: { GeometryReader(content: body(in:)) },
-            landscape: { GeometryReader(content: body(in:)) }
-        )
+        GeometryReader { geometry in
+            ZStack(alignment: .bottom) {
+                chatView(in: geometry)
+                PIPVideoCell<Message>()
+                inputView()
+            }
+            .keyboardAwarePadding()
+            .dismissKeyboardOnTappingOutside()
+        }
         .environmentObject(DeviceOrientationInfo())
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
     }
     
-    // MARK: - Body in geometry
-    private func body(in geometry: GeometryProxy) -> some View {
-        ZStack(alignment: .bottom) {
-                    
+    private func chatView(in geometry: GeometryProxy) -> some View {
+        
+        @ViewBuilder func _chatView(in geometry: GeometryProxy) -> some View {
             if #available(iOS 14.0, *) {
                 iOS14Body(in: geometry.size)
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             } else {
-                iOS14Fallback(in: geometry.size) // AttributeGraph precondition failure: invalid input index: 2.
+                iOS14Fallback(in: geometry.size)
                     .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
             }
-            
-            PIPVideoCell<Message>()
-
-            inputView()
-
         }
-        .keyboardAwarePadding()
-        .dismissKeyboardOnTappingOutside()
+        
+        return DeviceOrientationBasedView(
+            portrait: { _chatView(in: geometry) },
+            landscape: { _chatView(in: geometry) }
+        )
     }
     
     @available(iOS 14.0, *)
