@@ -18,8 +18,8 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
     @EnvironmentObject var style: ChatMessageCellStyle
     @EnvironmentObject var videoManager: VideoManager<Message>
     
-    private var cellStyle: ImageCellStyle {
-        style.imageCellStyle
+    private var cellStyle: VideoPlaceholderCellStyle {
+        style.videoPlaceholderCellStyle
     }
     
     private var imageWidth: CGFloat {
@@ -32,7 +32,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
             .onTapGesture {
                 withAnimation {
                     videoManager.flushState()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
                         videoManager.message = message
                     }
                 }
@@ -43,10 +43,10 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
         ImageLoadingKindCell(
             media.placeholderImage,
             width: imageWidth,
-            height: imageWidth / 1.78
+            height: imageWidth / cellStyle.cellAspectRatio
         )
         .clipped()
-        .blur(radius: 1)
+        .blur(radius: cellStyle.cellBlurRadius)
         .background(cellStyle.cellBackgroundColor)
         .cornerRadius(cellStyle.cellCornerRadius)
         .overlay(

@@ -14,18 +14,8 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
     
     public let media: VideoItem
     public let message: Message
-    public let size: CGSize
     
-    @EnvironmentObject var style: ChatMessageCellStyle
     @EnvironmentObject var videoManager: VideoManager<Message>
-    
-    private var videoWidth: CGFloat {
-        cellStyle.cellWidth(size)
-    }
-    
-    private var cellStyle: VideoCellStyle {
-        style.videoCellStyle
-    }
     
     @State private var time: CMTime = .zero
     @State private var play: Bool = true
@@ -84,7 +74,6 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
                 }
             }
             .cornerRadius(8)
-            .shadow(color: .secondary, radius: 6, x: 0, y: 2)
     }
     
     // MARK: - Overlay
@@ -93,6 +82,7 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
             HStack {
                 closeButton
                 Spacer()
+                fullScreenButton
             }
             Spacer()
             VStack(spacing: 1) {
@@ -151,17 +141,35 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
     // MARK: - VideoOverlayComponents
     private var closeButton: some View {
         Color.secondary.colorInvert()
-            .cornerRadius(16)
-            .frame(width: 60, height: 50)
+            .cornerRadius(10)
+            .frame(width: 50, height: 40)
             .overlay(
                 Image(systemName: "xmark")
-                    .resizable()
-                    .scaledToFit()
+                    .font(Font.body.weight(.semibold))
                     .padding()
                     .foregroundColor(Color.white)
             )
             .onTapGesture {
                 self.videoManager.flushState()
+            }
+    }
+    
+    private var fullScreenButton: some View {
+        Color.secondary.colorInvert()
+            .cornerRadius(10)
+            .frame(width: 50, height: 40)
+            .overlay(
+                Image(
+                    systemName: videoManager.isFullScreen ?
+                        "arrow.down.right.and.arrow.up.left" :
+                        "arrow.up.left.and.arrow.down.right"
+                )
+                .font(Font.body.weight(.semibold))
+                .padding()
+                .foregroundColor(Color.white)
+            )
+            .onTapGesture {
+                videoManager.isFullScreen.toggle()
             }
     }
     

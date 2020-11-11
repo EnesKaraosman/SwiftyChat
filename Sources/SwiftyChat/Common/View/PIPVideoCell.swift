@@ -20,7 +20,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     @EnvironmentObject var model: DeviceOrientationInfo
     @State private var cancellable: Cancellable?
     
-    @State private var location: CGPoint = CGPoint(x: 200, y: 100)
+    @State private var location: CGPoint = .zero
     @GestureState private var startLocation: CGPoint? = nil
     
     private let horizontalPadding: CGFloat = 16
@@ -71,9 +71,10 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     
     public var body: some View {
         GeometryReader { geometry in
-            video(in: geometry.size)
+            video
                 .frame(width: videoFrameWidth(in: geometry.size), height: videoFrameHeight(in: geometry.size))
                 .cornerRadius(8)
+                .shadow(color: Color.secondary, radius: 6, x: 1, y: 2)
                 .position(location)
                 .gesture(simpleDrag(in: geometry.size))
                 .animation(.linear(duration: 0.1))
@@ -91,9 +92,9 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
         }
     }
     
-    @ViewBuilder private func video(in size: CGSize) -> some View {
+    @ViewBuilder private var video: some View {
         if let message = videoManager.message, let videoItem = videoManager.videoItem {
-            VideoPlayerContainer<Message>(media: videoItem, message: message, size: size)
+            VideoPlayerContainer<Message>(media: videoItem, message: message)
         }
     }
     
