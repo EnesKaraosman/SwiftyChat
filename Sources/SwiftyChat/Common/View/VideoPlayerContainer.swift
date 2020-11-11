@@ -96,20 +96,7 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
             }
             Spacer()
             VStack(spacing: 1) {
-                Slider(
-                    value: Binding(
-                        get: { time.seconds },
-                        set: {
-                            self.time = CMTimeMakeWithSeconds(
-                                $0, preferredTimescale: self.time.timescale
-                            )
-                        }
-                    ),
-                    in: 0...totalDuration
-                )
-                .padding(.horizontal)
-                .accentColor(.red)
-                .gesture(DragGesture()) // << To avoid outer dragGesture, slider & position both was changing
+                durationSliderView
                 
                 HStack {
                     Text(self.time.seconds.formatSecondsToHMS())
@@ -131,7 +118,6 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
                             self.time = CMTimeMakeWithSeconds(max(0, self.time.seconds - 10), preferredTimescale: self.time.timescale)
                         }
                         .frame(minWidth: 0, maxWidth: .infinity)
-                    
                     
                     Image(systemName: self.play ? "pause.circle.fill" : "play.circle.fill")
                         .resizable()
@@ -177,6 +163,23 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
             .onTapGesture {
                 self.videoManager.flushState()
             }
+    }
+    
+    private var durationSliderView: some View {
+        Slider(
+            value: Binding(
+                get: { time.seconds },
+                set: {
+                    self.time = CMTimeMakeWithSeconds(
+                        $0, preferredTimescale: self.time.timescale
+                    )
+                }
+            ),
+            in: 0...totalDuration
+        )
+        .padding(.horizontal)
+        .accentColor(.red)
+        .gesture(DragGesture()) // << To avoid outer dragGesture, slider & position both was changing
     }
     
 }
