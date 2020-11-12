@@ -24,37 +24,44 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @available(iOS 14.0, *)
     @Binding private var scrollToBottom: Bool
     
+    @State private var contentSizeThatFits: CGSize = .zero
+    private var messageEditorHeight: CGFloat {
+        min(
+            self.contentSizeThatFits.height,
+            0.25 * UIScreen.main.bounds.height
+        )
+    }
+    
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
                 chatView(in: geometry)
-                PIPVideoCell<Message>()
                 inputView()
+                    .onPreferenceChange(ContentSizeThatFitsKey.self) {
+                        self.contentSizeThatFits = $0
+                    }
+                    .frame(height: self.messageEditorHeight)
+                    .padding(.bottom, 12)
+                
+                PIPVideoCell<Message>()
             }
             .keyboardAwarePadding()
-            .dismissKeyboardOnTappingOutside()
         }
         .environmentObject(DeviceOrientationInfo())
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
+        .dismissKeyboardOnTappingOutside()
+//        .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
     }
     
-    private func chatView(in geometry: GeometryProxy) -> some View {
-        
-        @ViewBuilder func _chatView(in geometry: GeometryProxy) -> some View {
-            if #available(iOS 14.0, *) {
-                iOS14Body(in: geometry.size)
-                    .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
-            } else {
-                iOS14Fallback(in: geometry.size)
-                    .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
-            }
+    @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
+        if #available(iOS 14.0, *) {
+            iOS14Body(in: geometry.size)
+                .padding(.bottom, messageEditorHeight + 30)
+        } else {
+            iOS14Fallback(in: geometry.size)
+                .padding(.bottom, messageEditorHeight + 16)
         }
-        
-        return DeviceOrientationBasedView(
-            portrait: { _chatView(in: geometry) },
-            landscape: { _chatView(in: geometry) }
-        )
     }
     
     @available(iOS 14.0, *)

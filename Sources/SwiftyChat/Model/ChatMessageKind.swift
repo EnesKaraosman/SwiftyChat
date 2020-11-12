@@ -34,7 +34,7 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// `CarouselItem` contains title, subtitle, image & button in a scrollable view
     case carousel([CarouselItem])
     
-    /// A video message.
+    /// A video message, opens the given URL.
     case video(VideoItem)
     
     public var description: String {

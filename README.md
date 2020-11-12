@@ -78,6 +78,9 @@ public enum ChatMessageKind {
     
     /// `CarouselItem`s that contains title, subtitle, image & button in a scrollable view
     case carousel([CarouselItem])
+    
+    /// A video message, opens the given URL.
+    case video(VideoItem)
 }
 ```
 For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](https://github.com/onevcat/Kingfisher) library used as dependency.
@@ -116,13 +119,6 @@ Recommended way is just clone this `BasicInputView` and modify (ex. add camera i
 // InputBarView variables
 @State private var message = ""
 @State private var isEditing = false
-@State private var contentSizeThatFits: CGSize = .zero
-private var messageEditorHeight: CGFloat {
-    min(
-        self.contentSizeThatFits.height,
-        0.25 * UIScreen.main.bounds.height
-    )
-}
 
 var inputBarView: some View {
     BasicInputView(
@@ -135,15 +131,10 @@ var inputBarView: some View {
             )
         }
     )
-    .onPreferenceChange(ContentSizeThatFitsKey.self) {
-        self.contentSizeThatFits = $0
-    }
-    .frame(height: self.messageEditorHeight)
     .padding(8)
     .padding(.bottom, isEditing ? 0 : 8)
     .accentColor(.chatBlue)
     .background(Color.primary.colorInvert())
-    .animation(.linear)
     // ▼ An extension that wraps view inside AnyView
     .embedInAnyView()
 }
