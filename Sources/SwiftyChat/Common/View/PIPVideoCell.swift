@@ -18,33 +18,45 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     
     @EnvironmentObject var videoManager: VideoManager<Message>
     @EnvironmentObject var model: DeviceOrientationInfo
-    @State private var cancellable: Cancellable?
-    
+
+    @State private var cancellables: Set<AnyCancellable> = .init()
     @State private var location: CGPoint = .zero
     @GestureState private var startLocation: CGPoint? = nil
     
     private let horizontalPadding: CGFloat = 16
     
     private func videoFrameHeight(in size: CGSize) -> CGFloat {
-        videoFrameWidth(in: size) / 1.78
+        if videoManager.isFullScreen && model.orientation == .landscape {
+            return size.height
+        } else {
+            return videoFrameWidth(in: size) / 1.78
+        }
     }
     
     private func videoFrameWidth(in size: CGSize) -> CGFloat {
-        model.orientation == .landscape ?
-            (size.width / 1.8):
-        abs(size.width - horizontalPadding) // Padding
+        if videoManager.isFullScreen {
+            return size.width
+        } else {
+            return model.orientation == .landscape ?
+            (size.width / 1.8) : abs(size.width - horizontalPadding) // Padding
+        }
     }
     
     enum Corner {
-        case leftTop, leftBottom, rightTop, rightBottom
+        case leftTop, leftBottom, rightTop, rightBottom, center
     }
     
     /// When we set .position(), sets its center to given point
     func rePositionVideoFrame(toCorner: Corner, in size: CGSize) {
-        let inputViewOffset: CGFloat = 60
-        let _horizontalPadding = horizontalPadding
+        let inputViewOffset: CGFloat = videoManager.isFullScreen ? 0 : 60
+        let _horizontalPadding = videoManager.isFullScreen ? 0 : horizontalPadding
         withAnimation(.easeIn) {
             switch toCorner {
+            case .center:
+                location = .init(
+                    x: size.width / 2,
+                    y: size.height / 2
+                )
             case .leftTop:
                 location = .init(
                     x: (videoFrameWidth(in: size) / 2) + (_horizontalPadding / 2),
@@ -80,21 +92,36 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                 .animation(.linear(duration: 0.1))
                 .onAppear { rePositionVideoFrame(toCorner: .rightTop, in: geometry.size) }
                 .onAppear {
-                    cancellable = model.$orientation
+                    
+                    videoManager.$isFullScreen
+                        .removeDuplicates()
+                        .sink { fullScreen in
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                self.rePositionVideoFrame(toCorner: .center, in: geometry.size)
+                            }
+                        }
+                        .store(in: &cancellables)
+                    
+                    model.$orientation
                         .removeDuplicates()
                         .sink(receiveValue: { _ in
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                 self.rePositionVideoFrame(toCorner: .leftTop, in: geometry.size)
                             }
                         })
+                        .store(in: &cancellables)
                 }
-                .onDisappear { cancellable?.cancel() }
+                .onDisappear {
+                    cancellables.forEach { $0.cancel() }
+                    print("☠️ pip disappeared..")
+                }
         }
     }
     
     @ViewBuilder private var video: some View {
         if let message = videoManager.message, let videoItem = videoManager.videoItem {
             VideoPlayerContainer<Message>(media: videoItem, message: message)
+                .background(videoManager.isFullScreen ? Color.black : Color.clear)
         }
     }
     

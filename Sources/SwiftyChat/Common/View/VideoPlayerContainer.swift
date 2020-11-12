@@ -169,7 +169,9 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
                 .foregroundColor(Color.white)
             )
             .onTapGesture {
-                videoManager.isFullScreen.toggle()
+                withAnimation {
+                    videoManager.isFullScreen.toggle()
+                }
             }
     }
     
