@@ -83,8 +83,6 @@ public enum ChatMessageKind {
     case video(VideoItem)
 }
 ```
-For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](https://github.com/onevcat/Kingfisher) library used as dependency.
-
 ### Usage
 
 - `ChatView`
@@ -182,6 +180,11 @@ For detail documentation, visit [Styles.md](../master/Styles.md)
 <br>
 Please feel free to contribute.<br>
 * Create PR for a feature/bug you'd like to add/fix.
+
+### Dependencies
+
+* [Kingfisher](https://github.com/onevcat/Kingfisher.git) : Image downloading library.
+* [VideoPlayer](https://github.com/wxxsw/VideoPlayer.git) : VideoPlayer library.
 
 ### Inspiration
 

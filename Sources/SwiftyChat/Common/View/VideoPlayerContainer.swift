@@ -73,7 +73,6 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
                     print("Error: \(error)")
                 }
             }
-            .cornerRadius(8)
     }
     
     // MARK: - Overlay
@@ -128,11 +127,7 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
                 }
                 .padding(.vertical, 4)
             }
-            .background(
-                Color.secondary.colorInvert()
-                    .blur(radius: 2)
-                    .cornerRadius(8)
-            )
+            .background(Color.secondary.colorInvert().blur(radius: 2))
             
         }
         .hidden(!showOverlay)

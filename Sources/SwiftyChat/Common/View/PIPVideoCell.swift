@@ -82,46 +82,54 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     }
     
     public var body: some View {
-        GeometryReader { geometry in
-            video
-                .frame(width: videoFrameWidth(in: geometry.size), height: videoFrameHeight(in: geometry.size))
-                .cornerRadius(8)
-                .shadow(color: Color.secondary, radius: 6, x: 1, y: 2)
-                .position(location)
-                .gesture(simpleDrag(in: geometry.size))
-                .animation(.linear(duration: 0.1))
-                .onAppear { rePositionVideoFrame(toCorner: .rightTop, in: geometry.size) }
-                .onAppear {
-                    
-                    videoManager.$isFullScreen
-                        .removeDuplicates()
-                        .sink { fullScreen in
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                self.rePositionVideoFrame(toCorner: .center, in: geometry.size)
+        ZStack {
+            
+            if videoManager.isFullScreen {
+                Color.primary.colorInvert()
+                    .animation(.linear)
+                    .edgesIgnoringSafeArea(.all)
+            }
+            
+            GeometryReader { geometry in
+                video
+                    .frame(width: videoFrameWidth(in: geometry.size), height: videoFrameHeight(in: geometry.size))
+                    .cornerRadius(videoManager.isFullScreen ? 0 : 8)
+                    .shadow(color: videoManager.isFullScreen ? .clear : .secondary, radius: 6, x: 1, y: 2)
+                    .position(location)
+                    .gesture(simpleDrag(in: geometry.size))
+                    .animation(.linear(duration: 0.1))
+                    .onAppear { rePositionVideoFrame(toCorner: .rightTop, in: geometry.size) }
+                    .onAppear {
+                        
+                        videoManager.$isFullScreen
+                            .removeDuplicates()
+                            .sink { fullScreen in
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    self.rePositionVideoFrame(toCorner: .center, in: geometry.size)
+                                }
                             }
-                        }
-                        .store(in: &cancellables)
-                    
-                    model.$orientation
-                        .removeDuplicates()
-                        .sink(receiveValue: { _ in
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-                                self.rePositionVideoFrame(toCorner: .leftTop, in: geometry.size)
-                            }
-                        })
-                        .store(in: &cancellables)
-                }
-                .onDisappear {
-                    cancellables.forEach { $0.cancel() }
-                    print("☠️ pip disappeared..")
-                }
+                            .store(in: &cancellables)
+                        
+                        model.$orientation
+                            .removeDuplicates()
+                            .sink(receiveValue: { _ in
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                                    self.rePositionVideoFrame(toCorner: .leftTop, in: geometry.size)
+                                }
+                            })
+                            .store(in: &cancellables)
+                    }
+                    .onDisappear {
+                        cancellables.forEach { $0.cancel() }
+                        print("☠️ pip disappeared..")
+                    }
+            }
         }
     }
     
     @ViewBuilder private var video: some View {
         if let message = videoManager.message, let videoItem = videoManager.videoItem {
             VideoPlayerContainer<Message>(media: videoItem, message: message)
-                .background(videoManager.isFullScreen ? Color.black : Color.clear)
         }
     }
     
