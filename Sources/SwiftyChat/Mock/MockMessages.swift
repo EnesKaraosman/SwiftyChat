@@ -144,6 +144,10 @@ public struct MockMessages {
     
     public static var mockImages: [UIImage] = []
     
+    public static func generateMessage(kind: MockMessages.Kind, count: UInt) -> [ChatMessageItem] {
+        (1...count).map { _ in generateMessage(kind: kind) }
+    }
+    
     public static func generateMessage(kind: MockMessages.Kind) -> ChatMessageItem {
         let randomUser = Self.randomUser
         switch kind {
