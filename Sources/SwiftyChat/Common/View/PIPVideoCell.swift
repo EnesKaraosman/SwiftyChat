@@ -24,12 +24,13 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     @GestureState private var startLocation: CGPoint? = nil
     
     private let horizontalPadding: CGFloat = 16
+    private let aspectRatio: CGFloat = 1.78
     
     private func videoFrameHeight(in size: CGSize) -> CGFloat {
         if videoManager.isFullScreen && model.orientation == .landscape {
             return size.height
         } else {
-            return videoFrameWidth(in: size) / 1.78
+            return videoFrameWidth(in: size) / aspectRatio
         }
     }
     
@@ -38,7 +39,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
             return size.width
         } else {
             return model.orientation == .landscape ?
-            (size.width / 1.8) : abs(size.width - horizontalPadding) // Padding
+            (size.width / aspectRatio) : abs(size.width - horizontalPadding) // Padding
         }
     }
     
