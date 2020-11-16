@@ -18,6 +18,10 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
     @EnvironmentObject var style: ChatMessageCellStyle
     @EnvironmentObject var videoManager: VideoManager<Message>
     
+    private var isThisVideoPlaying: Bool {
+        videoManager.videoItem != nil && videoManager.message?.id == message.id
+    }
+    
     private var cellStyle: VideoPlaceholderCellStyle {
         style.videoPlaceholderCellStyle
     }
@@ -30,6 +34,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
         thumbnailView
             .overlay(thumbnailOverlay)
             .onTapGesture {
+                if isThisVideoPlaying { return }
                 withAnimation {
                     videoManager.flushState()
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
@@ -87,7 +92,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder private var thumbnailOverlay: some View {
-        if videoManager.videoItem != nil && videoManager.message?.id == message.id {
+        if isThisVideoPlaying {
             pipMessageView
         } else {
             playButton
