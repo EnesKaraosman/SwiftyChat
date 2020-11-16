@@ -81,7 +81,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
                 .resizable()
                 .scaledToFit()
                 .frame(width: 40)
-            Text("Bu video resim içinde resim olarak oynuyor.")
+            Text(media.pictureInPicturePlayingMessage)
                 .font(.footnote)
                 .fontWeight(.semibold)
                 .padding(.horizontal, 60)
