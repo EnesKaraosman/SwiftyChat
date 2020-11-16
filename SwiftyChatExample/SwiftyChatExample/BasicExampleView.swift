@@ -10,20 +10,11 @@ import SwiftyChat
 
 struct BasicExampleView: View {
     
-    @State var messages: [MockMessages.ChatMessageItem] = (1...20).map { _ in
-        MockMessages.generateMessage(kind: .Text)
-    }
+    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 20)
     
     // MARK: - InputBarView variables
     @State private var message = ""
     @State private var isEditing = false
-    @State private var contentSizeThatFits: CGSize = .zero
-    private var messageEditorHeight: CGFloat {
-        min(
-            self.contentSizeThatFits.height,
-            0.25 * UIScreen.main.bounds.height
-        )
-    }
     
     var body: some View {
         chatView
@@ -42,10 +33,6 @@ struct BasicExampleView: View {
                     )
                 }
             )
-            .onPreferenceChange(ContentSizeThatFitsKey.self) {
-                self.contentSizeThatFits = $0
-            }
-            .frame(height: self.messageEditorHeight)
             .padding(8)
             .padding(.bottom, isEditing ? 0 : 8)
             .accentColor(.chatBlue)

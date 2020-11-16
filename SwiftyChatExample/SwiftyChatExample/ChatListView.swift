@@ -12,7 +12,7 @@ struct ChatListView: View {
         NavigationView {
             List {
                 NavigationLink("Basic Example", destination: BasicExampleView())
-                NavigationLink("Advanced Example", destination: ContentView())
+                NavigationLink("Advanced Example", destination: AdvancedExampleView())
             }
             .navigationBarTitle("SwiftyChats")
         }

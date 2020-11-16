@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  AdvancedExampleView.swift
 //  SwiftyChatExample
 //
 //  Created by Enes Karaosman on 20.10.2020.
@@ -25,7 +25,7 @@ fileprivate let htmlLink = """
 <a href="https://www.w3schools.com">Visit W3Schools.com!</a>
 """
 
-struct ContentView: View {
+struct AdvancedExampleView: View {
     
     @State var messages: [MockMessages.ChatMessageItem] = []
     @State private var scrollToBottom = false
@@ -37,14 +37,6 @@ struct ContentView: View {
         NavigationView {
             chatView
         }
-    }
-    
-    @State private var contentSizeThatFits: CGSize = .zero
-    private var messageEditorHeight: CGFloat {
-        min(
-            self.contentSizeThatFits.height,
-            0.25 * UIScreen.main.bounds.height
-        )
     }
     
     private var chatView: some View {
@@ -60,10 +52,6 @@ struct ContentView: View {
                     )
                 }
             )
-            .onPreferenceChange(ContentSizeThatFitsKey.self) {
-                self.contentSizeThatFits = $0
-            }
-            .frame(height: self.messageEditorHeight)
             .padding(8)
             .padding(.bottom, isEditing ? 0 : 8)
             .background(Color.primary.colorInvert())
@@ -156,6 +144,6 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        AdvancedExampleView()
     }
 }
