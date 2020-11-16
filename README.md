@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.2.0-blue)
+![Version](https://img.shields.io/badge/version-1.3.0-blue)
 ![Swift 5.3](https://img.shields.io/badge/Swift-5.3-orange.svg)
 
 # SwiftyChat
@@ -31,7 +31,7 @@ Fully written in pure SwiftUI.
 
 ### Quick Preview
 
-<img src="../master/Sources/SwiftyChat/Demo/swiftyChatGIF.gif" height="240"/>
+<img src="../master/Sources/SwiftyChat/Demo/Preview/swiftyChatGIF.gif" height="240"/>
 
 <details>
   <summary>Basic Example</summary>
