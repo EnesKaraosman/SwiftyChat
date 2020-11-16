@@ -31,6 +31,8 @@ Fully written in pure SwiftUI.
 
 ### Quick Preview
 
+<img src="../master/Sources/SwiftyChat/Demo/swiftyChatGIF.gif" height="240"/>
+
 <details>
   <summary>Basic Example</summary>
     

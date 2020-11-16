@@ -153,10 +153,10 @@ public struct MockMessages {
         switch kind {
         
         case .Image:
-            guard let randomImage = mockImages.randomElement() else { fallthrough }
+            guard let url = URL(string: "https://picsum.photos/id/\(Int.random(in: 1...100))/400/300") else { fallthrough }
             return ChatMessageItem(
                 user: randomUser,
-                messageKind: .image(.local(randomImage)),
+                messageKind: .image(.remote(url)),
                 isSender: randomUser == Self.sender
             )
             
