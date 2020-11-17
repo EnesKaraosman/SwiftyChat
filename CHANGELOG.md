@@ -1,5 +1,12 @@
 # Change Log
 
+## [1.3.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.0)
+Released on 2020-11-16.
+
+#### Added
+- Video ChatMessageKind support added.
+  - View `ChatMessageKind.video(VideoItem)` for detail. 
+
 ## [1.2.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.2.0)
 Released on 2020-10-21.
 
