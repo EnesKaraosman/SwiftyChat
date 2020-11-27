@@ -12,8 +12,8 @@ public struct ChatView: View {
     
     let localUser: ChatUser
     @Binding public var messages: [ChatMessage]
-    @Binding public var typingUser: ChatUser?
-    @Binding public var scrollIndex: Int?
+    public var typingUser: ChatUser?
+    public var scrollIndex: ChatMessage.ID?
     public var inputView: (_ proxy: GeometryProxy) -> AnyView
     
     
@@ -33,14 +33,14 @@ public struct ChatView: View {
     public init(
         localUser: ChatUser,
         messages: Binding<[ChatMessage]>,
-        typingUser: Binding<ChatUser?>,
-        scrollIndex: Binding<Int?> = .constant(nil),
+        typingUser: ChatUser?,
+        scrollIndex: ChatMessage.ID? = nil,
         inputView: @escaping (_ proxy: GeometryProxy) -> AnyView
     ) {
         self.localUser = localUser
         self._messages = messages
-        self._typingUser = typingUser
-        self._scrollIndex = scrollIndex
+        self.typingUser = typingUser
+        self.scrollIndex = scrollIndex
         self.inputView = inputView
     }
     
@@ -117,49 +117,31 @@ public struct ChatView: View {
         }.keyboardAwarePadding()
     }
     
+    @ViewBuilder
     private func messagesView(geometry: GeometryProxy) -> some View {
         if #available(iOS 14.0, *) {
-            return ScrollViewReader { proxy in
-                ScrollView {
+            ScrollView {
+                ScrollViewReader { proxy in
                     LazyVStack {
-                        ForEach(messages.indices, id: \.self) { index in
-                            VStack {
-                                self.chatMessageCellContainer(in: geometry.size, with: messages[index])
-                                typingView(for: index)
-                            }
-                            .id(index)
-                            .padding([.leading, .trailing], 16)
-                            .padding(.bottom, index == messages.endIndex ? 24 : 6)
-                            .padding(.top, index == 0 ? 24 : 6)
-                        }.onChange(of: scrollIndex) { index in
-                            scrollToIndex(index, with: proxy)
-                        }
-                        .onChange(of: messages) { _ in
-                            scrollToBottom(with: proxy)
-                        }
-                        .onChange(of: typingUser) { _ in
-                            scrollToBottom(with: proxy)
+                        messages(geometry: geometry)
+                    }
+                    .onChange(of: scrollIndex) { index in
+                        withAnimation(.easeOut(duration: 0.1)) {
+                            proxy.scrollTo(index)
                         }
                     }
                 }
             }
-            .embedInAnyView()
         } else {
-            return List(messages.indices, id: \.self) { index in
-                VStack {
-                    self.chatMessageCellContainer(in: geometry.size, with: messages[index])
-                        .overlay(
-                            // we need this to grab the reference to the table view that we want to programmatically scroll
-                            // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
-                            self.tableViewFinderOverlay
-                                .frame(width: 0, height: 0)
-                        )
-                        .listRowBackground(Color.black)
-                    typingView(for: index)
-                }
-                .padding([.leading, .trailing], 16)
-                .padding(.bottom, index == messages.endIndex ? 24 : 6)
-                .padding(.top, index == 0 ? 24 : 6)
+            List {
+                messages(geometry: geometry)
+                    .overlay(
+                        // we need this to grab the reference to the table view that we want to programmatically scroll
+                        // the only way to add a child view to a List is to either add it to one of the rows or to insert an extra row
+                        self.tableViewFinderOverlay
+                            .frame(width: 0, height: 0)
+                    )
+                    .listRowInsets(.init())
             }
             .background(
                 // the scrolling has to be done via the binding `indexPathToSetVisible`
@@ -182,15 +164,33 @@ public struct ChatView: View {
                 }
                 return EmptyView()
             })
-            
-            .embedInAnyView()
+        }
+    }
+    
+    func messages(geometry: GeometryProxy) -> some View {
+        ForEach(messages) { message in
+            VStack {
+                self.chatMessageCellContainer(in: geometry.size, with: message)
+                typingView(for: message)
+            }
+            .padding([.leading, .trailing], 16)
+            .padding(.bottom, message.id == messages.last?.id ? 24 : 6)
+            .padding(.top, message.id == messages.first?.id ? 24 : 6)
+            .id(message.id)
         }
     }
     
     @ViewBuilder
-    private func typingView(for index: Int) -> some View {
-        if let typingUser = typingUser, index == messages.index(before: messages.endIndex) {
-            TypingMessageView(isSender: typingUser != localUser, user: typingUser)
+    private func typingView(for message: ChatMessage) -> some View {
+        if message.id == messages.last?.id {
+            if let typingUser = typingUser {
+                TypingMessageView(isSender: typingUser != localUser, user: typingUser)
+            } else {
+                //We reserve space for typing view since observing
+                //value typing user change and scrolling is glitchy
+                //when used together with scrollIndex change
+                Color.clear.frame(height: 50)
+            }
         } else {
             EmptyView()
         }
@@ -217,15 +217,5 @@ public struct ChatView: View {
         .modifier(MessageModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
         .animation(nil)
-    }
-    
-    @available(iOS 14.0, *)
-    private func scrollToBottom(with proxy: ScrollViewProxy) {
-        withAnimation { scrollToIndex(messages.indices.last, with: proxy) }
-    }
-    
-    @available(iOS 14.0, *)
-    private func scrollToIndex(_ index: Int?, with proxy: ScrollViewProxy) {
-        withAnimation { proxy.scrollTo(index) }
     }
 }
