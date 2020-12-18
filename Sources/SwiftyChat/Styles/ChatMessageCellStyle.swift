@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public class ChatMessageCellStyle: ObservableObject {
+public final class ChatMessageCellStyle: ObservableObject {
     
     /// Incoming Text Style
     let incomingTextStyle: TextCellStyle

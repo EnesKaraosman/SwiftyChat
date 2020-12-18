@@ -27,7 +27,7 @@ extension CarouselItem {
     }
 }
 
-public struct CarouselCell<Message: ChatMessage>: View {
+internal struct CarouselCell<Message: ChatMessage>: View {
     
     public let carouselItems: [CarouselItem]
     public let size: CGSize
@@ -53,7 +53,7 @@ public struct CarouselCell<Message: ChatMessage>: View {
     
 }
 
-public struct CarouselItemView: View {
+internal struct CarouselItemView: View {
     
     public let item: CarouselItem
     public let size: CGSize

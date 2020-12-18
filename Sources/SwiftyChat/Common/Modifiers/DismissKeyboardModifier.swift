@@ -11,7 +11,7 @@ import SwiftUI
 // Investigate keyboardAwarePadding() modifier, it does actually its job
 // But some how its broken with current as-is
 
-extension UIApplication {
+internal extension UIApplication {
     func addTapGestureRecognizer() {
         guard let window = windows.first else { return }
         let tapGesture = AnyGestureRecognizer(target: window, action:#selector(UIView.endEditing))
@@ -28,7 +28,7 @@ extension UIApplication: UIGestureRecognizerDelegate {
     }
 }
 
-class AnyGestureRecognizer: UIGestureRecognizer {
+internal final class AnyGestureRecognizer: UIGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         if let touchedView = touches.first?.view, touchedView is UIControl {
             state = .cancelled
@@ -59,7 +59,7 @@ internal extension View {
     }
 }
 
-public struct DismissKeyboardOnTappingOutside: ViewModifier {
+internal struct DismissKeyboardOnTappingOutside: ViewModifier {
     public func body(content: Content) -> some View {
         content
             .onTapGesture {

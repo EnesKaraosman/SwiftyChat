@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct QuickReplyCell: View {
+internal struct QuickReplyCell: View {
     
     public var quickReplies: [QuickReplyItem]
     public var quickReplySelected: (QuickReplyItem) -> Void

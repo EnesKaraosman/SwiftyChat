@@ -43,12 +43,12 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
         }
     }
     
-    enum Corner {
+    private enum Corner {
         case leftTop, leftBottom, rightTop, rightBottom, center
     }
     
     /// When we set .position(), sets its center to given point
-    func rePositionVideoFrame(toCorner: Corner, in size: CGSize) {
+    private func rePositionVideoFrame(toCorner: Corner, in size: CGSize) {
         let inputViewOffset: CGFloat = videoManager.isFullScreen ? 0 : 60
         let _horizontalPadding = videoManager.isFullScreen ? 0 : horizontalPadding
         withAnimation(.easeIn) {
@@ -135,7 +135,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     }
     
     // MARK: - Drag Gesture
-    func simpleDrag(in size: CGSize) -> some Gesture {
+    private func simpleDrag(in size: CGSize) -> some Gesture {
         DragGesture()
             .onChanged { value in
                 var newLocation = startLocation ?? location

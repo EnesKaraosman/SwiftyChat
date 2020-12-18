@@ -24,7 +24,7 @@
 
 import Foundation
 
-public class Lorem {
+public final class Lorem {
     private static let wordList = [
         "alias", "consequatur", "aut", "😎", "perferendis", "sit", "voluptatem",
         "accusantium", "doloremque", "aperiam", "eaque", "ipsa", "quae", "ab",

@@ -9,7 +9,7 @@
 import SwiftUI
 import MapKit
 
-public struct LocationCell<Message: ChatMessage>: View {
+internal struct LocationCell<Message: ChatMessage>: View {
     
     public let location: LocationItem
     public let message: Message

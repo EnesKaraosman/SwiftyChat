@@ -11,9 +11,9 @@ import KingfisherSwiftUI
 
 internal struct ImageLoadingKindCell: View {
     
-    let imageLoadingType: ImageLoadingKind
-    let width: CGFloat?
-    let height: CGFloat?
+    private let imageLoadingType: ImageLoadingKind
+    private let width: CGFloat?
+    private let height: CGFloat?
     
     init(_ kind: ImageLoadingKind, width: CGFloat? = nil, height: CGFloat? = nil) {
         self.imageLoadingType = kind
@@ -63,7 +63,7 @@ internal struct ImageLoadingKindCell: View {
     
 }
 
-public struct ImageCell<Message: ChatMessage>: View {
+internal struct ImageCell<Message: ChatMessage>: View {
     
     public let message: Message
     public let imageLoadingType: ImageLoadingKind

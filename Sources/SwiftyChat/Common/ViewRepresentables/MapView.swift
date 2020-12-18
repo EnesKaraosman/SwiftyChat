@@ -9,7 +9,7 @@
 import SwiftUI
 import MapKit
 
-public struct MapView: UIViewRepresentable {
+internal struct MapView: UIViewRepresentable {
 
     public var coordinate: CLLocationCoordinate2D
     public var isScrollEnabled: Bool = false
