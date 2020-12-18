@@ -86,6 +86,8 @@ public final class ChatMessageCellStyle: ObservableObject {
         self.videoPlaceholderCellStyle = videoPlaceholderCellStyle
         self.incomingAvatarStyle = incomingAvatarStyle
         self.outgoingAvatarStyle = outgoingAvatarStyle
+        
+        objectWillChange.send()
     }
     
 }
