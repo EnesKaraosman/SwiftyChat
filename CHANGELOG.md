@@ -1,5 +1,21 @@
 # Change Log
 
+## [1.3.2](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.2)
+Released on 2020-12-19.
+
+#### Fixed
+- Performance improvements
+  - [Issue #4](https://github.com/EnesKaraosman/SwiftyChat/issues/4).
+  - Some access modifiers changed to internal for optimization. 
+
+
+## [1.3.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.0)
+Released on 2020-11-16.
+
+#### Added
+- Video ChatMessageKind support added.
+  - View `ChatMessageKind.video(VideoItem)` for detail. 
+
 ## [1.2.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.2.0)
 Released on 2020-10-21.
 
