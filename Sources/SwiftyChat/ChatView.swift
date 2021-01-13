@@ -122,7 +122,7 @@ public struct ChatView: View {
         if #available(iOS 14.0, *) {
             ScrollView {
                 ScrollViewReader { proxy in
-                    VStack {
+                    LazyVStack {
                         messages(geometry: geometry)
                     }
                     .onChange(of: scrollIndex) { index in
@@ -191,6 +191,8 @@ public struct ChatView: View {
                 //when used together with scrollIndex change
                 Color.clear.frame(height: 50)
             }
+        } else {
+            EmptyView()
         }
     }
     

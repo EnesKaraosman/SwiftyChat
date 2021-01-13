@@ -21,7 +21,7 @@ let package = Package(
         // Image downloading library
         
         .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "1.5.0"),
-        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.10.2")
+        .package(url: "https://github.com/SDWebImage/SDWebImage.git", from: "5.8.0")
         
         // Introspecting underlying UIKit components
 //        .package(url: "https://github.com/siteline/SwiftUI-Introspect.git", from: "0.1.0")
