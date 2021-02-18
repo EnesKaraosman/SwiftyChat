@@ -1,5 +1,11 @@
 # Change Log
 
+## [1.3.3](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.3)
+Released on 2021-02-18.
+
+#### Update
+- Dependency versions upgraded.
+
 ## [1.3.2](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.2)
 Released on 2020-12-19.
 
