@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
+import Kingfisher
 
 internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier {
     

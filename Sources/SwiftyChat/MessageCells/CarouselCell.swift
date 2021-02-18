@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
+import Kingfisher
 
 public struct CarouselItemButton: Identifiable {
     public let id = UUID()
