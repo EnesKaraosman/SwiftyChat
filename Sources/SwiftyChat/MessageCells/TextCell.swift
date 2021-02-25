@@ -21,10 +21,6 @@ public struct TextCell: View {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
     }
     
-    private let enabledDetectors: [DetectorType] = [
-        .address, .date, .phoneNumber, .url, .transitInformation
-    ]
-    
     private var maxWidth: CGFloat {
         size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
     }
@@ -61,7 +57,7 @@ public struct TextCell: View {
         
         return AttributedText(text: text, width: maxWidth) {
             
-            $0.enabledDetectors = self.enabledDetectors
+            $0.enabledDetectors = textStyle.enabledDetectors
             $0.didSelectAddress = self.action.didSelectAddress
             $0.didSelectDate = self.action.didSelectDate
             $0.didSelectPhoneNumber = self.action.didSelectPhoneNumber
@@ -99,7 +95,7 @@ public struct TextCell: View {
         Group {
             if AttributeDetective(
                 text: text,
-                enabledDetectors: enabledDetectors
+                enabledDetectors: cellStyle.attributedTextStyle.enabledDetectors
             ).doesContain() || text.containsHtml() {
                 self.attributedText
             } else {
