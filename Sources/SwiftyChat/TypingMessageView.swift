@@ -12,7 +12,10 @@ struct TypingMessageView: View {
     let isSender: Bool
     let user: ChatUser
     
-    private var padding: CGFloat { isSender ? style.outgoingTextStyle.textPadding : style.incomingTextStyle.textPadding }
+    private var verticalPadding: CGFloat { isSender ? style.outgoingTextStyle.textVerticalPadding : style.incomingTextStyle.textVerticalPadding }
+    
+    private var horizontalPadding: CGFloat { isSender ? style.outgoingTextStyle.textHorizontalPadding : style.incomingTextStyle.textHorizontalPadding }
+
     private var backgroundColor: Color { isSender ? style.outgoingTextStyle.cellBackgroundColor : style.incomingTextStyle.cellBackgroundColor }
     
     var body: some View {
@@ -21,9 +24,10 @@ struct TypingMessageView: View {
                 Spacer(minLength: 10)
             }
             TypingIndicatorView()
-                .padding(padding)
+                .padding([.top, .bottom], verticalPadding)
+                .padding([.leading, .trailing], horizontalPadding)
                 .background(backgroundColor)
-                .clipShape(RoundedRectangle(cornerRadius: padding))
+                .clipShape(RoundedRectangle(cornerRadius: verticalPadding))
                 .modifier(AvatarModifier(message: .init(user: user, messageKind: .text(""))))
             if !isSender {
                 Spacer(minLength: 10)

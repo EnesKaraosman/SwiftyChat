@@ -97,6 +97,7 @@ public struct CarouselItemView: View {
                         .font(cellStyle.titleLabelStyle.font)
                         .foregroundColor(cellStyle.titleLabelStyle.textColor)
                         .multilineTextAlignment(.leading)
+                        .minimumScaleFactor(0.1)
                         .padding([.top, .bottom], 12.5)
                 }
                 
@@ -106,6 +107,7 @@ public struct CarouselItemView: View {
                         .font(cellStyle.subtitleLabelStyle.font)
                         .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
                         .multilineTextAlignment(.leading)
+                        .minimumScaleFactor(0.1)
                         .padding([.bottom], 12.5)
                 }
                 

@@ -10,8 +10,9 @@ import SwiftUI
 public struct TextCellStyle: CommonViewStyle {
     
     public let textStyle: CommonTextStyle
-    public let textPadding: CGFloat
-    
+    public let textVerticalPadding: CGFloat
+    public let textHorizontalPadding: CGFloat
+
     public let attributedTextStyle: AttributedTextStyle
     
     // MARK: - CellContainerStyle
@@ -28,7 +29,8 @@ public struct TextCellStyle: CommonViewStyle {
             font: .body,
             fontWeight: .regular
         ),
-        textPadding: CGFloat = 10,
+        textVerticalPadding: CGFloat = 10,
+        textHorizontalPadding: CGFloat = 30,
         attributedTextStyle: AttributedTextStyle = AttributedTextStyle(),
         cellBackgroundColor: Color = Color(UIColor.systemPurple).opacity(0.8),
         cellCornerRadius: CGFloat = 8,
@@ -38,7 +40,8 @@ public struct TextCellStyle: CommonViewStyle {
         cellShadowColor: Color = .secondary
     ) {
         self.textStyle = textStyle
-        self.textPadding = textPadding
+        self.textHorizontalPadding = textHorizontalPadding
+        self.textVerticalPadding = textVerticalPadding
         self.attributedTextStyle = attributedTextStyle
         self.cellBackgroundColor = cellBackgroundColor
         self.cellCornerRadius = cellCornerRadius
