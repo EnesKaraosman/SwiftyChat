@@ -70,6 +70,8 @@ internal struct TextCell<Message: ChatMessage>: View {
         let frame = text.frameSize(maxWidth: maxWidth, maxHeight: nil)
         let textWidth = frame.width
         
+        MessageLabel.defaultAttributes[.foregroundColor] = textStyle.textColor
+        MessageLabel.defaultAttributes[.underlineColor] = textStyle.textColor
         
         return AttributedTextCell(text: text, width: maxWidth) {
             
