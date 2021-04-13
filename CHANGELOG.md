@@ -1,5 +1,14 @@
 # Change Log
 
+## [1.3.4](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.4)
+Released on 2021-04-13.
+
+#### Update
+- Dependency versions upgraded. (Kingfisher)
+
+#### Fixed
+- AttributedText color is same color that is defined in style.
+
 ## [1.3.3](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.3)
 Released on 2021-02-18.
 
