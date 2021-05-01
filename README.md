@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.1.0-blue)
+![Version](https://img.shields.io/badge/version-1.3.2-blue)
 ![Swift 5.3](https://img.shields.io/badge/Swift-5.3-orange.svg)
 
 # SwiftyChat
@@ -24,14 +24,35 @@ Fully written in pure SwiftUI.
 - [x] User Avatar (with different position options, optional usage)
 - [x] Dismiss keyboard (on tapping outside).
 - [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
-- [ ] Scroll To Bottom.
+- [x] Scroll to bottom for iOS14 (use proper init).
+- [ ] Scroll to bottom for iOS13.
+- [ ] Swipe to dismiss keyboard.
 
 
 ### Quick Preview
 
-| Contact, QuickReply, Text, Carousel      | Map, Image  | ContextMenu |
+<img src="../master/Sources/SwiftyChat/Demo/Preview/swiftyChatGIF.gif" height="240"/>
+
+<details>
+  <summary>Basic Example Preview</summary>
+    
+  | Text (Light)      | Text (Dark)  |
+:-------------------------:|:-------------------------:|
+<img src="../master/Sources/SwiftyChat/Demo/Preview/basic-1.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-2.png" width="240"/>
+<img src="../master/Sources/SwiftyChat/Demo/Preview/basic-3.png" height="240"/>
+
+</details>
+
+<details>
+  <summary>Advanced Example Preview</summary>
+    
+  | Contact, QuickReply, Text, Carousel      | Map, Image  | ContextMenu |
 :-------------------------:|:-------------------------:|:-------------------------:
-![](../master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png) | ![](../master/Sources/SwiftyChat/Demo/Preview/map_image.png) |  ![](../master/Sources/SwiftyChat/Demo/Preview/contextMenu.png)
+<img src="../master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/map_image.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/contextMenu.png" width="240"/>
+
+</details>
+
+
 ### Installation
 
 SPM: https://github.com/EnesKaraosman/SwiftyChat.git
@@ -59,10 +80,11 @@ public enum ChatMessageKind {
     
     /// `CarouselItem`s that contains title, subtitle, image & button in a scrollable view
     case carousel([CarouselItem])
+    
+    /// A video message, opens the given URL.
+    case video(VideoItem)
 }
 ```
-For displaying remote images (for the `case image(.remote(URL)`) [Kingfisher](https://github.com/onevcat/Kingfisher) library used as dependency.
-
 ### Usage
 
 - `ChatView`
@@ -80,7 +102,7 @@ ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem> {
 }
 // ▼ Required
 .environmentObject(
-    // All parameters iniatilazed by default, 
+    // All parameters initialized by default, 
     // change as you want.
     ChatMessageCellStyle()
 )
@@ -94,13 +116,9 @@ You can investigate existing `BasicInputView` in project. <br>You can use it if 
 Recommended way is just clone this `BasicInputView` and modify (ex. add camera icon etc.)
 ```swift
 
-@State private var contentSizeThatFits: CGSize = .zero
-private var messageEditorHeight: CGFloat {
-    min(
-        self.contentSizeThatFits.height,
-        0.25 * UIScreen.main.bounds.height
-    )
-}
+// InputBarView variables
+@State private var message = ""
+@State private var isEditing = false
 
 var inputBarView: some View {
     BasicInputView(
@@ -113,11 +131,9 @@ var inputBarView: some View {
             )
         }
     )
-    .onPreferenceChange(ContentSizeThatFitsKey.self) {
-        self.contentSizeThatFits = $0
-    }
-    .frame(height: self.messageEditorHeight)
     .padding(8)
+    .padding(.bottom, isEditing ? 0 : 8)
+    .accentColor(.chatBlue)
     .background(Color.primary.colorInvert())
     // ▼ An extension that wraps view inside AnyView
     .embedInAnyView()
@@ -166,6 +182,11 @@ For detail documentation, visit [Styles.md](../master/Styles.md)
 <br>
 Please feel free to contribute.<br>
 * Create PR for a feature/bug you'd like to add/fix.
+
+### Dependencies
+
+* [Kingfisher](https://github.com/onevcat/Kingfisher.git) : Image downloading library.
+* [VideoPlayer](https://github.com/wxxsw/VideoPlayer.git) : VideoPlayer library.
 
 ### Inspiration
 

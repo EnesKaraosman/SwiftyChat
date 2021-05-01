@@ -8,7 +8,7 @@
 import UIKit
 
 // https://gist.github.com/azimin/aa1a79aefa1cec031152fa63401d2292
-internal class AZTextFrameAttributes: NSObject {
+internal final class AZTextFrameAttributes: NSObject {
     
     // MARK: - Properties
     
@@ -60,7 +60,7 @@ internal class AZTextFrameAttributes: NSObject {
     }
 }
 
-internal class AZTextFrame: NSObject {
+internal final class AZTextFrame: NSObject {
     
     // MARK: - Properties
     

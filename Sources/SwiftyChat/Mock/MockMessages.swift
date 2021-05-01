@@ -6,8 +6,17 @@
 //  Copyright © 2020 All rights reserved.
 //
 
-import class UIKit.UIImage
+import UIKit
 import Foundation
+
+internal extension UIColor {
+    func image(_ size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
+        return UIGraphicsImageRenderer(size: size).image { rendererContext in
+            self.setFill()
+            rendererContext.fill(CGRect(origin: .zero, size: size))
+        }
+    }
+}
 
 public struct MockMessages {
     
@@ -18,6 +27,7 @@ public struct MockMessages {
         case Contact
         case QuickReply
         case Carousel
+        case Video
         
         private var messageKind: ChatMessageKind {
             switch self {
@@ -27,6 +37,7 @@ public struct MockMessages {
             case .Contact: return .contact(ContactRow(displayName: ""))
             case .QuickReply: return .quickReply([])
             case .Carousel: return .carousel([CarouselRow(title: "", imageURL: nil, subtitle: "", buttons: [])])
+            case .Video: return .video(VideoRow(url: URL(string: "")!, placeholderImage: .remote(URL(string: "")!), pictureInPicturePlayingMessage: ""))
             }
         }
     }
@@ -58,6 +69,13 @@ public struct MockMessages {
         var imageURL: URL?
         var subtitle: String
         var buttons: [CarouselItemButton]
+    }
+    
+    // MARK: - Concrete model for Video
+    private struct VideoRow: VideoItem {
+        var url: URL
+        var placeholderImage: ImageLoadingKind
+        var pictureInPicturePlayingMessage: String
     }
     
     // MARK: - Concrete model for ChatMessage
@@ -125,15 +143,19 @@ public struct MockMessages {
     
     public static var mockImages: [UIImage] = []
     
+    public static func generateMessage(kind: MockMessages.Kind, count: UInt) -> [ChatMessageItem] {
+        (1...count).map { _ in generateMessage(kind: kind) }
+    }
+    
     public static func generateMessage(kind: MockMessages.Kind) -> ChatMessageItem {
         let randomUser = Self.randomUser
         switch kind {
         
         case .Image:
-            guard let randomImage = mockImages.randomElement() else { fallthrough }
+            guard let url = URL(string: "https://picsum.photos/id/\(Int.random(in: 1...100))/400/300") else { fallthrough }
             return ChatMessageItem(
                 user: randomUser,
-                messageKind: .image(.local(randomImage)),
+                messageKind: .image(.remote(url)),
                 isSender: randomUser == Self.sender
             )
             
@@ -203,12 +225,18 @@ public struct MockMessages {
                 isSender: randomUser == Self.sender
             )
             
-        default:
+        case .Video:
+            let videoItem = VideoRow(
+                url: URL(string: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")!,
+                placeholderImage: .remote(URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg")!),
+                pictureInPicturePlayingMessage: "This video is playing in picture in picture."
+            )
             return ChatMessageItem(
                 user: randomUser,
-                messageKind: .text("Bom!"),
+                messageKind: .video(videoItem),
                 isSender: randomUser == Self.sender
             )
+            
         }
     }
     
@@ -221,6 +249,7 @@ public struct MockMessages {
             .Carousel,
             .Location,
             .Text, .Text, .Text,
+            .Video,
             .QuickReply
         ]
         return allCases.randomElement()!

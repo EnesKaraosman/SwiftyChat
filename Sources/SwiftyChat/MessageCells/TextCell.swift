@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct TextCell<Message: ChatMessage>: View {
+internal struct TextCell<Message: ChatMessage>: View {
     
     public let text: String
     public let message: Message
@@ -70,6 +70,8 @@ public struct TextCell<Message: ChatMessage>: View {
         let frame = text.frameSize(maxWidth: maxWidth, maxHeight: nil)
         let textWidth = frame.width
         
+        MessageLabel.defaultAttributes[.foregroundColor] = textStyle.textColor
+        MessageLabel.defaultAttributes[.underlineColor] = textStyle.textColor
         
         return AttributedTextCell(text: text, width: maxWidth) {
             
@@ -104,10 +106,12 @@ public struct TextCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder public var body: some View {
-        if AttributeDetective(
-            text: text,
-            enabledDetectors: enabledDetectors
-        ).doesContain() || text.containsHtml() {
+        if text.containsHtml() ||
+            AttributeDetective(
+                text: text,
+                enabledDetectors: enabledDetectors
+            ).doesContain()
+        {
             attributedText
         } else {
             defaultText

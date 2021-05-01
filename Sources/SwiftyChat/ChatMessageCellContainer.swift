@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct ChatMessageCellContainer<Message: ChatMessage>: View {
+internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
     
     public let message: Message
     public let size: CGSize
@@ -18,7 +18,7 @@ public struct ChatMessageCellContainer<Message: ChatMessage>: View {
     public let onTextTappedCallback: () -> AttributedTextTappedCallback
     public let onCarouselItemAction: (CarouselItemButton, Message) -> Void
     
-    @ViewBuilder func messageCell() -> some View {
+    @ViewBuilder private func messageCell() -> some View {
         switch message.messageKind {
             
         case .text(let text):
@@ -63,6 +63,13 @@ public struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 size: size,
                 message: message,
                 onCarouselItemAction: onCarouselItemAction
+            )
+            
+        case .video(let videoItem):
+            VideoPlaceholderCell(
+                media: videoItem,
+                message: message,
+                size: size
             )
             
         }

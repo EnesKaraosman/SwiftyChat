@@ -8,7 +8,7 @@
 import SwiftUI
 import UIKit
 
-public class MessageLabel: UILabel {
+internal class MessageLabel: UILabel {
 
     // MARK: - Private Properties
 

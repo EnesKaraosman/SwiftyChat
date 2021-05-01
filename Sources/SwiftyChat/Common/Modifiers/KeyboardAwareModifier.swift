@@ -9,7 +9,7 @@
 import SwiftUI
 import Combine
 
-public struct KeyboardAwareModifier: ViewModifier {
+internal struct KeyboardAwareModifier: ViewModifier {
     
     @State private var keyboardHeight: CGFloat = 0
 

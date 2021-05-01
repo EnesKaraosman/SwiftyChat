@@ -15,7 +15,7 @@ public struct BasicInputView: View {
 
     @State private var contentSizeThatFits: CGSize = .zero
 
-    internal var internalAttributedMessage: Binding<NSAttributedString> {
+    private var internalAttributedMessage: Binding<NSAttributedString> {
         Binding<NSAttributedString>(
             get: {
                 NSAttributedString(
@@ -52,7 +52,7 @@ public struct BasicInputView: View {
         )
     }
 
-    var messageEditorView: some View {
+    private var messageEditorView: some View {
         MultilineTextField(
             attributedText: self.internalAttributedMessage,
             placeholder: placeholder,
@@ -64,7 +64,7 @@ public struct BasicInputView: View {
         .frame(height: self.messageEditorHeight)
     }
 
-    var sendButton: some View {
+    private var sendButton: some View {
         Button(action: {
             self.onCommit?(.text(message))
             self.message.removeAll()

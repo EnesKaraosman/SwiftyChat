@@ -1,0 +1,52 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "GSPlayer",
+        "repositoryURL": "https://github.com/wxxsw/GSPlayer.git",
+        "state": {
+          "branch": null,
+          "revision": "95c5498ac7be1101cbe5520a2bf5536352a3b1a0",
+          "version": "0.2.18"
+        }
+      },
+      {
+        "package": "Kingfisher",
+        "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
+        "state": {
+          "branch": null,
+          "revision": "0e548b700c7c123dd3b2ac776e90d63a540f084d",
+          "version": "5.15.7"
+        }
+      },
+      {
+        "package": "SwiftUIEKtensions",
+        "repositoryURL": "https://github.com/EnesKaraosman/SwiftUIEKtensions.git",
+        "state": {
+          "branch": null,
+          "revision": "d4c5daa802d33b00acf519daa668a5d4219112cb",
+          "version": "0.1.3"
+        }
+      },
+      {
+        "package": "SwiftyChat",
+        "repositoryURL": "https://github.com/EnesKaraosman/SwiftyChat.git",
+        "state": {
+          "branch": null,
+          "revision": "e9c3a80070c1851e1b1c99292204a1d8aacfcd7b",
+          "version": "1.3.1"
+        }
+      },
+      {
+        "package": "VideoPlayer",
+        "repositoryURL": "https://github.com/wxxsw/VideoPlayer.git",
+        "state": {
+          "branch": null,
+          "revision": "73a30d2cc0b58e9a8e063b0333022dc636b45946",
+          "version": "1.1.6"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

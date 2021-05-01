@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import SwiftUIEKtensions
 
 public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
@@ -20,49 +21,64 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     
-    public init(
-        messages: Binding<[Message]>,
-        inputView: @escaping () -> AnyView
-    ) {
-        self._messages = messages
-        self.inputView = inputView
+    @available(iOS 14.0, *)
+    @Binding private var scrollToBottom: Bool
+    
+    @State private var contentSizeThatFits: CGSize = .zero
+    private var messageEditorHeight: CGFloat {
+        min(
+            self.contentSizeThatFits.height,
+            0.25 * UIScreen.main.bounds.height
+        )
     }
     
     public var body: some View {
-        DeviceOrientationBasedView(
-            portrait: { GeometryReader { body(in: $0) } },
-            landscape: { GeometryReader { body(in: $0) } }
-        )
-        .environmentObject(OrientationInfo())
+        GeometryReader { geometry in
+            ZStack(alignment: .bottom) {
+                chatView(in: geometry)
+                inputView()
+                    .onPreferenceChange(ContentSizeThatFitsKey.self) {
+                        self.contentSizeThatFits = $0
+                    }
+                    .frame(height: self.messageEditorHeight)
+                    .padding(.bottom, 12)
+                
+                PIPVideoCell<Message>()
+            }
+            .keyboardAwarePadding()
+        }
+        .environmentObject(DeviceOrientationInfo())
+        .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
+        .dismissKeyboardOnTappingOutside()
+//        .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
     }
     
-    // MARK: - Body in geometry
-    private func body(in geometry: GeometryProxy) -> some View {
-        ZStack(alignment: .bottom) {
-                    
-            if #available(iOS 14.0, *) {
-                iOS14Body(in: geometry)
-                    .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
-            } else {
-                iOS14Fallback(in: geometry)
-                    .padding(.bottom, geometry.safeAreaInsets.bottom + 56)
-            }
-
-            inputView()
-
+    @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
+        if #available(iOS 14.0, *) {
+            iOS14Body(in: geometry.size)
+                .padding(.bottom, messageEditorHeight + 30)
+        } else {
+            iOS14Fallback(in: geometry.size)
+                .padding(.bottom, messageEditorHeight + 16)
         }
-        .keyboardAwarePadding()
-        .dismissKeyboardOnTappingOutside()
     }
     
     @available(iOS 14.0, *)
-    private func iOS14Body(in geometry: GeometryProxy) -> some View {
+    private func iOS14Body(in size: CGSize) -> some View {
         ScrollView {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
-                        chatMessageCellContainer(in: geometry.size, with: message)
+                        chatMessageCellContainer(in: size, with: message)
+                    }
+                }
+                .onChange(of: scrollToBottom) { value in
+                    if value {
+                        withAnimation {
+                            proxy.scrollTo(messages.last?.id)
+                        }
+                        scrollToBottom = false
                     }
                 }
             }
@@ -70,9 +86,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .background(Color.clear)
     }
     
-    private func iOS14Fallback(in geometry: GeometryProxy) -> some View {
+    private func iOS14Fallback(in size: CGSize) -> some View {
         List(messages) { message in
-            chatMessageCellContainer(in: geometry.size, with: message)
+            chatMessageCellContainer(in: size, with: message)
         }
         .onAppear {
             // To remove only extra separators below the list:
@@ -101,6 +117,41 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .modifier(AvatarModifier<Message, User>(message: message))
         .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
+        .id(message.id)
+    }
+    
+}
+
+// MARK: - Initializers
+public extension ChatView {
+    
+    /// Initialize
+    /// - Parameters:
+    ///   - messages: Messages to display
+    ///   - inputView: inputView view to provide message
+    init(
+        messages: Binding<[Message]>,
+        inputView: @escaping () -> AnyView
+    ) {
+        self._messages = messages
+        self.inputView = inputView
+        self._scrollToBottom = .constant(false)
+    }
+    
+    /// iOS 14 initializer, for supporting scrollToBottom
+    /// - Parameters:
+    ///   - messages: Messages to display
+    ///   - scrollToBottom: set to `true` to scrollToBottom
+    ///   - inputView: inputView view to provide message
+    @available(iOS 14.0, *)
+    init(
+        messages: Binding<[Message]>,
+        scrollToBottom: Binding<Bool>,
+        inputView: @escaping () -> AnyView
+    ) {
+        self._messages = messages
+        self.inputView = inputView
+        self._scrollToBottom = scrollToBottom
     }
     
 }

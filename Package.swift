@@ -15,7 +15,9 @@ let package = Package(
     ],
     dependencies: [
         // Image downloading library
-        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "5.15.6")
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "6.2.1"),
+        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.1.8"),
+        .package(url: "https://github.com/wxxsw/VideoPlayer.git", from: "1.2.3")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
@@ -23,7 +25,9 @@ let package = Package(
         .target(
             name: "SwiftyChat",
             dependencies: [
-                .product(name: "KingfisherSwiftUI", package: "Kingfisher")
+                .byName(name: "Kingfisher"),
+                .byName(name: "SwiftUIEKtensions"),
+                .byName(name: "VideoPlayer")
             ],
             exclude: ["Demo/Preview"]
         )

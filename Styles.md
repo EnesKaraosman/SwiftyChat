@@ -4,37 +4,25 @@
 ```swift
 public class ChatMessageCellStyle: ObservableObject {
     
-    /// Incoming Text Style
     let incomingTextStyle: TextCellStyle
-    
-    /// Outgoing Text Style
     let outgoingTextStyle: TextCellStyle
     
-    /// Cell container inset for incoming messages
     let incomingCellEdgeInsets: EdgeInsets?
-    
-    /// Cell container inset for outgoing messages
     let outgoingCellEdgeInsets: EdgeInsets?
     
-    /// Contact Cell Style
     let contactCellStyle: ContactCellStyle
     
-    /// Image Cell Style
     let imageCellStyle: ImageCellStyle
     
-    /// Quick Reply Cell Style
     let quickReplyCellStyle: QuickReplyCellStyle
     
-    /// Carousel Cell Style
     let carouselCellStyle: CarouselCellStyle
     
-    /// Location Cell Style
     let locationCellStyle: LocationCellStyle
     
-    /// Incoming Avatar Style
-    let incomingAvatarStyle: AvatarStyle
+    let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
     
-    /// Outgoing Avatar Style
+    let incomingAvatarStyle: AvatarStyle
     let outgoingAvatarStyle: AvatarStyle
     
 }
@@ -48,6 +36,7 @@ public class ChatMessageCellStyle: ObservableObject {
 * [Location](#location)
 * [Contact](#contact)
 * [Avatar](#avatar)
+* [VideoPlaceholder](#video-placeholder)
 
 ### Text
 
@@ -65,10 +54,10 @@ public struct TextCellStyle: CommonViewStyle {
     // default = Color(UIColor.systemPurple).opacity(0.8)
 
     public let cellCornerRadius: CGFloat // default = 8
-    public let cellBorderColor: Color    // default = .clear
-    public let cellBorderWidth: CGFloat  // default = 1
+    public let cellBorderColor:  Color   // default = .clear
+    public let cellBorderWidth:  CGFloat // default = 1
     public let cellShadowRadius: CGFloat // default = 3
-    public let cellShadowColor: Color    // default = .secondary
+    public let cellShadowColor:  Color   // default = .secondary
 
 }
 ```
@@ -94,12 +83,12 @@ public struct QuickReplyCellStyle {
     public let unselectedItemFontWeight: Font.Weight // default = .semibold
     public let unselectedItemBackgroundColor: Color  // default = .clear
 
-    public let itemPadding:         CGFloat // default = 8
-    public let itemBorderWidth:     CGFloat // default = 1
-    public let itemHeight:          CGFloat // default = 40
-    public let itemCornerRadius:    CGFloat // default = 8
-    public let itemShadowColor:     Color   // default = .secondary
-    public let itemShadowRadius:    CGFloat // default = 1
+    public let itemPadding:      CGFloat // default = 8
+    public let itemBorderWidth:  CGFloat // default = 1
+    public let itemHeight:       CGFloat // default = 40
+    public let itemCornerRadius: CGFloat // default = 8
+    public let itemShadowColor:  Color   // default = .secondary
+    public let itemShadowRadius: CGFloat // default = 1
     
 }
 ```
@@ -129,11 +118,11 @@ public struct CarouselCellStyle: CommonViewStyle {
     public let cellBackgroundColor: Color   
     // default = Color.secondary.opacity(0.2)
     
-    public let cellCornerRadius:    CGFloat // default = 8
-    public let cellBorderColor:     Color   // default = .clear
-    public let cellBorderWidth:     CGFloat // default = 1
-    public let cellShadowRadius:    CGFloat // default = 3
-    public let cellShadowColor:     Color   // default = .secondary
+    public let cellCornerRadius: CGFloat // default = 8
+    public let cellBorderColor:  Color   // default = .clear
+    public let cellBorderWidth:  CGFloat // default = 1
+    public let cellShadowRadius: CGFloat // default = 3
+    public let cellShadowColor:  Color   // default = .secondary
 }
 ```
 
@@ -151,11 +140,11 @@ public struct ImageCellStyle {
     public let cellBackgroundColor: Color    
     // default = Color.secondary.opacity(0.1)
     
-    public let cellCornerRadius:    CGFloat  // default = 8
-    public let cellBorderColor:     Color    // default = .clear
-    public let cellBorderWidth:     CGFloat  // default = 0
-    public let cellShadowRadius:    CGFloat  // default = 3
-    public let cellShadowColor:     Color    // default = .secondary
+    public let cellCornerRadius: CGFloat  // default = 8
+    public let cellBorderColor:  Color    // default = .clear
+    public let cellBorderWidth:  CGFloat  // default = 0
+    public let cellShadowRadius: CGFloat  // default = 3
+    public let cellShadowColor:  Color    // default = .secondary
 }
 ```
 
@@ -170,12 +159,12 @@ public struct LocationCellStyle {
     public let cellWidth: (CGSize) -> CGFloat
     // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
     
-    public let cellAspectRatio:  CGFloat   // default = 0.7
-    public let cellCornerRadius: CGFloat   // default = 8
-    public let cellBorderColor:  Color     // default = .clear
-    public let cellBorderWidth:  CGFloat   // default = 0
-    public let cellShadowRadius: CGFloat   // default = 2
-    public let cellShadowColor:  Color     // default = .secondary
+    public let cellAspectRatio:  CGFloat // default = 0.7
+    public let cellCornerRadius: CGFloat // default = 8
+    public let cellBorderColor:  Color   // default = .clear
+    public let cellBorderWidth:  CGFloat // default = 0
+    public let cellShadowRadius: CGFloat // default = 2
+    public let cellShadowColor:  Color   // default = .secondary
 }
 ```
 
@@ -223,3 +212,26 @@ public struct AvatarStyle {
 }
 ```
 
+### VideoPlaceholder
+
+![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/videoPlaceholderItem.png)
+
+```swift
+public struct VideoPlaceholderCellStyle {
+
+    /// Cell width in a given available size
+    public let cellWidth: (CGSize) -> CGFloat
+    // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
+
+    public let cellBackgroundColor: Color    
+    // default = Color.secondary.opacity(0.1)
+    
+    public let cellAspectRatio: CGFloat  // default = 1.78
+    public let cellCornerRadius: CGFloat // default = 8
+    public let cellBorderColor:  Color   // default = .clear
+    public let cellBorderWidth:  CGFloat // default = 0
+    public let cellShadowRadius: CGFloat // default = 2
+    public let cellShadowColor:  Color   // default = .secondary
+    public let cellBlurRadius:   CGFloat // default = 3
+}
+```

@@ -6,7 +6,7 @@
 
 import Foundation
 
-public enum DetectorType: Hashable {
+internal enum DetectorType: Hashable {
 
     case address
     case date

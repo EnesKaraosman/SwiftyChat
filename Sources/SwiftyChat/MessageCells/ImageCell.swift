@@ -7,21 +7,22 @@
 //
 
 import SwiftUI
-import KingfisherSwiftUI
+import Kingfisher
 
-public struct ImageCell<Message: ChatMessage>: View {
+internal struct ImageLoadingKindCell: View {
     
-    public let message: Message
-    public let imageLoadingType: ImageLoadingKind
-    public let size: CGSize
-    @EnvironmentObject var style: ChatMessageCellStyle
+    private let imageLoadingType: ImageLoadingKind
+    private let width: CGFloat?
+    private let height: CGFloat?
     
-    private var imageWidth: CGFloat {
-        cellStyle.cellWidth(size)
+    init(_ kind: ImageLoadingKind, width: CGFloat? = nil, height: CGFloat? = nil) {
+        self.imageLoadingType = kind
+        self.width = width
+        self.height = height
     }
     
-    private var cellStyle: ImageCellStyle {
-        style.imageCellStyle
+    var body: some View {
+        imageView
     }
     
     @ViewBuilder private var imageView: some View {
@@ -31,33 +32,15 @@ public struct ImageCell<Message: ChatMessage>: View {
         }
     }
     
-    public var body: some View {
-        imageView
-    }
-    
-    // MARK: - case Local Image
     @ViewBuilder private func localImage(uiImage: UIImage) -> some View {
-        let width = uiImage.size.width
-        let height = uiImage.size.height
-        let isLandscape = width > height
+        let _width = uiImage.size.width
+        let _height = uiImage.size.height
+        let isLandscape = _width > _height
         
         Image(uiImage: uiImage)
             .resizable()
-            .aspectRatio(width / height, contentMode: isLandscape ? .fit : .fill)
-            .frame(width: imageWidth, height: isLandscape ? nil : imageWidth)
-            .background(cellStyle.cellBackgroundColor)
-            .cornerRadius(cellStyle.cellCornerRadius)
-            .overlay(
-                RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
-                    .stroke(
-                        cellStyle.cellBorderColor,
-                        lineWidth: cellStyle.cellBorderWidth
-                    )
-            )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
+            .aspectRatio(_width / _height, contentMode: isLandscape ? .fit : .fill)
+            .frame(width: width, height: height)
     }
     
     // MARK: - case Remote Image
@@ -75,7 +58,46 @@ public struct ImageCell<Message: ChatMessage>: View {
         KFImage(url)
             .resizable()
             .scaledToFill()
-            .frame(width: imageWidth)
+            .frame(width: width, height: height)
+    }
+    
+}
+
+internal struct ImageCell<Message: ChatMessage>: View {
+    
+    public let message: Message
+    public let imageLoadingType: ImageLoadingKind
+    public let size: CGSize
+    @EnvironmentObject var style: ChatMessageCellStyle
+    
+    private var imageWidth: CGFloat {
+        cellStyle.cellWidth(size)
+    }
+    
+    private var cellStyle: ImageCellStyle {
+        style.imageCellStyle
+    }
+    
+    @ViewBuilder private var imageView: some View {
+        if case let ImageLoadingKind.local(uiImage) = imageLoadingType {
+            let width = uiImage.size.width
+            let height = uiImage.size.height
+            let isLandscape = width > height
+            ImageLoadingKindCell(
+                imageLoadingType,
+                width: imageWidth,
+                height: isLandscape ? nil : imageWidth
+            )
+        } else {
+            ImageLoadingKindCell(
+                imageLoadingType,
+                width: imageWidth
+            )
+        }
+    }
+    
+    @ViewBuilder public var body: some View {
+        imageView
             .background(cellStyle.cellBackgroundColor)
             .cornerRadius(cellStyle.cellCornerRadius)
             .overlay(
@@ -89,7 +111,6 @@ public struct ImageCell<Message: ChatMessage>: View {
                 color: cellStyle.cellShadowColor,
                 radius: cellStyle.cellShadowRadius
             )
-        
     }
     
 }

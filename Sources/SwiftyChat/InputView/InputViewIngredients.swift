@@ -16,18 +16,18 @@ public struct ContentSizeThatFitsKey: PreferenceKey {
     }
 }
 
-struct TextAttributesKey: EnvironmentKey {
+internal struct TextAttributesKey: EnvironmentKey {
     static var defaultValue: TextAttributes = .init()
 }
 
-extension EnvironmentValues {
+internal extension EnvironmentValues {
     var textAttributes: TextAttributes {
         get { self[TextAttributesKey.self] }
         set { self[TextAttributesKey.self] = newValue }
     }
 }
 
-struct TextAttributesModifier: ViewModifier {
+internal struct TextAttributesModifier: ViewModifier {
     let textAttributes: TextAttributes
 
     func body(content: Content) -> some View {
@@ -35,7 +35,7 @@ struct TextAttributesModifier: ViewModifier {
     }
 }
 
-extension View {
+internal extension View {
     func textAttributes(_ textAttributes: TextAttributes) -> some View {
         self.modifier(TextAttributesModifier(textAttributes: textAttributes))
     }
@@ -102,7 +102,7 @@ public struct MultilineTextField: View {
         .background(placeholderView, alignment: .topLeading)
     }
 
-    @ViewBuilder var placeholderView: some View {
+    @ViewBuilder private var placeholderView: some View {
         if attributedText.length == 0 {
             Text(placeholder).foregroundColor(.gray)
                 .padding(placeholderInset)
@@ -277,7 +277,7 @@ public struct TextAttributes {
     }
 }
 
-struct UITextViewWrapper: UIViewRepresentable {
+internal struct UITextViewWrapper: UIViewRepresentable {
     typealias UIViewType = UITextView
 
     @Environment(\.textAttributes)

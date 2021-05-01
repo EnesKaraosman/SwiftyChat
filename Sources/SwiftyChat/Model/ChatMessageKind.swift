@@ -34,6 +34,9 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// `CarouselItem` contains title, subtitle, image & button in a scrollable view
     case carousel([CarouselItem])
     
+    /// A video message, opens the given URL.
+    case video(VideoItem)
+    
     public var description: String {
         switch self {
         case .image(let imageLoadingType):
@@ -54,6 +57,8 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.quickReplies(options: \(options))"
         case .carousel(let carouselItems):
             return "MessageKind.carousel(itemCount: \(carouselItems.count))"
+        case .video(let videoItem):
+            return "MessageKind.video(url: \(videoItem.url))"
         }
     }
     
