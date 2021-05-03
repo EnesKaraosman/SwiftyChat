@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/wxxsw/GSPlayer.git",
         "state": {
           "branch": null,
-          "revision": "95c5498ac7be1101cbe5520a2bf5536352a3b1a0",
-          "version": "0.2.18"
+          "revision": "5904551cf33e0c38831fdc56c6a2c9770eadc30d",
+          "version": "0.2.25"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
         "state": {
           "branch": null,
-          "revision": "2a10bf41da75599a9f8e872dbd44fe0155a2e00c",
-          "version": "5.15.8"
+          "revision": "44450a8f564d7c0165f736ba2250649ff8d3e556",
+          "version": "6.3.0"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/EnesKaraosman/SwiftUIEKtensions.git",
         "state": {
           "branch": null,
-          "revision": "f6b2c34ff920b0c0fd8bb279322f534b98d76049",
-          "version": "0.1.7"
+          "revision": "cafd7ad82796528b392107874f07a7279dec7fcd",
+          "version": "0.1.8"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/wxxsw/VideoPlayer.git",
         "state": {
           "branch": null,
-          "revision": "73a30d2cc0b58e9a8e063b0333022dc636b45946",
-          "version": "1.1.6"
+          "revision": "3c5b9531ee20e34d3a86142ca2c076a5b99afdb2",
+          "version": "1.2.3"
         }
       }
     ]
