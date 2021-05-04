@@ -23,6 +23,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @available(iOS 14.0, *)
     @Binding private var scrollToBottom: Bool
+    @State var isKeyboardActive = false
     
     @State private var contentSizeThatFits: CGSize = .zero
     private var messageEditorHeight: CGFloat {
@@ -81,6 +82,18 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         scrollToBottom = false
                     }
                 }
+                //MARK: Auto Scroll with Keyboard Notification
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification), perform: { _ in
+                    if !isKeyboardActive {
+                        isKeyboardActive = true
+                        scrollToBottom = true
+                    }
+                })
+                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification), perform: { _ in
+                    if !isKeyboardActive{
+                        isKeyboardActive = false
+                    }
+                })
             }
         }
         .background(Color.clear)
