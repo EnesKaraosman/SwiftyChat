@@ -23,12 +23,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @available(iOS 14.0, *)
     @Binding private var scrollToBottom: Bool
-    @State var isKeyboardActive = false
+    @State private var isKeyboardActive = false
     
     @State private var contentSizeThatFits: CGSize = .zero
     private var messageEditorHeight: CGFloat {
         min(
-            self.contentSizeThatFits.height,
+            contentSizeThatFits.height,
             0.25 * UIScreen.main.bounds.height
         )
     }
@@ -39,20 +39,19 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 chatView(in: geometry)
                 inputView()
                     .onPreferenceChange(ContentSizeThatFitsKey.self) {
-                        self.contentSizeThatFits = $0
+                        contentSizeThatFits = $0
                     }
-                    .frame(height: self.messageEditorHeight)
+                    .frame(height: messageEditorHeight)
                     .padding(.bottom, 12)
                 
                 PIPVideoCell<Message>()
             }
-            .keyboardAwarePadding()
+            .iOS { $0.keyboardAwarePadding() }
         }
         .environmentObject(DeviceOrientationInfo())
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
-        .dismissKeyboardOnTappingOutside()
-//        .onAppear(perform: UIApplication.shared.addTapGestureRecognizer)
+        .iOS { $0.dismissKeyboardOnTappingOutside() }
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
@@ -82,18 +81,23 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         scrollToBottom = false
                     }
                 }
-                //MARK: Auto Scroll with Keyboard Notification
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification), perform: { _ in
-                    if !isKeyboardActive {
-                        isKeyboardActive = true
-                        scrollToBottom = true
-                    }
-                })
-                .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification), perform: { _ in
-                    if !isKeyboardActive{
-                        isKeyboardActive = false
-                    }
-                })
+                .iOS {
+                    // Auto Scroll with Keyboard Notification
+                    $0.onReceive(
+                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+                            .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
+                        perform: { _ in
+                            if !isKeyboardActive {
+                                isKeyboardActive = true
+                                scrollToBottom = true
+                            }
+                        }
+                    )
+                    .onReceive(
+                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
+                        perform: { _ in isKeyboardActive = false }
+                    )
+                }
             }
         }
         .background(Color.clear)
@@ -146,9 +150,9 @@ public extension ChatView {
         messages: Binding<[Message]>,
         inputView: @escaping () -> AnyView
     ) {
-        self._messages = messages
+        _messages = messages
         self.inputView = inputView
-        self._scrollToBottom = .constant(false)
+        _scrollToBottom = .constant(false)
     }
     
     /// iOS 14 initializer, for supporting scrollToBottom
@@ -162,9 +166,9 @@ public extension ChatView {
         scrollToBottom: Binding<Bool>,
         inputView: @escaping () -> AnyView
     ) {
-        self._messages = messages
+        _messages = messages
         self.inputView = inputView
-        self._scrollToBottom = scrollToBottom
+        _scrollToBottom = scrollToBottom
     }
     
 }
@@ -200,5 +204,4 @@ public extension ChatView {
     func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> Self {
         then({ $0.onCarouselItemAction = action })
     }
-    
 }
