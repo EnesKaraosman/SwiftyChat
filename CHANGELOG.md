@@ -1,5 +1,14 @@
 # Change Log
 
+## [1.3.5](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.5)
+Released on 2021-05-05.
+
+#### Added
+- ScrollToBottom behaviour added when keyboard appears (iOS14), [#8](https://github.com/EnesKaraosman/SwiftyChat/pull/8)
+
+#### Update
+- Dependency versions upgraded (to 6.3.0) . (Kingfisher)
+
 ## [1.3.4](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.4)
 Released on 2021-04-13.
 
