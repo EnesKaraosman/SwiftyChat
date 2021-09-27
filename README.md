@@ -3,6 +3,8 @@
 
 # SwiftyChat
 
+For Flutter version check [this link](https://github.com/EnesKaraosman/swifty_chat)
+
 ### Content
 * [About](#about)
 * [Features](#features)
