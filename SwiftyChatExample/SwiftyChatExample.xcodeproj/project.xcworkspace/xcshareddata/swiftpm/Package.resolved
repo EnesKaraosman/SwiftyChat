@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
         "state": {
           "branch": null,
-          "revision": "d06df9adf50ed8cde5786d935836a5f445f780ba",
-          "version": "6.3.1"
+          "revision": "8c65ddf756c633d01d9ae01092bf72f0c66dfc60",
+          "version": "7.0.0"
         }
       },
       {
@@ -33,8 +33,8 @@
         "repositoryURL": "https://github.com/EnesKaraosman/SwiftyChat.git",
         "state": {
           "branch": null,
-          "revision": "0add0ccdfd36056943c75af8e626db76e6a9cb89",
-          "version": "1.3.5"
+          "revision": "4f7745aed2543a950c184ba2873547e72436a0b3",
+          "version": "1.3.6"
         }
       },
       {

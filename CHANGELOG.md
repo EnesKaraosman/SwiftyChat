@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.0.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.0.0)
+Released on 2021-10-06.
+
+#### Update
+- iOS 13 dropped since iOS 15 released.
+- Dependency versions upgraded (to 7.0.0) . (Kingfisher)
+
 ## [1.3.5](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/1.3.5)
 Released on 2021-05-05.
 
