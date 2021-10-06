@@ -21,7 +21,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     
-    @available(iOS 14.0, *)
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
     
@@ -55,22 +54,11 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
-        if #available(iOS 14.0, *) {
-            iOS14Body(in: geometry.size)
-                .padding(.bottom, messageEditorHeight + 30)
-        } else {
-            iOS14Fallback(in: geometry.size)
-                .padding(.bottom, messageEditorHeight + 16)
-        }
-    }
-    
-    @available(iOS 14.0, *)
-    private func iOS14Body(in size: CGSize) -> some View {
         ScrollView {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
-                        chatMessageCellContainer(in: size, with: message)
+                        chatMessageCellContainer(in: geometry.size, with: message)
                     }
                 }
                 .onChange(of: scrollToBottom) { value in
@@ -101,22 +89,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             }
         }
         .background(Color.clear)
-    }
-    
-    private func iOS14Fallback(in size: CGSize) -> some View {
-        List(messages) { message in
-            chatMessageCellContainer(in: size, with: message)
-        }
-        .onAppear {
-            // To remove only extra separators below the list:
-            UITableView.appearance().tableFooterView = UIView()
-            // To remove all separators including the actual ones:
-            UITableView.appearance().separatorStyle = .none
-            
-            // To clear background colors to allow library user set himself
-            UITableView.appearance().backgroundColor = .clear
-            UITableViewCell.appearance().backgroundColor = .clear
-        }
+            .padding(.bottom, messageEditorHeight + 30)
     }
     
     // MARK: - List Item
@@ -141,36 +114,20 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
 
 // MARK: - Initializers
 public extension ChatView {
-    
-    /// Initialize
-    /// - Parameters:
-    ///   - messages: Messages to display
-    ///   - inputView: inputView view to provide message
-    init(
-        messages: Binding<[Message]>,
-        inputView: @escaping () -> AnyView
-    ) {
-        _messages = messages
-        self.inputView = inputView
-        _scrollToBottom = .constant(false)
-    }
-    
-    /// iOS 14 initializer, for supporting scrollToBottom
+    /// ChatView constructor
     /// - Parameters:
     ///   - messages: Messages to display
     ///   - scrollToBottom: set to `true` to scrollToBottom
     ///   - inputView: inputView view to provide message
-    @available(iOS 14.0, *)
     init(
         messages: Binding<[Message]>,
-        scrollToBottom: Binding<Bool>,
+        scrollToBottom: Binding<Bool> = .constant(false),
         inputView: @escaping () -> AnyView
     ) {
         _messages = messages
         self.inputView = inputView
         _scrollToBottom = scrollToBottom
     }
-    
 }
 
 public extension ChatView {
