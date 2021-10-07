@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.3.5-blue)
+![Version](https://img.shields.io/badge/version-2.0.0-blue)
 ![Swift 5.3](https://img.shields.io/badge/Swift-5.3-orange.svg)
 
 # SwiftyChat
@@ -26,8 +26,7 @@ Fully written in pure SwiftUI.
 - [x] User Avatar (with different position options, optional usage)
 - [x] Dismiss keyboard (on tapping outside).
 - [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
-- [x] Scroll to bottom for iOS14 (use proper init).
-- [ ] Scroll to bottom for iOS13.
+- [x] Scroll to bottom.
 - [ ] Swipe to dismiss keyboard.
 
 
