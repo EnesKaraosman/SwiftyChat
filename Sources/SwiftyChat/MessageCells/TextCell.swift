@@ -42,9 +42,11 @@ internal struct TextCell<Message: ChatMessage>: View {
             .foregroundColor(cellStyle.textStyle.textColor)
             .padding(cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
-            .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
+            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+)
             .overlay(
-                RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+                
+                RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
                 .stroke(
                     cellStyle.cellBorderColor,
                     lineWidth: cellStyle.cellBorderWidth
@@ -91,9 +93,9 @@ internal struct TextCell<Message: ChatMessage>: View {
         .frame(width: textWidth, height: textHeight)
         .padding(cellStyle.textPadding)
         .background(cellStyle.cellBackgroundColor)
-        .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
+        .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
         .overlay(
-            RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+            RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
             .stroke(
                 cellStyle.cellBorderColor,
                 lineWidth: cellStyle.cellBorderWidth
