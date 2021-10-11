@@ -1,5 +1,11 @@
 # Change Log
 
+## [2.0.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.0.1)
+Released on 2021-10-11.
+
+#### Update
+- Round specific corners of TextMessages (Merged #16, thanks to @lemonandlime)
+
 ## [2.0.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.0.0)
 Released on 2021-10-06.
 
