@@ -24,14 +24,16 @@ internal extension ChatMessageCellStyle {
             attributedTextStyle: .init(textColor: .black),
             cellBackgroundColor: Color.chatGray,
             cellBorderWidth: 0,
-            cellShadowRadius: 0
+            cellShadowRadius: 0,
+            cellRoundedCorners: [.topRight, .bottomRight, .bottomLeft]
         ),
         outgoingTextStyle: .init(
             textStyle: .init(textColor: .white, font: futuraFont),
             textPadding: 16,
             cellBackgroundColor: Color.chatBlue,
             cellBorderWidth: 0,
-            cellShadowRadius: 0
+            cellShadowRadius: 0,
+            cellRoundedCorners: [.topLeft, .bottomRight, .bottomLeft]
         ),
         incomingAvatarStyle: .init(imageStyle: .init(imageSize: .zero))
     )
