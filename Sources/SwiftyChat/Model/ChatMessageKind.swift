@@ -22,6 +22,9 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// An image message, from local(UIImage) or remote(URL).
     case image(ImageLoadingKind)
     
+    /// An image message, from local(UIImage) or remote(URL).
+    case imageText(ImageLoadingKind, String)
+    
     /// A location message, pins given location & presents on MapKit.
     case location(LocationItem)
     
@@ -45,6 +48,13 @@ public enum ChatMessageKind: CustomStringConvertible {
                 return "MessageKind.image(local: \(localImage))"
             case .remote(let remoteImageUrl):
                 return "MessageKind.image(remote: \(remoteImageUrl))"
+            }
+        case .imageText(let imageLoadingType, let text):
+            switch imageLoadingType {
+            case .local(let localImage):
+                return "MessageKind.imageText(local: \(localImage), text:\(text)"
+            case .remote(let remoteImageUrl):
+                return "MessageKind.imageText(remote: \(remoteImageUrl), text:\(text))"
             }
         case .text(let text):
             return "MessageKind.text(\(text))"
