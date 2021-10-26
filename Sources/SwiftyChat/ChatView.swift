@@ -20,7 +20,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var contactCellFooterSection: (ContactItem, Message) -> [ContactCellButton] = { _, _ in [] }
     private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
-    
+    private var inset: EdgeInsets
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
     
@@ -60,11 +60,15 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     ForEach(messages) { message in
                         chatMessageCellContainer(in: geometry.size, with: message)
                     }
+                    Spacer()
+                        .frame(height: inset.bottom)
+                        .id("bottom")
                 }
+                .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
                 .onChange(of: scrollToBottom) { value in
                     if value {
                         withAnimation {
-                            proxy.scrollTo(messages.last?.id)
+                            proxy.scrollTo("bottom")
                         }
                         scrollToBottom = false
                     }
@@ -122,11 +126,13 @@ public extension ChatView {
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
-        inputView: @escaping () -> AnyView
+        inputView: @escaping () -> AnyView,
+        inset: EdgeInsets = .init()
     ) {
         _messages = messages
         self.inputView = inputView
         _scrollToBottom = scrollToBottom
+        self.inset = inset
     }
 }
 
