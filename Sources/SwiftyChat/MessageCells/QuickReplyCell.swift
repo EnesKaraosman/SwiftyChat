@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import WrappingHStack
 
 internal struct QuickReplyCell: View {
     
@@ -35,12 +36,11 @@ internal struct QuickReplyCell: View {
     
     private func itemBackground(for index: Int) -> some View {
         let backgroundColor: Color = (index == selectedIndex ? cellStyle.selectedItemBackgroundColor : cellStyle.unselectedItemBackgroundColor)
-        return backgroundColor.cornerRadius(cellStyle.itemCornerRadius)
+        return Capsule().foregroundColor(backgroundColor)
     }
     
     public var body: some View {
-        conditionalStack(isVStack: totalOptionsLength > cellStyle.characterLimitToChangeStackOrientation) {
-            ForEach(0..<quickReplies.count) { idx in
+        WrappingHStack(0..<quickReplies.count, id: \.self, alignment: .trailing, spacing: .constant(8)) { idx in
 
                 Button(action: {}) {
                     Text(quickReplies[idx].title)
@@ -50,17 +50,21 @@ internal struct QuickReplyCell: View {
                         .frame(height: cellStyle.itemHeight)
                         .background(itemBackground(for: idx))
                         .foregroundColor(colors(selectedIndex: selectedIndex)[idx])
+                        .shadow(
+                            color: cellStyle.itemShadowColor,
+                            radius: cellStyle.itemShadowRadius,
+                            x: 0,
+                            y: 4
+                        )
                         .overlay(
-                            RoundedRectangle(cornerRadius: cellStyle.itemCornerRadius)
+                            Capsule()
                                 .stroke(
                                     colors(selectedIndex: selectedIndex)[idx],
                                     lineWidth: cellStyle.itemBorderWidth
                                 )
-                                .shadow(
-                                    color: cellStyle.itemShadowColor,
-                                    radius: cellStyle.itemShadowRadius
-                                )
+                                
                         )
+
                 }
                 .simultaneousGesture(
                     TapGesture().onEnded { _ in
@@ -69,8 +73,7 @@ internal struct QuickReplyCell: View {
                         quickReplySelected(quickReplies[idx])
                     }
                 )
-                
-            }
+                .padding(.vertical, 4)
         }.disabled(isDisabled)
     }
     

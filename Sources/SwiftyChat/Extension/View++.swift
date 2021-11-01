@@ -8,13 +8,6 @@
 
 import SwiftUI
 
-internal func conditionalStack<Content: View>(isVStack: Bool, content: () -> Content) -> AnyView {
-    if isVStack {
-        return VStack(alignment: .leading, spacing: 8) { content() }.embedInAnyView()
-    }
-    return HStack(spacing: 8) { content() }.embedInAnyView()
-}
-
 internal extension View {
     
     func keyboardAwarePadding() -> some View {
