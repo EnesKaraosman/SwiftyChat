@@ -46,7 +46,8 @@ internal struct QuickReplyCell: View {
                 Text(quickReplies[idx].title)
                     .fontWeight(idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight)
                     .font(idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont)
-                    .padding(cellStyle.itemPadding)
+                    .padding(.vertical, cellStyle.itemVerticalPadding)
+                    .padding(.horizontal, cellStyle.itemHorizontalPadding)
                     .frame(height: cellStyle.itemHeight)
                     .background(itemBackground(for: idx))
                     .foregroundColor(colors(selectedIndex: selectedIndex)[idx])
@@ -54,7 +55,11 @@ internal struct QuickReplyCell: View {
                         Capsule()
                             .stroke(
                                 colors(selectedIndex: selectedIndex)[idx],
-                                lineWidth: cellStyle.itemBorderWidth))
+                                lineWidth: cellStyle.itemBorderWidth)
+                            .shadow(color: cellStyle.itemShadowColor,
+                                    radius: cellStyle.itemShadowRadius,
+                                    x: 0,
+                                    y: 4))
             }
             .simultaneousGesture(
                 TapGesture().onEnded { _ in
