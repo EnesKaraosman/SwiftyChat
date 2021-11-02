@@ -22,7 +22,8 @@ public struct QuickReplyCellStyle {
     public let unselectedItemFontWeight: Font.Weight
     public let unselectedItemBackgroundColor: Color
     
-    public let itemPadding: CGFloat
+    public let itemVerticalPadding: CGFloat
+    public let itemHorizontalPadding: CGFloat
     public let itemBorderWidth: CGFloat
     public let itemHeight: CGFloat
     public let itemCornerRadius: CGFloat
@@ -39,7 +40,8 @@ public struct QuickReplyCellStyle {
         unselectedItemFont: Font = .callout,
         unselectedItemFontWeight: Font.Weight = .semibold,
         unselectedItemBackgroundColor: Color = .clear,
-        itemPadding: CGFloat = 8,
+        itemVerticalPadding: CGFloat = 8,
+        itemHorizontalPadding: CGFloat = 8,
         itemBorderWidth: CGFloat = 1,
         itemHeight: CGFloat = 40,
         itemCornerRadius: CGFloat = 8,
@@ -55,7 +57,8 @@ public struct QuickReplyCellStyle {
         self.unselectedItemFont = unselectedItemFont
         self.unselectedItemFontWeight = unselectedItemFontWeight
         self.unselectedItemBackgroundColor = unselectedItemBackgroundColor
-        self.itemPadding = itemPadding
+        self.itemVerticalPadding = itemVerticalPadding
+        self.itemHorizontalPadding = itemHorizontalPadding
         self.itemBorderWidth = itemBorderWidth
         self.itemHeight = itemHeight
         self.itemCornerRadius = itemCornerRadius
