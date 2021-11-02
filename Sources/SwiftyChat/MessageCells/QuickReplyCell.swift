@@ -41,39 +41,29 @@ internal struct QuickReplyCell: View {
     
     public var body: some View {
         WrappingHStack(0..<quickReplies.count, id: \.self, alignment: .trailing, spacing: .constant(8)) { idx in
-
-                Button(action: {}) {
-                    Text(quickReplies[idx].title)
-                        .fontWeight(idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight)
-                        .font(idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont)
-                        .padding(cellStyle.itemPadding)
-                        .frame(height: cellStyle.itemHeight)
-                        .background(itemBackground(for: idx))
-                        .foregroundColor(colors(selectedIndex: selectedIndex)[idx])
-                        .shadow(
-                            color: cellStyle.itemShadowColor,
-                            radius: cellStyle.itemShadowRadius,
-                            x: 0,
-                            y: 4
-                        )
-                        .overlay(
-                            Capsule()
-                                .stroke(
-                                    colors(selectedIndex: selectedIndex)[idx],
-                                    lineWidth: cellStyle.itemBorderWidth
-                                )
-                                
-                        )
-
+            
+            Button(action: {}) {
+                Text(quickReplies[idx].title)
+                    .fontWeight(idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight)
+                    .font(idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont)
+                    .padding(cellStyle.itemPadding)
+                    .frame(height: cellStyle.itemHeight)
+                    .background(itemBackground(for: idx))
+                    .foregroundColor(colors(selectedIndex: selectedIndex)[idx])
+                    .overlay(
+                        Capsule()
+                            .stroke(
+                                colors(selectedIndex: selectedIndex)[idx],
+                                lineWidth: cellStyle.itemBorderWidth))
+            }
+            .simultaneousGesture(
+                TapGesture().onEnded { _ in
+                    selectedIndex = idx
+                    isDisabled = true
+                    quickReplySelected(quickReplies[idx])
                 }
-                .simultaneousGesture(
-                    TapGesture().onEnded { _ in
-                        selectedIndex = idx
-                        isDisabled = true
-                        quickReplySelected(quickReplies[idx])
-                    }
-                )
-                .padding(.vertical, 4)
+            )
+            .padding(.vertical, 4)
         }.disabled(isDisabled)
     }
     
