@@ -41,7 +41,7 @@ public struct QuickReplyCellStyle {
         unselectedItemFontWeight: Font.Weight = .semibold,
         unselectedItemBackgroundColor: Color = .clear,
         itemVerticalPadding: CGFloat = 8,
-        itemHorizontalPadding: CGFloat = 8,
+        itemHorizontalPadding: CGFloat = 16,
         itemBorderWidth: CGFloat = 1,
         itemHeight: CGFloat = 40,
         itemCornerRadius: CGFloat = 8,
