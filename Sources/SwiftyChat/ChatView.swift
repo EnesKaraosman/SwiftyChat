@@ -54,7 +54,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
-        ScrollView {
+        ScrollView(.vertical, showsIndicators: false) {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
