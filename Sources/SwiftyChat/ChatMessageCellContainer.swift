@@ -80,6 +80,8 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 size: size
             )
             
+        case .loading:
+            LoadingCell(message: message, size: size)
         }
         
     }

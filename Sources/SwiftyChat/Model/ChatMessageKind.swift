@@ -40,6 +40,9 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// A video message, opens the given URL.
     case video(VideoItem)
     
+    /// Loading indicator contained in chat bubble
+    case loading
+    
     public var description: String {
         switch self {
         case .image(let imageLoadingType):
@@ -69,6 +72,8 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.carousel(itemCount: \(carouselItems.count))"
         case .video(let videoItem):
             return "MessageKind.video(url: \(videoItem.url))"
+        case .loading:
+            return "MessageKind.loading"
         }
     }
     
