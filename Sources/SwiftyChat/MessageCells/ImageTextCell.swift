@@ -32,7 +32,7 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
             ImageLoadingKindCell(
                 imageLoadingType,
                 width: imageWidth,
-                height: isLandscape ? nil : imageWidth
+                height: isLandscape ? nil : height * (imageWidth / width)
             )
         } else {
             ImageLoadingKindCell(
