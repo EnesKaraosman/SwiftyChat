@@ -67,10 +67,6 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                     radius: cellStyle.cellShadowRadius
                 )
             )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
     }
     
 }
