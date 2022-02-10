@@ -18,6 +18,15 @@ internal struct ImageLoadingKindCell: View {
     init(_ kind: ImageLoadingKind, width: CGFloat? = nil, height: CGFloat? = nil) {
         self.imageLoadingType = kind
         self.width = width
+        
+        if case .remote(let url) = kind, let width = width, height == nil {
+            let path = ImageCache.default.cachePath(forKey: url.cacheKey)
+            if let image = UIImage.init(contentsOfFile: path) {
+                self.height = image.size.height * (width / image.size.width)
+                return
+            }
+        }
+        
         self.height = height
     }
     

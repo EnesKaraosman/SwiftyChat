@@ -22,6 +22,9 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// An image message, from local(UIImage) or remote(URL).
     case image(ImageLoadingKind)
     
+    /// An image message, from local(UIImage) or remote(URL).
+    case imageText(ImageLoadingKind, String)
+    
     /// A location message, pins given location & presents on MapKit.
     case location(LocationItem)
     
@@ -37,6 +40,9 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// A video message, opens the given URL.
     case video(VideoItem)
     
+    /// Loading indicator contained in chat bubble
+    case loading
+    
     public var description: String {
         switch self {
         case .image(let imageLoadingType):
@@ -45,6 +51,13 @@ public enum ChatMessageKind: CustomStringConvertible {
                 return "MessageKind.image(local: \(localImage))"
             case .remote(let remoteImageUrl):
                 return "MessageKind.image(remote: \(remoteImageUrl))"
+            }
+        case .imageText(let imageLoadingType, let text):
+            switch imageLoadingType {
+            case .local(let localImage):
+                return "MessageKind.imageText(local: \(localImage), text:\(text)"
+            case .remote(let remoteImageUrl):
+                return "MessageKind.imageText(remote: \(remoteImageUrl), text:\(text))"
             }
         case .text(let text):
             return "MessageKind.text(\(text))"
@@ -59,6 +72,8 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.carousel(itemCount: \(carouselItems.count))"
         case .video(let videoItem):
             return "MessageKind.video(url: \(videoItem.url))"
+        case .loading:
+            return "MessageKind.loading"
         }
     }
     

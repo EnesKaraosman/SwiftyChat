@@ -36,6 +36,14 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 size: size
             )
             
+        case .imageText(let imageLoadingType, let text):
+            ImageTextCell(
+                message: message,
+                imageLoadingType: imageLoadingType,
+                text: text,
+                size: size
+            )
+            
         case .image(let imageLoadingType):
             ImageCell(
                 message: message,
@@ -72,6 +80,8 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 size: size
             )
             
+        case .loading:
+            LoadingCell(message: message, size: size)
         }
         
     }

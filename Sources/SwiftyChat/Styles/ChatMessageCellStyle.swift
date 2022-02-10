@@ -28,6 +28,9 @@ public final class ChatMessageCellStyle: ObservableObject {
     /// Image Cell Style
     let imageCellStyle: ImageCellStyle
     
+    /// Image and Text Cell Style
+    let imageTextCellStyle: ImageTextCellStyle
+    
     /// Quick Reply Cell Style
     let quickReplyCellStyle: QuickReplyCellStyle
     
@@ -65,6 +68,7 @@ public final class ChatMessageCellStyle: ObservableObject {
         outgoingCellEdgeInsets: EdgeInsets = EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4),
         contactCellStyle: ContactCellStyle = ContactCellStyle(),
         imageCellStyle: ImageCellStyle = ImageCellStyle(),
+        imageTextCellStyle: ImageTextCellStyle = ImageTextCellStyle(),
         quickReplyCellStyle: QuickReplyCellStyle = QuickReplyCellStyle(),
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(),
         locationCellStyle: LocationCellStyle = LocationCellStyle(),
@@ -80,6 +84,7 @@ public final class ChatMessageCellStyle: ObservableObject {
         self.outgoingCellEdgeInsets = outgoingCellEdgeInsets
         self.contactCellStyle = contactCellStyle
         self.imageCellStyle = imageCellStyle
+        self.imageTextCellStyle = imageTextCellStyle
         self.quickReplyCellStyle = quickReplyCellStyle
         self.carouselCellStyle = carouselCellStyle
         self.locationCellStyle = locationCellStyle
