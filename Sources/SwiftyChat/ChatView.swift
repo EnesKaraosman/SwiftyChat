@@ -22,6 +22,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     private var inset: EdgeInsets
     private var dateFormater: DateFormatter = DateFormatter()
+    private var dateHeaderTimeInterval: Double
+    
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
     
@@ -133,8 +135,7 @@ public extension ChatView {
             let prevMessage = messages[messageIndex!]
             let currMessage = messages[messageIndex! - 1]
             let timeInterval = prevMessage.date - currMessage.date
-//            print(timeInterval)
-            return timeInterval > 3600
+            return timeInterval > dateHeaderTimeInterval
         }
         
     }
@@ -155,11 +156,15 @@ public extension ChatView {
     ///   - messages: Messages to display
     ///   - scrollToBottom: set to `true` to scrollToBottom
     ///   - inputView: inputView view to provide message
+    ///   - dateHeaderTimeInterval: Amount of time between messages in
+    ///                             seconds required before dateheader added
+    ///                             (Default 1 hour)
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
         inputView: @escaping () -> AnyView,
-        inset: EdgeInsets = .init()
+        inset: EdgeInsets = .init(),
+        dateHeaderTimeInterval: Double = 3600.0
     ) {
         _messages = messages
         self.inputView = inputView
@@ -168,7 +173,7 @@ public extension ChatView {
         self.dateFormater.dateStyle = .medium
         self.dateFormater.timeStyle = .short
         self.dateFormater.timeZone = NSTimeZone.local
-    
+        self.dateHeaderTimeInterval = dateHeaderTimeInterval
     }
 }
 
