@@ -21,6 +21,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     private var inset: EdgeInsets
+    private var dateFormater: DateFormatter = DateFormatter()
+    private var dateHeaderTimeInterval: Double
+    
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
     
@@ -58,6 +61,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
+                        if(shouldShowDateHeader(messages: messages, thisMessage: message)){
+                            Text(dateFormater.string(from:message.date)).font(.subheadline)
+                        }
                         chatMessageCellContainer(in: geometry.size, with: message)
                     }
                     Spacer()
@@ -116,6 +122,33 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
 }
 
+public extension ChatView {
+    func shouldShowDateHeader (messages: [Message], thisMessage: Message) -> Bool {
+        let messageIndex = messages.firstIndex { message in
+            message.id == thisMessage.id
+        }
+        if(messageIndex == 0){
+            return true
+        }else if(messageIndex == nil){
+            return false
+        }else{
+            let prevMessage = messages[messageIndex!]
+            let currMessage = messages[messageIndex! - 1]
+            let timeInterval = prevMessage.date - currMessage.date
+            return timeInterval > dateHeaderTimeInterval
+        }
+        
+    }
+}
+
+extension Date {
+
+    static func - (lhs: Date, rhs: Date) -> TimeInterval {
+        return lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
+    }
+
+}
+
 // MARK: - Initializers
 public extension ChatView {
     /// ChatView constructor
@@ -123,16 +156,24 @@ public extension ChatView {
     ///   - messages: Messages to display
     ///   - scrollToBottom: set to `true` to scrollToBottom
     ///   - inputView: inputView view to provide message
+    ///   - dateHeaderTimeInterval: Amount of time between messages in
+    ///                             seconds required before dateheader added
+    ///                             (Default 1 hour)
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
         inputView: @escaping () -> AnyView,
-        inset: EdgeInsets = .init()
+        inset: EdgeInsets = .init(),
+        dateHeaderTimeInterval: Double = 3600.0
     ) {
         _messages = messages
         self.inputView = inputView
         _scrollToBottom = scrollToBottom
         self.inset = inset
+        self.dateFormater.dateStyle = .medium
+        self.dateFormater.timeStyle = .short
+        self.dateFormater.timeZone = NSTimeZone.local
+        self.dateHeaderTimeInterval = dateHeaderTimeInterval
     }
 }
 
