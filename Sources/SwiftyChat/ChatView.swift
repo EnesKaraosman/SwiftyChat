@@ -64,7 +64,13 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         if(shouldShowDateHeader(messages: messages, thisMessage: message)){
                             Text(dateFormater.string(from:message.date)).font(.subheadline)
                         }
-                        chatMessageCellContainer(in: geometry.size, with: message)
+                        if(shouldShowDisplayName(messages: messages, thisMessage: message)){
+                            Text(message.user.userName)
+                                .font(.caption)
+                                .multilineTextAlignment(.trailing)
+                                .frame(maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75), minHeight: 1, alignment: message.isSender ? .trailing: .leading)
+                        }
+                        chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName(messages: messages, thisMessage: message))
                     }
                     Spacer()
                         .frame(height: inset.bottom)
@@ -103,7 +109,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     // MARK: - List Item
-    private func chatMessageCellContainer(in size: CGSize, with message: Message) -> some View {
+    private func chatMessageCellContainer(in size: CGSize, with message: Message, with avatarShow: Bool) -> some View {
         ChatMessageCellContainer(
             message: message,
             size: size,
@@ -114,7 +120,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         )
         .onTapGesture { onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
-        .modifier(AvatarModifier<Message, User>(message: message))
+        .modifier(AvatarModifier<Message, User>(message: message, show: avatarShow))
         .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
         .id(message.id)
@@ -136,6 +142,26 @@ public extension ChatView {
             let currMessage = messages[messageIndex! - 1]
             let timeInterval = prevMessage.date - currMessage.date
             return timeInterval > dateHeaderTimeInterval
+        }
+        
+    }
+    
+    func shouldShowDisplayName (messages: [Message], thisMessage: Message) -> Bool {
+        let messageIndex = messages.firstIndex { message in
+            message.id == thisMessage.id
+        }
+        if(messageIndex == 0){
+            return true
+        }else if(messageIndex == nil){
+            return false
+        }else{
+            let prevMessageUserID = messages[messageIndex!].user.id
+            let currMessageUserID = messages[messageIndex! - 1].user.id
+            if(prevMessageUserID == currMessageUserID){
+                return false
+            }else{
+                return true
+            }
         }
         
     }
@@ -173,6 +199,7 @@ public extension ChatView {
         self.dateFormater.dateStyle = .medium
         self.dateFormater.timeStyle = .short
         self.dateFormater.timeZone = NSTimeZone.local
+        self.dateFormater.doesRelativeDateFormatting = true
         self.dateHeaderTimeInterval = dateHeaderTimeInterval
     }
 }

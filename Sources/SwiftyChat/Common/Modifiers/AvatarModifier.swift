@@ -31,6 +31,8 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
     /// Current avatar position
     private var currentAvatarPosition: AvatarPosition { isSender ? outgoingAvatarPosition : incomingAvatarPosition }
     
+    public let show: Bool
+    
     private var alignToMessageBottom: some View {
         VStack {
             Spacer()
@@ -65,18 +67,25 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
             .overlay(
                 RoundedRectangle(cornerRadius: imageStyle.cornerRadius)
                     .stroke(
-                        imageStyle.borderColor,
+                        show ? imageStyle.borderColor: Color.clear,
                         lineWidth: imageStyle.borderWidth
                     )
                     .shadow(
-                        color: imageStyle.shadowColor,
+                        color: show ? imageStyle.shadowColor: Color.clear,
                         radius: imageStyle.shadowRadius
                     )
             )
+
+    }
+    
+    private var novatar: some View {
+        return Spacer()
     }
     
     @ViewBuilder private var avatarImage: some View {
-        if let imageURL = user.avatarURL, currentStyle.imageStyle.imageSize.width > 0 {
+        if(!show){
+            novatar
+        }else if let imageURL = user.avatarURL, currentStyle.imageStyle.imageSize.width > 0 {
             KFImage(imageURL).resizable()
         } else if let avatar = user.avatar, currentStyle.imageStyle.imageSize.width > 0 {
             Image(uiImage: avatar).resizable()

@@ -64,8 +64,8 @@ public final class ChatMessageCellStyle: ObservableObject {
                 fontWeight: .bold
             )
         ),
-        incomingCellEdgeInsets: EdgeInsets = EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4),
-        outgoingCellEdgeInsets: EdgeInsets = EdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4),
+        incomingCellEdgeInsets: EdgeInsets = EdgeInsets(top: 1, leading: 4, bottom: 1, trailing: 4),
+        outgoingCellEdgeInsets: EdgeInsets = EdgeInsets(top: 1, leading: 4, bottom: 1, trailing: 4),
         contactCellStyle: ContactCellStyle = ContactCellStyle(),
         imageCellStyle: ImageCellStyle = ImageCellStyle(),
         imageTextCellStyle: ImageTextCellStyle = ImageTextCellStyle(),
