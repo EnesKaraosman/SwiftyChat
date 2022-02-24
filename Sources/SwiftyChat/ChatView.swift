@@ -23,6 +23,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var inset: EdgeInsets
     private var dateFormater: DateFormatter = DateFormatter()
     private var dateHeaderTimeInterval: Double
+    private var shouldShowGroupChatHeaders: Bool
     
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
@@ -120,7 +121,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         )
         .onTapGesture { onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
-        .modifier(AvatarModifier<Message, User>(message: message, show: avatarShow))
+        .modifier(AvatarModifier<Message, User>(message: message, show: (avatarShow || !shouldShowGroupChatHeaders)))
         .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
         .id(message.id)
@@ -147,6 +148,11 @@ public extension ChatView {
     }
     
     func shouldShowDisplayName (messages: [Message], thisMessage: Message) -> Bool {
+        
+        if(!shouldShowGroupChatHeaders){
+            return false
+        }
+        
         let messageIndex = messages.firstIndex { message in
             message.id == thisMessage.id
         }
@@ -181,16 +187,22 @@ public extension ChatView {
     /// - Parameters:
     ///   - messages: Messages to display
     ///   - scrollToBottom: set to `true` to scrollToBottom
-    ///   - inputView: inputView view to provide message
     ///   - dateHeaderTimeInterval: Amount of time between messages in
     ///                             seconds required before dateheader added
     ///                             (Default 1 hour)
+    ///   - shouldShowGroupChatHeaders: Shows the display name of the sending
+    ///                                 user only if it is the first message in a chain.
+    ///                                 Also only shows avatar for first message in chain.
+    ///                                 (disabled by default)
+    ///   - inputView: inputView view to provide message
+    ///   
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
+        dateHeaderTimeInterval: Double = 3600.0,
+        shouldShowGroupChatHeaders: Bool = false,
         inputView: @escaping () -> AnyView,
-        inset: EdgeInsets = .init(),
-        dateHeaderTimeInterval: Double = 3600.0
+        inset: EdgeInsets = .init()
     ) {
         _messages = messages
         self.inputView = inputView
@@ -201,6 +213,7 @@ public extension ChatView {
         self.dateFormater.timeZone = NSTimeZone.local
         self.dateFormater.doesRelativeDateFormatting = true
         self.dateHeaderTimeInterval = dateHeaderTimeInterval
+        self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
     }
 }
 
