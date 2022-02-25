@@ -95,11 +95,15 @@ Here below is minimum code required to get started (see up & running)<br>
 For detail, visit example project [here](../master/SwiftyChatExample/SwiftyChatExample)
 
 ```swift
-@State var messages: [MockMessages.ChatMessageItem] = [] // for quick test assign MockMessages.generatedMessages()
+@State private var scrollToBottom = false
+@State private var messages: [MockMessages.ChatMessageItem] = [] // for quick test assign MockMessages.generatedMessages()
 
 // ChatMessageItem & ChatUserItem is a sample objects/structs 
 // that conforms `ChatMessage` & `ChatUser` protocols.
-ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem> {
+ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(
+    messages: $messages,
+    scrollToBottom: $scrollToBottom
+) {
     // InputView here, continue reading..
 }
 // ▼ Required
@@ -107,6 +111,12 @@ ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem> {
     // All parameters initialized by default, 
     // change as you want.
     ChatMessageCellStyle()
+)
+.onReceive(
+    messages.debounce(for: .milliseconds(650), scheduler: RunLoop.main),
+    perform: { _ in
+        scrollToBottom = true
+    }
 )
 ...
 ...
