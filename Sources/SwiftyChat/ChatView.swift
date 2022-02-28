@@ -62,16 +62,19 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
-                        if(shouldShowDateHeader(messages: messages, thisMessage: message)){
+                        let showDateheader = shouldShowDateHeader(messages: messages, thisMessage: message)
+                        let shouldShowDisplayName = shouldShowDisplayName(messages: messages, thisMessage: message, dateHeaderShown: showDateheader)
+                        
+                        if(showDateheader){
                             Text(dateFormater.string(from:message.date)).font(.subheadline)
                         }
-                        if(shouldShowDisplayName(messages: messages, thisMessage: message)){
+                        if(shouldShowDisplayName){
                             Text(message.user.userName)
                                 .font(.caption)
                                 .multilineTextAlignment(.trailing)
                                 .frame(maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75), minHeight: 1, alignment: message.isSender ? .trailing: .leading)
                         }
-                        chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName(messages: messages, thisMessage: message))
+                        chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                     }
                     Spacer()
                         .frame(height: inset.bottom)
@@ -121,7 +124,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         )
         .onTapGesture { onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
-        .modifier(AvatarModifier<Message, User>(message: message, show: (avatarShow || !shouldShowGroupChatHeaders)))
+        .modifier(AvatarModifier<Message, User>(message: message, showAvatarForMessage: shouldShowAvatarForMessage(forThisMessage: avatarShow)))
         .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
         .id(message.id)
@@ -147,10 +150,12 @@ public extension ChatView {
         
     }
     
-    func shouldShowDisplayName (messages: [Message], thisMessage: Message) -> Bool {
+    func shouldShowDisplayName (messages: [Message], thisMessage: Message, dateHeaderShown: Bool) -> Bool {
         
         if(!shouldShowGroupChatHeaders){
             return false
+        }else if(dateHeaderShown){
+            return true
         }
         
         let messageIndex = messages.firstIndex { message in
@@ -163,13 +168,13 @@ public extension ChatView {
         }else{
             let prevMessageUserID = messages[messageIndex!].user.id
             let currMessageUserID = messages[messageIndex! - 1].user.id
-            if(prevMessageUserID == currMessageUserID){
-                return false
-            }else{
-                return true
-            }
+            return !(prevMessageUserID == currMessageUserID)
         }
         
+    }
+    
+    func shouldShowAvatarForMessage (forThisMessage: Bool) -> Bool {
+        return (forThisMessage || !shouldShowGroupChatHeaders)
     }
 }
 
