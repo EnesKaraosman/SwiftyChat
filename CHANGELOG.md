@@ -1,6 +1,12 @@
 # Change Log
 
-## [2.1.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.0.2)
+## [2.2.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.2.0)
+Released on 2022-03-16.
+
+#### Update
+- Merged #23 thanks to @blakesplay
+
+## [2.1.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.1.0)
 Released on 2022-02-18.
 
 #### Update
