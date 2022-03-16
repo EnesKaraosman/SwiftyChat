@@ -70,8 +70,7 @@ internal struct ContactCell<Message: ChatMessage>: View {
     
     private var buttonActionFooter: some View {
         HStack {
-            
-            ForEach(buttons.indices) { idx in
+            ForEach(0..<buttons.count, id: \.self) { idx in
                 Button(buttons[idx].title) {}
                     .buttonStyle(BorderlessButtonStyle())
                     .simultaneousGesture(
@@ -83,7 +82,6 @@ internal struct ContactCell<Message: ChatMessage>: View {
                     Divider()
                 }
             }
-            
         }
         .frame(height: 40)
     }
