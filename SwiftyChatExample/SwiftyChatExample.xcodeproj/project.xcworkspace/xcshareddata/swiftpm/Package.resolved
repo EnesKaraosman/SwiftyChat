@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
         "state": {
           "branch": null,
-          "revision": "8c65ddf756c633d01d9ae01092bf72f0c66dfc60",
-          "version": "7.0.0"
+          "revision": "32e4acdf6971f58f5ad552389cf2d7d016334eaf",
+          "version": "7.2.0"
         }
       },
       {
@@ -29,21 +29,21 @@
         }
       },
       {
-        "package": "SwiftyChat",
-        "repositoryURL": "https://github.com/EnesKaraosman/SwiftyChat.git",
-        "state": {
-          "branch": null,
-          "revision": "3cda463e91e9bfc127be97653773d94e9bd684c2",
-          "version": "2.0.0"
-        }
-      },
-      {
         "package": "VideoPlayer",
         "repositoryURL": "https://github.com/wxxsw/VideoPlayer.git",
         "state": {
           "branch": null,
           "revision": "3c5b9531ee20e34d3a86142ca2c076a5b99afdb2",
           "version": "1.2.3"
+        }
+      },
+      {
+        "package": "WrappingHStack",
+        "repositoryURL": "https://github.com/dkk/WrappingHStack.git",
+        "state": {
+          "branch": null,
+          "revision": "4ad53e116c4c0b526f265e3568c7cceec595699e",
+          "version": "2.2.0"
         }
       }
     ]
