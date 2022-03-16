@@ -23,6 +23,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var inset: EdgeInsets
     private var dateFormater: DateFormatter = DateFormatter()
     private var dateHeaderTimeInterval: Double
+    private var shouldShowGroupChatHeaders: Bool
     
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
@@ -61,10 +62,19 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
-                        if(shouldShowDateHeader(messages: messages, thisMessage: message)){
+                        let showDateheader = shouldShowDateHeader(messages: messages, thisMessage: message)
+                        let shouldShowDisplayName = shouldShowDisplayName(messages: messages, thisMessage: message, dateHeaderShown: showDateheader)
+                        
+                        if(showDateheader){
                             Text(dateFormater.string(from:message.date)).font(.subheadline)
                         }
-                        chatMessageCellContainer(in: geometry.size, with: message)
+                        if(shouldShowDisplayName){
+                            Text(message.user.userName)
+                                .font(.caption)
+                                .multilineTextAlignment(.trailing)
+                                .frame(maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75), minHeight: 1, alignment: message.isSender ? .trailing: .leading)
+                        }
+                        chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                     }
                     Spacer()
                         .frame(height: inset.bottom)
@@ -103,7 +113,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     // MARK: - List Item
-    private func chatMessageCellContainer(in size: CGSize, with message: Message) -> some View {
+    private func chatMessageCellContainer(in size: CGSize, with message: Message, with avatarShow: Bool) -> some View {
         ChatMessageCellContainer(
             message: message,
             size: size,
@@ -114,7 +124,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         )
         .onTapGesture { onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
-        .modifier(AvatarModifier<Message, User>(message: message))
+        .modifier(AvatarModifier<Message, User>(message: message, showAvatarForMessage: shouldShowAvatarForMessage(forThisMessage: avatarShow)))
         .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
         .id(message.id)
@@ -139,6 +149,33 @@ public extension ChatView {
         }
         
     }
+    
+    func shouldShowDisplayName (messages: [Message], thisMessage: Message, dateHeaderShown: Bool) -> Bool {
+        
+        if(!shouldShowGroupChatHeaders){
+            return false
+        }else if(dateHeaderShown){
+            return true
+        }
+        
+        let messageIndex = messages.firstIndex { message in
+            message.id == thisMessage.id
+        }
+        if(messageIndex == 0){
+            return true
+        }else if(messageIndex == nil){
+            return false
+        }else{
+            let prevMessageUserID = messages[messageIndex!].user.id
+            let currMessageUserID = messages[messageIndex! - 1].user.id
+            return !(prevMessageUserID == currMessageUserID)
+        }
+        
+    }
+    
+    func shouldShowAvatarForMessage (forThisMessage: Bool) -> Bool {
+        return (forThisMessage || !shouldShowGroupChatHeaders)
+    }
 }
 
 extension Date {
@@ -155,16 +192,22 @@ public extension ChatView {
     /// - Parameters:
     ///   - messages: Messages to display
     ///   - scrollToBottom: set to `true` to scrollToBottom
-    ///   - inputView: inputView view to provide message
     ///   - dateHeaderTimeInterval: Amount of time between messages in
     ///                             seconds required before dateheader added
     ///                             (Default 1 hour)
+    ///   - shouldShowGroupChatHeaders: Shows the display name of the sending
+    ///                                 user only if it is the first message in a chain.
+    ///                                 Also only shows avatar for first message in chain.
+    ///                                 (disabled by default)
+    ///   - inputView: inputView view to provide message
+    ///   
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
+        dateHeaderTimeInterval: Double = 3600.0,
+        shouldShowGroupChatHeaders: Bool = false,
         inputView: @escaping () -> AnyView,
-        inset: EdgeInsets = .init(),
-        dateHeaderTimeInterval: Double = 3600.0
+        inset: EdgeInsets = .init()
     ) {
         _messages = messages
         self.inputView = inputView
@@ -173,7 +216,9 @@ public extension ChatView {
         self.dateFormater.dateStyle = .medium
         self.dateFormater.timeStyle = .short
         self.dateFormater.timeZone = NSTimeZone.local
+        self.dateFormater.doesRelativeDateFormatting = true
         self.dateHeaderTimeInterval = dateHeaderTimeInterval
+        self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
     }
 }
 
