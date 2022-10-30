@@ -112,9 +112,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
                 .onChange(of: scrollTo) { value in
                     if let value = value {
-                        withAnimation {
-                            proxy.scrollTo(value)
-                        }
+                        proxy.scrollTo(value)
                         scrollTo = nil
                     }
                 }
