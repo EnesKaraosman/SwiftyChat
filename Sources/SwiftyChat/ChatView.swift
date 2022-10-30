@@ -26,7 +26,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: (() -> Void)?
     
-    @Binding private var scrollTo: Int?
+    @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
     
@@ -230,7 +230,7 @@ public extension ChatView {
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
-        scrollTo: Binding<Int?> = .constant(nil),
+        scrollTo: Binding<UUID?> = .constant(nil),
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
         inputView: @escaping () -> AnyView,
