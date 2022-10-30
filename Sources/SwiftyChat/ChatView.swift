@@ -26,6 +26,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: (() -> Void)?
     
+    @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
     
@@ -89,6 +90,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                 )
                         }
                         chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
+                            .id(message.id)
                             .onAppear {
                                 if message.id == self.messages.first?.id {
                                     self.reachedTop?()
@@ -106,6 +108,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             proxy.scrollTo("bottom")
                         }
                         scrollToBottom = false
+                    }
+                }
+                .onChange(of: scrollTo) { value in
+                    if let value = value {
+                        proxy.scrollTo(value, anchor: .top)
+                        scrollTo = nil
                     }
                 }
                 .iOS {
@@ -220,6 +228,7 @@ public extension ChatView {
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
+        scrollTo: Binding<UUID?> = .constant(nil),
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
         inputView: @escaping () -> AnyView,
@@ -237,6 +246,7 @@ public extension ChatView {
         self.dateHeaderTimeInterval = dateHeaderTimeInterval
         self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
         self.reachedTop = reachedTop
+        _scrollTo = scrollTo
     }
 }
 
