@@ -24,6 +24,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var dateFormater: DateFormatter = DateFormatter()
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
+    private var reachedTop: (() -> Void)?
     
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
@@ -88,6 +89,11 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                 )
                         }
                         chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
+                            .onAppear {
+                                if message.id == self.messages.first?.id {
+                                    self.reachedTop?()
+                                }
+                            }
                     }
                     Spacer()
                         .frame(height: inset.bottom)
@@ -217,7 +223,8 @@ public extension ChatView {
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
         inputView: @escaping () -> AnyView,
-        inset: EdgeInsets = .init()
+        inset: EdgeInsets = .init(),
+        reachedTop: (() -> Void)? = nil
     ) {
         _messages = messages
         self.inputView = inputView
@@ -229,6 +236,7 @@ public extension ChatView {
         self.dateFormater.doesRelativeDateFormatting = true
         self.dateHeaderTimeInterval = dateHeaderTimeInterval
         self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
+        self.reachedTop = reachedTop
     }
 }
 
