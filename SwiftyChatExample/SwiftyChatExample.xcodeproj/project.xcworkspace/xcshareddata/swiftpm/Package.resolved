@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/wxxsw/GSPlayer.git",
         "state": {
           "branch": null,
-          "revision": "5904551cf33e0c38831fdc56c6a2c9770eadc30d",
-          "version": "0.2.25"
+          "revision": "aa6dad7943d52f5207f7fcc2ad3e4274583443b8",
+          "version": "0.2.26"
         }
       },
       {
@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
         "state": {
           "branch": null,
-          "revision": "32e4acdf6971f58f5ad552389cf2d7d016334eaf",
-          "version": "7.2.0"
+          "revision": "44e891bdb61426a95e31492a67c7c0dfad1f87c5",
+          "version": "7.4.1"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/dkk/WrappingHStack.git",
         "state": {
           "branch": null,
-          "revision": "4ad53e116c4c0b526f265e3568c7cceec595699e",
-          "version": "2.2.0"
+          "revision": "44987fbb01112e6ec72098dc6481187dd53ad4d2",
+          "version": "2.2.9"
         }
       }
     ]

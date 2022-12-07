@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.2.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.2.1)
+Released on 2022-07-12.
+
+#### Update
+- Merged #31 thanks to @bporter95
+- Updated dependencies: Kingfisher (to 7.4.1) & WrappingHStack (to 2.2.9)
+
 ## [2.2.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.2.0)
 Released on 2022-03-16.
 

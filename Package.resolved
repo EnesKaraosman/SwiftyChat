@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
         "state": {
           "branch": null,
-          "revision": "0c02c46cfdc0656ce74fd0963a75e5000a0b7f23",
-          "version": "7.1.2"
+          "revision": "44e891bdb61426a95e31492a67c7c0dfad1f87c5",
+          "version": "7.4.1"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/dkk/WrappingHStack.git",
         "state": {
           "branch": null,
-          "revision": "3cc84e786aa996da32f476d89dab4e02d30ce691",
-          "version": "2.1.3"
+          "revision": "44987fbb01112e6ec72098dc6481187dd53ad4d2",
+          "version": "2.2.9"
         }
       }
     ]
