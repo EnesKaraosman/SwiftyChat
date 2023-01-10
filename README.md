@@ -28,6 +28,7 @@ Fully written in pure SwiftUI.
 - [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
 - [x] Scroll to bottom.
 - [x] Round specific corner of text messages.
+- [x] Implement custom message cells. See [CustomMessage.md](CustomMessage.md) for details.
 - [ ] Swipe to dismiss keyboard.
 
 
@@ -190,6 +191,8 @@ You must initiate this class to build a proper style & inject it as `environment
 All styles has default initializer; <br>
 
 For detail documentation, visit [Styles.md](../master/Styles.md)
+
+You can also use your own custom message cell, see [CustomMessage.md](CustomMessage.md) for details.
 
 <br>
 Please feel free to contribute.<br>

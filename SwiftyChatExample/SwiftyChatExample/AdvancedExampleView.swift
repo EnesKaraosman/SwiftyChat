@@ -58,6 +58,8 @@ struct AdvancedExampleView: View {
             .embedInAnyView()
             
         }
+        // ▼ Optional, Implement to register a custom cell for Messagekind.custom
+        .registerCustomCell(customCell: { anyParam in AnyView(CustomExampleChatCell(anyParam: anyParam))})
         // ▼ Optional, Implement to be notified when related cell tapped
         .onMessageCellTapped({ (message) in
             print(message.messageKind.description)
@@ -139,7 +141,21 @@ struct AdvancedExampleView: View {
             
         }
     }
+}
+
+struct CustomExampleChatCell: View {
+    var anyParam: Any
     
+    var body: some View {
+        VStack{
+            Text((anyParam as? String) ?? "Not a String")
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .padding(5)
+                                
+        }
+        .background(Color.green)
+        .cornerRadius(25)
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
