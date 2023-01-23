@@ -41,6 +41,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
+      
                 chatView(in: geometry)
                 inputView()
                     .onPreferenceChange(ContentSizeThatFitsKey.self) {
@@ -48,7 +49,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     }
                     .frame(height: messageEditorHeight)
                     .padding(.bottom, 12)
-                
                 PIPVideoCell<Message>()
             }
             .iOS { $0.keyboardAwarePadding() }
@@ -101,6 +101,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         .frame(height: inset.bottom)
                         .id("bottom")
                 }
+                .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
                 .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
                 .onChange(of: scrollToBottom) { value in
                     if value {
@@ -137,6 +138,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         }
         .background(Color.clear)
             .padding(.bottom, messageEditorHeight + 30)
+            .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
     }
     
 }
