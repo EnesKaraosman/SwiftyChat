@@ -101,7 +101,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         .frame(height: inset.bottom)
                         .id("bottom")
                 }
-                .rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
+                //.rotationEffect(Angle(degrees: 180)).scaleEffect(x: -1.0, y: 1.0, anchor: .center)
                 .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
                 .onChange(of: scrollToBottom) { value in
                     if value {
