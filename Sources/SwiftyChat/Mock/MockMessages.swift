@@ -28,6 +28,7 @@ public struct MockMessages {
         case QuickReply
         case Carousel
         case Video
+        case Custom
         
         private var messageKind: ChatMessageKind {
             switch self {
@@ -38,6 +39,7 @@ public struct MockMessages {
             case .QuickReply: return .quickReply([])
             case .Carousel: return .carousel([CarouselRow(title: "", imageURL: nil, subtitle: "", buttons: [])])
             case .Video: return .video(VideoRow(url: URL(string: "")!, placeholderImage: .remote(URL(string: "")!), pictureInPicturePlayingMessage: ""))
+            case .Custom: return .custom("")
             }
         }
     }
@@ -236,6 +238,12 @@ public struct MockMessages {
                 messageKind: .video(videoItem),
                 isSender: randomUser == Self.sender
             )
+        case .Custom:
+            return ChatMessageItem(
+                user: randomUser,
+                messageKind: .custom(Lorem.sentence()),
+                isSender: randomUser == Self.sender
+            )
             
         }
     }
@@ -250,7 +258,8 @@ public struct MockMessages {
             .Location,
             .Text, .Text, .Text,
             .Video,
-            .QuickReply
+            .QuickReply,
+            .Custom
         ]
         return allCases.randomElement()!
     }

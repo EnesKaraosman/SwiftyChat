@@ -13,6 +13,7 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
     public let message: Message
     public let size: CGSize
     
+    public let customCell: ((Any) -> AnyView)?
     public let onQuickReplyItemSelected: (QuickReplyItem) -> Void
     public let contactFooterSection: (ContactItem, Message) -> [ContactCellButton]
     public let onTextTappedCallback: () -> AttributedTextTappedCallback
@@ -82,6 +83,11 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
             
         case .loading:
             LoadingCell(message: message, size: size)
+            
+        case .custom(let custom):
+            if let cell = customCell {
+                cell(custom)
+            }
         }
         
     }

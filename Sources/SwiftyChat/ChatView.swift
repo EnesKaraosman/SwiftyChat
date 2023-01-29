@@ -13,6 +13,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @Binding private var messages: [Message]
     private var inputView: () -> AnyView
+    private var customCellView: ((Any) -> AnyView)?
 
     private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
@@ -151,6 +152,7 @@ internal extension ChatView {
         ChatMessageCellContainer(
             message: message,
             size: size,
+            customCell: customCellView,
             onQuickReplyItemSelected: onQuickReplyItemSelected,
             contactFooterSection: contactCellFooterSection,
             onTextTappedCallback: onAttributedTextTappedCallback,
@@ -251,6 +253,11 @@ public extension ChatView {
 }
 
 public extension ChatView {
+    /// Registers a custom cell view
+    func registerCustomCell(customCell: @escaping (Any) -> AnyView) -> Self {
+        then({ $0.customCellView = customCell})
+    }
+    
     /// Triggered when a ChatMessage is tapped.
     func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> Self {
         then({ $0.onMessageCellTapped = action })
