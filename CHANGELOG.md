@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.3.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.3.0)
+Released on 2023-01-29.
+
+#### Update
+- Merged #33 thanks to @LeonardMaetzner
+- Updated dependencies: Kingfisher (to 7.5.0)
+
 ## [2.2.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.2.1)
 Released on 2022-07-12.
 
