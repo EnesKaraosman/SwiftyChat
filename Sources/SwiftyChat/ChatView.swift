@@ -28,6 +28,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
+    @Binding private var hasMore: Bool
     @State private var isKeyboardActive = false
     
     @State private var contentSizeThatFits: CGSize = .zero
@@ -96,6 +97,19 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     self.reachedTop?()
                                 }
                             }
+                    }
+                    //hasMore
+                    if messages.count == 0 {
+                        VStack(alignment: .center) {
+                            ProgressView()
+                                .padding()
+                            Text("Fetching Messages")
+                        }
+                        .padding()
+                        
+                    }else if hasMore {
+                        ProgressView()
+                            .padding()
                     }
                     Spacer()
                         .frame(height: inset.bottom)
@@ -228,6 +242,7 @@ public extension ChatView {
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
+        hasMore : Binding<Bool> = .constant(false),
         scrollTo: Binding<UUID?> = .constant(nil),
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
@@ -247,6 +262,7 @@ public extension ChatView {
         self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
         self.reachedTop = reachedTop
         _scrollTo = scrollTo
+        _hasMore = hasMore
     }
 }
 

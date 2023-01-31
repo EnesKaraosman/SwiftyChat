@@ -82,17 +82,20 @@ public struct MockMessages {
     public struct ChatMessageItem: ChatMessage {
         
         public let id = UUID()
+        public var objectId : String
         public var user: ChatUserItem
         public var messageKind: ChatMessageKind
         public var isSender: Bool
         public var date: Date
 
         public init(
+            objectId : String,
             user: ChatUserItem,
             messageKind: ChatMessageKind,
             isSender: Bool = false,
             date: Date = .init()
         ) {
+            self.objectId = objectId
             self.user = user
             self.messageKind = messageKind
             self.isSender = isSender
