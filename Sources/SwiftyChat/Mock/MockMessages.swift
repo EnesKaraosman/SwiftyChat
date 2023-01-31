@@ -89,7 +89,7 @@ public struct MockMessages {
         public var date: Date
 
         public init(
-            objectId : String,
+            objectId : String = UUID().uuidString,
             user: ChatUserItem,
             messageKind: ChatMessageKind,
             isSender: Bool = false,
