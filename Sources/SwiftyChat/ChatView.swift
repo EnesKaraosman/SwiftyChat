@@ -24,7 +24,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var dateFormater: DateFormatter = DateFormatter()
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
-    private var reachedTop: (() -> Void)?
+    private var reachedTop: ((_ messageId : UUID) -> Void)?
     
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
@@ -94,7 +94,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             .id(message.id)
                             .onAppear {
                                 if message.id == self.messages.first?.id {
-                                    self.reachedTop?()
+                                    self.reachedTop?(message.id as! UUID)
                                 }
                             }
                     }
@@ -248,7 +248,7 @@ public extension ChatView {
         shouldShowGroupChatHeaders: Bool = false,
         inputView: @escaping () -> AnyView,
         inset: EdgeInsets = .init(),
-        reachedTop: (() -> Void)? = nil
+        reachedTop: ((_ messageId : UUID) -> Void)? = nil
     ) {
         _messages = messages
         self.inputView = inputView
