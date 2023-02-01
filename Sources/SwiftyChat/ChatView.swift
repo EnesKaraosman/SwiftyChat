@@ -62,7 +62,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
         
-        ReversedScrollView(.vertical) {
+        
+        
+        
+        ScrollView(.vertical, showsIndicators: false) {
             ScrollViewReader { proxy in
                 LazyVStack {
                     ForEach(messages) { message in
@@ -94,10 +97,11 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                             .id(message.id)
                             .onAppear {
-                                if message.id == self.messages.first?.id {
-                                    self.reachedTop?(message.id as! UUID)
-                                    print("TOP REACHED")
-                                }
+                                print(message.messageKind)
+//                                if message.id == self.messages.first?.id {
+//                                    self.reachedTop?(message.id as! UUID)
+//                                    print("TOP REACHED")
+//                                }
                             }
                     }
                     //hasMore
@@ -152,98 +156,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
             }
         }
-        
-        
-//        ScrollView(.vertical, showsIndicators: false) {
-//            ScrollViewReader { proxy in
-//                LazyVStack {
-//                    ForEach(messages) { message in
-//                        let showDateheader = shouldShowDateHeader(
-//                            messages: messages,
-//                            thisMessage: message
-//                        )
-//                        let shouldShowDisplayName = shouldShowDisplayName(
-//                            messages: messages,
-//                            thisMessage: message,
-//                            dateHeaderShown: showDateheader
-//                        )
-//
-//                        if showDateheader {
-//                            Text(dateFormater.string(from: message.date))
-//                                .font(.subheadline)
-//                        }
-//
-//                        if shouldShowDisplayName {
-//                            Text(message.user.userName)
-//                                .font(.caption)
-//                                .multilineTextAlignment(.trailing)
-//                                .frame(
-//                                    maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
-//                                    minHeight: 1,
-//                                    alignment: message.isSender ? .trailing: .leading
-//                                )
-//                        }
-//                        chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
-//                            .id(message.id)
-//                            .onAppear {
-//                                if message.id == self.messages.first?.id {
-//                                    self.reachedTop?(message.id as! UUID)
-//                                    print("TOP REACHED")
-//                                }
-//                            }
-//                    }
-//                    //hasMore
-//                    if messages.count == 0 {
-//                        VStack(alignment: .center) {
-//                            ProgressView()
-//                                .padding()
-//                            Text("Fetching Messages")
-//                        }
-//                        .padding()
-//
-//                    }else if hasMore {
-//                        ProgressView()
-//                            .padding()
-//                    }
-//                    Spacer()
-//                        .frame(height: inset.bottom)
-//                        .id("bottom")
-//                }
-//                .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
-//                .onChange(of: scrollToBottom) { value in
-//                    if value {
-//                        withAnimation {
-//                            proxy.scrollTo("bottom")
-//                        }
-//                        scrollToBottom = false
-//                    }
-//                }
-//                .onChange(of: scrollTo) { value in
-//                    if let value = value {
-//                        proxy.scrollTo(value, anchor: .top)
-//                        scrollTo = nil
-//                        print("scroll to specific valud")
-//                    }
-//                }
-//                .iOS {
-//                    // Auto Scroll with Keyboard Notification
-//                    $0.onReceive(
-//                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-//                            .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
-//                        perform: { _ in
-//                            if !isKeyboardActive {
-//                                isKeyboardActive = true
-//                                scrollToBottom = true
-//                            }
-//                        }
-//                    )
-//                    .onReceive(
-//                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
-//                        perform: { _ in isKeyboardActive = false }
-//                    )
-//                }
-//            }
-//        }
         .background(Color.clear)
             .padding(.bottom, messageEditorHeight + 30)
     }
