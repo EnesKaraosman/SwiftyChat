@@ -61,10 +61,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
-        
-        
-        
-        
         ScrollView(.vertical, showsIndicators: false) {
             ScrollViewReader { proxy in
                 LazyVStack {
@@ -98,10 +94,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             .id(message.id)
                             .onAppear {
                                 print(message.messageKind)
-//                                if message.id == self.messages.first?.id {
-//                                    self.reachedTop?(message.id as! UUID)
-//                                    print("TOP REACHED")
-//                                }
+                                if message.id == self.messages.first?.id {
+                                    self.reachedTop?(message.id as! UUID)
+                                    print("TOP REACHED")
+                                }
                             }
                     }
                     //hasMore
@@ -132,7 +128,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
                 .onChange(of: scrollTo) { value in
                     if let value = value {
-                        proxy.scrollTo(value, anchor: .top)
+                        proxy.scrollTo(value, anchor: .center)
                         scrollTo = nil
                         print("scroll to specific valud")
                     }
