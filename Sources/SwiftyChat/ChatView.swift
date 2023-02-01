@@ -128,7 +128,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
                 .onChange(of: scrollTo) { value in
                     if let value = value {
-                        proxy.scrollTo(value, anchor: .center)
+                        proxy.scrollTo(value, anchor: .bottom)
                         scrollTo = nil
                         print("scrollTo to specific valud")
                     }
