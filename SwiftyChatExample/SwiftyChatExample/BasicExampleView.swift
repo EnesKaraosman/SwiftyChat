@@ -15,12 +15,12 @@ struct BasicExampleView: View {
     // MARK: - InputBarView variables
     @State private var message = ""
     @State private var isEditing = false
-    
     var body: some View {
         chatView
     }
     
     private var chatView: some View {
+        
         ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(messages: $messages) {
 
             BasicInputView(

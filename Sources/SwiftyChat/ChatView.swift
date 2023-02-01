@@ -93,7 +93,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                             .id(message.id)
                             .onAppear {
-                                print(message.messageKind)
+                                //print(message.messageKind)
                                 if message.id == self.messages.first?.id {
                                     self.reachedTop?(message.id as! UUID)
                                     print("TOP REACHED")
@@ -130,7 +130,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     if let value = value {
                         proxy.scrollTo(value, anchor: .center)
                         scrollTo = nil
-                        print("scroll to specific valud")
+                        print("scrollTo to specific valud")
                     }
                 }
                 .iOS {
