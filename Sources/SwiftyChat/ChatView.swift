@@ -95,6 +95,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             .onAppear {
                                 if message.id == self.messages.first?.id {
                                     self.reachedTop?(message.id as! UUID)
+                                    print("TOP REACHED")
                                 }
                             }
                     }
@@ -128,6 +129,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     if let value = value {
                         proxy.scrollTo(value, anchor: .top)
                         scrollTo = nil
+                        print("scroll to specific valud")
                     }
                 }
                 .iOS {
