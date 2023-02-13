@@ -40,7 +40,8 @@ struct AdvancedExampleView: View {
     }
     
     private var chatView: some View {
-        ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(messages: $messages) {
+
+        ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(inverted: true, messages: $messages) {
 
             BasicInputView(
                 message: $message,
@@ -58,7 +59,6 @@ struct AdvancedExampleView: View {
             .embedInAnyView()
             
         }
-        // ▼ Optional, Implement to be notified when related cell tapped
         .onMessageCellTapped({ (message) in
             print(message.messageKind.description)
         })
@@ -133,9 +133,9 @@ struct AdvancedExampleView: View {
                 )
             )
             
-            self.messages.append(contentsOf: MockMessages.generatedMessages(count: 500))
-            self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(html1), isSender: false))
-            self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(htmlLink), isSender: false))
+            self.messages.append(contentsOf: MockMessages.generatedMessages(count: 100))
+           // self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(html1), isSender: false))
+           // self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(htmlLink), isSender: false))
             
         }
     }

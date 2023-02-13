@@ -25,6 +25,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: ((_ messageId : UUID) -> Void)?
+    private var inverted : Bool
     
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
@@ -61,99 +62,216 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            ScrollViewReader { proxy in
-                LazyVStack {
-                    ForEach(messages) { message in
-                        let showDateheader = shouldShowDateHeader(
-                            messages: messages,
-                            thisMessage: message
-                        )
-                        let shouldShowDisplayName = shouldShowDisplayName(
-                            messages: messages,
-                            thisMessage: message,
-                            dateHeaderShown: showDateheader
-                        )
-                        
-                        if showDateheader {
-                            Text(dateFormater.string(from: message.date))
-                                .font(.subheadline)
-                        }
-                        
-                        if shouldShowDisplayName {
-                            Text(message.user.userName)
-                                .font(.caption)
-                                .multilineTextAlignment(.trailing)
-                                .frame(
-                                    maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
-                                    minHeight: 1,
-                                    alignment: message.isSender ? .trailing: .leading
+        
+        
+        
+        if inverted {
+            ScrollView(.vertical, showsIndicators: false) {
+                ScrollViewReader { proxy in
+                    LazyVStack {
+                        ForEach(messages) { message in
+                            Group {
+                                let showDateheader = shouldShowDateHeader(
+                                    messages: messages,
+                                    thisMessage: message
                                 )
+                                let shouldShowDisplayName = shouldShowDisplayName(
+                                    messages: messages,
+                                    thisMessage: message,
+                                    dateHeaderShown: showDateheader
+                                )
+                                
+                                if showDateheader {
+                                    Text(dateFormater.string(from: message.date))
+                                        .font(.subheadline)
+                                }
+                                
+                                if shouldShowDisplayName {
+                                    Text(message.user.userName)
+                                        .font(.caption)
+                                        .multilineTextAlignment(.trailing)
+                                        .frame(
+                                            maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
+                                            minHeight: 1,
+                                            alignment: message.isSender ? .trailing: .leading
+                                        )
+                                }
+                                chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
+                                    .id(message.id)
+                                    .onAppear {
+                                        let total = self.messages.count
+                                        let lastItem = self.messages[total - 5]
+                                        if message.id == lastItem.id {
+                                            self.reachedTop?(message.id as! UUID)
+                                            print("TOP REACHED")
+                                        }
+                                    }
+                            }
+                            .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
                         }
-                        chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
-                            .id(message.id)
-                            .onAppear {
-                                //print(message.messageKind)
-                                if message.id == self.messages.first?.id {
-                                    self.reachedTop?(message.id as! UUID)
-                                    print("TOP REACHED")
+                        Group {
+                            if messages.count == 0 {
+                                VStack(alignment: .center) {
+                                    ProgressView()
+                                        .padding()
+                                    Text("Fetching Messages")
+                                }
+                                .padding()
+                                
+                            }else if hasMore {
+                                ProgressView()
+                                    .padding()
+                            }
+                            Spacer()
+                                .frame(height: inset.bottom)
+                                .id("bottom")
+                        }
+                        .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
+                    }
+                    .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
+                    .onChange(of: scrollToBottom) { value in
+                        if value {
+                            withAnimation {
+                                proxy.scrollTo("bottom")
+                            }
+                            scrollToBottom = false
+                        }
+                    }
+                    .onChange(of: scrollTo) { value in
+                        if let value = value {
+                            proxy.scrollTo(value, anchor: .bottom)
+                            scrollTo = nil
+                            print("scrollTo to specific valud")
+                        }
+                    }
+                    .iOS {
+                        // Auto Scroll with Keyboard Notification
+                        $0.onReceive(
+                            NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+                                .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
+                            perform: { _ in
+                                if !isKeyboardActive {
+                                    isKeyboardActive = true
+                                    scrollToBottom = true
                                 }
                             }
+                        )
+                        .onReceive(
+                            NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
+                            perform: { _ in isKeyboardActive = false }
+                        )
                     }
-                    //hasMore
-                    if messages.count == 0 {
-                        VStack(alignment: .center) {
-                            ProgressView()
-                                .padding()
-                            Text("Fetching Messages")
-                        }
-                        .padding()
-                        
-                    }else if hasMore {
-                        ProgressView()
-                            .padding()
-                    }
-                    Spacer()
-                        .frame(height: inset.bottom)
-                        .id("bottom")
-                }
-                .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
-                .onChange(of: scrollToBottom) { value in
-                    if value {
-                        withAnimation {
-                            proxy.scrollTo("bottom")
-                        }
-                        scrollToBottom = false
-                    }
-                }
-                .onChange(of: scrollTo) { value in
-                    if let value = value {
-                        proxy.scrollTo(value, anchor: .bottom)
-                        scrollTo = nil
-                        print("scrollTo to specific valud")
-                    }
-                }
-                .iOS {
-                    // Auto Scroll with Keyboard Notification
-                    $0.onReceive(
-                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-                            .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
-                        perform: { _ in
-                            if !isKeyboardActive {
-                                isKeyboardActive = true
-                                scrollToBottom = true
-                            }
-                        }
-                    )
-                    .onReceive(
-                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
-                        perform: { _ in isKeyboardActive = false }
-                    )
                 }
             }
-        }
-        .background(Color.clear)
+            .background(Color.clear)
+            .padding(.top, messageEditorHeight + 30)
+            .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
+        }else{
+            ScrollView(.vertical, showsIndicators: false) {
+                ScrollViewReader { proxy in
+                    LazyVStack {
+                        ForEach(messages) { message in
+                            let showDateheader = shouldShowDateHeader(
+                                messages: messages,
+                                thisMessage: message
+                            )
+                            let shouldShowDisplayName = shouldShowDisplayName(
+                                messages: messages,
+                                thisMessage: message,
+                                dateHeaderShown: showDateheader
+                            )
+                            
+                            if showDateheader {
+                                Text(dateFormater.string(from: message.date))
+                                    .font(.subheadline)
+                            }
+                            
+                            if shouldShowDisplayName {
+                                Text(message.user.userName)
+                                    .font(.caption)
+                                    .multilineTextAlignment(.trailing)
+                                    .frame(
+                                        maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
+                                        minHeight: 1,
+                                        alignment: message.isSender ? .trailing: .leading
+                                    )
+                            }
+                            chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
+                                .id(message.id)
+                                .onAppear {
+                                    let total = self.messages.count
+                                    let lastItem = self.messages[total - 5]
+                                    print(" lastItem = \(lastItem.id)  currentId = \(message.id)")
+
+                                    if message.id == self.messages.first?.id {
+                                        self.reachedTop?(message.id as! UUID)
+                                        print("TOP REACHED")
+                                    }
+                                }
+                        }
+                        //hasMore
+                        if messages.count == 0 {
+                            VStack(alignment: .center) {
+                                ProgressView()
+                                    .padding()
+                                Text("Fetching Messages")
+                            }
+                            .padding()
+                            
+                        }else if hasMore {
+                            ProgressView()
+                                .padding()
+                        }
+                        Spacer()
+                            .frame(height: inset.bottom)
+                            .id("bottom")
+                    }
+                    .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
+                    .onChange(of: scrollToBottom) { value in
+                        if value {
+                            withAnimation {
+                                proxy.scrollTo("bottom")
+                            }
+                            scrollToBottom = false
+                        }
+                    }
+                    .onChange(of: scrollTo) { value in
+                        if let value = value {
+                            proxy.scrollTo(value, anchor: .bottom)
+                            scrollTo = nil
+                            print("scrollTo to specific valud")
+                        }
+                    }
+                    .iOS {
+                        // Auto Scroll with Keyboard Notification
+                        $0.onReceive(
+                            NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+                                .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
+                            perform: { _ in
+                                if !isKeyboardActive {
+                                    isKeyboardActive = true
+                                    scrollToBottom = true
+                                }
+                            }
+                        )
+                        .onReceive(
+                            NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
+                            perform: { _ in isKeyboardActive = false }
+                        )
+                    }
+                }
+            }
+            .background(Color.clear)
             .padding(.bottom, messageEditorHeight + 30)
+        }
+        
+        
+        
+        
+        
+        
+       
+
     }
     
 }
@@ -242,7 +360,7 @@ public extension ChatView {
     ///                                 (disabled by default)
     ///   - inputView: inputView view to provide message
     ///   
-    init(
+    init(inverted : Bool = false,
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
         hasMore : Binding<Bool> = .constant(false),
@@ -266,6 +384,7 @@ public extension ChatView {
         self.reachedTop = reachedTop
         _scrollTo = scrollTo
         _hasMore = hasMore
+        self.inverted = inverted
     }
 }
 

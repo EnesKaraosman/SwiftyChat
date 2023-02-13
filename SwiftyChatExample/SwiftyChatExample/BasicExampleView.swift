@@ -10,7 +10,7 @@ import SwiftyChat
 
 struct BasicExampleView: View {
     
-    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 20)
+    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 200)
     
     // MARK: - InputBarView variables
     @State private var message = ""
