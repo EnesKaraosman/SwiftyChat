@@ -13,8 +13,16 @@ internal extension Date {
     }
     func dateFormat(format : String) -> String{
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
+
+        if Calendar.current.isDateInToday(self) {
+            dateFormatter.dateFormat = "'Today' 'At' h:mm a"
+        }else{
+            dateFormatter.dateFormat = format
+        }
         return dateFormatter.string(from: self)
+
+        
+        
     }
     var iso8601String: String {
         // https://github.com/justinmakaila/NSDate-ISO-8601/blob/master/NSDateISO8601.swift
