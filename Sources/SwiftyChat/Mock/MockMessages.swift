@@ -134,6 +134,11 @@ public struct MockMessages {
         avatarURL: URL(string: "https://ebbot.ai/wp-content/uploads/2020/04/Ebbot-Sa%CC%88ljsa%CC%88l.png")
     )
     
+    public static var hubchartUser: ChatUserItem = .init(
+        userName: "hubchart",
+        avatarURL: URL(string: "https://medchat.s3.amazonaws.com/355c4274d33231293bb07b7a846dad6e_image.jpg")
+    )
+    
     public static var chatbot: ChatUserItem = .init(
         userName: "Chatbot",
         //        avatar: #imageLiteral(resourceName: "avatar")

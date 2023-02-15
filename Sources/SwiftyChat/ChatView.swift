@@ -62,13 +62,31 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
-        
-        
-        
+
         if inverted {
             ScrollView(.vertical, showsIndicators: false) {
                 ScrollViewReader { proxy in
                     LazyVStack {
+                        Group {
+                            if messages.count == 0 {
+                                VStack(alignment: .center) {
+                                    ProgressView()
+                                        .padding()
+                                    Text("Fetching Messages")
+                                }
+                                .padding()
+                                
+                            }else if hasMore {
+                                ProgressView()
+                                    .padding()
+                            }
+                            Spacer()
+                                .frame(height: inset.bottom)
+                                .id("bottom")
+                        }
+                        .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
+
+                        
                         ForEach(messages) { message in
                             Group {
                                 let showDateheader = shouldShowDateHeader(
@@ -115,24 +133,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             }
                             .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
                         }
-                        Group {
-                            if messages.count == 0 {
-                                VStack(alignment: .center) {
-                                    ProgressView()
-                                        .padding()
-                                    Text("Fetching Messages")
-                                }
-                                .padding()
-                                
-                            }else if hasMore {
-                                ProgressView()
-                                    .padding()
-                            }
-                            Spacer()
-                                .frame(height: inset.bottom)
-                                .id("bottom")
-                        }
-                        .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
                     }
                     .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
                     .onChange(of: scrollToBottom) { value in
@@ -206,12 +206,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                 .id(message.id)
                                 .onAppear {
                                     let total = self.messages.count
-                                    let lastItem = self.messages[total - 5]
-                                    print(" lastItem = \(lastItem.id)  currentId = \(message.id)")
-
-                                    if message.id == self.messages.first?.id {
+                                    let lastItem : Message!
+                                    if total >= 5 {
+                                        lastItem = self.messages[total - 5]
+                                    }else{
+                                        lastItem = self.messages.last
+                                    }
+                                    if message.id == lastItem.id {
                                         self.reachedTop?(message.id as! UUID)
-                                        print("TOP REACHED")
                                     }
                                 }
                         }

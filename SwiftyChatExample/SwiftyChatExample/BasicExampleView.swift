@@ -29,7 +29,7 @@ struct BasicExampleView: View {
                 placeholder: "Type something",
                 onCommit: { messageKind in
                     self.messages.append(
-                        .init(user: MockMessages.sender, messageKind: messageKind, isSender: true)
+                        .init(user: MockMessages.chatbot, messageKind: messageKind, isSender: true)
                     )
                 }
             )
