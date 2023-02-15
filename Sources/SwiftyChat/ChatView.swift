@@ -78,19 +78,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     thisMessage: message,
                                     dateHeaderShown: showDateheader
                                 )
-                                Group {
-                                    HStack(alignment: .center){
-                                        Text(message.date.dateFormat(format: "MMM d 'At' h:mm a"))
-                                            .font(.system(size: 12))
-                                            .fontWeight(.medium)
-                                            .foregroundColor(.blue)
-                                        Text("• \(message.user.userName)")
-                                            .font(.system(size: 12))
-                                            .fontWeight(.medium)
-                                    }.frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                                .padding(.leading,45)
-                                .padding(.bottom,20)
+                                ChatNameAndTime(message: message)
                                 chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                                     .id(message.id)
                                     .onAppear {
