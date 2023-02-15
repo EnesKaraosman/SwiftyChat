@@ -87,21 +87,7 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
     }
     
     public var body: some View {
-        VStack {
             messageCell()
-            Group {
-                HStack(alignment: .center){
-                    Text(message.date.dateFormat(format: "MMM d 'At' h:mm a"))
-                        .font(.system(size: 12))
-                        .fontWeight(.medium)
-                        .foregroundColor(.blue)
-                    Text("• \(message.user.userName)")
-                        .font(.system(size: 12))
-                        .fontWeight(.medium)
-                }.frame(maxWidth: .infinity, alignment: .leading)
-            }
-            .padding(.leading,15)
-        }
     }
     
 }

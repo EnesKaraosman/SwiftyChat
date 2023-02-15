@@ -67,26 +67,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             ScrollView(.vertical, showsIndicators: false) {
                 ScrollViewReader { proxy in
                     LazyVStack {
-                        Group {
-                            if messages.count == 0 {
-                                VStack(alignment: .center) {
-                                    ProgressView()
-                                        .padding()
-                                    Text("Fetching Messages")
-                                }
-                                .padding()
-                                
-                            }else if hasMore {
-                                ProgressView()
-                                    .padding()
-                            }
-                            Spacer()
-                                .frame(height: inset.bottom)
-                                .id("bottom")
-                        }
-                        .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
-
-                        
                         ForEach(messages) { message in
                             Group {
                                 let showDateheader = shouldShowDateHeader(
@@ -98,7 +78,19 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     thisMessage: message,
                                     dateHeaderShown: showDateheader
                                 )
-                                
+                                Group {
+                                    HStack(alignment: .center){
+                                        Text(message.date.dateFormat(format: "MMM d 'At' h:mm a"))
+                                            .font(.system(size: 12))
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.blue)
+                                        Text("• \(message.user.userName)")
+                                            .font(.system(size: 12))
+                                            .fontWeight(.medium)
+                                    }.frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                                .padding(.leading,45)
+                                .padding(.bottom,20)
                                 chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                                     .id(message.id)
                                     .onAppear {
@@ -133,6 +125,24 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             }
                             .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
                         }
+                        Group {
+                            if messages.count == 0 {
+                                VStack(alignment: .center) {
+                                    ProgressView()
+                                        .padding()
+                                    Text("Fetching Messages")
+                                }
+                                .padding()
+                                
+                            }else if hasMore {
+                                ProgressView()
+                                    .padding()
+                            }
+                            Spacer()
+                                .frame(height: inset.bottom)
+                                .id("bottom")
+                        }
+                        .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
                     }
                     .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
                     .onChange(of: scrollToBottom) { value in
