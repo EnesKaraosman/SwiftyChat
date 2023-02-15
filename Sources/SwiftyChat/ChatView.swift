@@ -81,6 +81,17 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     dateHeaderShown: showDateheader
                                 )
                                 
+                                chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
+                                    .id(message.id)
+                                    .onAppear {
+                                        let total = self.messages.count
+                                        let lastItem = self.messages[total - 5]
+                                        if message.id == lastItem.id {
+                                            self.reachedTop?(message.id as! UUID)
+                                            print("TOP REACHED")
+                                        }
+                                    }
+                                
                                 if showDateheader {
                                     Text(dateFormater.string(from: message.date))
                                         .font(.subheadline)
@@ -96,16 +107,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                             alignment: message.isSender ? .trailing: .leading
                                         )
                                 }
-                                chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
-                                    .id(message.id)
-                                    .onAppear {
-                                        let total = self.messages.count
-                                        let lastItem = self.messages[total - 5]
-                                        if message.id == lastItem.id {
-                                            self.reachedTop?(message.id as! UUID)
-                                            print("TOP REACHED")
-                                        }
-                                    }
+                                
                             }
                             .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
                         }

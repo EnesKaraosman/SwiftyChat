@@ -133,7 +133,7 @@ struct AdvancedExampleView: View {
                 )
             )
             
-            self.messages.append(contentsOf: MockMessages.generatedMessages(count: 100))
+            self.messages.append(contentsOf: MockMessages.generatedMessages(count: 3))
            // self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(html1), isSender: false))
            // self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(htmlLink), isSender: false))
             
