@@ -85,10 +85,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     .id(message.id)
                                     .onAppear {
                                         let total = self.messages.count
-                                        let lastItem = self.messages[total - 5]
+                                        let lastItem : Message!
+                                        if total >= 5 {
+                                            lastItem = self.messages[total - 5]
+                                        }else{
+                                            lastItem = self.messages.last
+                                        }
                                         if message.id == lastItem.id {
                                             self.reachedTop?(message.id as! UUID)
-                                            print("TOP REACHED")
                                         }
                                     }
                                 
