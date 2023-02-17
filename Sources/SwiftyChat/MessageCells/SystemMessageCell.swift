@@ -7,9 +7,8 @@
 
 import SwiftUI
 
-internal struct SystemMessageCell<Message: ChatMessage>: View {
+internal struct SystemMessageCell: View {
     public let text: String
-    public let message: Message
 
     var body: some View {
         Text(text)

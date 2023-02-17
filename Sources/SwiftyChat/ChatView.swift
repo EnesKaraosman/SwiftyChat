@@ -71,48 +71,54 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         ForEach(messages) { message in
                             Group {
                                 
-                             //   if messa
-                                
-                                let showDateheader = shouldShowDateHeader(
-                                    messages: messages,
-                                    thisMessage: message
-                                )
-                                let shouldShowDisplayName = shouldShowDisplayName(
-                                    messages: messages,
-                                    thisMessage: message,
-                                    dateHeaderShown: showDateheader
-                                )
-                                ChatNameAndTime(message: message)
-                                chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
-                                    .id(message.id)
-                                    .onAppear {
-                                        let total = self.messages.count
-                                        let lastItem : Message!
-                                        if total >= 5 {
-                                            lastItem = self.messages[total - 5]
-                                        }else{
-                                            lastItem = self.messages.last
+                                switch message.messageKind {
+                                case .systemMessage(let text):
+                                    SystemMessageCell(text: text)
+                                default:
+                                    let showDateheader = shouldShowDateHeader(
+                                        messages: messages,
+                                        thisMessage: message
+                                    )
+                                    let shouldShowDisplayName = shouldShowDisplayName(
+                                        messages: messages,
+                                        thisMessage: message,
+                                        dateHeaderShown: showDateheader
+                                    )
+                                        
+                                    ChatNameAndTime(message: message)
+                                    chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
+                                        .id(message.id)
+                                        .onAppear {
+                                            let total = self.messages.count
+                                            let lastItem : Message!
+                                            if total >= 5 {
+                                                lastItem = self.messages[total - 5]
+                                            }else{
+                                                lastItem = self.messages.last
+                                            }
+                                            if message.id == lastItem.id {
+                                                self.reachedTop?(message.id as! UUID)
+                                            }
                                         }
-                                        if message.id == lastItem.id {
-                                            self.reachedTop?(message.id as! UUID)
-                                        }
+                                    
+                                    if showDateheader {
+                                        Text(dateFormater.string(from: message.date))
+                                            .font(.subheadline)
                                     }
-                                
-                                if showDateheader {
-                                    Text(dateFormater.string(from: message.date))
-                                        .font(.subheadline)
+                                    
+                                    if shouldShowDisplayName {
+                                        Text(message.user.userName)
+                                            .font(.caption)
+                                            .multilineTextAlignment(.trailing)
+                                            .frame(
+                                                maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
+                                                minHeight: 1,
+                                                alignment: message.isSender ? .trailing: .leading
+                                            )
+                                    }
                                 }
+                       
                                 
-                                if shouldShowDisplayName {
-                                    Text(message.user.userName)
-                                        .font(.caption)
-                                        .multilineTextAlignment(.trailing)
-                                        .frame(
-                                            maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
-                                            minHeight: 1,
-                                            alignment: message.isSender ? .trailing: .leading
-                                        )
-                                }
                                 
                                 
                                 
