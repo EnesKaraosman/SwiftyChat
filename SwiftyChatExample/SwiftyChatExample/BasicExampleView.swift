@@ -10,7 +10,7 @@ import SwiftyChat
 
 struct BasicExampleView: View {
     
-    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 200)
+    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 10)
     
     // MARK: - InputBarView variables
     @State private var message = ""
@@ -21,7 +21,7 @@ struct BasicExampleView: View {
     
     private var chatView: some View {
         
-        ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(messages: $messages) {
+        ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(inverted : true , messages: $messages) {
 
             BasicInputView(
                 message: $message,
@@ -61,6 +61,7 @@ struct BasicExampleView: View {
         // ▼ Required
         .environmentObject(ChatMessageCellStyle.basicStyle)
         .navigationBarTitle("Basic")
+        .navigationBarTitleDisplayMode(.inline)
         .listStyle(PlainListStyle())
     }
 }

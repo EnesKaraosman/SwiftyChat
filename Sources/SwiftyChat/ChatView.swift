@@ -30,6 +30,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
     @Binding private var hasMore: Bool
+    @Binding private var isFetching: Bool
     @State private var isKeyboardActive = false
     
     @State private var contentSizeThatFits: CGSize = .zero
@@ -69,6 +70,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     LazyVStack {
                         ForEach(messages) { message in
                             Group {
+                                
                                 let showDateheader = shouldShowDateHeader(
                                     messages: messages,
                                     thisMessage: message
@@ -109,26 +111,27 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                             alignment: message.isSender ? .trailing: .leading
                                         )
                                 }
+                                if (message.id == self.messages.last!.id) && isFetching {
+                                    ProgressView()
+                                        .padding()
+
+                                }
                                 
                             }
                             .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
+                            
                         }
+                   
+                        
                         Group {
-                            if messages.count == 0 {
+                            if messages.count == 0 && isFetching {
+                                Spacer(minLength: geometry.size.height / 2)
                                 VStack(alignment: .center) {
                                     ProgressView()
                                         .padding()
                                     Text("Fetching Messages")
                                 }
-                                .padding()
-                                
-                            }else if hasMore {
-                                ProgressView()
-                                    .padding()
                             }
-                            Spacer()
-                                .frame(height: inset.bottom)
-                                .id("bottom")
                         }
                         .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
                     }
@@ -216,10 +219,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                 }
                         }
                         //hasMore
-                        if messages.count == 0 {
+                        if messages.count == 0 && isFetching {
                             VStack(alignment: .center) {
-                                Text("Fetching Messages")
-                                Spacer()
                                 ProgressView()
                                     .padding()
                                 Text("Fetching Messages")
@@ -230,12 +231,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             ProgressView()
                                 .padding()
                         }
-                        /*
-                         Spacer()
-                             .frame(height: inset.bottom)
-                             .id("bottom")
-                         */
-                      
+                        Spacer()
+                            .frame(height: inset.bottom)
+                            .id("bottom")
                     }
                     .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
                     .onChange(of: scrollToBottom) { value in
@@ -371,7 +369,8 @@ public extension ChatView {
     ///                                 (disabled by default)
     ///   - inputView: inputView view to provide message
     ///   
-    init(inverted : Bool = false,
+    init(isFetching : Binding<Bool> = .constant(false),
+        inverted : Bool = false,
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
         hasMore : Binding<Bool> = .constant(false),
@@ -396,6 +395,7 @@ public extension ChatView {
         _scrollTo = scrollTo
         _hasMore = hasMore
         self.inverted = inverted
+        _isFetching = isFetching
     }
 }
 
