@@ -71,6 +71,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         ForEach(messages) { message in
                             Group {
                                 
+                             //   if messa
+                                
                                 let showDateheader = shouldShowDateHeader(
                                     messages: messages,
                                     thisMessage: message
@@ -111,6 +113,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                             alignment: message.isSender ? .trailing: .leading
                                         )
                                 }
+                                
+                                
+                                
                                 if (message.id == self.messages.last!.id) && isFetching {
                                     ProgressView()
                                         .padding()

@@ -17,6 +17,10 @@ struct BasicExampleView: View {
     @State private var isEditing = false
     var body: some View {
         chatView
+            .onAppear {
+                
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .systemMessage("sample message")))
+            }
     }
     
     private var chatView: some View {
