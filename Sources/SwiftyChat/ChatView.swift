@@ -218,6 +218,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         //hasMore
                         if messages.count == 0 {
                             VStack(alignment: .center) {
+                                Spacer()
                                 ProgressView()
                                     .padding()
                                 Text("Fetching Messages")
