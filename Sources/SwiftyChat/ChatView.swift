@@ -218,6 +218,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         //hasMore
                         if messages.count == 0 {
                             VStack(alignment: .center) {
+                                Text("Fetching Messages")
                                 Spacer()
                                 ProgressView()
                                     .padding()
@@ -229,9 +230,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             ProgressView()
                                 .padding()
                         }
-                        Spacer()
-                            .frame(height: inset.bottom)
-                            .id("bottom")
+                        /*
+                         Spacer()
+                             .frame(height: inset.bottom)
+                             .id("bottom")
+                         */
+                      
                     }
                     .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
                     .onChange(of: scrollToBottom) { value in
