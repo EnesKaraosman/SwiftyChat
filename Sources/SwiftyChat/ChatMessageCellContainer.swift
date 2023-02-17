@@ -83,7 +83,7 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
         case .loading:
             LoadingCell(message: message, size: size)
         case .systemMessage(let text):
-            SystemMessageCell(text: text)
+            SystemMessageCell(text: text,message: message)
         }
         
     }

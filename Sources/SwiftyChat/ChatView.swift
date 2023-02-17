@@ -73,7 +73,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                 
                                 switch message.messageKind {
                                 case .systemMessage(let text):
-                                    SystemMessageCell(text: text)
+                                    SystemMessageCell(text: text,message:message)
                                 default:
                                     let showDateheader = shouldShowDateHeader(
                                         messages: messages,
