@@ -84,7 +84,7 @@ struct AdvancedExampleView: View {
             self.messages.append(
                 MockMessages.ChatMessageItem(
                     user: MockMessages.sender,
-                    messageKind: .text(quickReply.title),
+                    messageKind: .text(quickReply.title,nil),
                     isSender: true
                 )
             )
@@ -129,7 +129,7 @@ struct AdvancedExampleView: View {
             self.messages.append(
                 .init(
                     user: MockMessages.chatbot,
-                    messageKind: .text("https://github.com/EnesKaraosman/SwiftyChat and here is his phone +90 537 844 11-41, & mail: eneskaraosman53@gmail.com Today is 27 May 2020")
+                    messageKind: .text("https://github.com/EnesKaraosman/SwiftyChat and here is his phone +90 537 844 11-41, & mail: eneskaraosman53@gmail.com Today is 27 May 2020",nil)
                 )
             )
             

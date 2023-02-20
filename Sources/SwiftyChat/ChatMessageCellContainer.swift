@@ -21,9 +21,10 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
     @ViewBuilder private func messageCell() -> some View {
         switch message.messageKind {
             
-        case .text(let text):
+        case .text(let text, let attentions):
             TextCell(
                 text: text,
+                attentions: attentions,
                 message: message,
                 size: size,
                 callback: onTextTappedCallback

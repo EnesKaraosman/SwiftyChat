@@ -66,7 +66,7 @@ public struct BasicInputView: View {
 
     private var sendButton: some View {
         Button(action: {
-            self.onCommit?(.text(message))
+            self.onCommit?(.text(message,nil))
             self.message.removeAll()
         }, label: {
             Circle().fill(Color(.systemBlue))

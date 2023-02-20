@@ -11,6 +11,7 @@ import SwiftUI
 internal struct TextCell<Message: ChatMessage>: View {
     
     public let text: String
+    public let attentions : [String]?
     public let message: Message
     public let size: CGSize
     public let callback: () -> AttributedTextTappedCallback
@@ -42,8 +43,7 @@ internal struct TextCell<Message: ChatMessage>: View {
             .foregroundColor(cellStyle.textStyle.textColor)
             .padding(cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
-            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-)
+            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
             .overlay(
                 
                 RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)

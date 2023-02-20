@@ -31,7 +31,7 @@ public struct MockMessages {
         
         private var messageKind: ChatMessageKind {
             switch self {
-            case .Text: return .text("")
+            case .Text: return .text("",nil)
             case .Image: return .image(.remote(URL(string: "")!))
             case .Location: return .location(LocationRow(latitude: .nan, longitude: .nan))
             case .Contact: return .contact(ContactRow(displayName: ""))
@@ -170,7 +170,7 @@ public struct MockMessages {
         case .Text:
             return ChatMessageItem(
                 user: randomUser,
-                messageKind: .text(Lorem.sentence()),
+                messageKind: .text(Lorem.sentence(),nil),
                 isSender: randomUser == Self.sender
             )
             

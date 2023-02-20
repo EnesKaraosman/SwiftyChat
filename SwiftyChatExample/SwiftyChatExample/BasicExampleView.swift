@@ -48,7 +48,7 @@ struct BasicExampleView: View {
         // ▼ Optional, Present context menu when cell long pressed
         .messageCellContextMenu { message -> AnyView in
             switch message.messageKind {
-            case .text(let text):
+            case .text(let text,_):
                 return Button(action: {
                     print("Copy Context Menu tapped!!")
                     UIPasteboard.general.string = text

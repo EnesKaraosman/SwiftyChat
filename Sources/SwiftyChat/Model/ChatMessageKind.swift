@@ -17,7 +17,7 @@ public enum ChatMessageKind: CustomStringConvertible {
     
     /// A text message,
     /// supports emoji 👍🏻 (auto scales if text is all about emojis)
-    case text(String)
+    case text(String,[String]?)
     
     /// An image message, from local(UIImage) or remote(URL).
     case image(ImageLoadingKind)
@@ -62,8 +62,8 @@ public enum ChatMessageKind: CustomStringConvertible {
             case .remote(let remoteImageUrl):
                 return "MessageKind.imageText(remote: \(remoteImageUrl), text:\(text))"
             }
-        case .text(let text):
-            return "MessageKind.text(\(text))"
+        case .text(let text,let attentions):
+            return "MessageKind.text(\(text) attentions\(attentions)"
         case .location(let location):
             return "MessageKind.location(lat: \(location.latitude), lon: \(location.longitude))"
         case .contact(let contact):
