@@ -62,8 +62,10 @@ internal struct TextCell<Message: ChatMessage>: View {
     @available(iOS 15, *)
     private var formattedTagString : AttributedString {
         var attentionName : String = ""
-        if let attention = attentions {
-            attentionName.append("@\(attention) ")
+        if let attentions = attentions {
+            for name in attentions {
+                attentionName += "@\(name) "
+            }
         }
         
         var result = AttributedString(attentionName)
