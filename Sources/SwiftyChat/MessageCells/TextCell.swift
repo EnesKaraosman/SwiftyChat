@@ -58,6 +58,44 @@ internal struct TextCell<Message: ChatMessage>: View {
             )
     }
     
+    
+    @available(iOS 15, *)
+    private var formattedTagString : AttributedString {
+        var attentionName : String = ""
+        if let attention = attentions {
+            attentionName.append("@\(attention) ")
+        }
+        
+        var result = AttributedString(attentionName)
+        result.foregroundColor = .blue
+
+        return result +  AttributedString(text)
+    }
+    
+    @available(iOS 15, *)
+    private var defaultAttentionText: some View {
+        Text(formattedTagString)
+            .fontWeight(cellStyle.textStyle.fontWeight)
+            .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+            .lineLimit(nil)
+            .foregroundColor(cellStyle.textStyle.textColor)
+            .padding(cellStyle.textPadding)
+            .background(cellStyle.cellBackgroundColor)
+            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
+            .overlay(
+                
+                RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
+            )
+    }
+    
     private var attributedText: some View {
         let textStyle = cellStyle.attributedTextStyle
         
@@ -118,7 +156,19 @@ internal struct TextCell<Message: ChatMessage>: View {
 //        } else {
 //            defaultText
 //        }
-        defaultText
+        
+        
+        if let attentions = attentions, attentions.count > 0 {
+            if #available(iOS 15, *) {
+                defaultAttentionText
+            } else {
+                defaultText
+            }
+        }else{
+            defaultText
+        }
+       
+        
     }
     
 }
