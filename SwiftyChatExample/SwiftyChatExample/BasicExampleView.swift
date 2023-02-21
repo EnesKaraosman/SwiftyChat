@@ -21,6 +21,7 @@ struct BasicExampleView: View {
                 
                 self.messages.append(.init(user: MockMessages.chatbot, messageKind: .systemMessage("sample message")))
                 self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("sample tag ", ["amigo","amigo 1"])))
+                
             }
     }
     

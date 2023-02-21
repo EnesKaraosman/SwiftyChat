@@ -23,7 +23,7 @@ public enum ChatMessageKind: CustomStringConvertible {
     case image(ImageLoadingKind)
     
     /// An image message, from local(UIImage) or remote(URL).
-    case imageText(ImageLoadingKind, String)
+    case imageText(ImageLoadingKind, String,[String]?)
     
     /// A location message, pins given location & presents on MapKit.
     case location(LocationItem)
@@ -40,6 +40,8 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// A video message, opens the given URL.
     case video(VideoItem)
     
+    case videoText(VideoItem,String,[String]?)
+
     /// Loading indicator contained in chat bubble
     case loading
     
@@ -55,7 +57,7 @@ public enum ChatMessageKind: CustomStringConvertible {
             case .remote(let remoteImageUrl):
                 return "MessageKind.image(remote: \(remoteImageUrl))"
             }
-        case .imageText(let imageLoadingType, let text):
+        case .imageText(let imageLoadingType, let text, _):
             switch imageLoadingType {
             case .local(let localImage):
                 return "MessageKind.imageText(local: \(localImage), text:\(text)"
@@ -79,7 +81,8 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.loading"
         case .systemMessage(let message):
             return "MessageKind.systemMessage \(message)"
-
+        case .videoText(let videoItem,let text,let attentions):
+            return "MessageKind.video(url: \(videoItem.url) text \(text) tag \(attentions)"
         }
     }
     
