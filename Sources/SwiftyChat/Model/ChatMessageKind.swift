@@ -47,6 +47,8 @@ public enum ChatMessageKind: CustomStringConvertible {
     
     case systemMessage(String)
     
+    case reply(any ReplyItem,[any ReplyItem])
+    
     
     public var description: String {
         switch self {
@@ -83,6 +85,8 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.systemMessage \(message)"
         case .videoText(let videoItem,let text,let attentions):
             return "MessageKind.video(url: \(videoItem.url) text \(text) tag \(attentions)"
+        case . reply(let reply, let replies):
+            return "MessageKind.reply reply \(reply) and replies \(replies)"
         }
     }
     

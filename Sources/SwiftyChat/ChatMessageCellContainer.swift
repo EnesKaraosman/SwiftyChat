@@ -89,7 +89,9 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
         
         case .videoText(let videoItem, let text, let attentions):
             SystemMessageCell(text: text,message: message)
-
+            
+        case .reply(let reply, let replies):
+            ReplyCell(message: message, replies: replies, reply: reply, size: size)
         }
         
     }

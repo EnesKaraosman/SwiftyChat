@@ -8,6 +8,26 @@
 import SwiftUI
 import SwiftyChat
 
+public struct Reply : ReplyItem {
+    public var id: UUID = UUID()
+    public var fileType: ReplyItemKind
+    public var displayName: String
+    public var thumbnailURL: String?
+    public var fileURL: String?
+    public var text: String?
+    public var date: String
+    
+    init(fileType : ReplyItemKind,displayName : String,thumbnailURL : String?,fileURL: String?, text :String?, date: String ){
+        self.fileURL = fileURL
+        self.fileType = fileType
+        self.displayName = displayName
+        self.thumbnailURL = thumbnailURL
+        self.fileURL = fileURL
+        self.text = text
+        self.date = date
+    }
+    
+}
 struct BasicExampleView: View {
     
     @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 10)
@@ -18,10 +38,19 @@ struct BasicExampleView: View {
     var body: some View {
         chatView
             .onAppear {
+                let reply = Reply(fileType: .text, displayName: "Amigo Reyes", thumbnailURL: nil, fileURL: nil, text: "my sample reply", date: "Feb 15, 2023, 6:05 PM")
+//                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text: "my 1", date: "Feb 15, 2023, 6:05 PM"),
+//                               Reply(fileType: .text, displayName: "Amigo 2", thumbnailURL: nil, fileURL: nil, text: "my 2", date: "Feb 10, 2023, 6:05 PM"),
+//                               Reply(fileType: .text, displayName: "Amigo 3", thumbnailURL: nil, fileURL: nil, text: "my 3", date: "Feb 12, 2023, 6:05 PM")]
+//                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
+//                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text: Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
+//                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
+//                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "hello", date: "Feb 15, 2023, 6:05 PM")]
                 
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .systemMessage("sample message")))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("sample tag ", ["amigo","amigo 1"])))
-                
+                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "hello", date: "Feb 15, 2023, 6:05 PM")]
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies)))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true))
+
             }
     }
     

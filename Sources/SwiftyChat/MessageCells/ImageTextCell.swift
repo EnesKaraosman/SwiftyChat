@@ -41,6 +41,7 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder private var imageView: some View {
+        
         if case let ImageLoadingKind.local(uiImage) = imageLoadingType {
             let width = uiImage.size.width
             let height = uiImage.size.height
