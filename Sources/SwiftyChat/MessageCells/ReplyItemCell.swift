@@ -28,7 +28,6 @@ struct ReplyItemCell<Message: ChatMessage>: View {
         
     }
 //
-    
     var textView : some View {
         HStack(alignment: .center, spacing: 0) {
             Image(systemName: "arrowshape.turn.up.left.fill")

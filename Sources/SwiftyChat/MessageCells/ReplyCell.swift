@@ -21,44 +21,56 @@ internal struct ReplyCell<Message: ChatMessage>: View {
     var body: some View {
         
         
-        LazyVStack(alignment: message.isSender ? .trailing : .leading,spacing: 0) {
-            
+    LazyVStack(alignment: message.isSender ? .trailing : .leading,spacing: 0) {
+        ZStack {
             Group {
-                ForEach(replies, id: \.id) { item in
-                    ReplyItemCell(reply: item, message: message, size: size)
-                    Divider()
-                        .background(cellStyle.textStyle.textColor)
-                        .padding(5)
+                VStack {
+                    ForEach(replies, id: \.id) { item in
+                        ReplyItemCell(reply: item, message: message, size: size)
+                            .padding(.bottom)
+                            .overlay (
+                                VStack {
+                                    Spacer()
+                                    Divider()
+                                        .background(cellStyle.textStyle.textColor)
+
+                                }
+                            )
+  
+                    }
+                    
+                    Text(reply.text!)
+                        .fontWeight(cellStyle.textStyle.fontWeight)
+                        .modifier(EmojiModifier(text: reply.text!, defaultFont: cellStyle.textStyle.font))
+                        .lineLimit(nil)
+                        .foregroundColor(cellStyle.textStyle.textColor)
+                        .padding(.top,10)
+
                 }
-                
-                Text(reply.text!)
-                    .fontWeight(cellStyle.textStyle.fontWeight)
-                    .modifier(EmojiModifier(text: reply.text!, defaultFont: cellStyle.textStyle.font))
-                    .lineLimit(nil)
-                    .foregroundColor(cellStyle.textStyle.textColor)
-                    .padding(.top,10)
 
             }
+        }
+           
+            .padding(cellStyle.textPadding)
+            .background(cellStyle.cellBackgroundColor)
 
+            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
+            .overlay(
+
+                RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
+            )
 
          
         }
-        .padding(cellStyle.textPadding)
-        .background(cellStyle.cellBackgroundColor)
 
-        .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
-        .overlay(
-            
-            RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-            .stroke(
-                cellStyle.cellBorderColor,
-                lineWidth: cellStyle.cellBorderWidth
-            )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
-        )
 
     }
 }

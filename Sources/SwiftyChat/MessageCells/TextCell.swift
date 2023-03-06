@@ -45,7 +45,7 @@ internal struct TextCell<Message: ChatMessage>: View {
             .background(cellStyle.cellBackgroundColor)
             .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
             .overlay(
-                
+
                 RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
                 .stroke(
                     cellStyle.cellBorderColor,

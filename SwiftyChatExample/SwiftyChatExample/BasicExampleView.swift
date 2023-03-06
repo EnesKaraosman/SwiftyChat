@@ -30,7 +30,7 @@ public struct Reply : ReplyItem {
 }
 struct BasicExampleView: View {
     
-    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 10)
+    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 1)
     
     // MARK: - InputBarView variables
     @State private var message = ""

@@ -23,7 +23,7 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
             
         case .text(let text, let attentions):
             TextCell(
-                text: text,
+                text: "Amigo",
                 attentions: attentions,
                 message: message,
                 size: size,
