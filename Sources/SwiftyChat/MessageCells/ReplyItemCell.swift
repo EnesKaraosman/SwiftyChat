@@ -57,7 +57,6 @@ struct ReplyItemCell<Message: ChatMessage>: View {
 
             }
         }
-        .background(Color.green)
     }
     
     var imageText : some View {
