@@ -24,7 +24,7 @@ internal struct ReplyCell<Message: ChatMessage>: View {
     LazyVStack(alignment: message.isSender ? .trailing : .leading,spacing: 0) {
         ZStack {
             Group {
-                VStack {
+                VStack(alignment: message.isSender ? .trailing : .leading,spacing: 0) {
                     ForEach(replies, id: \.id) { item in
                         ReplyItemCell(reply: item, message: message, size: size)
                             .padding(.bottom)
