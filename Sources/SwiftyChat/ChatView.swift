@@ -119,10 +119,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     }
                                 }
                        
-                                
-                                
-                                
-                                
                                 if (message.id == self.messages.last!.id) && isFetching {
                                     ProgressView()
                                         .padding()
@@ -285,13 +281,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             .background(Color.clear)
             .padding(.bottom, messageEditorHeight + 30)
         }
-        
-        
-        
-        
-        
-        
-       
 
     }
     
@@ -312,10 +301,10 @@ internal extension ChatView {
             onTextTappedCallback: onAttributedTextTappedCallback,
             onCarouselItemAction: onCarouselItemAction
         )
-        .onLongPressGesture(minimumDuration: 0.5) {
+        .onTapGesture { onMessageCellTapped(message) }
+        .onLongPressGesture(minimumDuration: 0.2) {
             onMessageCellLongPressed(message)
         }
-        .onTapGesture { onMessageCellTapped(message) }
         .modifier(
             AvatarModifier<Message, User>(
                 message: message,

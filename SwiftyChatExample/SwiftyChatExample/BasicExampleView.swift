@@ -87,23 +87,6 @@ struct BasicExampleView: View {
             print(  message.messageKind.description)
             self.showingOptions = true
         })
-        // ▼ Optional, Present context menu when cell long pressed
-        .messageCellContextMenu { message -> AnyView in
-            switch message.messageKind {
-            case .text(let text,_):
-                return Button(action: {
-                    print("Copy Context Menu tapped!!")
-                    UIPasteboard.general.string = text
-                }) {
-                    Text("Copy")
-                    Image(systemName: "doc.on.doc")
-                }.embedInAnyView()
-            default:
-                // If you don't want to implement contextMenu action
-                // for a specific case, simply return EmptyView like below;
-                return EmptyView().embedInAnyView()
-            }
-        }
         .actionSheet(isPresented: $showingOptions) {
             ActionSheet(
                 title: Text("Food alert!"),
