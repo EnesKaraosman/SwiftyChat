@@ -15,6 +15,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var inputView: () -> AnyView
 
     private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
+    private var onMessageCellLongPressed: (Message) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
     private var contactCellFooterSection: (ContactItem, Message) -> [ContactCellButton] = { _, _ in [] }
@@ -311,8 +312,10 @@ internal extension ChatView {
             onTextTappedCallback: onAttributedTextTappedCallback,
             onCarouselItemAction: onCarouselItemAction
         )
+        .onLongPressGesture(minimumDuration: 0.5) {
+            onMessageCellLongPressed(message)
+        }
         .onTapGesture { onMessageCellTapped(message) }
-        .contextMenu(menuItems: { messageCellContextMenu(message) })
         .modifier(
             AvatarModifier<Message, User>(
                 message: message,
@@ -414,6 +417,9 @@ public extension ChatView {
     /// Triggered when a ChatMessage is tapped.
     func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> Self {
         then({ $0.onMessageCellTapped = action })
+    }
+    func onMessageCellLongpressed(_ action: @escaping (Message) -> Void) -> Self {
+        then({ $0.onMessageCellLongPressed = action })
     }
     
     /// Present ContextMenu when a message cell is long pressed.

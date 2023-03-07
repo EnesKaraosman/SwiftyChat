@@ -35,6 +35,8 @@ struct BasicExampleView: View {
     // MARK: - InputBarView variables
     @State private var message = ""
     @State private var isEditing = false
+    @State private var showingOptions = false
+
     var body: some View {
         chatView
             .onAppear {
@@ -81,6 +83,10 @@ struct BasicExampleView: View {
             .embedInAnyView()
             
         }
+        .onMessageCellLongpressed({ message in
+            print(  message.messageKind.description)
+            self.showingOptions = true
+        })
         // ▼ Optional, Present context menu when cell long pressed
         .messageCellContextMenu { message -> AnyView in
             switch message.messageKind {
@@ -98,6 +104,18 @@ struct BasicExampleView: View {
                 return EmptyView().embedInAnyView()
             }
         }
+        .actionSheet(isPresented: $showingOptions) {
+            ActionSheet(
+                title: Text("Food alert!"),
+                message: Text("You have made a selection"),
+                buttons: [
+                    .cancel(),
+                    .destructive(Text("Change to 🍑")) { /* override */ },
+                    .default(Text("Confirm")) { /* confirm */ }
+                ]
+            )
+        }
+
         // ▼ Required
         .environmentObject(ChatMessageCellStyle.basicStyle)
         .navigationBarTitle("Basic")
