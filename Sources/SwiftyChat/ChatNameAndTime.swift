@@ -17,9 +17,11 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                     .font(.system(size: 12))
                     .fontWeight(.medium)
                     .foregroundColor(.blue)
-                Text("• \(message.user.userName)")
-                    .font(.system(size: 12))
-                    .fontWeight(.medium)
+                if !message.isSender {
+                    Text("• \(message.user.userName)")
+                        .font(.system(size: 12))
+                        .fontWeight(.medium)
+                }
             }.frame(maxWidth: .infinity, alignment: message.isSender ?  .trailing : .leading)
         }
         .padding(message.isSender ? .trailing : .leading ,message.isSender ? 10 : 45)
