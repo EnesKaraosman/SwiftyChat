@@ -8,6 +8,13 @@
 
 import SwiftUI
 
+
+public enum SendStatus {
+    case sent
+    case sending
+    case failed
+}
+
 public enum ImageLoadingKind {
     case local(UIImage)
     case remote(URL)

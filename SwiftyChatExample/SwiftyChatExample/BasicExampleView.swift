@@ -56,7 +56,8 @@ struct BasicExampleView: View {
                                     Reply(fileType: .image, displayName: "Amigo 1", thumbnailURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", fileURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", text:  nil, date: "Feb 15, 2023, 6:05 PM")]
                 self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies)))
                 self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, repliesImage),isSender: true))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .sending))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .failed))
 
             }
     }
@@ -82,11 +83,15 @@ struct BasicExampleView: View {
             .animation(.linear)
             .embedInAnyView()
             
+        }tappedResendAction: { message in
+            print("resend tapped message ",message.messageKind.description)
         }
         .onMessageCellLongpressed({ message in
             print(  message.messageKind.description)
             self.showingOptions = true
         })
+        
+        
         .actionSheet(isPresented: $showingOptions) {
             ActionSheet(
                 title: Text("Food alert!"),

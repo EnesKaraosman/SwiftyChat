@@ -19,7 +19,7 @@ public protocol ChatMessage: Identifiable {
     
     /// To determine if user is the current user to properly align UI.
     var isSender: Bool { get }
-    
+    var status: SendStatus { get }
     /// The date message sent.
     var date: Date { get }
     

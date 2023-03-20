@@ -58,6 +58,8 @@ struct AdvancedExampleView: View {
             .background(Color.primary.colorInvert())
             .embedInAnyView()
             
+        }tappedResendAction: { message in
+            print("resend tapped message ",message.messageKind.description)
         }
         .onMessageCellTapped({ (message) in
             print(message.messageKind.description)

@@ -26,6 +26,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: ((_ messageId : UUID) -> Void)?
+    private var tappedResendAction : (Message) -> Void
+
     private var inverted : Bool
     
     @Binding private var scrollTo: UUID?
@@ -85,8 +87,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                         thisMessage: message,
                                         dateHeaderShown: showDateheader
                                     )
-                                        
-                                    ChatNameAndTime(message: message)
+                                    ChatNameAndTime(message: message, tappedResendAction: self.tappedResendAction)
                                     chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                                         .id(message.id)
                                         .onAppear {
@@ -382,7 +383,8 @@ public extension ChatView {
         shouldShowGroupChatHeaders: Bool = false,
         inputView: @escaping () -> AnyView,
         inset: EdgeInsets = .init(),
-        reachedTop: ((_ messageId : UUID) -> Void)? = nil
+        reachedTop: ((_ messageId : UUID) -> Void)? = nil,
+        tappedResendAction : @escaping (Message) -> Void
     ) {
         _messages = messages
         self.inputView = inputView
@@ -395,6 +397,7 @@ public extension ChatView {
         self.dateHeaderTimeInterval = dateHeaderTimeInterval
         self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
         self.reachedTop = reachedTop
+        self.tappedResendAction = tappedResendAction
         _scrollTo = scrollTo
         _hasMore = hasMore
         self.inverted = inverted
