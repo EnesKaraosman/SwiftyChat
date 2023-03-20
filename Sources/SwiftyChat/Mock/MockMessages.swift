@@ -83,6 +83,7 @@ public struct MockMessages {
         
         public let id = UUID()
         public var objectId : String
+        public var messageUUID : String
         public var user: ChatUserItem
         public var messageKind: ChatMessageKind
         public var isSender: Bool
@@ -95,7 +96,8 @@ public struct MockMessages {
             messageKind: ChatMessageKind,
             isSender: Bool = false,
             date: Date = .init(),
-            status : SendStatus = .sent
+            status : SendStatus = .sent,
+            messageUUID : String
         ) {
             self.objectId = objectId
             self.user = user
@@ -103,6 +105,7 @@ public struct MockMessages {
             self.isSender = isSender
             self.date = date
             self.status = status
+            self.messageUUID = messageUUID
         }
     }
     
@@ -167,14 +170,16 @@ public struct MockMessages {
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .image(.remote(url)),
-                isSender: randomUser == Self.sender
+                isSender: randomUser == Self.sender,
+                messageUUID: UUID().uuidString
             )
             
         case .Text:
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .text(Lorem.sentence(),nil),
-                isSender: randomUser == Self.sender
+                isSender: randomUser == Self.sender,
+                messageUUID: UUID().uuidString
             )
             
         case .Carousel:
@@ -200,7 +205,8 @@ public struct MockMessages {
                         ]
                     )
                 ]),
-                isSender: false
+                isSender: false,
+                messageUUID: UUID().uuidString
             )
             
         case .QuickReply:
@@ -210,7 +216,8 @@ public struct MockMessages {
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .quickReply(quickReplies),
-                isSender: randomUser == Self.sender
+                isSender: randomUser == Self.sender,
+                messageUUID: UUID().uuidString
             )
             
         case .Location:
@@ -221,7 +228,8 @@ public struct MockMessages {
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .location(location),
-                isSender: randomUser == Self.sender
+                isSender: randomUser == Self.sender,
+                messageUUID: UUID().uuidString
             )
             
         case .Contact:
@@ -233,7 +241,8 @@ public struct MockMessages {
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .contact(contacts.randomElement()!),
-                isSender: randomUser == Self.sender
+                isSender: randomUser == Self.sender,
+                messageUUID: UUID().uuidString
             )
             
         case .Video:
@@ -245,7 +254,8 @@ public struct MockMessages {
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .video(videoItem),
-                isSender: randomUser == Self.sender
+                isSender: randomUser == Self.sender,
+                messageUUID: UUID().uuidString
             )
             
         }

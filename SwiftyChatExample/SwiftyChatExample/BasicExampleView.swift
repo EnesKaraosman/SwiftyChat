@@ -54,10 +54,14 @@ struct BasicExampleView: View {
                                     Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "2", date: "Feb 15, 2023, 6:05 PM"),
                                     Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "3", date: "Feb 15, 2023, 6:05 PM"),
                                     Reply(fileType: .image, displayName: "Amigo 1", thumbnailURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", fileURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", text:  nil, date: "Feb 15, 2023, 6:05 PM")]
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies)))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, repliesImage),isSender: true))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .sending))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .failed))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),
+                                           messageUUID: UUID().uuidString))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, repliesImage),isSender: true,
+                                           messageUUID: UUID().uuidString))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .sending,
+                                           messageUUID: UUID().uuidString))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .failed,
+                                           messageUUID: UUID().uuidString))
 
             }
     }
@@ -72,7 +76,8 @@ struct BasicExampleView: View {
                 placeholder: "Type something",
                 onCommit: { messageKind in
                     self.messages.append(
-                        .init(user: MockMessages.chatbot, messageKind: messageKind, isSender: true)
+                        .init(user: MockMessages.chatbot, messageKind: messageKind, isSender: true,
+                              messageUUID: UUID().uuidString)
                     )
                 }
             )

@@ -49,7 +49,8 @@ struct AdvancedExampleView: View {
                 placeholder: "Type something",
                 onCommit: { messageKind in
                     self.messages.append(
-                        .init(user: MockMessages.sender, messageKind: messageKind, isSender: true)
+                        .init(user: MockMessages.sender, messageKind: messageKind, isSender: true,
+                              messageUUID: UUID().uuidString)
                     )
                 }
             )
@@ -87,7 +88,8 @@ struct AdvancedExampleView: View {
                 MockMessages.ChatMessageItem(
                     user: MockMessages.sender,
                     messageKind: .text(quickReply.title,nil),
-                    isSender: true
+                    isSender: true,
+                    messageUUID: UUID().uuidString
                 )
             )
         }
@@ -120,18 +122,21 @@ struct AdvancedExampleView: View {
         .onAppear {
    
             if let portraitUrl = URL(string: "https://picsum.photos/200/300") {
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(portraitUrl))))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(portraitUrl)),
+                                           messageUUID: UUID().uuidString))
             }
 
             if let landscapeUrl = URL(string:"https://picsum.photos/400/200") {
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(landscapeUrl))))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(landscapeUrl)),
+                                           messageUUID: UUID().uuidString))
             }
 
             
             self.messages.append(
                 .init(
                     user: MockMessages.chatbot,
-                    messageKind: .text("https://github.com/EnesKaraosman/SwiftyChat and here is his phone +90 537 844 11-41, & mail: eneskaraosman53@gmail.com Today is 27 May 2020",nil)
+                    messageKind: .text("https://github.com/EnesKaraosman/SwiftyChat and here is his phone +90 537 844 11-41, & mail: eneskaraosman53@gmail.com Today is 27 May 2020",nil),
+                    messageUUID: UUID().uuidString
                 )
             )
             
