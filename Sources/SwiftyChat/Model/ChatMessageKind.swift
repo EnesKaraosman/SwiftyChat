@@ -9,10 +9,10 @@
 import SwiftUI
 
 
-public enum SendStatus {
-    case sent
-    case sending
-    case failed
+public enum SendStatus :String, Codable {
+    case sent = "sent"
+    case sending = "sending"
+    case failed = "failed"
 }
 
 public enum ImageLoadingKind {
