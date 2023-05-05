@@ -41,6 +41,11 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                         }
 
                     case .sending:
+                        Text("Sending...")
+                            .font(.system(size: 12))
+                            .fontWeight(.medium)
+                            .foregroundColor(.gray)
+                            .italic()
                         Image(systemName: "paperplane")
                             .frame(maxWidth: 15, maxHeight: 15,alignment: .center)
                             .foregroundColor(.gray)
