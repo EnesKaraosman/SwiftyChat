@@ -33,7 +33,7 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                                 .foregroundColor(.red)
                                 .italic()
                             Image(systemName: "arrow.counterclockwise.circle")
-                                .frame(maxWidth: 15, maxHeight: 15,alignment: .center)
+                                .frame(maxWidth: 10, maxHeight: 10,alignment: .center)
                                 .foregroundColor(.red)
                         }
                         .onTapGesture {
@@ -47,7 +47,7 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                             .foregroundColor(.gray)
                             .italic()
                         Image(systemName: "paperplane")
-                            .frame(maxWidth: 15, maxHeight: 15,alignment: .center)
+                            .frame(maxWidth: 10, maxHeight: 10,alignment: .center)
                             .foregroundColor(.gray)
                     case .sent:
                         Text(message.date.dateFormat(format: "MMM d 'At' h:mm a"))
@@ -55,7 +55,7 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                             .fontWeight(.medium)
                             .foregroundColor(.blue)
                         Image(systemName: "paperplane.fill")
-                            .frame(maxWidth: 15, maxHeight: 15,alignment: .center)
+                            .frame(maxWidth: 10, maxHeight: 10,alignment: .center)
                             .foregroundColor(.blue)
                     }
                 }
