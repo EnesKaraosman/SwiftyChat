@@ -27,13 +27,13 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                     switch message.status {
                     case .failed:
                         Group {
-                            Text("Re-send")
+                            Text("Re-Send")
                                 .font(.system(size: 12))
                                 .fontWeight(.medium)
                                 .foregroundColor(.red)
                                 .italic()
                             Image(systemName: "arrow.counterclockwise.circle")
-                                .frame(maxWidth: 10, maxHeight: 10,alignment: .center)
+                                .frame(maxWidth: 8, maxHeight: 8,alignment: .center)
                                 .foregroundColor(.red)
                         }
                         .onTapGesture {
@@ -41,13 +41,13 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                         }
 
                     case .sending:
-                        Text("Sending...")
+                        Text("Sending... ")
                             .font(.system(size: 12))
                             .fontWeight(.medium)
                             .foregroundColor(.gray)
                             .italic()
                         Image(systemName: "paperplane")
-                            .frame(maxWidth: 10, maxHeight: 10,alignment: .center)
+                            .frame(maxWidth: 8, maxHeight: 8,alignment: .center)
                             .foregroundColor(.gray)
                     case .sent:
                         Text(message.date.dateFormat(format: "MMM d 'At' h:mm a"))
@@ -55,7 +55,7 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                             .fontWeight(.medium)
                             .foregroundColor(.blue)
                         Image(systemName: "paperplane.fill")
-                            .frame(maxWidth: 10, maxHeight: 10,alignment: .center)
+                            .frame(maxWidth: 8, maxHeight: 8,alignment: .center)
                             .foregroundColor(.blue)
                     }
                 }
