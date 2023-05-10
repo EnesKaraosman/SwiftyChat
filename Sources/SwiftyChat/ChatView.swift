@@ -99,7 +99,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                                 lastItem = self.messages.last
                                             }
                                             if message.id == lastItem.id {
-                                                self.reachedTop?(message.date)
+                                                if let lastMessage = self.messages.last{
+                                                    self.reachedTop?(lastMessage.date)
+
+                                                }
                                             }
                                         }
                                     
@@ -223,7 +226,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                         lastItem = self.messages.last
                                     }
                                     if message.id == lastItem.id {
-                                        self.reachedTop?(message.date)
+                                        if let lastMessage = self.messages.last{
+                                            self.reachedTop?(lastMessage.date)
+
+                                        }
                                     }
                                 }
                         }
