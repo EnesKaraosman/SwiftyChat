@@ -25,7 +25,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var dateFormater: DateFormatter = DateFormatter()
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
-    private var reachedTop: ((_ messageId : UUID) -> Void)?
+    private var reachedTop: ((_ lastDate : Date) -> Void)?
     private var tappedResendAction : (Message) -> Void
 
     private var inverted : Bool
@@ -99,7 +99,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                                 lastItem = self.messages.last
                                             }
                                             if message.id == lastItem.id {
-                                                self.reachedTop?(message.id as! UUID)
+                                                self.reachedTop?(message.date)
                                             }
                                         }
                                     
@@ -223,11 +223,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                         lastItem = self.messages.last
                                     }
                                     if message.id == lastItem.id {
-                                        self.reachedTop?(message.id as! UUID)
+                                        self.reachedTop?(message.date)
                                     }
                                 }
                         }
-                        //hasMore
                         if messages.count == 0 && isFetching {
                             VStack(alignment: .center) {
                                 ProgressView()
@@ -383,7 +382,7 @@ public extension ChatView {
         shouldShowGroupChatHeaders: Bool = false,
         inputView: @escaping () -> AnyView,
         inset: EdgeInsets = .init(),
-        reachedTop: ((_ messageId : UUID) -> Void)? = nil,
+        reachedTop: ((_ lastDate : Date) -> Void)? = nil,
         tappedResendAction : @escaping (Message) -> Void
     ) {
         _messages = messages
