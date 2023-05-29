@@ -44,17 +44,26 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         )
     }
     
+    
+    private func dismissKeyboard(){
+        let keyWindow = UIApplication.shared.connectedScenes
+                .filter({$0.activationState == .foregroundActive})
+                .map({$0 as? UIWindowScene})
+                .compactMap({$0})
+                .first?.windows
+                .filter({$0.isKeyWindow}).first
+        keyWindow?.endEditing(true)
+
+    }
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
       
                 chatView(in: geometry)
-                inputView()
-                    .onPreferenceChange(ContentSizeThatFitsKey.self) {
-                        contentSizeThatFits = $0
+                    .onTapGesture {
+                        dismissKeyboard()
                     }
-                    .frame(height: messageEditorHeight)
-                    .padding(.bottom, 12)
+                inputView()
                 PIPVideoCell<Message>()
             }
             .iOS { $0.keyboardAwarePadding() }
@@ -62,7 +71,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .environmentObject(DeviceOrientationInfo())
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
-        .iOS { $0.dismissKeyboardOnTappingOutside() }
+      //.iOS { $0.dismissKeyboardOnTappingOutside() }
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {

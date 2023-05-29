@@ -317,7 +317,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftyChatExample/Preview Content\"";
-				DEVELOPMENT_TEAM = L9DND36YTU;
+				DEVELOPMENT_TEAM = NV4VWT4KK5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SwiftyChatExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -325,7 +325,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.eneskaraosman.SwiftyChatExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eneskaraosman1.SwiftyChatExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -339,7 +339,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"SwiftyChatExample/Preview Content\"";
-				DEVELOPMENT_TEAM = L9DND36YTU;
+				DEVELOPMENT_TEAM = NV4VWT4KK5;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = SwiftyChatExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -347,7 +347,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.eneskaraosman.SwiftyChatExample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.eneskaraosman1.SwiftyChatExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
