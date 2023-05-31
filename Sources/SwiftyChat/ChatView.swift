@@ -57,14 +57,20 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         dismissKeyboard()
                     }
                 inputView()
-                PIPVideoCell<Message>()
-            }
-            .iOS { $0.keyboardAwarePadding() }
-        }
-        .environmentObject(DeviceOrientationInfo())
-        .environmentObject(VideoManager<Message>())
-        .edgesIgnoringSafeArea(.bottom)
-      //.iOS { $0.dismissKeyboardOnTappingOutside() }
+                         .onPreferenceChange(ContentSizeThatFitsKey.self) {
+                             contentSizeThatFits = $0
+                         }
+                         .frame(height: messageEditorHeight)
+                         .padding(.bottom, 12)
+                     
+                     PIPVideoCell<Message>()
+                 }
+                 .iOS { $0.keyboardAwarePadding() }
+             }
+             .environmentObject(DeviceOrientationInfo())
+             .environmentObject(VideoManager<Message>())
+             .edgesIgnoringSafeArea(.bottom)
+           //  .iOS { $0.dismissKeyboardOnTappingOutside() }
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
