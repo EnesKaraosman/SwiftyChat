@@ -24,7 +24,7 @@ struct LoadingThreeBalls: View {
         frame = size
         primaryColor = color
     }
-
+    
     var body: some View {
         HStack(spacing: 0) {
             ForEach(0..<maxCounter, id: \.self) { index in

@@ -10,6 +10,7 @@ import SwiftUI
 internal struct CellEdgeInsetsModifier: ViewModifier {
     
     public let isSender: Bool
+    
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var insets: EdgeInsets {
@@ -19,5 +20,4 @@ internal struct CellEdgeInsetsModifier: ViewModifier {
     public func body(content: Content) -> some View {
         content.padding(insets)
     }
-    
 }

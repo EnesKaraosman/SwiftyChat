@@ -22,5 +22,4 @@ public struct CommonTextStyle {
         self.font = font
         self.fontWeight = fontWeight
     }
-    
 }

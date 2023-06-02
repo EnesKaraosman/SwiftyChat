@@ -50,6 +50,4 @@ public struct ContactCellStyle: CommonViewStyle {
         self.cellShadowRadius = cellShadowRadius
         self.cellShadowColor = cellShadowColor
     }
-    
-    
 }

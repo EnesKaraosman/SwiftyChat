@@ -52,12 +52,12 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                 .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
         }
-            .background(cellStyle.cellBackgroundColor)
+        .background(cellStyle.cellBackgroundColor)
+        
+        .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
+        .overlay(
             
-            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
-            .overlay(
-                
-                RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+            RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
                 .stroke(
                     cellStyle.cellBorderColor,
                     lineWidth: cellStyle.cellBorderWidth
@@ -66,8 +66,6 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                     color: cellStyle.cellShadowColor,
                     radius: cellStyle.cellShadowRadius
                 )
-            )
+        )
     }
-    
 }
-

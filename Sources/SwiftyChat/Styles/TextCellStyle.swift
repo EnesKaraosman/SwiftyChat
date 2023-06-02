@@ -51,5 +51,4 @@ public struct TextCellStyle: CommonViewStyle {
         self.cellShadowColor = cellShadowColor
         self.cellRoundedCorners = cellRoundedCorners
     }
-    
 }

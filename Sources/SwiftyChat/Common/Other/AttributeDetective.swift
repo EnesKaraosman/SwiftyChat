@@ -29,6 +29,5 @@ internal struct AttributeDetective {
         
         return results.contains(true)
     }
-    
 }
 

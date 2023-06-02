@@ -70,6 +70,5 @@ internal struct QuickReplyCell: View {
             )
             .padding(.vertical, 4)
         }.disabled(isDisabled)
-    }
-    
+    }    
 }

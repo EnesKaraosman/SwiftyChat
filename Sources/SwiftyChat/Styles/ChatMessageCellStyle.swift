@@ -94,5 +94,4 @@ public final class ChatMessageCellStyle: ObservableObject {
         
         objectWillChange.send()
     }
-    
 }

@@ -10,7 +10,7 @@ import UIKit
 
 public struct ContentSizeThatFitsKey: PreferenceKey {
     public static var defaultValue: CGSize = .zero
-
+    
     public static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
         value = nextValue()
     }
@@ -29,7 +29,7 @@ internal extension EnvironmentValues {
 
 internal struct TextAttributesModifier: ViewModifier {
     let textAttributes: TextAttributes
-
+    
     func body(content: Content) -> some View {
         content.environment(\.textAttributes, self.textAttributes)
     }
@@ -45,27 +45,27 @@ internal extension View {
 public struct MultilineTextField: View {
     @Binding private var attributedText: NSAttributedString
     @Binding private var isEditing: Bool
-
+    
     @State private var contentSizeThatFits: CGSize = .zero
-
+    
     private let placeholder: String
     private let textAttributes: TextAttributes
-
+    
     private let onEditingChanged: ((Bool) -> Void)?
     private let onCommit: (() -> Void)?
-
+    
     private var placeholderInset: EdgeInsets {
         .init(top: 8.0, leading: 8.0, bottom: 8.0, trailing: 8.0)
     }
-
+    
     private var textContainerInset: UIEdgeInsets {
         .init(top: 8.0, left: 0.0, bottom: 8.0, right: 0.0)
     }
-
+    
     private var lineFragmentPadding: CGFloat {
         8.0
     }
-
+    
     public init (
         attributedText: Binding<NSAttributedString>,
         placeholder: String = "",
@@ -76,17 +76,17 @@ public struct MultilineTextField: View {
     ) {
         self._attributedText = attributedText
         self.placeholder = placeholder
-
+        
         self._isEditing = isEditing
-
+        
         self._contentSizeThatFits = State(initialValue: .zero)
-
+        
         self.textAttributes = textAttributes
-
+        
         self.onEditingChanged = onEditingChanged
         self.onCommit = onCommit
     }
-
+    
     public var body: some View {
         AttributedText(
             attributedText: $attributedText,
@@ -101,7 +101,7 @@ public struct MultilineTextField: View {
         .frame(idealHeight: self.contentSizeThatFits.height)
         .background(placeholderView, alignment: .topLeading)
     }
-
+    
     @ViewBuilder private var placeholderView: some View {
         if attributedText.length == 0 {
             Text(placeholder).foregroundColor(.gray)
@@ -114,23 +114,23 @@ public struct MultilineTextField: View {
 internal struct AttributedText: View {
     @Environment(\.textAttributes)
     var envTextAttributes: TextAttributes
-
+    
     @Binding var attributedText: NSAttributedString
     @Binding var isEditing: Bool
-
+    
     @State private var sizeThatFits: CGSize = .zero
-
+    
     private let textAttributes: TextAttributes
-
+    
     private let onLinkInteraction: (((URL, UITextItemInteraction) -> Bool))?
     private let onEditingChanged: ((Bool) -> Void)?
     private let onCommit: (() -> Void)?
-
+    
     var body: some View {
         let textAttributes = self.textAttributes
             .overriding(self.envTextAttributes)
             .overriding(TextAttributes.default)
-
+        
         return GeometryReader { geometry in
             return UITextViewWrapper(
                 attributedText: self.$attributedText,
@@ -148,7 +148,7 @@ internal struct AttributedText: View {
             )
         }
     }
-
+    
     init(
         attributedText: Binding<NSAttributedString>,
         isEditing: Binding<Bool>,
@@ -159,9 +159,9 @@ internal struct AttributedText: View {
     ) {
         self._attributedText = attributedText
         self._isEditing = isEditing
-
+        
         self.textAttributes = textAttributes
-
+        
         self.onLinkInteraction = onLinkInteraction
         self.onEditingChanged = onEditingChanged
         self.onCommit = onCommit
@@ -239,7 +239,7 @@ public struct TextAttributes {
         self.isSelectable = isSelectable
         self.isScrollingEnabled = isScrollingEnabled
     }
-
+    
     func overriding(_ fallback: Self) -> Self {
         let textContainerInset: UIEdgeInsets? = self.textContainerInset ?? fallback.textContainerInset
         let lineFragmentPadding: CGFloat? = self.lineFragmentPadding ?? fallback.lineFragmentPadding
@@ -256,7 +256,7 @@ public struct TextAttributes {
         let isEditable: Bool? = self.isEditable ?? fallback.isEditable
         let isSelectable: Bool? = self.isSelectable ?? fallback.isSelectable
         let isScrollingEnabled: Bool? = self.isScrollingEnabled ?? fallback.isScrollingEnabled
-
+        
         return .init(
             textContainerInset: textContainerInset,
             lineFragmentPadding: lineFragmentPadding,
@@ -279,22 +279,22 @@ public struct TextAttributes {
 
 internal struct UITextViewWrapper: UIViewRepresentable {
     typealias UIViewType = UITextView
-
+    
     @Environment(\.textAttributes)
     var envTextAttributes: TextAttributes
-
+    
     @Binding var attributedText: NSAttributedString
     @Binding var isEditing: Bool
     @Binding var sizeThatFits: CGSize
-
+    
     private let maxSize: CGSize
-
+    
     private let textAttributes: TextAttributes
-
+    
     private let onLinkInteraction: (((URL, UITextItemInteraction) -> Bool))?
     private let onEditingChanged: ((Bool) -> Void)?
     private let onCommit: (() -> Void)?
-
+    
     init(
         attributedText: Binding<NSAttributedString>,
         isEditing: Binding<Bool>,
@@ -308,27 +308,27 @@ internal struct UITextViewWrapper: UIViewRepresentable {
         self._attributedText = attributedText
         self._isEditing = isEditing
         self._sizeThatFits = sizeThatFits
-
+        
         self.maxSize = maxSize
-
+        
         self.textAttributes = textAttributes
-
+        
         self.onLinkInteraction = onLinkInteraction
         self.onEditingChanged = onEditingChanged
         self.onCommit = onCommit
     }
-
+    
     func makeUIView(context: Context) -> UITextView {
         let view = UITextView()
-
+        
         view.delegate = context.coordinator
-
+        
         view.font = UIFont.preferredFont(forTextStyle: .body)
         view.textColor = UIColor.label
         view.backgroundColor = .clear
-
+        
         let attrs = self.textAttributes
-
+        
         if let textContainerInset = attrs.textContainerInset {
             view.textContainerInset = textContainerInset
         }
@@ -377,12 +377,12 @@ internal struct UITextViewWrapper: UIViewRepresentable {
         if let lineBreakMode = attrs.lineBreakMode {
             view.textContainer.lineBreakMode = lineBreakMode
         }
-
+        
         view.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-
+        
         return view
     }
-
+    
     func updateUIView(_ uiView: UITextView, context: Context) {
         uiView.attributedText = attributedText
         if isEditing {
@@ -396,7 +396,7 @@ internal struct UITextViewWrapper: UIViewRepresentable {
             result: $sizeThatFits
         )
     }
-
+    
     func makeCoordinator() -> Coordinator {
         return Coordinator(
             attributedText: $attributedText,
@@ -408,7 +408,7 @@ internal struct UITextViewWrapper: UIViewRepresentable {
             onCommit: onCommit
         )
     }
-
+    
     fileprivate static func recalculateHeight(
         view: UIView,
         maxContentSize: CGSize,
@@ -422,18 +422,18 @@ internal struct UITextViewWrapper: UIViewRepresentable {
             }
         }
     }
-
+    
     final class Coordinator: NSObject, UITextViewDelegate {
         @Binding var attributedText: NSAttributedString
         @Binding var isEditing: Bool
         @Binding var sizeThatFits: CGSize
-
+        
         private let maxContentSize: () -> CGSize
-
+        
         private var onLinkInteraction: (((URL, UITextItemInteraction) -> Bool))?
         private var onEditingChanged: ((Bool) -> Void)?
         private var onCommit: (() -> Void)?
-
+        
         init(
             attributedText: Binding<NSAttributedString>,
             isEditing: Binding<Bool>,
@@ -446,14 +446,14 @@ internal struct UITextViewWrapper: UIViewRepresentable {
             self._attributedText = attributedText
             self._isEditing = isEditing
             self._sizeThatFits = sizeThatFits
-
+            
             self.maxContentSize = maxContentSize
-
+            
             self.onLinkInteraction = onLinkInteraction
             self.onEditingChanged = onEditingChanged
             self.onCommit = onCommit
         }
-
+        
         func textViewDidChange(_ uiView: UITextView) {
             attributedText = uiView.attributedText
             onEditingChanged?(true)
@@ -463,7 +463,7 @@ internal struct UITextViewWrapper: UIViewRepresentable {
                 result: $sizeThatFits
             )
         }
-
+        
         func textViewDidBeginEditing(_ textView: UITextView) {
             DispatchQueue.main.async {
                 guard !self.isEditing else {
@@ -471,10 +471,10 @@ internal struct UITextViewWrapper: UIViewRepresentable {
                 }
                 self.isEditing = true
             }
-
+            
             onEditingChanged?(false)
         }
-
+        
         func textViewDidEndEditing(_ textView: UITextView) {
             DispatchQueue.main.async {
                 guard self.isEditing else {
@@ -482,10 +482,10 @@ internal struct UITextViewWrapper: UIViewRepresentable {
                 }
                 self.isEditing = false
             }
-
+            
             onCommit?()
         }
-
+        
         func textView(
             _ textView: UITextView,
             shouldInteractWith url: URL,
@@ -494,7 +494,7 @@ internal struct UITextViewWrapper: UIViewRepresentable {
         ) -> Bool {
             return onLinkInteraction?(url, interaction) ?? true
         }
-
+        
         func textView(
             _ textView: UITextView,
             shouldChangeTextIn range: NSRange,
@@ -503,10 +503,10 @@ internal struct UITextViewWrapper: UIViewRepresentable {
             guard let onCommit = self.onCommit, text == "\n" else {
                 return true
             }
-
+            
             textView.resignFirstResponder()
             onCommit()
-
+            
             return false
         }
     }

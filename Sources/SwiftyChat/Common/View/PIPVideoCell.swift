@@ -18,7 +18,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     
     @EnvironmentObject var videoManager: VideoManager<Message>
     @EnvironmentObject var model: DeviceOrientationInfo
-
+    
     @State private var cancellables: Set<AnyCancellable> = .init()
     @State private var location: CGPoint = .zero
     @GestureState private var startLocation: CGPoint? = nil
@@ -161,6 +161,5 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                     }
                 }
             }
-    }
-    
+    }    
 }

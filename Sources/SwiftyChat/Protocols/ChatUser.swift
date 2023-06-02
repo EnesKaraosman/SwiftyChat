@@ -18,5 +18,4 @@ public protocol ChatUser: Identifiable, Equatable {
 
     /// User's chat profile image URL
     var avatarURL: URL? { get }
-
 }

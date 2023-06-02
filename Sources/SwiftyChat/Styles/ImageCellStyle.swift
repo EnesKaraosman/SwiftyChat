@@ -36,5 +36,4 @@ public struct ImageCellStyle: CommonViewStyle {
         self.cellShadowRadius = cellShadowRadius
         self.cellShadowColor = cellShadowColor
     }
-    
 }

@@ -18,5 +18,4 @@ public protocol VideoItem {
     
     /// The message is shown in thumbnailView when the video is playing.
     var pictureInPicturePlayingMessage: String { get }
-
 }

@@ -43,18 +43,18 @@ internal struct TextCell<Message: ChatMessage>: View {
             .padding(cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
             .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-)
+            )
             .overlay(
                 
                 RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-                .stroke(
-                    cellStyle.cellBorderColor,
-                    lineWidth: cellStyle.cellBorderWidth
-                )
-                .shadow(
-                    color: cellStyle.cellShadowColor,
-                    radius: cellStyle.cellShadowRadius
-                )
+                    .stroke(
+                        cellStyle.cellBorderColor,
+                        lineWidth: cellStyle.cellBorderWidth
+                    )
+                    .shadow(
+                        color: cellStyle.cellShadowColor,
+                        radius: cellStyle.cellShadowRadius
+                    )
             )
     }
     
@@ -66,7 +66,7 @@ internal struct TextCell<Message: ChatMessage>: View {
             width: maxWidth,
             font: cellStyle.attributedTextStyle.font
         )
-
+        
         let textHeight = attributes.calculatedTextHeight()
         
         let frame = text.frameSize(maxWidth: maxWidth, maxHeight: nil)
@@ -83,9 +83,6 @@ internal struct TextCell<Message: ChatMessage>: View {
             $0.didSelectPhoneNumber = action.didSelectPhoneNumber
             $0.didSelectURL = action.didSelectURL
             $0.didSelectTransitInformation = action.didSelectTransitInformation
-            //            $0.didSelectMention = self.action.didSelectMention
-            //            $0.didSelectHashtag = self.action.didSelectHashtag
-            
             $0.font = textStyle.font.withWeight(textStyle.fontWeight)
             $0.textColor = textStyle.textColor
             $0.textAlignment = message.isSender ? .right : .left
@@ -96,14 +93,14 @@ internal struct TextCell<Message: ChatMessage>: View {
         .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
         .overlay(
             RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-            .stroke(
-                cellStyle.cellBorderColor,
-                lineWidth: cellStyle.cellBorderWidth
-            )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
         )
     }
     

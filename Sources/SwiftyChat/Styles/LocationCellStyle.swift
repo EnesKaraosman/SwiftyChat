@@ -35,5 +35,4 @@ public struct LocationCellStyle {
         self.cellShadowRadius = cellShadowRadius
         self.cellShadowColor = cellShadowColor
     }
-    
 }

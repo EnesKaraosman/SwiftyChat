@@ -12,7 +12,7 @@ import Combine
 internal struct KeyboardAwareModifier: ViewModifier {
     
     @State private var keyboardHeight: CGFloat = 0
-
+    
     private var keyboardHeightPublisher: AnyPublisher<CGFloat, Never> {
         Publishers.Merge(
             NotificationCenter.default
@@ -22,9 +22,9 @@ internal struct KeyboardAwareModifier: ViewModifier {
             NotificationCenter.default
                 .publisher(for: UIResponder.keyboardWillHideNotification)
                 .map { _ in CGFloat(0) }
-       ).eraseToAnyPublisher()
+        ).eraseToAnyPublisher()
     }
-
+    
     public func body(content: Content) -> some View {
         content
             .padding(.bottom, keyboardHeight)
@@ -34,5 +34,4 @@ internal struct KeyboardAwareModifier: ViewModifier {
                 }
             }
     }
-    
 }

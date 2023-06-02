@@ -25,5 +25,4 @@ internal extension Double {
          
         return text
     }
-
 }

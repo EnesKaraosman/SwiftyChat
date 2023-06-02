@@ -88,7 +88,6 @@ internal struct ContactCell<Message: ChatMessage>: View {
     
     // MARK: - Body
     public var body: some View {
-        
         VStack(spacing: 0) {
             
             HStack {
@@ -131,5 +130,4 @@ internal struct ContactCell<Message: ChatMessage>: View {
             .fontWeight(cellStyle.fullNameLabelStyle.fontWeight)
             .foregroundColor(cellStyle.fullNameLabelStyle.textColor)
     }
-    
 }

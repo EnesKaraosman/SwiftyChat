@@ -11,8 +11,11 @@ import Kingfisher
 internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier {
     
     public let message: Message
+    
+    public let showAvatarForMessage: Bool
+    
     @EnvironmentObject var style: ChatMessageCellStyle
-
+    
     private var isSender: Bool { message.isSender }
     
     private var user: User { message.user as! User }
@@ -24,14 +27,12 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
     private var incomingAvatarPosition: AvatarPosition { incomingAvatarStyle.avatarPosition }
     
     private var outgoingAvatarPosition: AvatarPosition { outgoingAvatarStyle.avatarPosition }
-
+    
     /// Current avatar style
     private var currentStyle: AvatarStyle { isSender ? outgoingAvatarStyle : incomingAvatarStyle }
     
     /// Current avatar position
     private var currentAvatarPosition: AvatarPosition { isSender ? outgoingAvatarPosition : incomingAvatarPosition }
-    
-    public let showAvatarForMessage: Bool
     
     private var alignToMessageBottom: some View {
         VStack {
@@ -57,6 +58,7 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
     
     private var avatar: some View {
         let imageStyle = currentStyle.imageStyle
+        
         return avatarImage
             .frame(
                 width: imageStyle.imageSize.width,
@@ -75,7 +77,6 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
                         radius: imageStyle.shadowRadius
                     )
             )
-
     }
     
     private var blankAvatar: some View {

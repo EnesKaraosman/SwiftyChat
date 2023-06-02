@@ -57,7 +57,7 @@ internal struct ImageLoadingKindCell: View {
         /**
          KFImage(url)
          .onSuccess(perform: { (result) in
-             result.image.size
+         result.image.size
          })
          We can grab size & manage aspect ratio via a @State property
          but the list scroll behaviour becomes messy.
@@ -120,7 +120,6 @@ internal struct ImageCell<Message: ChatMessage>: View {
                 color: cellStyle.cellShadowColor,
                 radius: cellStyle.cellShadowRadius
             )
-    }
-    
+    }    
 }
 

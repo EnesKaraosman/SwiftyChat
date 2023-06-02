@@ -80,6 +80,5 @@ public enum ChatMessageKind: CustomStringConvertible {
         case .custom:
             return "MessageKind.custom"
         }
-    }
-    
+    }    
 }

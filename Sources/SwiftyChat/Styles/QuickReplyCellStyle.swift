@@ -11,7 +11,7 @@ public struct QuickReplyCellStyle {
     
     /// If the total characters of all item's title is greater than this value, items ordered vertically
     public let characterLimitToChangeStackOrientation: Int
-
+    
     public let selectedItemColor: Color
     public let selectedItemFont: Font
     public let selectedItemFontWeight: Font.Weight
@@ -65,5 +65,4 @@ public struct QuickReplyCellStyle {
         self.itemShadowColor = itemShadowColor
         self.itemShadowRadius = itemShadowRadius
     }
-    
 }

@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 public struct CarouselCellStyle: CommonViewStyle {
-
+    
     public let titleLabelStyle: CommonTextStyle
     public let subtitleLabelStyle: CommonTextStyle
     

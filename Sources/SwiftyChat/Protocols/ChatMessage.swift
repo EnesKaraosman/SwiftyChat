@@ -22,5 +22,4 @@ public protocol ChatMessage: Identifiable {
     
     /// The date message sent.
     var date: Date { get }
-    
 }

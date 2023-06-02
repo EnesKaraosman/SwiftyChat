@@ -31,5 +31,4 @@ public struct CommonImageStyle {
         self.shadowRadius = shadowRadius
         self.shadowColor = shadowColor
     }
-    
 }

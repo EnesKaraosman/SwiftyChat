@@ -88,7 +88,7 @@ public struct MockMessages {
         public var messageKind: ChatMessageKind
         public var isSender: Bool
         public var date: Date
-
+        
         public init(
             user: ChatUserItem,
             messageKind: ChatMessageKind,
@@ -104,11 +104,11 @@ public struct MockMessages {
     
     // MARK: - Concrete model for ChatUser
     public struct ChatUserItem: ChatUser {
-
+        
         public static func == (lhs: ChatUserItem, rhs: ChatUserItem) -> Bool {
             lhs.id == rhs.id
         }
-
+        
         public let id = UUID().uuidString
         
         /// Username
@@ -119,7 +119,7 @@ public struct MockMessages {
         
         /// User's chat profile image URL
         public var avatarURL: URL?
-
+        
         public init(userName: String, avatarURL: URL? = nil, avatar: UIImage? = nil) {
             self.userName = userName
             self.avatar = avatar
@@ -152,7 +152,7 @@ public struct MockMessages {
     public static func generateMessage(kind: MockMessages.Kind) -> ChatMessageItem {
         let randomUser = Self.randomUser
         switch kind {
-        
+            
         case .Image:
             guard let url = URL(string: "https://picsum.photos/id/\(Int.random(in: 1...100))/400/300") else { fallthrough }
             return ChatMessageItem(
@@ -174,7 +174,7 @@ public struct MockMessages {
                 messageKind: .carousel([
                     CarouselRow(
                         title: "Multiline Title",
-//                        imageURL: URL(string:"https://picsum.photos/400/300"),
+                        //                        imageURL: URL(string:"https://picsum.photos/400/300"),
                         imageURL: URL(string: "https://picsum.photos/id/1/400/200"),
                         subtitle: "Multiline Subtitle, you do not believe me ?",
                         buttons: [
@@ -183,7 +183,7 @@ public struct MockMessages {
                     ),
                     CarouselRow(
                         title: "This one is really multiline",
-//                        imageURL: URL(string:"https://picsum.photos/400/300"),
+                        //                        imageURL: URL(string:"https://picsum.photos/400/300"),
                         imageURL: URL(string: "https://picsum.photos/id/2/400/200"),
                         subtitle: "Multilinable Subtitle",
                         buttons: [
@@ -266,6 +266,5 @@ public struct MockMessages {
     
     public static func generatedMessages(count: Int = 30) -> [ChatMessageItem] {
         return (1...count).map { _ in generateMessage(kind: randomMessageKind)}
-    }
-    
+    }    
 }

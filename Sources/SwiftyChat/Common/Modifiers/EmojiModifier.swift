@@ -12,8 +12,9 @@ import SwiftUI
 internal struct EmojiModifier: ViewModifier {
     
     public let text: String
+    
     public let defaultFont: Font
-
+    
     private var font: Font? {
         var _font: Font = defaultFont
         if text.containsOnlyEmoji {
@@ -25,11 +26,11 @@ internal struct EmojiModifier: ViewModifier {
             default: _font = defaultFont
             }
         }
+        
         return _font
     }
     
     public func body(content: Content) -> some View {
         content.font(font)
     }
-    
 }

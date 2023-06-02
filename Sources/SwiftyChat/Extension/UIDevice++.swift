@@ -19,5 +19,4 @@ public extension UIDevice {
         return UIDevice.current.orientation == .portrait ||
             UIDevice.current.orientation == .portraitUpsideDown
     }
-    
 }

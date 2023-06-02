@@ -17,6 +17,7 @@ internal struct MessageHorizontalSpaceModifier: ViewModifier {
         if case ChatMessageKind.carousel = messageKind {
             return true
         }
+        
         return false
     }
     

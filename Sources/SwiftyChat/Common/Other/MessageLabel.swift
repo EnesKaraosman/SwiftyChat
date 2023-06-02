@@ -9,15 +9,15 @@ import SwiftUI
 import UIKit
 
 internal class MessageLabel: UILabel {
-
+    
     // MARK: - Private Properties
-
+    
     private lazy var layoutManager: NSLayoutManager = {
         let layoutManager = NSLayoutManager()
         layoutManager.addTextContainer(self.textContainer)
         return layoutManager
     }()
-
+    
     private lazy var textContainer: NSTextContainer = {
         let textContainer = NSTextContainer()
         textContainer.lineFragmentPadding = 0
@@ -26,19 +26,19 @@ internal class MessageLabel: UILabel {
         textContainer.size = self.bounds.size
         return textContainer
     }()
-
+    
     private lazy var textStorage: NSTextStorage = {
         let textStorage = NSTextStorage()
         textStorage.addLayoutManager(self.layoutManager)
         return textStorage
     }()
-
+    
     internal lazy var rangesForDetectors: [DetectorType: [(NSRange, MessageTextCheckingType)]] = [:]
     
     private var isConfiguring: Bool = false
-
+    
     // MARK: - Public Properties
-
+    
     public var didSelectAddress: (_ addressComponents: [String: String]) -> Void = { _ in }
     public var didSelectDate: (_ date: Date) -> Void = { _ in }
     public var didSelectPhoneNumber: (_ phoneNumber: String) -> Void = { _ in }
@@ -47,63 +47,63 @@ internal class MessageLabel: UILabel {
     public var didSelectMention: (_ mention: String) -> Void = { _ in }
     public var didSelectHashtag: (_ hashtag: String) -> Void = { _ in }
     public var didSelectCustom: (_ pattern: String, _ match: String?) -> Void = { _, _ in }
-
+    
     open var enabledDetectors: [DetectorType] = [] {
         didSet {
             setTextStorage(attributedText, shouldParse: true)
         }
     }
-
+    
     open override var attributedText: NSAttributedString? {
         didSet {
             setTextStorage(attributedText, shouldParse: true)
         }
     }
-
+    
     open override var text: String? {
         didSet {
             setTextStorage(attributedText, shouldParse: true)
         }
     }
-
+    
     open override var font: UIFont! {
         didSet {
             setTextStorage(attributedText, shouldParse: false)
         }
     }
-
+    
     open override var textColor: UIColor! {
         didSet {
             setTextStorage(attributedText, shouldParse: false)
         }
     }
-
+    
     open override var lineBreakMode: NSLineBreakMode {
         didSet {
             textContainer.lineBreakMode = lineBreakMode
             if !isConfiguring { setNeedsDisplay() }
         }
     }
-
+    
     open override var numberOfLines: Int {
         didSet {
             textContainer.maximumNumberOfLines = numberOfLines
             if !isConfiguring { setNeedsDisplay() }
         }
     }
-
+    
     open override var textAlignment: NSTextAlignment {
         didSet {
             setTextStorage(attributedText, shouldParse: false)
         }
     }
-
+    
     open var textInsets: UIEdgeInsets = .zero {
         didSet {
             if !isConfiguring { setNeedsDisplay() }
         }
     }
-
+    
     open override var intrinsicContentSize: CGSize {
         var size = super.intrinsicContentSize
         size.width += textInsets.horizontal
@@ -112,9 +112,9 @@ internal class MessageLabel: UILabel {
     }
     
     internal var messageLabelFont: UIFont?
-
+    
     private var attributesNeedUpdate = false
-
+    
     // MARK: - Be aware attributes (dark/light mode)
     public static var defaultAttributes: [NSAttributedString.Key: Any] = {
         return [
@@ -123,13 +123,13 @@ internal class MessageLabel: UILabel {
             NSAttributedString.Key.underlineColor: UIColor.white
         ]
     }()
-
+    
     open internal(set) var addressAttributes: [NSAttributedString.Key: Any] = defaultAttributes
-
+    
     open internal(set) var dateAttributes: [NSAttributedString.Key: Any] = defaultAttributes
-
+    
     open internal(set) var phoneNumberAttributes: [NSAttributedString.Key: Any] = defaultAttributes
-
+    
     open internal(set) var urlAttributes: [NSAttributedString.Key: Any] = defaultAttributes
     
     open internal(set) var transitInformationAttributes: [NSAttributedString.Key: Any] = defaultAttributes
@@ -137,9 +137,9 @@ internal class MessageLabel: UILabel {
     open internal(set) var hashtagAttributes: [NSAttributedString.Key: Any] = defaultAttributes
     
     open internal(set) var mentionAttributes: [NSAttributedString.Key: Any] = defaultAttributes
-
+    
     open internal(set) var customAttributes: [NSRegularExpression: [NSAttributedString.Key: Any]] = [:]
-
+    
     public func setAttributes(_ attributes: [NSAttributedString.Key: Any], detector: DetectorType) {
         switch detector {
         case .phoneNumber:
@@ -165,33 +165,33 @@ internal class MessageLabel: UILabel {
             updateAttributes(for: [detector])
         }
     }
-
+    
     // MARK: - Initializers
-
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
     }
-
+    
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupView()
     }
-
+    
     // MARK: - Open Methods
-
+    
     open override func drawText(in rect: CGRect) {
-
+        
         let insetRect = rect.inset(by: textInsets)
         textContainer.size = CGSize(width: insetRect.width, height: rect.height)
-
+        
         let origin = insetRect.origin
         let range = layoutManager.glyphRange(for: textContainer)
-
+        
         layoutManager.drawBackground(forGlyphRange: range, at: origin)
         layoutManager.drawGlyphs(forGlyphRange: range, at: origin)
     }
-
+    
     // MARK: - Public Methods
     
     public func configure(block: () -> Void) {
@@ -204,11 +204,11 @@ internal class MessageLabel: UILabel {
         isConfiguring = false
         setNeedsDisplay()
     }
-
+    
     // MARK: - Private Methods
-
+    
     private func setTextStorage(_ newText: NSAttributedString?, shouldParse: Bool) {
-
+        
         guard let newText = newText, newText.length > 0 else {
             textStorage.setAttributedString(NSAttributedString())
             setNeedsDisplay()
@@ -235,12 +235,12 @@ internal class MessageLabel: UILabel {
                 }
             }
         }
-
+        
         let modifiedText = NSAttributedString(attributedString: mutableText)
         textStorage.setAttributedString(modifiedText)
-
+        
         if !isConfiguring { setNeedsDisplay() }
-
+        
     }
     
     private func paragraphStyle(for text: NSAttributedString) -> NSParagraphStyle {
@@ -255,32 +255,32 @@ internal class MessageLabel: UILabel {
         
         return style
     }
-
+    
     private func updateAttributes(for detectors: [DetectorType]) {
-
+        
         guard let attributedText = attributedText, attributedText.length > 0 else { return }
         let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
-
+        
         for detector in detectors {
             guard let rangeTuples = rangesForDetectors[detector] else { continue }
-
+            
             for (range, _)  in rangeTuples {
                 // This will enable us to attribute it with our own styles, since `UILabel` does not provide link attribute overrides like `UITextView` does
                 if detector.textCheckingType == .link {
                     mutableAttributedString.removeAttribute(NSAttributedString.Key.link, range: range)
                 }
-
+                
                 let attributes = detectorAttributes(for: detector)
                 mutableAttributedString.addAttributes(attributes, range: range)
             }
-
+            
             let updatedString = NSAttributedString(attributedString: mutableAttributedString)
             textStorage.setAttributedString(updatedString)
         }
     }
-
+    
     private func detectorAttributes(for detectorType: DetectorType) -> [NSAttributedString.Key: Any] {
-
+        
         switch detectorType {
         case .address:
             return addressAttributes
@@ -299,9 +299,9 @@ internal class MessageLabel: UILabel {
         case .custom(let regex):
             return customAttributes[regex] ?? MessageLabel.defaultAttributes
         }
-
+        
     }
-
+    
     private func detectorAttributes(for checkingResultType: NSTextCheckingResult.CheckingType) -> [NSAttributedString.Key: Any] {
         switch checkingResultType {
         case .address:
@@ -330,21 +330,21 @@ internal class MessageLabel: UILabel {
         )
         self.addGestureRecognizer(tapGesture)
     }
-
+    
     // MARK: - Parsing Text
-
+    
     func parse(text: NSAttributedString) -> [NSTextCheckingResult] {
         guard enabledDetectors.isEmpty == false else { return [] }
         let range = NSRange(location: 0, length: text.length)
         var matches = [NSTextCheckingResult]()
-
+        
         // Get matches of all .custom DetectorType and add it to matches array
         let regexs = enabledDetectors
             .filter { $0.isCustom }
             .map { parseForMatches(with: $0, in: text, for: range) }
             .joined()
         matches.append(contentsOf: regexs)
-
+        
         // Get all Checking Types of detectors, except for .custom because they contain their own regex
         let detectorCheckingTypes = enabledDetectors
             .filter { !$0.isCustom }
@@ -353,23 +353,23 @@ internal class MessageLabel: UILabel {
             let detectorMatches = detector.matches(in: text.string, options: [], range: range)
             matches.append(contentsOf: detectorMatches)
         }
-
+        
         guard enabledDetectors.contains(.url) else {
             return matches
         }
-
+        
         // Enumerate NSAttributedString NSLinks and append ranges
         var results: [NSTextCheckingResult] = matches
-
+        
         text.enumerateAttribute(NSAttributedString.Key.link, in: range, options: []) { value, range, _ in
             guard let url = value as? URL else { return }
             let result = NSTextCheckingResult.linkCheckingResult(range: range, url: url)
             results.append(result)
         }
-
+        
         return results
     }
-
+    
     private func parseForMatches(with detector: DetectorType, in text: NSAttributedString, for range: NSRange) -> [NSTextCheckingResult] {
         switch detector {
         case .custom(let regex):
@@ -378,13 +378,13 @@ internal class MessageLabel: UILabel {
             fatalError("You must pass a .custom DetectorType")
         }
     }
-
+    
     private func setRangesForDetectors(in checkingResults: [NSTextCheckingResult]) {
-
+        
         guard checkingResults.isEmpty == false else { return }
         
         for result in checkingResults {
-
+            
             switch result.resultType {
             case .address:
                 var ranges = rangesForDetectors[.address] ?? []
@@ -421,23 +421,21 @@ internal class MessageLabel: UILabel {
             default:
                 fatalError("Received an unrecognized NSTextCheckingResult.CheckingType")
             }
-
         }
-
     }
-
+    
     // MARK: - Gesture Handling
-
+    
     private func stringIndex(at location: CGPoint) -> Int? {
         guard textStorage.length > 0 else { return nil }
-
+        
         var location = location
-
+        
         location.x -= textInsets.left
         location.y -= textInsets.top
-
+        
         let index = layoutManager.glyphIndex(for: location, in: textContainer)
-
+        
         let lineRect = layoutManager.lineFragmentUsedRect(forGlyphAt: index, effectiveRange: nil)
         
         var characterIndex: Int?
@@ -447,18 +445,19 @@ internal class MessageLabel: UILabel {
         }
         
         return characterIndex
-
+        
     }
     
     @objc func defaultTapGesture(gesture: UITapGestureRecognizer) -> Bool {
         let touchLocation = gesture.location(in: self)
+        
         return handleGesture(touchLocation)
     }
-
+    
     @objc open func handleGesture(_ touchLocation: CGPoint) -> Bool {
-
+        
         guard let index = stringIndex(at: touchLocation) else { return false }
-
+        
         for (detectorType, ranges) in rangesForDetectors {
             for (range, value) in ranges {
                 if range.contains(index) {
@@ -467,9 +466,10 @@ internal class MessageLabel: UILabel {
                 }
             }
         }
+        
         return false
     }
-
+    
     private func handleGesture(for detectorType: DetectorType, value: MessageTextCheckingType) {
         
         switch value {
@@ -528,19 +528,18 @@ internal class MessageLabel: UILabel {
     private func handleTransitInformation(_ components: [String: String]) {
         self.didSelectTransitInformation(components)
     }
-
+    
     private func handleHashtag(_ hashtag: String) {
         self.didSelectHashtag(hashtag)
     }
-
+    
     private func handleMention(_ mention: String) {
         self.didSelectMention(mention)
     }
-
+    
     private func handleCustom(_ pattern: String, match: String) {
         self.didSelectCustom(pattern, match)
     }
-
 }
 
 internal enum MessageTextCheckingType {

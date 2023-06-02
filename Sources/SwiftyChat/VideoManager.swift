@@ -27,5 +27,4 @@ internal final class VideoManager<Message: ChatMessage>: ObservableObject {
         message = nil
         isFullScreen = false
     }
-    
 }

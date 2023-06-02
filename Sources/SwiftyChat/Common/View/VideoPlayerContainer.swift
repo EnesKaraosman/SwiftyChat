@@ -41,12 +41,12 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
     public var body: some View {
         ZStack(alignment: .bottom) {
             videoPlayer
-            .onTapGesture {
-                withAnimation {
-                    showOverlay.toggle()
+                .onTapGesture {
+                    withAnimation {
+                        showOverlay.toggle()
+                    }
                 }
-            }
-            .onDisappear { self.play = false }
+                .onDisappear { self.play = false }
             
             videoOverlay
         }
@@ -185,6 +185,5 @@ internal struct VideoPlayerContainer<Message: ChatMessage>: View {
         .padding(.horizontal)
         .accentColor(.red)
         .gesture(DragGesture()) // << To avoid outer dragGesture, slider & position both was changing
-    }
-    
+    }   
 }

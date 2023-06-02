@@ -11,7 +11,6 @@ public enum AvatarPosition {
     case alignToMessageCenter(spacing: CGFloat)
     case alignToMessageTop(spacing: CGFloat)
     case alignToMessageBottom(spacing: CGFloat)
-//    case onMessageBottomCorner(spacing: CGFloat)
 }
 
 public struct AvatarStyle {
@@ -26,5 +25,4 @@ public struct AvatarStyle {
         self.imageStyle = imageStyle
         self.avatarPosition = avatarPosition
     }
-    
 }

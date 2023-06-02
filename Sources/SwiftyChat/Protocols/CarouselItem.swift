@@ -12,7 +12,7 @@ public protocol CarouselItem {
     
     /// Image automatically scalesToFit itself in a given available width
     var imageURL: URL? { get }
-
+    
     /// Multiline title
     var title: String { get }
     
@@ -21,5 +21,4 @@ public protocol CarouselItem {
     
     /// Action buttons to be aware of when tapped. (view ChatView.onCarouselItemAction)
     var buttons: [CarouselItemButton] { get }
-    
 }

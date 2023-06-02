@@ -15,5 +15,4 @@ public protocol QuickReplyItem {
     
     /// Payload that item contains
     var payload: String { get }
-    
 }

@@ -32,7 +32,7 @@ internal final class AnyGestureRecognizer: UIGestureRecognizer {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         if let touchedView = touches.first?.view, touchedView is UIControl {
             state = .cancelled
-
+            
         } else if let touchedView = touches.first?.view as? UITextView, touchedView.isEditable {
             state = .cancelled
         } else if let touchedView = touches.first?.view as? UIButton, touchedView.isSelected {
@@ -41,11 +41,11 @@ internal final class AnyGestureRecognizer: UIGestureRecognizer {
             state = .began
         }
     }
-
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-       state = .ended
+        state = .ended
     }
-
+    
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
         state = .cancelled
     }
@@ -64,12 +64,12 @@ internal struct DismissKeyboardOnTappingOutside: ViewModifier {
         content
             .onTapGesture {
                 let keyWindow = UIApplication.shared.connectedScenes
-                        .filter({$0.activationState == .foregroundActive})
-                        .map({$0 as? UIWindowScene})
-                        .compactMap({$0})
-                        .first?.windows
-                        .filter({$0.isKeyWindow}).first
+                    .filter({$0.activationState == .foregroundActive})
+                    .map({$0 as? UIWindowScene})
+                    .compactMap({$0})
+                    .first?.windows
+                    .filter({$0.isKeyWindow}).first
                 keyWindow?.endEditing(true)
-        }
+            }
     }
 }

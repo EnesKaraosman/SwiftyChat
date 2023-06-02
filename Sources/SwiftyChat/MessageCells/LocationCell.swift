@@ -26,22 +26,22 @@ internal struct LocationCell<Message: ChatMessage>: View {
     
     public var body: some View {
         mapView
-        .frame(
-            width: mapWidth,
-            height: mapWidth * cellStyle.cellAspectRatio
-        )
-        .cornerRadius(cellStyle.cellCornerRadius)
-        .overlay(
-            RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
-                .stroke(
-                    cellStyle.cellBorderColor,
-                    lineWidth: cellStyle.cellBorderWidth
-                )
-        )
-        .shadow(
-            color: cellStyle.cellShadowColor,
-            radius: cellStyle.cellShadowRadius
-        )
+            .frame(
+                width: mapWidth,
+                height: mapWidth * cellStyle.cellAspectRatio
+            )
+            .cornerRadius(cellStyle.cellCornerRadius)
+            .overlay(
+                RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+                    .stroke(
+                        cellStyle.cellBorderColor,
+                        lineWidth: cellStyle.cellBorderWidth
+                    )
+            )
+            .shadow(
+                color: cellStyle.cellShadowColor,
+                radius: cellStyle.cellShadowRadius
+            )
     }
     
     @ViewBuilder private var mapView: some View {
@@ -65,7 +65,7 @@ internal struct LocationCell<Message: ChatMessage>: View {
             }
         )
     }
-
+    
     private struct LocationRow: LocationItem, Identifiable {
         let id: String = UUID().uuidString
         var latitude: Double
@@ -73,6 +73,5 @@ internal struct LocationCell<Message: ChatMessage>: View {
         var coordinate: CLLocationCoordinate2D {
             CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         }
-    }
-    
+    }    
 }

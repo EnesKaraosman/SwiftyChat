@@ -15,5 +15,4 @@ public protocol LocationItem {
     
     /// Longitude of pin
     var longitude: Double { get }
-    
 }

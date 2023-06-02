@@ -41,6 +41,5 @@ public struct VideoPlaceholderCellStyle {
         self.cellShadowColor = cellShadowColor
         self.cellBlurRadius = cellBlurRadius
     }
-    
 }
 

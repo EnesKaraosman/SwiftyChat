@@ -50,5 +50,4 @@ public struct ImageTextCellStyle: CommonViewStyle {
         self.cellShadowColor = cellShadowColor
         self.cellRoundedCorners = cellRoundedCorners
     }
-    
 }

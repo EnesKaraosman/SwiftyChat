@@ -15,24 +15,24 @@ internal extension Character {
         guard let firstScalar = unicodeScalars.first else { return false }
         return firstScalar.properties.isEmoji && firstScalar.value > 0x238C
     }
-
+    
     /// Checks if the scalars will be merged into an emoji
     var isCombinedIntoEmoji: Bool { unicodeScalars.count > 1 && unicodeScalars.first?.properties.isEmoji ?? false }
-
+    
     var isEmoji: Bool { isSimpleEmoji || isCombinedIntoEmoji }
 }
 
 internal extension String {
     var isSingleEmoji: Bool { count == 1 && containsEmoji }
-
+    
     var containsEmoji: Bool { contains { $0.isEmoji } }
-
+    
     var containsOnlyEmoji: Bool { !isEmpty && !contains { !$0.isEmoji } }
-
+    
     var emojiString: String { emojis.map { String($0) }.reduce("", +) }
-
+    
     var emojis: [Character] { filter { $0.isEmoji } }
-
+    
     var emojiScalars: [UnicodeScalar] { filter { $0.isEmoji }.flatMap { $0.unicodeScalars } }
 }
 
@@ -66,7 +66,6 @@ internal extension String {
         let rect = attributedText.boundingRect(with: constraintBox, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).integral
         return rect.size
     }
-    
 }
 
 internal extension NSAttributedString {
@@ -78,9 +77,11 @@ internal extension NSAttributedString {
             )
             if let htmlString = String(data:htmlData, encoding:String.Encoding.utf8) { return htmlString }
         }
-        catch {}
+        catch { }
+        
         return nil
     }
+    
     func newAttrSize(fontSize: CGFloat) -> NSAttributedString {
         let yourAttrStr = NSMutableAttributedString(attributedString: self)
         yourAttrStr.addAttribute(
@@ -88,7 +89,7 @@ internal extension NSAttributedString {
             value: UIFont.systemFont(ofSize: fontSize),
             range: NSMakeRange(0, yourAttrStr.length)
         )
+        
         return yourAttrStr
     }
-    
 }

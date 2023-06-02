@@ -12,9 +12,9 @@ public struct BasicInputView: View {
     @Binding private var message: String
     @Binding private var isEditing: Bool
     private let placeholder: String
-
+    
     @State private var contentSizeThatFits: CGSize = .zero
-
+    
     private var internalAttributedMessage: Binding<NSAttributedString> {
         Binding<NSAttributedString>(
             get: {
@@ -29,7 +29,7 @@ public struct BasicInputView: View {
             set: { self.message = $0.string }
         )
     }
-
+    
     private var onCommit: ((ChatMessageKind) -> Void)?
     
     public init(
@@ -44,14 +44,14 @@ public struct BasicInputView: View {
         self._contentSizeThatFits = State(initialValue: .zero)
         self.onCommit = onCommit
     }
-
+    
     private var messageEditorHeight: CGFloat {
         min(
             self.contentSizeThatFits.height,
             0.25 * UIScreen.main.bounds.height
         )
     }
-
+    
     private var messageEditorView: some View {
         MultilineTextField(
             attributedText: self.internalAttributedMessage,
@@ -63,7 +63,7 @@ public struct BasicInputView: View {
         }
         .frame(height: self.messageEditorHeight)
     }
-
+    
     private var sendButton: some View {
         Button(action: {
             self.onCommit?(.text(message))
@@ -81,7 +81,7 @@ public struct BasicInputView: View {
         })
         .disabled(message.isEmpty)
     }
-
+    
     public var body: some View {
         VStack {
             Divider()
@@ -91,5 +91,4 @@ public struct BasicInputView: View {
             }
         }
     }
-    
 }

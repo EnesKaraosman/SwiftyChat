@@ -18,7 +18,7 @@ internal struct LoadingCell<Message: ChatMessage>: View {
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
     }
-
+    
     
     private var maxWidth: CGFloat {
         size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
@@ -32,16 +32,16 @@ internal struct LoadingCell<Message: ChatMessage>: View {
             .background(cellStyle.cellBackgroundColor)
             .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
             .overlay(
-    
+                
                 RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-                .stroke(
-                    cellStyle.cellBorderColor,
-                    lineWidth: cellStyle.cellBorderWidth
-                )
-                .shadow(
-                    color: cellStyle.cellShadowColor,
-                    radius: cellStyle.cellShadowRadius
-                )
+                    .stroke(
+                        cellStyle.cellBorderColor,
+                        lineWidth: cellStyle.cellBorderWidth
+                    )
+                    .shadow(
+                        color: cellStyle.cellShadowColor,
+                        radius: cellStyle.cellShadowRadius
+                    )
             )
     }
 }
