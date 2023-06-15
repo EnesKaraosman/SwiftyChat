@@ -62,7 +62,12 @@ struct BasicExampleView: View {
                                            messageUUID: UUID().uuidString))
                 self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .failed,
                                            messageUUID: UUID().uuidString))
+                let placeHolder = ImageLoadingKind.local (UIImage(systemName: "video")!)
+                let videItem = TestVideo(url: URL(string: "https://medchat.s3.amazonaws.com/0ad14146-690c-4a92-9341-b8fd5b226b1bD67F6B53-12E3-4AA9-9EF7-3991D33D914E.mov")!, placeholderImage: placeHolder, pictureInPicturePlayingMessage: "Video")
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .video(videItem),isSender: true,status: .sent,
+                                           messageUUID: UUID().uuidString))
 
+                
             }
     }
     
@@ -121,4 +126,9 @@ struct BasicExampleView_Previews: PreviewProvider {
     static var previews: some View {
         BasicExampleView()
     }
+}
+struct TestVideo: VideoItem {
+    var url: URL
+    var placeholderImage: ImageLoadingKind
+    var pictureInPicturePlayingMessage: String
 }
