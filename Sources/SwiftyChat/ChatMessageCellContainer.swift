@@ -92,6 +92,14 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
             
         case .reply(let reply, let replies):
             ReplyCell(message: message, replies: replies, reply: reply, size: size)
+        
+        case .pdf(let image, let text, let attentions, let pdfURL):
+            PdfTextCell(message: message,
+                        attentions: attentions,
+                        imageLoadingType: image,
+                        pdfURL: pdfURL,
+                        text: text,
+                        size: size)
         }
         
     }

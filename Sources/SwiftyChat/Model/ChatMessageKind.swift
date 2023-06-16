@@ -56,6 +56,8 @@ public enum ChatMessageKind: CustomStringConvertible {
     
     case reply(any ReplyItem,[any ReplyItem])
     
+    case pdf(ImageLoadingKind,String,[String]?,URL)
+    
     
     public var description: String {
         switch self {
@@ -94,6 +96,14 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.video(url: \(videoItem.url) text \(text) tag \(attentions)"
         case . reply(let reply, let replies):
             return "MessageKind.reply reply \(reply) and replies \(replies)"
+        
+        case . pdf(let image, let text, let attentions,let pdfUrl):
+            switch image {
+            case .local(let localImage):
+                return "MessageKind.pdf(local: \(localImage), text:\(text), attentions: \(attentions), pdfURL :\(pdfUrl)"
+            case .remote(let remoteImageUrl):
+                return "MessageKind.pdf(local: \(remoteImageUrl), text:\(text), attentions: \(attentions), pdfURL :\(pdfUrl)"
+            }
         }
     }
     
