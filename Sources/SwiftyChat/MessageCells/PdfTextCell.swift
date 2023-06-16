@@ -32,6 +32,17 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
         return result +  AttributedString(text)
     }
     
+    private var hasText : Bool {
+        if let attentions = attentions, attentions.count > 0 {
+            return true
+        }
+
+        if text.count > 0{
+            return true
+        }
+        return false
+    }
+    
     private var imageWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
@@ -61,24 +72,30 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
     
     @ViewBuilder public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            imageView
-            
-            if #available(iOS 15, *) {
-                Text(formattedTagString)
-                    .fontWeight(cellStyle.textStyle.fontWeight)
-                    .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
-                    .lineLimit(nil)
-                    .foregroundColor(cellStyle.textStyle.textColor)
-                    .padding(cellStyle.textPadding)
 
-            } else {
-                Text(text)
-                    .fontWeight(cellStyle.textStyle.fontWeight)
-                    .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
-                    .lineLimit(nil)
-                    .foregroundColor(cellStyle.textStyle.textColor)
-                    .padding(cellStyle.textPadding)
+            imageView
+            if hasText {
+                if #available(iOS 15, *) {
+                    Text(formattedTagString)
+                        .fontWeight(cellStyle.textStyle.fontWeight)
+                        .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+                        .lineLimit(nil)
+                        .foregroundColor(cellStyle.textStyle.textColor)
+                        .padding(cellStyle.textPadding)
+
+                } else {
+                    Text(text)
+                        .fontWeight(cellStyle.textStyle.fontWeight)
+                        .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+                        .lineLimit(nil)
+                        .foregroundColor(cellStyle.textStyle.textColor)
+                        .padding(cellStyle.textPadding)
+                }
             }
+            
+
+            
+
         }
             .background(cellStyle.cellBackgroundColor)
             
