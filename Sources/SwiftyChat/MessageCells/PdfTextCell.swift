@@ -73,8 +73,8 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
     @ViewBuilder public var body: some View {
         VStack(alignment: .leading, spacing: 0) {
 
-            imageView
             if hasText {
+                imageView
                 if #available(iOS 15, *) {
                     Text(formattedTagString)
                         .fontWeight(cellStyle.textStyle.fontWeight)
@@ -91,10 +91,22 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
                         .foregroundColor(cellStyle.textStyle.textColor)
                         .padding(cellStyle.textPadding)
                 }
+            }else{
+                imageView
+                .background(cellStyle.cellBackgroundColor)
+                .cornerRadius(cellStyle.cellCornerRadius)
+                .overlay(
+                    RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+                        .stroke(
+                            cellStyle.cellBorderColor,
+                            lineWidth: cellStyle.cellBorderWidth
+                        )
+                )
+                .shadow (
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
             }
-            
-
-            
 
         }
             .background(cellStyle.cellBackgroundColor)
