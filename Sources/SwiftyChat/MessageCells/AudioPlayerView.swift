@@ -32,6 +32,16 @@ struct AudioPlayerView: View {
                         .font(.system(size: 25))
                         .padding(.trailing)
                 }
+                .frame(width: 44, height: 44)
+                .background(
+                    RoundedRectangle(cornerRadius: 22)
+                        .stroke(Color.blue, lineWidth: 2)
+                        .background(
+                            RoundedRectangle(cornerRadius: 22)
+                                .foregroundColor(Color.white)
+                                .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
+                        )
+                )
                 if let totalTime = totalTime {
                     Slider(value: $currentTime, in: 0...totalTime, step: 1)
                         .disabled(true)
