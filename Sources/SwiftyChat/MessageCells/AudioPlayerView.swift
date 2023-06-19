@@ -30,18 +30,19 @@ struct AudioPlayerView: View {
                 }) {
                     Image(systemName: isPlaying ? "stop.circle.fill" : "play.circle.fill")
                         .font(.system(size: 25))
-                        .padding(.trailing)
-                }
-                .frame(width: 44, height: 44)
-                .background(
-                    RoundedRectangle(cornerRadius: 22)
-                        .stroke(Color.blue, lineWidth: 2)
                         .background(
                             RoundedRectangle(cornerRadius: 22)
-                                .foregroundColor(Color.white)
-                                .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
+                                .stroke(Color.gray, lineWidth: 1)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 22)
+                                        .foregroundColor(Color.white)
+                                        .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
+                                )
                         )
-                )
+                        .padding(.trailing)
+                }
+                .frame(width: 38, height: 38)
+
                 if let totalTime = totalTime {
                     Slider(value: $currentTime, in: 0...totalTime, step: 1)
                         .disabled(true)
