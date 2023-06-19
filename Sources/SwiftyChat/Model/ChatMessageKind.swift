@@ -58,6 +58,8 @@ public enum ChatMessageKind: CustomStringConvertible {
     
     case pdf(ImageLoadingKind,String,[String]?,URL)
     
+    case audio(URL)
+    
     
     public var description: String {
         switch self {
@@ -104,6 +106,9 @@ public enum ChatMessageKind: CustomStringConvertible {
             case .remote(let remoteImageUrl):
                 return "MessageKind.pdf(local: \(remoteImageUrl), text:\(text), attentions: \(attentions), pdfURL :\(pdfUrl)"
             }
+        case .audio(let url):
+            return "MessageKind.audio URL: \(url)"
+
         }
     }
     

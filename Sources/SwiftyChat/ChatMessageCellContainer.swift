@@ -100,6 +100,13 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                         pdfURL: pdfURL,
                         text: text,
                         size: size)
+            
+        case .audio(let url):
+            
+           AudioCell(message: message,
+                     audioURL: url,
+                     size: size)
+
         }
         
     }

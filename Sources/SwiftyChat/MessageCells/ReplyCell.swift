@@ -70,8 +70,6 @@ internal struct ReplyCell<Message: ChatMessage>: View {
 
          
         }
-
-
     }
 }
 
