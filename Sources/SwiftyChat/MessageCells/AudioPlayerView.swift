@@ -35,7 +35,7 @@ struct AudioPlayerView: View {
                                 .stroke(Color.gray, lineWidth: 1)
                                 .background(
                                     RoundedRectangle(cornerRadius: 22)
-                                        .foregroundColor(Color.white)
+                                        .foregroundColor(Color.clear)
                                         .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
                                 )
                         )
