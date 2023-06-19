@@ -30,6 +30,7 @@ struct AudioPlayerView: View {
                 }) {
                     Image(systemName: isPlaying ? "stop.circle.fill" : "play.circle.fill")
                         .font(.system(size: 25))
+                        .foregroundColor(.white)
                         .background(
                             RoundedRectangle(cornerRadius: 22)
                                 .stroke(Color.gray, lineWidth: 1)
