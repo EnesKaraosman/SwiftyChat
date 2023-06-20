@@ -11,19 +11,22 @@ internal extension Date {
     static func - (lhs: Date, rhs: Date) -> TimeInterval {
         lhs.timeIntervalSinceReferenceDate - rhs.timeIntervalSinceReferenceDate
     }
-    func dateFormat(format : String) -> String{
+    func dateFormat(format: String) -> String {
         let dateFormatter = DateFormatter()
 
         if Calendar.current.isDateInToday(self) {
             dateFormatter.dateFormat = "'Today' 'At' h:mm a"
-        }else{
+
+        } else if Calendar.current.isDate(self, equalTo: Date(), toGranularity: .year) {
+            dateFormatter.dateFormat = "MMM d 'At' h:mm a"
+
+        } else {
             dateFormatter.dateFormat = format
         }
+        
         return dateFormatter.string(from: self)
-
-        
-        
     }
+
     var iso8601String: String {
         // https://github.com/justinmakaila/NSDate-ISO-8601/blob/master/NSDateISO8601.swift
         let dateFormatter = DateFormatter()

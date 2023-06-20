@@ -15,7 +15,7 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
         Group {
             HStack(alignment: .center){
                 if !message.isSender {
-                    Text(message.date.dateFormat(format: "MMM d 'At' h:mm a"))
+                    Text(message.date.dateFormat(format: "MMM d yyyy 'At' h:mm a"))
                         .font(.system(size: 12))
                         .fontWeight(.medium)
                         .foregroundColor(.blue)
@@ -50,7 +50,7 @@ public struct ChatNameAndTime<Message: ChatMessage>: View {
                             .frame(maxWidth: 8, maxHeight: 8,alignment: .center)
                             .foregroundColor(.gray)
                     case .sent:
-                        Text(message.date.dateFormat(format: "MMM d 'At' h:mm a"))
+                        Text(message.date.dateFormat(format: "MMM d yyyy 'At' h:mm a"))
                             .font(.system(size: 12))
                             .fontWeight(.medium)
                             .foregroundColor(.blue)
