@@ -39,12 +39,20 @@ internal struct ReplyCell<Message: ChatMessage>: View {
   
                     }
                     
-                    Text(reply.text!)
-                        .fontWeight(cellStyle.textStyle.fontWeight)
-                        .modifier(EmojiModifier(text: reply.text!, defaultFont: cellStyle.textStyle.font))
-                        .lineLimit(nil)
-                        .foregroundColor(cellStyle.textStyle.textColor)
-                        .padding(.top,10)
+                    switch reply.fileType {
+                    case .video:
+                        Text("Video")
+                    case .image:
+                        Text("Image")
+                    default :
+                        Text(reply.text!)
+                            .fontWeight(cellStyle.textStyle.fontWeight)
+                            .modifier(EmojiModifier(text: reply.text!, defaultFont: cellStyle.textStyle.font))
+                            .lineLimit(nil)
+                            .foregroundColor(cellStyle.textStyle.textColor)
+                            .padding(.top,10)
+                    }
+                    
 
                 }
 
