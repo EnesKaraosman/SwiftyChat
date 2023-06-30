@@ -90,20 +90,16 @@ internal struct ContactCell<Message: ChatMessage>: View {
     public var body: some View {
         
         VStack(spacing: 0) {
-            
             HStack {
                 contactImage
                 fullNameLabel
                 Spacer()
                 Image(systemName: "chevron.right")
                     .shadow(color: .secondary, radius: 1)
-                
             }.padding()
-            
             Spacer()
             Divider()
             buttonActionFooter
-            
         }
         .frame(width: cardWidth)
         .background(
@@ -121,7 +117,6 @@ internal struct ContactCell<Message: ChatMessage>: View {
                     radius: cellStyle.cellShadowRadius
                 )
         )
-        
     }
     
     // MARK: - Fullname Label

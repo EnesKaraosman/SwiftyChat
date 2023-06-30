@@ -33,10 +33,8 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                                     Spacer()
                                     Divider()
                                         .background(cellStyle.textStyle.textColor)
-
                                 }
                             )
-  
                     }
                     
                     switch reply.fileType {
@@ -52,10 +50,11 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size
                         )
+                        .padding(.top,10)
                     case.text :
                         EmptyView()
                     }
-                    if let text = reply.text {
+                    if let text = reply.text, text.count > 0{
                         Text(text)
                             .fontWeight(cellStyle.textStyle.fontWeight)
                             .modifier(EmojiModifier(text: reply.text!, defaultFont: cellStyle.textStyle.font))
