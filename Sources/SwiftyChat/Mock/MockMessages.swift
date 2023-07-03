@@ -120,33 +120,34 @@ public struct MockMessages {
         
         /// Username
         public var userName: String
-        
+        public var objectId: String
         /// User's chat profile image, considered if `avatarURL` is nil
         public var avatar: UIImage?
         
         /// User's chat profile image URL
         public var avatarURL: URL?
 
-        public init(userName: String, avatarURL: URL? = nil, avatar: UIImage? = nil) {
+        public init(userName: String,objectId : String, avatarURL: URL? = nil, avatar: UIImage? = nil) {
             self.userName = userName
             self.avatar = avatar
             self.avatarURL = avatarURL
+            self.objectId = objectId
         }
         
     }
     
     public static var sender: ChatUserItem = .init(
-        userName: "Sender",
+        userName: "Sender", objectId: UUID().uuidString,
         avatarURL: URL(string: "https://ebbot.ai/wp-content/uploads/2020/04/Ebbot-Sa%CC%88ljsa%CC%88l.png")
     )
     
     public static var hubchartUser: ChatUserItem = .init(
-        userName: "hubchart",
+        userName: "hubchart", objectId: UUID().uuidString,
         avatarURL: URL(string: "https://medchat.s3.amazonaws.com/355c4274d33231293bb07b7a846dad6e_image.jpg")
     )
     
     public static var chatbot: ChatUserItem = .init(
-        userName: "Chatbot",
+        userName: "Chatbot", objectId: UUID().uuidString,
         //        avatar: #imageLiteral(resourceName: "avatar")
         avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
     )
