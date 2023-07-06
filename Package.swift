@@ -16,10 +16,10 @@ let package = Package(
     ],
     dependencies: [
         // Image downloading library
-        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.5.0"),
+        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.8.1"),
         .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.1.8"),
         .package(url: "https://github.com/wxxsw/VideoPlayer.git", from: "1.2.3"),
-        .package(url: "https://github.com/dkk/WrappingHStack.git", from: "2.2.9")
+        .package(url: "https://github.com/dkk/WrappingHStack.git", from: "2.2.10")
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
