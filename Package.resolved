@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
         "state": {
           "branch": null,
-          "revision": "90135885ef506506620c4911cefb55a95ca2a9a2",
-          "version": "7.5.0"
+          "revision": "c1f60c63f356d364f4284ba82961acbe7de79bcc",
+          "version": "7.8.1"
         }
       },
       {
@@ -24,8 +24,8 @@
         "repositoryURL": "https://github.com/EnesKaraosman/SwiftUIEKtensions.git",
         "state": {
           "branch": null,
-          "revision": "cafd7ad82796528b392107874f07a7279dec7fcd",
-          "version": "0.1.8"
+          "revision": "21421df3266c99b83992face9e1523c8f1acb924",
+          "version": "0.2.0"
         }
       },
       {
@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/dkk/WrappingHStack.git",
         "state": {
           "branch": null,
-          "revision": "44987fbb01112e6ec72098dc6481187dd53ad4d2",
-          "version": "2.2.9"
+          "revision": "f31b8fdc57759c5aa5fc98c70746db5556e73300",
+          "version": "2.2.10"
         }
       }
     ]
