@@ -1,5 +1,12 @@
 # Change Log
 
+## [2.4.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.4.0)
+Released on 2023-07-09.
+
+#### Update
+- Merged #39, #40, #42 about dependency upgrades
+- Dropped macOS v10 support
+
 ## [2.3.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.3.0)
 Released on 2023-01-29.
 
