@@ -67,7 +67,7 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                 Text(formattedTagString)
                     .fontWeight(cellStyle.textStyle.fontWeight)
                     .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
-                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(cellStyle.textStyle.textColor)
                     .padding(cellStyle.textPadding)
 
@@ -75,7 +75,7 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                 Text(text)
                     .fontWeight(cellStyle.textStyle.fontWeight)
                     .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
-                    .lineLimit(nil)
+                    .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(cellStyle.textStyle.textColor)
                     .padding(cellStyle.textPadding)
             }

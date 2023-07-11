@@ -58,7 +58,7 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                         Text(text)
                             .fontWeight(cellStyle.textStyle.fontWeight)
                             .modifier(EmojiModifier(text: reply.text!, defaultFont: cellStyle.textStyle.font))
-                            .lineLimit(nil)
+                            .fixedSize(horizontal: false, vertical: true)
                             .foregroundColor(cellStyle.textStyle.textColor)
                             .padding(.top,10)
 
