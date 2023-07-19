@@ -37,11 +37,13 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @State private var isKeyboardActive = false
     
     @State private var contentSizeThatFits: CGSize = .zero
+    @Binding private var additionalHeight : CGFloat
+
     private var messageEditorHeight: CGFloat {
         min(
             contentSizeThatFits.height,
             0.25 * UIScreen.main.bounds.height
-        )
+        ) + additionalHeight
     }
     
     
@@ -387,7 +389,8 @@ public extension ChatView {
     ///                                 (disabled by default)
     ///   - inputView: inputView view to provide message
     ///   
-    init(isFetching : Binding<Bool> = .constant(false),
+    init(additionalHeight : Binding<CGFloat> = .constant(0.0),
+        isFetching : Binding<Bool> = .constant(false),
         inverted : Bool = false,
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
@@ -400,6 +403,7 @@ public extension ChatView {
         reachedTop: ((_ lastDate : Date) -> Void)? = nil,
         tappedResendAction : @escaping (Message) -> Void
     ) {
+        self._additionalHeight = additionalHeight
         _messages = messages
         self.inputView = inputView
         _scrollToBottom = scrollToBottom
