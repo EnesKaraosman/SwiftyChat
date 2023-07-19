@@ -62,7 +62,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                          .onPreferenceChange(ContentSizeThatFitsKey.self) {
                              contentSizeThatFits = $0
                          }
-                         .background(Color.pink)
                          .frame(height: messageEditorHeight)
                          .padding(.bottom, 12)
                      
