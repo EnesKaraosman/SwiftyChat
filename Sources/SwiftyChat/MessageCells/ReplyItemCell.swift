@@ -76,11 +76,19 @@ struct ReplyItemCell<Message: ChatMessage>: View {
                     .font(.system(size: 12, weight: .light))
                     .italic()
                     .padding(.top,5)
-                ImageCell(
-                    message: message,
-                    imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
-                    size: size
-                )
+                if let thumbnailURL = reply.thumbnailURL {
+                                  ImageCell(
+                                      message: message,
+                                      imageLoadingType: ImageLoadingKind.remote(URL(string: thumbnailURL)!),
+                                      size: size
+                                  )
+                              }else if let photo = UIImage(systemName: "photo"){
+                                  ImageCell(
+                                      message: message,
+                                      imageLoadingType: ImageLoadingKind.local(photo),
+                                      size: size
+                                  )
+                              }
                 Text(reply.date)
                     .font(.system(size: 11, weight: .regular))
                     .padding(.top,5)
