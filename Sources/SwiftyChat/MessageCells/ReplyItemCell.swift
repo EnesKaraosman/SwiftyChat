@@ -77,6 +77,7 @@ struct ReplyItemCell<Message: ChatMessage>: View {
                     .italic()
                     .padding(.top,5)
                 if let thumbnailURL = reply.thumbnailURL {
+                    let _ = print("thumbnailURL (\(thumbnailURL))")
                                   ImageCell(
                                       message: message,
                                       imageLoadingType: ImageLoadingKind.remote(URL(string: thumbnailURL)!),
