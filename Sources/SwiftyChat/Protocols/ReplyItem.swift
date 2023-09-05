@@ -12,6 +12,7 @@ public enum ReplyItemKind {
     case image
     case video
     case text
+    case pdf
 }
 
 

@@ -22,8 +22,10 @@ struct ReplyItemCell<Message: ChatMessage>: View {
             textView
         case.image:
             imageText
-        case.video:
-            imageText
+       case.video:
+           imageText
+       case.pdf:
+           imageText
         }
         
     }

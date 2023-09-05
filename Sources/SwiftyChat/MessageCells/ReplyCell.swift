@@ -26,8 +26,6 @@ internal struct ReplyCell<Message: ChatMessage>: View {
             Group {
                 VStack(alignment: message.isSender ? .trailing : .leading,spacing: 0) {
                     ForEach(replies, id: \.id) { item in
-                        let _ = print("item ",item)
-
                         ReplyItemCell(reply: item, message: message, size: size)
                             .padding(.bottom)
                             .overlay (
@@ -39,7 +37,6 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             )
                     }
                     
-                   let _ = print("reply.fileType ",reply.fileType)
                     switch reply.fileType {
                     case .video:
                         ImageCell(
@@ -48,6 +45,13 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             size: size
                         )
                     case .image:
+                        ImageCell(
+                            message: message,
+                            imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
+                            size: size
+                        )
+                        .padding(.top,10)
+                    case .pdf:
                         ImageCell(
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
