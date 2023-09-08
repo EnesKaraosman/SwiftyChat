@@ -108,7 +108,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                             }else{
                                                 lastItem = self.messages.last
                                             }
-                                            print("message id \(message.id) -- lastItem \(lastItem.id)")
+                                            print("---------message \(message)\nlastItem \(lastItem)--------")
                                             print("Total \(total)")
 
                                             if message.id == lastItem.id {
