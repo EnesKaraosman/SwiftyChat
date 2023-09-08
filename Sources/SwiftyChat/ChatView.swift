@@ -109,12 +109,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                                 lastItem = self.messages.last
                                             }
                                             print("message id \(message.id) -- lastItem \(lastItem.id)")
-                                            
+                                            print("Total \(total)")
+
                                             if message.id == lastItem.id {
                                                 print("fetch next message ",self.messages.last)
                                                 if let lastMessage = self.messages.last{
                                                     self.reachedTop?(lastMessage.date)
-
                                                 }
                                             }
                                         }
