@@ -22,10 +22,28 @@ struct ReplyItemCell<Message: ChatMessage>: View {
             textView
         case.image:
             imageText
+               .highPriorityGesture(
+                   TapGesture()
+                       .onEnded {
+                           print("didTap PDF \(reply.fileURL)")
+                       }
+               )
        case.video:
            imageText
+               .highPriorityGesture(
+                   TapGesture()
+                       .onEnded {
+                           print("didTap PDF \(reply.fileURL)")
+                       }
+               )
        case.pdf:
            imageText
+               .highPriorityGesture(
+                   TapGesture()
+                       .onEnded {
+                           print("didTap PDF \(reply.fileURL)")
+                       }
+               )
         }
         
     }
