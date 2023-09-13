@@ -44,18 +44,24 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size
                         )
-                        .onTapGesture(perform: {
-                            print("didTapp video \(reply.fileURL)")
-                        })
+                        .highPriorityGesture(
+                            TapGesture()
+                                .onEnded {
+                                    print("didTap PDF \(reply.fileURL)")
+                                }
+                        )
                     case .image:
                         ImageCell(
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size
                         )
-                        .onTapGesture(perform: {
-                            print("didTapp image \(reply.fileURL)")
-                        })
+                        .highPriorityGesture(
+                            TapGesture()
+                                .onEnded {
+                                    print("didTap PDF \(reply.fileURL)")
+                                }
+                        )
                         .padding(.top,10)
                     case .pdf:
                         ImageCell(
@@ -63,9 +69,12 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size
                         )
-                        .onTapGesture(perform: {
-                            print("didTapp PDF \(reply.fileURL)")
-                        })
+                        .highPriorityGesture(
+                            TapGesture()
+                                .onEnded {
+                                    print("didTap PDF \(reply.fileURL)")
+                                }
+                        )
                         .padding(.top,10)
                     case.text :
                         EmptyView()
