@@ -17,7 +17,8 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
     public let contactFooterSection: (ContactItem, Message) -> [ContactCellButton]
     public let onTextTappedCallback: () -> AttributedTextTappedCallback
     public let onCarouselItemAction: (CarouselItemButton, Message) -> Void
-    
+    public let didTappedMedia: (String) -> Void
+
     @ViewBuilder private func messageCell() -> some View {
         switch message.messageKind {
             
@@ -91,7 +92,7 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
             SystemMessageCell(text: text,message: message)
             
         case .reply(let reply, let replies):
-            ReplyCell(message: message, replies: replies, reply: reply, size: size)
+            ReplyCell(message: message, replies: replies, reply: reply, size: size,didTappedMedia: didTappedMedia)
         
         case .pdf(let image, let text, let attentions, let pdfURL):
             PdfTextCell(message: message,

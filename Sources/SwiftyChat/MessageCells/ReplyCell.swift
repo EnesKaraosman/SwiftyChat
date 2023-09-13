@@ -13,7 +13,8 @@ internal struct ReplyCell<Message: ChatMessage>: View {
     public let replies : [any ReplyItem]
     public let reply : any ReplyItem
     public let size: CGSize
-    
+    public let didTappedMedia: ((String) -> Void)
+
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
     }
@@ -26,7 +27,8 @@ internal struct ReplyCell<Message: ChatMessage>: View {
             Group {
                 VStack(alignment: message.isSender ? .trailing : .leading,spacing: 0) {
                     ForEach(replies, id: \.id) { item in
-                        ReplyItemCell(reply: item, message: message, size: size)
+                        
+                        ReplyItemCell(reply: item, message: message, size: size, didTappedMedia: didTappedMedia)
                             .padding(.bottom)
                             .overlay (
                                 VStack {
@@ -47,7 +49,9 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
-                                    print("didTap PDF \(reply.fileURL)")
+                                    if let url = reply.fileURL {
+                                        self.didTappedMedia(url)
+                                    }
                                 }
                         )
                     case .image:
@@ -59,7 +63,9 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
-                                    print("didTap PDF \(reply.fileURL)")
+                                    if let url = reply.fileURL {
+                                        self.didTappedMedia(url)
+                                    }
                                 }
                         )
                         .padding(.top,10)
@@ -72,7 +78,9 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                         .highPriorityGesture(
                             TapGesture()
                                 .onEnded {
-                                    print("didTap PDF \(reply.fileURL)")
+                                    if let url = reply.fileURL {
+                                        self.didTappedMedia(url)
+                                    }
                                 }
                         )
                         .padding(.top,10)

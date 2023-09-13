@@ -12,6 +12,7 @@ struct ReplyItemCell<Message: ChatMessage>: View {
     public let reply : any ReplyItem
     public let message: Message
     public let size: CGSize
+    public let didTappedMedia: ((String) -> Void)
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
     }
@@ -25,7 +26,9 @@ struct ReplyItemCell<Message: ChatMessage>: View {
                .highPriorityGesture(
                    TapGesture()
                        .onEnded {
-                           print("didTap PDF \(reply.fileURL)")
+                           if let url = self.reply.fileURL {
+                               self.didTappedMedia(url)
+                           }
                        }
                )
        case.video:
@@ -33,7 +36,9 @@ struct ReplyItemCell<Message: ChatMessage>: View {
                .highPriorityGesture(
                    TapGesture()
                        .onEnded {
-                           print("didTap PDF \(reply.fileURL)")
+                           if let url = self.reply.fileURL {
+                               self.didTappedMedia(url)
+                           }
                        }
                )
        case.pdf:
@@ -41,7 +46,9 @@ struct ReplyItemCell<Message: ChatMessage>: View {
                .highPriorityGesture(
                    TapGesture()
                        .onEnded {
-                           print("didTap PDF \(reply.fileURL)")
+                           if let url = self.reply.fileURL {
+                               self.didTappedMedia(url)
+                           }
                        }
                )
         }
