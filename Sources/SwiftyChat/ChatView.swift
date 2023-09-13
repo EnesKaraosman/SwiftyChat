@@ -471,7 +471,7 @@ public extension ChatView {
         then({ $0.onCarouselItemAction = action })
     }
     
-    func didTappedMedia(action: @escaping (String) -> Void) -> Self {
+    func didTappedMedia(_ action: @escaping (String) -> Void) -> Self {
         then({ $0.didTappedMedia = action })
     }
 }

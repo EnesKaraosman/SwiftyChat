@@ -107,6 +107,7 @@ struct BasicExampleView: View {
             print(  message.messageKind.description)
             self.showingOptions = true
         })
+        .d
         
         
         .actionSheet(isPresented: $showingOptions) {
