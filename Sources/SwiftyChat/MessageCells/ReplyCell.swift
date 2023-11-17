@@ -13,6 +13,7 @@ internal struct ReplyCell<Message: ChatMessage>: View {
     public let replies : [any ReplyItem]
     public let reply : any ReplyItem
     public let size: CGSize
+    public let priortiy: MessagePriorityLevel
     public let didTappedMedia: ((String) -> Void)
 
     private var cellStyle: TextCellStyle {
@@ -28,7 +29,7 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                 VStack(alignment: message.isSender ? .trailing : .leading,spacing: 0) {
                     ForEach(replies, id: \.id) { item in
                         
-                        ReplyItemCell(reply: item, message: message, size: size, didTappedMedia: didTappedMedia)
+                        ReplyItemCell(reply: item, message: message, size: size, priortiy: priortiy, didTappedMedia: didTappedMedia)
                             .padding(.bottom)
                             .overlay (
                                 VStack {
@@ -44,7 +45,8 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                         ImageCell(
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
-                            size: size
+                            size: size,
+                            priortiy: .medium
                         )
                         .highPriorityGesture(
                             TapGesture()
@@ -58,7 +60,8 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                         ImageCell(
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
-                            size: size
+                            size: size,
+                            priortiy: .high
                         )
                         .highPriorityGesture(
                             TapGesture()
@@ -73,7 +76,8 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                         ImageCell(
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
-                            size: size
+                            size: size, 
+                            priortiy: .medium
                         )
                         .highPriorityGesture(
                             TapGesture()
@@ -96,7 +100,13 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             .padding(.top,10)
 
                     }
+                    if priortiy == .high || priortiy == .medium {
+                        PriorityMessageViewStyle(priorityLevel: priortiy)
+                            .padding(.bottom,10)
+                            .padding(.leading,10)
+                            .frame(alignment: .leading)
 
+                    }
                 }
 
             }

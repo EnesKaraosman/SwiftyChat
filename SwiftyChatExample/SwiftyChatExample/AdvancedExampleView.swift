@@ -87,7 +87,7 @@ struct AdvancedExampleView: View {
             self.messages.append(
                 MockMessages.ChatMessageItem(
                     user: MockMessages.sender,
-                    messageKind: .text(quickReply.title,nil),
+                    messageKind: .text(quickReply.title,nil, MessagePriorityLevel(rawValue: -1)!),
                     isSender: true,
                     messageUUID: UUID().uuidString
                 )
@@ -122,12 +122,12 @@ struct AdvancedExampleView: View {
         .onAppear {
    
             if let portraitUrl = URL(string: "https://picsum.photos/200/300") {
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(portraitUrl)),
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(portraitUrl), MessagePriorityLevel(rawValue: -1)!),
                                            messageUUID: UUID().uuidString))
             }
 
             if let landscapeUrl = URL(string:"https://picsum.photos/400/200") {
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(landscapeUrl)),
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(landscapeUrl), MessagePriorityLevel(rawValue: -1)!),
                                            messageUUID: UUID().uuidString))
             }
 
@@ -135,7 +135,7 @@ struct AdvancedExampleView: View {
             self.messages.append(
                 .init(
                     user: MockMessages.chatbot,
-                    messageKind: .text("https://github.com/EnesKaraosman/SwiftyChat and here is his phone +90 537 844 11-41, & mail: eneskaraosman53@gmail.com Today is 27 May 2020",nil),
+                    messageKind: .text("https://github.com/EnesKaraosman/SwiftyChat and here is his phone +90 537 844 11-41, & mail: eneskaraosman53@gmail.com Today is 27 May 2020",nil, MessagePriorityLevel(rawValue: -1)!),
                     messageUUID: UUID().uuidString
                 )
             )

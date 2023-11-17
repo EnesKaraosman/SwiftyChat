@@ -15,6 +15,8 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
     public let imageLoadingType: ImageLoadingKind
     public let text: String
     public let size: CGSize
+    public let priortiy: MessagePriorityLevel
+
     @EnvironmentObject var style: ChatMessageCellStyle
     
     @available(iOS 15, *)
@@ -78,6 +80,14 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(cellStyle.textStyle.textColor)
                     .padding(cellStyle.textPadding)
+            }
+            
+            if priortiy == .high || priortiy == .medium {
+                PriorityMessageViewStyle(priorityLevel: priortiy)
+                    .padding(.bottom,10)
+                    .padding(.leading,10)
+                    .frame(alignment: .leading)
+
             }
         }
             .background(cellStyle.cellBackgroundColor)

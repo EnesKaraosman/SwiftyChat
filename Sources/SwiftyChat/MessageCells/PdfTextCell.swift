@@ -15,6 +15,8 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
     public let pdfURL: URL
     public let text: String
     public let size: CGSize
+    public let priortiy: MessagePriorityLevel
+
     @EnvironmentObject var style: ChatMessageCellStyle
     
     @available(iOS 15, *)

@@ -16,7 +16,7 @@ internal final class VideoManager<Message: ChatMessage>: ObservableObject {
     @Published var isFullScreen = false
     var videoItem: VideoItem? {
         if let message = message {
-            if case let ChatMessageKind.video(videoItem) = message.messageKind {
+            if case let ChatMessageKind.video(videoItem,_) = message.messageKind {
                 return videoItem
             }
         }

@@ -54,22 +54,22 @@ struct BasicExampleView: View {
                                     Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "2", date: "Feb 15, 2023, 6:05 PM"),
                                     Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "3", date: "Feb 15, 2023, 6:05 PM"),
                                     Reply(fileType: .image, displayName: "Amigo 1", thumbnailURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", fileURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", text:  nil, date: "Feb 15, 2023, 6:05 PM")]
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies, MessagePriorityLevel(rawValue: -1)!),
                                            messageUUID: UUID().uuidString))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, repliesImage),isSender: true,
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, repliesImage, MessagePriorityLevel(rawValue: -1)!),isSender: true,
                                            messageUUID: UUID().uuidString))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .sending,
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies, MessagePriorityLevel(rawValue: -1)!),isSender: true,status: .sending,
                                            messageUUID: UUID().uuidString))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies),isSender: true,status: .failed,
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies, MessagePriorityLevel(rawValue: -1)!),isSender: true,status: .failed,
                                            messageUUID: UUID().uuidString))
                 let placeHolder = ImageLoadingKind.local (UIImage(systemName: "video")!)
                 let videItem = TestVideo(url: URL(string: "https://medchat.s3.amazonaws.com/0ad14146-690c-4a92-9341-b8fd5b226b1bD67F6B53-12E3-4AA9-9EF7-3991D33D914E.mov")!, placeholderImage: placeHolder, pictureInPicturePlayingMessage: "Video")
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .video(videItem),isSender: true,status: .sent,
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .video(videItem, MessagePriorityLevel(rawValue: -1)!),isSender: true,status: .sent,
                                            messageUUID: UUID().uuidString))
                 
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://medchat.s3.amazonaws.com/7a865af9-1dc8-46e7-baa8-61a64d3b48fdrecorded-audio.mp3")!),isSender: true,status: .sent,
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://medchat.s3.amazonaws.com/7a865af9-1dc8-46e7-baa8-61a64d3b48fdrecorded-audio.mp3")!, MessagePriorityLevel(rawValue: -1)!),isSender: true,status: .sent,
                                            messageUUID: UUID().uuidString))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")!),isSender: false,status: .sent,
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")!, MessagePriorityLevel(rawValue: -1)!),isSender: false,status: .sent,
                                            messageUUID: UUID().uuidString))
 
                 
@@ -107,8 +107,7 @@ struct BasicExampleView: View {
             print(  message.messageKind.description)
             self.showingOptions = true
         })
-        .d
-        
+            
         
         .actionSheet(isPresented: $showingOptions) {
             ActionSheet(

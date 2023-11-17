@@ -14,7 +14,8 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
     public let media: VideoItem
     public let message: Message
     public let size: CGSize
-    
+    public let priortiy: MessagePriorityLevel
+
     @EnvironmentObject var style: ChatMessageCellStyle
     @EnvironmentObject var videoManager: VideoManager<Message>
     
@@ -45,11 +46,21 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder private var thumbnailView: some View {
-        ImageLoadingKindCell(
-            media.placeholderImage,
-            width: imageWidth,
-            height: imageWidth / cellStyle.cellAspectRatio
-        )
+        
+        VStack(alignment: .leading) {
+            ImageLoadingKindCell(
+                media.placeholderImage,
+                width: imageWidth,
+                height: imageWidth / cellStyle.cellAspectRatio
+            )
+            if priortiy == .high || priortiy == .medium {
+                PriorityMessageViewStyle(priorityLevel: priortiy)
+                    .padding(.bottom,10)
+                    .padding(.leading,10)
+                    .frame(alignment: .leading)
+                
+            }
+        }
         .clipped()
         .blur(radius: cellStyle.cellBlurRadius)
         .background(cellStyle.cellBackgroundColor)

@@ -14,6 +14,7 @@ internal struct ImageLoadingKindCell: View {
     private let imageLoadingType: ImageLoadingKind
     private let width: CGFloat?
     private let height: CGFloat?
+
     
     init(_ kind: ImageLoadingKind, width: CGFloat? = nil, height: CGFloat? = nil) {
         self.imageLoadingType = kind
@@ -77,6 +78,7 @@ internal struct ImageCell<Message: ChatMessage>: View {
     public let message: Message
     public let imageLoadingType: ImageLoadingKind
     public let size: CGSize
+    public let priortiy: MessagePriorityLevel
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var imageWidth: CGFloat {
@@ -106,20 +108,29 @@ internal struct ImageCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder public var body: some View {
-        imageView
-            .background(cellStyle.cellBackgroundColor)
-            .cornerRadius(cellStyle.cellCornerRadius)
-            .overlay(
-                RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
-                    .stroke(
-                        cellStyle.cellBorderColor,
-                        lineWidth: cellStyle.cellBorderWidth
-                    )
-            )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
+        VStack(alignment: .leading) {
+            imageView
+            if priortiy == .high || priortiy == .medium {
+                PriorityMessageViewStyle(priorityLevel: priortiy)
+                    .padding(.bottom,10)
+                    .padding(.leading,10)
+                    .frame(alignment: .leading)
+
+            }
+        }
+        .background(cellStyle.cellBackgroundColor)
+        .cornerRadius(cellStyle.cellCornerRadius)
+        .overlay(
+            RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+        )
+        .shadow(
+            color: cellStyle.cellShadowColor,
+            radius: cellStyle.cellShadowRadius
+        )
     }
     
 }

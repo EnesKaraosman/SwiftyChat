@@ -14,6 +14,7 @@ internal struct TextCell<Message: ChatMessage>: View {
     public let attentions : [String]?
     public let message: Message
     public let size: CGSize
+    public let priortiy: MessagePriorityLevel
     public let callback: () -> AttributedTextTappedCallback
     
     @EnvironmentObject var style: ChatMessageCellStyle
@@ -36,26 +37,38 @@ internal struct TextCell<Message: ChatMessage>: View {
     
     // MARK: - Default Text
     private var defaultText: some View {
-        Text(text)
-            .fontWeight(cellStyle.textStyle.fontWeight)
-            .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
-            .fixedSize(horizontal: false, vertical: true)
-            .foregroundColor(cellStyle.textStyle.textColor)
-            .padding(cellStyle.textPadding)
-            .background(cellStyle.cellBackgroundColor)
-            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
-            .overlay(
+        
+        VStack(alignment: .leading) {
+            Text(text)
+                .fontWeight(cellStyle.textStyle.fontWeight)
+                .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(cellStyle.textStyle.textColor)
+                .padding(cellStyle.textPadding)
+            if priortiy == .high || priortiy == .medium {
+                PriorityMessageViewStyle(priorityLevel: priortiy)
+                    .padding(.bottom,10)
+                    .padding(.leading,10)
+                    .frame(alignment: .leading)
 
-                RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-                .stroke(
-                    cellStyle.cellBorderColor,
-                    lineWidth: cellStyle.cellBorderWidth
-                )
-                .shadow(
-                    color: cellStyle.cellShadowColor,
-                    radius: cellStyle.cellShadowRadius
-                )
+            }
+        }
+        .background(cellStyle.cellBackgroundColor)
+        .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
+        .overlay(
+
+            RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+            .stroke(
+                cellStyle.cellBorderColor,
+                lineWidth: cellStyle.cellBorderWidth
             )
+            .shadow(
+                color: cellStyle.cellShadowColor,
+                radius: cellStyle.cellShadowRadius
+            )
+        )
+
+         
     }
     
     
@@ -76,26 +89,58 @@ internal struct TextCell<Message: ChatMessage>: View {
     
     @available(iOS 15, *)
     private var defaultAttentionText: some View {
-        Text(formattedTagString)
-            .fontWeight(cellStyle.textStyle.fontWeight)
-            .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
-            .fixedSize(horizontal: false, vertical: true)
-            .foregroundColor(cellStyle.textStyle.textColor)
-            .padding(cellStyle.textPadding)
-            .background(cellStyle.cellBackgroundColor)
-            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
-            .overlay(
-                
-                RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-                .stroke(
-                    cellStyle.cellBorderColor,
-                    lineWidth: cellStyle.cellBorderWidth
-                )
-                .shadow(
-                    color: cellStyle.cellShadowColor,
-                    radius: cellStyle.cellShadowRadius
-                )
+        
+//        Text(formattedTagString)
+//            .fontWeight(cellStyle.textStyle.fontWeight)
+//            .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+//            .fixedSize(horizontal: false, vertical: true)
+//            .foregroundColor(cellStyle.textStyle.textColor)
+//            .padding(cellStyle.textPadding)
+//            .background(cellStyle.cellBackgroundColor)
+//            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
+//            .overlay(
+//                
+//                RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+//                .stroke(
+//                    cellStyle.cellBorderColor,
+//                    lineWidth: cellStyle.cellBorderWidth
+//                )
+//                .shadow(
+//                    color: cellStyle.cellShadowColor,
+//                    radius: cellStyle.cellShadowRadius
+//                )
+//            )
+        
+        
+        VStack(alignment: .leading) {
+            Text(formattedTagString)
+                .fontWeight(cellStyle.textStyle.fontWeight)
+                .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(cellStyle.textStyle.textColor)
+                .padding(cellStyle.textPadding)
+            if priortiy == .high || priortiy == .medium {
+                PriorityMessageViewStyle(priorityLevel: priortiy)
+                    .padding(.bottom,10)
+                    .padding(.leading,10)
+                    .frame(alignment: .leading)
+
+            }
+        }
+        .background(cellStyle.cellBackgroundColor)
+        .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
+        .overlay(
+
+            RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+            .stroke(
+                cellStyle.cellBorderColor,
+                lineWidth: cellStyle.cellBorderWidth
             )
+            .shadow(
+                color: cellStyle.cellShadowColor,
+                radius: cellStyle.cellShadowRadius
+            )
+        )
     }
     
     private var attributedText: some View {

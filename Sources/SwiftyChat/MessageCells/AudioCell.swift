@@ -13,13 +13,26 @@ internal struct AudioCell<Message: ChatMessage>: View {
     public let message: Message
     public let audioURL : URL
     public let size: CGSize
+    public let priortiy: MessagePriorityLevel
+
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
     }
     var body: some View {
         
         HStack {
-            AudioPlayerView(audioURL: audioURL)
+            VStack(alignment: .leading) {
+                AudioPlayerView(audioURL: audioURL)
+
+                if priortiy == .high || priortiy == .medium {
+                    PriorityMessageViewStyle(priorityLevel: priortiy)
+                        .padding(.bottom,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+
+                }
+            }
+            
         }
         //.frame(width: width)
         .background(cellStyle.cellBackgroundColor)

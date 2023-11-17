@@ -20,14 +20,16 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
     public let didTappedMedia: (String) -> Void
 
     @ViewBuilder private func messageCell() -> some View {
+        
         switch message.messageKind {
             
-        case .text(let text, let attentions):
+        case .text(let text, let attentions, let priorityLevel):
             TextCell(
                 text: text,
                 attentions: attentions,
                 message: message,
                 size: size,
+                priortiy: priorityLevel,
                 callback: onTextTappedCallback
             )
             
@@ -38,20 +40,22 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 size: size
             )
             
-        case .imageText(let imageLoadingType, let text, let attentions):
+        case .imageText(let imageLoadingType, let text, let attentions, let priorityLevel):
             ImageTextCell(
                 message: message,
                 attentions: attentions,
                 imageLoadingType: imageLoadingType,
                 text: text,
-                size: size
+                size: size,
+                priortiy:priorityLevel
             )
             
-        case .image(let imageLoadingType):
+        case .image(let imageLoadingType, let priorityLevel):
             ImageCell(
                 message: message,
                 imageLoadingType: imageLoadingType,
-                size: size
+                size: size,
+                priortiy: priorityLevel
             )
             
         case .contact(let contact):
@@ -76,11 +80,12 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 onCarouselItemAction: onCarouselItemAction
             )
             
-        case .video(let videoItem):
+        case .video(let videoItem, let priorityLevel):
             VideoPlaceholderCell(
                 media: videoItem,
                 message: message,
-                size: size
+                size: size,
+                priortiy: priorityLevel
             )
             
         case .loading:
@@ -88,25 +93,31 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
         case .systemMessage(let text):
             SystemMessageCell(text: text,message: message)
         
-        case .videoText(let videoItem, let text, let attentions):
+        case .videoText(let videoItem, let text, let attentions, let priorityLevel):
             SystemMessageCell(text: text,message: message)
             
-        case .reply(let reply, let replies):
-            ReplyCell(message: message, replies: replies, reply: reply, size: size,didTappedMedia: didTappedMedia)
+        case .reply(let reply, let replies, let priorityLevel):
+            ReplyCell(message: message,
+                      replies: replies,
+                      reply: reply,
+                      size: size,
+                      priortiy: priorityLevel, didTappedMedia: didTappedMedia)
         
-        case .pdf(let image, let text, let attentions, let pdfURL):
+        case .pdf(let image, let text, let attentions, let pdfURL, let priorityLevel):
             PdfTextCell(message: message,
                         attentions: attentions,
                         imageLoadingType: image,
                         pdfURL: pdfURL,
                         text: text,
-                        size: size)
+                        size: size,
+                        priortiy: priorityLevel)
             
-        case .audio(let url):
+        case .audio(let url, let priorityLevel):
             
            AudioCell(message: message,
                      audioURL: url,
-                     size: size)
+                     size: size,
+                     priortiy: priorityLevel)
 
         }
         
