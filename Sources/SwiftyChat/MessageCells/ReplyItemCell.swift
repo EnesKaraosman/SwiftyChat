@@ -110,14 +110,14 @@ struct ReplyItemCell<Message: ChatMessage>: View {
                                       message: message,
                                       imageLoadingType: ImageLoadingKind.remote(URL(string: thumbnailURL)!),
                                       size: size,
-                                      priortiy: .high
+                                      priortiy: priortiy
                                   )
                               }else if let photo = UIImage(systemName: "photo"){
                                   ImageCell(
                                       message: message,
                                       imageLoadingType: ImageLoadingKind.local(photo),
                                       size: size,
-                                      priortiy: .medium
+                                      priortiy: priortiy
                                   )
                               }
                 Text(reply.date)

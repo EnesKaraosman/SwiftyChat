@@ -73,9 +73,7 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder public var body: some View {
-        
-        
-        
+                
         if hasText {
             VStack(alignment: .leading, spacing: 0) {
                 imageView
@@ -95,7 +93,12 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
                         .foregroundColor(cellStyle.textStyle.textColor)
                         .padding(cellStyle.textPadding)
                 }
-
+                if priortiy == .high || priortiy == .medium {
+                    PriorityMessageViewStyle(priorityLevel: priortiy)
+                        .padding(.bottom,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                }
 
             }
                 .background(cellStyle.cellBackgroundColor)
@@ -114,7 +117,16 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
                     )
                 )
         }else{
-            imageView
+            
+            VStack(alignment: .leading, spacing: 0) {
+                imageView
+                if priortiy == .high || priortiy == .medium {
+                    PriorityMessageViewStyle(priorityLevel: priortiy)
+                        .padding(.bottom,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                }
+            }
             .background(cellStyle.cellBackgroundColor)
             .cornerRadius(cellStyle.cellCornerRadius)
             .overlay(

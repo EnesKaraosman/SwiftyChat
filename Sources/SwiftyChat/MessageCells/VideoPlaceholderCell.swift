@@ -58,7 +58,10 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
                     .padding(.bottom,10)
                     .padding(.leading,10)
                     .frame(alignment: .leading)
-                
+                    .shadow (
+                        color: cellStyle.cellShadowColor,
+                        radius: cellStyle.cellShadowRadius
+                    )
             }
         }
         .clipped()
