@@ -39,4 +39,5 @@ public struct PriorityMessageViewStyle: View {
 
 #Preview {
     PriorityMessageViewStyle(priorityLevel: .high)
+    
 }
