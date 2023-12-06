@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct PriorityMessageViewStyle: View {
-    var priorityLevel : MessagePriorityLevel
+    public var priorityLevel : MessagePriorityLevel
     private let fontSize = 8.5
     public var body: some View {
         HStack {
