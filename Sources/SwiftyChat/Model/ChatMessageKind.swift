@@ -20,7 +20,7 @@ public enum MessagePriorityLevel : Int, Codable{
     case routine = 0
     case attention = -1
     
-    var body : String {
+    public var body : String {
         switch self {
         case .high:
             return "High Priority"
@@ -33,7 +33,7 @@ public enum MessagePriorityLevel : Int, Codable{
         }
     }
     
-    var foregroundColor : Color {
+    public  var foregroundColor : Color {
         switch self {
         case .high:
             return Color.red
@@ -45,7 +45,7 @@ public enum MessagePriorityLevel : Int, Codable{
         }
     }
     
-    var logo : String {
+    public  var logo : String {
         switch  self {
         case .high:
             return "chevron.right.2"
