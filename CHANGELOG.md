@@ -1,4 +1,10 @@
-# Change Log
+# CHANGELOG
+
+## [2.4.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.4.1)
+Released on 2023-12-10.
+
+#### Update
+- chore: upgrade dependencies
 
 ## [2.4.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.4.0)
 Released on 2023-07-09.
