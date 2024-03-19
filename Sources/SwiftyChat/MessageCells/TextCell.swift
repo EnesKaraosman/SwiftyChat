@@ -17,6 +17,8 @@ internal struct TextCell<Message: ChatMessage>: View {
     public let priortiy: MessagePriorityLevel
     public let callback: () -> AttributedTextTappedCallback
     
+    @State private var showFullText = false
+
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var cellStyle: TextCellStyle {
@@ -35,16 +37,39 @@ internal struct TextCell<Message: ChatMessage>: View {
         return callback()
     }
     
+    private var showMore : some View {
+            HStack {
+                Spacer()
+                Button(action: {
+                    showFullText.toggle() // Toggle between showing full text a     nd truncated text
+                }) {
+                    Text(showFullText ? "Show less" : "Show more")
+                        .font(.system(size: 12))
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.blue)
+                }
+                .padding(.trailing)
+                .padding(.bottom)
+            }
+    }
+    
     // MARK: - Default Text
     private var defaultText: some View {
         
         VStack(alignment: .leading) {
             Text(text)
                 .fontWeight(cellStyle.textStyle.fontWeight)
+                .lineLimit(showFullText ? nil : 20)
                 .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
+
+            
+            if self.computeLineCount(for: text, with: cellStyle) > 20 {
+                showMore
+            }
+
             if priortiy == .high || priortiy == .medium {
                 PriorityMessageViewStyle(priorityLevel: priortiy)
                     .padding(.bottom,10)
@@ -70,10 +95,18 @@ internal struct TextCell<Message: ChatMessage>: View {
                 radius: cellStyle.cellShadowRadius
             )
         )
-
-         
     }
+ 
     
+    private func computeLineCount(for text: String, with style: TextCellStyle) -> Int {
+        //Font what is Font in swiftUI
+        let fontSize: CGFloat = 14 // Assuming you have a font size in your style
+        let averageCharacterWidth: CGFloat = fontSize * 0.5 // This is a rough estimate
+        let containerWidth: CGFloat = maxWidth // Use the calculated maxWidth for the text container
+        let charactersPerLine = max(1, containerWidth / averageCharacterWidth)
+        let lineCount = Int(ceil(CGFloat(text.count) / charactersPerLine))
+        return lineCount
+    }
     
     @available(iOS 15, *)
     private var formattedTagString : AttributedString {
@@ -93,28 +126,6 @@ internal struct TextCell<Message: ChatMessage>: View {
     @available(iOS 15, *)
     private var defaultAttentionText: some View {
         
-//        Text(formattedTagString)
-//            .fontWeight(cellStyle.textStyle.fontWeight)
-//            .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
-//            .fixedSize(horizontal: false, vertical: true)
-//            .foregroundColor(cellStyle.textStyle.textColor)
-//            .padding(cellStyle.textPadding)
-//            .background(cellStyle.cellBackgroundColor)
-//            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
-//            .overlay(
-//                
-//                RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-//                .stroke(
-//                    cellStyle.cellBorderColor,
-//                    lineWidth: cellStyle.cellBorderWidth
-//                )
-//                .shadow(
-//                    color: cellStyle.cellShadowColor,
-//                    radius: cellStyle.cellShadowRadius
-//                )
-//            )
-        
-        
         VStack(alignment: .leading) {
             Text(formattedTagString)
                 .fontWeight(cellStyle.textStyle.fontWeight)
@@ -122,6 +133,10 @@ internal struct TextCell<Message: ChatMessage>: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
+            if self.computeLineCount(for: text, with: cellStyle) > 20 {
+                showMore
+            }
+
             if priortiy == .high || priortiy == .medium {
                 PriorityMessageViewStyle(priorityLevel: priortiy)
                     .padding(.bottom,10)
@@ -199,18 +214,6 @@ internal struct TextCell<Message: ChatMessage>: View {
     }
     
     @ViewBuilder public var body: some View {
-//        if text.containsHtml() ||
-//            AttributeDetective(
-//                text: text,
-//                enabledDetectors: enabledDetectors
-//            ).doesContain()
-//        {
-//            attributedText
-//        } else {
-//            defaultText
-//        }
-        
-        
         if let attentions = attentions, attentions.count > 0 {
             if #available(iOS 15, *) {
                 defaultAttentionText
@@ -220,8 +223,6 @@ internal struct TextCell<Message: ChatMessage>: View {
         }else{
             defaultText
         }
-       
-        
     }
     
 }
