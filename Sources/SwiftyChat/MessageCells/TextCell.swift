@@ -54,7 +54,6 @@ internal struct TextCell<Message: ChatMessage>: View {
                         color: cellStyle.cellShadowColor,
                         radius: cellStyle.cellShadowRadius
                     )
-
             }
         }
         .background(cellStyle.cellBackgroundColor)
