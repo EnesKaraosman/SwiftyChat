@@ -1,10 +1,3 @@
-//
-//  PlayerViewModel.swift
-//  custom-avplayer-swiftui
-//
-//  Created by Marco Falanga on 19/11/21.
-//
-
 import AVFoundation
 import Combine
 

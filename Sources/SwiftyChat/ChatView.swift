@@ -49,6 +49,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     }
                     .frame(height: messageEditorHeight)
                     .padding(.bottom, 12)
+
+                PIPVideoCell<Message>()
             }
             .iOS { $0.keyboardAwarePadding() }
         }

@@ -21,18 +21,17 @@ struct CustomPlayerView<Message: ChatMessage>: View {
     }
 
     var body: some View {
-        CustomVideoPlayer(playerVM: playerVM)
-            .overlay(
-                CustomControlsView(for: playerVM),
-                alignment: .bottom
-            )
-            .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
-            .onAppear {
-                playerVM.setCurrentItem(AVPlayerItem(url: media.url))
-                playerVM.player.play()
-            }
-            .onDisappear {
-                playerVM.player.pause()
-            }
+        VStack(spacing: .zero) {
+            CustomVideoPlayer(playerVM: playerVM)
+            CustomControlsView<Message>(for: playerVM)
+        }
+        .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
+        .onAppear {
+            playerVM.setCurrentItem(AVPlayerItem(url: media.url))
+            playerVM.player.play()
+        }
+        .onDisappear {
+            playerVM.player.pause()
+        }
     }
 }

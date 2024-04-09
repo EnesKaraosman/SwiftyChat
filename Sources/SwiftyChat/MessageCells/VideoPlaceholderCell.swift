@@ -29,7 +29,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
     private var imageWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
-    
+
     public var body: some View {
         thumbnailView
             .overlay(thumbnailOverlay)
@@ -75,9 +75,25 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
             .foregroundColor(.secondary)
     }
     
+    private var pipMessageView: some View {
+        VStack {
+            Image(systemName: "rectangle.on.rectangle.angled")
+                .resizable()
+                .scaledToFit()
+                .frame(width: 40)
+            Text(media.pictureInPicturePlayingMessage)
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .padding(.horizontal, 60)
+                .padding(.top, 4)
+                .multilineTextAlignment(.center)
+        }
+        .foregroundColor(.white)
+    }
+
     @ViewBuilder private var thumbnailOverlay: some View {
         if isThisVideoPlaying {
-            CustomPlayerView(media: media, message: message)
+            pipMessageView
         } else {
             playButton
         }
