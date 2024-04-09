@@ -10,7 +10,7 @@ import UIKit
 
 final class PlayerView: UIView {
     override static var layerClass: AnyClass {
-        return AVPlayerLayer.self
+        AVPlayerLayer.self
     }
     
     var playerLayer: AVPlayerLayer { layer as! AVPlayerLayer }

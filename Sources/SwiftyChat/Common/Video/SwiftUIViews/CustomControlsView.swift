@@ -1,10 +1,3 @@
-//
-//  CustomControlsView.swift
-//  custom-avplayer-swiftui
-//
-//  Created by Marco Falanga on 19/11/21.
-//
-
 import SwiftUI
 
 struct CustomControlsView: View {
@@ -29,7 +22,7 @@ struct CustomControlsView: View {
                     Image(systemName: "pause.circle")
                 })
             }
-            
+
             if let duration = playerVM.duration {
                 Slider(
                     value: $playerVM.currentTime,

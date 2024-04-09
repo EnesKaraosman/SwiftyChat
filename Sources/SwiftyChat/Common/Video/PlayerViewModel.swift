@@ -31,8 +31,14 @@ final class PlayerViewModel: ObservableObject {
             .dropFirst()
             .filter({ $0 == false })
             .sink(receiveValue: { [weak self] _ in
-                guard let self = self else { return }
-                self.player.seek(to: CMTime(seconds: self.currentTime, preferredTimescale: 1), toleranceBefore: .zero, toleranceAfter: .zero)
+                guard let self else { return }
+                
+                self.player.seek(
+                    to: CMTime(seconds: self.currentTime, preferredTimescale: 1),
+                    toleranceBefore: .zero,
+                    toleranceAfter: .zero
+                )
+
                 if self.player.rate != 0 {
                     self.player.play()
                 }
@@ -54,8 +60,12 @@ final class PlayerViewModel: ObservableObject {
             }
             .store(in: &subscriptions)
         
-        timeObserver = player.addPeriodicTimeObserver(forInterval: CMTime(seconds: 1, preferredTimescale: 600), queue: .main) { [weak self] time in
-            guard let self = self else { return }
+        timeObserver = player.addPeriodicTimeObserver(
+            forInterval: CMTime(seconds: 1, preferredTimescale: 600),
+            queue: .main
+        ) { [weak self] time in
+            guard let self else { return }
+            
             if self.isEditingCurrentTime == false {
                 self.currentTime = time.seconds
             }

@@ -1,12 +1,5 @@
-//
-//  CustomPlayerView.swift
-//  custom-avplayer-swiftui
-//
-//  Created by Marco Falanga on 19/11/21.
-//
-
-import SwiftUI
 import AVFoundation
+import SwiftUI
 
 struct CustomPlayerView<Message: ChatMessage>: View {
     @StateObject private var playerVM = PlayerViewModel()
@@ -26,7 +19,7 @@ struct CustomPlayerView<Message: ChatMessage>: View {
 
         try? AVAudioSession.sharedInstance().setCategory(.playback)
     }
-    
+
     var body: some View {
         CustomVideoPlayer(playerVM: playerVM)
             .overlay(
@@ -34,12 +27,12 @@ struct CustomPlayerView<Message: ChatMessage>: View {
                 alignment: .bottom
             )
             .clipShape(RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius))
-        .onAppear {
-            playerVM.setCurrentItem(AVPlayerItem(url: media.url))
-            playerVM.player.play()
-        }
-        .onDisappear {
-            playerVM.player.pause()
-        }
+            .onAppear {
+                playerVM.setCurrentItem(AVPlayerItem(url: media.url))
+                playerVM.player.play()
+            }
+            .onDisappear {
+                playerVM.player.pause()
+            }
     }
 }
