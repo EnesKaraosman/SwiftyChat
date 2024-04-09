@@ -21,7 +21,7 @@ public struct ImageTextCellStyle: CommonViewStyle {
     public let cellBorderWidth: CGFloat
     public let cellShadowRadius: CGFloat
     public let cellShadowColor: Color
-    public let cellRoundedCorners: UIRectCorner
+    public let cellRoundedCorners: RectCorner
     
     public init(
         textStyle: CommonTextStyle = CommonTextStyle(
@@ -30,14 +30,14 @@ public struct ImageTextCellStyle: CommonViewStyle {
             fontWeight: .regular
         ),
         textPadding: CGFloat = 10,
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: Color = Color.secondary.opacity(0.1),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
         cellBorderWidth: CGFloat = 0,
         cellShadowRadius: CGFloat = 3,
         cellShadowColor: Color = .secondary,
-        cellRoundedCorners: UIRectCorner = .allCorners
+        cellRoundedCorners: RectCorner = .allCorners
     ) {
         self.textStyle = textStyle
         self.textPadding = textPadding

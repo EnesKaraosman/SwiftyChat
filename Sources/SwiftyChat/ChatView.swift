@@ -85,7 +85,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                 .font(.caption)
                                 .multilineTextAlignment(.trailing)
                                 .frame(
-                                    maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
+                                    maxWidth: geometry.size.width * (Device.isLandscape ? 0.6 : 0.75),
                                     minHeight: 1,
                                     alignment: message.isSender ? .trailing: .leading
                                 )

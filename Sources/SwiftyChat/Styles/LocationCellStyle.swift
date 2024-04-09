@@ -19,7 +19,7 @@ public struct LocationCellStyle {
     public let cellShadowColor: Color
     
     public init(
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.4 : 0.75) },
         cellAspectRatio:  CGFloat = 0.7,
         cellCornerRadius: CGFloat = 8,
         cellBorderColor:  Color = .clear,

@@ -6,17 +6,33 @@
 //  Copyright © 2020 All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit
+#endif
 
-public extension UIDevice {
-    
-    static var isLandscape: Bool {
+public struct Device {
+
+    public static var isLandscape: Bool {
+        #if os(iOS)
         return UIDevice.current.orientation == .landscapeLeft ||
-            UIDevice.current.orientation == .landscapeRight
+        UIDevice.current.orientation == .landscapeRight
+
+        #endif
+
+        #if os(macOS)
+        return false
+        #endif
     }
-    
-    static var isPortrait: Bool {
+
+    public static var isPortrait: Bool {
+        #if os(iOS)
         return UIDevice.current.orientation == .portrait ||
-            UIDevice.current.orientation == .portraitUpsideDown
+        UIDevice.current.orientation == .portraitUpsideDown
+
+        #endif
+
+        #if os(macOS)
+        return false
+        #endif
     }
 }

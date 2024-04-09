@@ -113,7 +113,7 @@ public struct CarouselCellStyle: CommonViewStyle {
     
     /// Cell width in a given available size
     public let cellWidth: (CGSize) -> CGFloat
-    // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
+    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
     
     public let cellBackgroundColor: Color   
     // default = Color.secondary.opacity(0.2)
@@ -135,7 +135,7 @@ public struct ImageCellStyle {
     
     /// Cell width in a given available size
     public let cellWidth: (CGSize) -> CGFloat
-    // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
+    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
     
     public let cellBackgroundColor: Color    
     // default = Color.secondary.opacity(0.1)
@@ -157,7 +157,7 @@ public struct LocationCellStyle {
     
     /// Cell width in a given available size
     public let cellWidth: (CGSize) -> CGFloat
-    // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
+    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
     
     public let cellAspectRatio:  CGFloat // default = 0.7
     public let cellCornerRadius: CGFloat // default = 8
@@ -176,7 +176,7 @@ public struct LocationCellStyle {
 public struct ContactCellStyle: CommonViewStyle {
 
     public let cellWidth: (CGSize) -> CGFloat
-    //default = { $0.width * (UIDevice.isLandscape ? 0.45 : 0.75) }
+    //default = { $0.width * (Device.isLandscape ? 0.45 : 0.75) }
     
     public let imageStyle: CommonImageStyle
     
@@ -221,7 +221,7 @@ public struct VideoPlaceholderCellStyle {
 
     /// Cell width in a given available size
     public let cellWidth: (CGSize) -> CGFloat
-    // default = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) }
+    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
 
     public let cellBackgroundColor: Color    
     // default = Color.secondary.opacity(0.1)

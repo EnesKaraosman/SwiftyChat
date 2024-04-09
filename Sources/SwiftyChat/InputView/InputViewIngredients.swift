@@ -1,12 +1,11 @@
 //
-//  File.swift
+//  InputViewIngredients.swift
 //  
 //
 //  Created by Enes Karaosman on 19.10.2020.
 //
 
 import SwiftUI
-import UIKit
 
 public struct ContentSizeThatFitsKey: PreferenceKey {
     public static var defaultValue: CGSize = .zero

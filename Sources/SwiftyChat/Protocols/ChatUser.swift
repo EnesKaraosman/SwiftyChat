@@ -6,7 +6,17 @@
 //  Copyright © 2020 All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
+#endif
+
+#if os(macOS)
+import AppKit
+import Cocoa
+
+public typealias UIImage = NSImage
+public typealias URL = NSURL
+#endif
 
 public protocol ChatUser: Identifiable, Equatable {
 

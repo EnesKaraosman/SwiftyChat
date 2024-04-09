@@ -26,7 +26,7 @@ internal struct TextCell<Message: ChatMessage>: View {
     ]
     
     private var maxWidth: CGFloat {
-        size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
+        size.width * (Device.isLandscape ? 0.6 : 0.75)
     }
     
     private var action: AttributedTextTappedCallback {
@@ -42,10 +42,11 @@ internal struct TextCell<Message: ChatMessage>: View {
             .foregroundColor(cellStyle.textStyle.textColor)
             .padding(cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
-            .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+            .roundedCorners(
+                radius: cellStyle.cellCornerRadius,
+                corners: cellStyle.cellRoundedCorners
             )
             .overlay(
-                
                 RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
                     .stroke(
                         cellStyle.cellBorderColor,

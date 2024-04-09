@@ -5,7 +5,6 @@
 //  Created by Enes Karaosman on 24.07.2020.
 //
 
-import UIKit
 import SwiftUI
 
 public struct CarouselCellStyle: CommonViewStyle {
@@ -43,7 +42,7 @@ public struct CarouselCellStyle: CommonViewStyle {
         buttonTitleColor: Color = .white,
         buttonBackgroundColor: Color = .blue,
         buttonTitleFontWeight: Font.Weight = .semibold,
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: Color = Color.secondary.opacity(0.1),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,

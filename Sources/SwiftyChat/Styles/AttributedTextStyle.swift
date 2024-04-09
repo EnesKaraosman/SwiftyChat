@@ -5,7 +5,9 @@
 //  Created by Enes Karaosman on 13.08.2020.
 //
 
+#if canImport(UIKit)
 import UIKit
+#endif
 
 public struct AttributedTextStyle {
  

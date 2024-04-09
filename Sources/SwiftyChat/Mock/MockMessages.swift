@@ -6,8 +6,11 @@
 //  Copyright © 2020 All rights reserved.
 //
 
-import UIKit
 import Foundation
+
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public struct MockMessages {
     

@@ -6,7 +6,10 @@
 //
 
 import Foundation
-import class UIKit.UIImage
+
+#if canImport(UIKit)
+import UIKit
+#endif
 
 /// Represents the data for a contact.
 public protocol ContactItem {

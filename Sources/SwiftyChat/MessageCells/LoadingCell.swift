@@ -21,7 +21,7 @@ internal struct LoadingCell<Message: ChatMessage>: View {
     
     
     private var maxWidth: CGFloat {
-        size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
+        size.width * (Device.isLandscape ? 0.6 : 0.75)
     }
     
     @ViewBuilder public var body: some View {

@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import UIKit
 
 internal class MessageLabel: UILabel {
     

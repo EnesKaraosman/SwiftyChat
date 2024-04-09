@@ -21,7 +21,7 @@ public struct VideoPlaceholderCellStyle {
     public let cellBlurRadius: CGFloat
     
     public init(
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (UIDevice.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: Color = Color.secondary.opacity(0.1),
         cellAspectRatio:  CGFloat = 1.78,
         cellCornerRadius: CGFloat = 8,
