@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## [2.5.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.5.0)
+Released on 2024-04-09.
+
+- refactor: drop iOS-14 and macOS-11 support
+- refactor: remove VideoPlayer dependency
+- refactor: increase swift tools version to 5.8
+- fix(ci): correct swift build github action
+
 ## [2.4.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.4.1)
 Released on 2023-12-10.
 

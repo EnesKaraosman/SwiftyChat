@@ -135,7 +135,6 @@ public struct MockMessages {
     
     public static var chatbot: ChatUserItem = .init(
         userName: "Chatbot",
-        //        avatar: #imageLiteral(resourceName: "avatar")
         avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
     )
     
@@ -151,8 +150,9 @@ public struct MockMessages {
     
     public static func generateMessage(kind: MockMessages.Kind) -> ChatMessageItem {
         let randomUser = Self.randomUser
+        
         switch kind {
-            
+
         case .Image:
             guard let url = URL(string: "https://picsum.photos/id/\(Int.random(in: 1...100))/400/300") else { fallthrough }
             return ChatMessageItem(
@@ -174,7 +174,6 @@ public struct MockMessages {
                 messageKind: .carousel([
                     CarouselRow(
                         title: "Multiline Title",
-                        //                        imageURL: URL(string:"https://picsum.photos/400/300"),
                         imageURL: URL(string: "https://picsum.photos/id/1/400/200"),
                         subtitle: "Multiline Subtitle, you do not believe me ?",
                         buttons: [
@@ -183,7 +182,6 @@ public struct MockMessages {
                     ),
                     CarouselRow(
                         title: "This one is really multiline",
-                        //                        imageURL: URL(string:"https://picsum.photos/400/300"),
                         imageURL: URL(string: "https://picsum.photos/id/2/400/200"),
                         subtitle: "Multilinable Subtitle",
                         buttons: [
@@ -218,8 +216,8 @@ public struct MockMessages {
         case .Contact:
             let contacts = [
                 ContactRow(displayName: "Enes Karaosman"),
-                ContactRow(displayName: "Adam Surname"),
-                ContactRow(displayName: "Name DummySurname")
+                ContactRow(displayName: "John Doe"),
+                ContactRow(displayName: "Serdar Bale")
             ]
             return ChatMessageItem(
                 user: randomUser,
@@ -233,6 +231,7 @@ public struct MockMessages {
                 placeholderImage: .remote(URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg")!),
                 pictureInPicturePlayingMessage: "This video is playing in picture in picture."
             )
+
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .video(videoItem),
@@ -244,12 +243,11 @@ public struct MockMessages {
                 messageKind: .custom(Lorem.sentence()),
                 isSender: randomUser == Self.sender
             )
-            
         }
     }
     
     public static var randomMessageKind: MockMessages.Kind {
-        let allCases: [MockMessages.Kind] = [
+        return [
             .Image,
             .Text, .Text, .Text,
             .Contact,
@@ -260,11 +258,10 @@ public struct MockMessages {
             .Video,
             .QuickReply,
             .Custom
-        ]
-        return allCases.randomElement()!
+        ].randomElement()!
     }
     
     public static func generatedMessages(count: Int = 30) -> [ChatMessageItem] {
-        return (1...count).map { _ in generateMessage(kind: randomMessageKind)}
+        (1...count).map { _ in generateMessage(kind: randomMessageKind)}
     }    
 }
