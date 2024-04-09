@@ -75,25 +75,9 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
             .foregroundColor(.secondary)
     }
     
-    private var pipMessageView: some View {
-        VStack {
-            Image(systemName: "rectangle.on.rectangle.angled")
-                .resizable()
-                .scaledToFit()
-                .frame(width: 40)
-            Text(media.pictureInPicturePlayingMessage)
-                .font(.footnote)
-                .fontWeight(.semibold)
-                .padding(.horizontal, 60)
-                .padding(.top, 4)
-                .multilineTextAlignment(.center)
-        }
-        .foregroundColor(.white)
-    }
-    
     @ViewBuilder private var thumbnailOverlay: some View {
         if isThisVideoPlaying {
-            pipMessageView
+            CustomPlayerView(media: media, message: message)
         } else {
             playButton
         }
