@@ -8,23 +8,6 @@
 import SwiftUI
 import SwiftyChat
 
-fileprivate let html1 = """
-<ul>
-  <li>Domates</li>
-  <li>Biber</li>
-  <li>Patlıcan</li>
-  <li>Patates</li>
-  <li>Tea</li>
-  <li>Milk</li>
-  <li>123</li>
-  <li>456</li>
-</ul>
-"""
-
-fileprivate let htmlLink = """
-<a href="https://www.w3schools.com">Visit W3Schools.com!</a>
-"""
-
 struct AdvancedExampleView: View {
     
     @State var messages: [MockMessages.ChatMessageItem] = []
@@ -99,15 +82,6 @@ struct AdvancedExampleView: View {
                 })
             ]
         }
-        // ▼ Optional, Implement to be notified when related attributed text typed
-        // like address, date, phoneNumber, url
-        .onAttributedTextTappedCallback {
-            AttributedTextTappedCallback(
-                didSelectDate: { print($0) },
-                didSelectPhoneNumber: { print($0) },
-                didSelectURL: { print($0) }
-            )
-        }
         // ▼ Optional
         .onCarouselItemAction(action: { (button, message) in
             print(message.messageKind.description)
@@ -136,9 +110,6 @@ struct AdvancedExampleView: View {
             )
             
             self.messages.append(contentsOf: MockMessages.generatedMessages(count: 20))
-            self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(html1), isSender: false))
-            self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(htmlLink), isSender: false))
-            
         }
     }
 }

@@ -20,8 +20,7 @@ Simple Chat Interface to quick start with [built-in](#message-kinds) message cel
 > Note: Enable "Picture in Picture" background mode from Xcode "Sign in and Capabilities" to be used in video message kinds (Optional) 
 
 ### Features
-- [x] HTML String support like `<li>, <a>` (not like h1 or font based tag)
-- [x] Attributed string support that contains address, date, phoneNumber, url (text is automatically scanned)
+- [x] Attributed string support that came with SwiftUI
 - [x] Landscape orientation  support (autoscales message cells with the given `cellWidth` property, if exists)
 - [x] User Avatar (with different position options, optional usage)
 - [x] Dismiss keyboard (on tapping outside).

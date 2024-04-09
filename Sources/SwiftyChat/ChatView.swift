@@ -155,7 +155,6 @@ internal extension ChatView {
             customCell: customCellView,
             onQuickReplyItemSelected: onQuickReplyItemSelected,
             contactFooterSection: contactCellFooterSection,
-            onTextTappedCallback: onAttributedTextTappedCallback,
             onCarouselItemAction: onCarouselItemAction
         )
         .onTapGesture { onMessageCellTapped(message) }
@@ -276,11 +275,6 @@ public extension ChatView {
     /// Present contactItem's footer buttons. (ChatMessageKind.contactItem)
     func contactItemButtons(_ section: @escaping (ContactItem, Message) -> [ContactCellButton]) -> Self {
         then({ $0.contactCellFooterSection = section })
-    }
-    
-    /// To listen text tapped events like phone, url, date, address
-    func onAttributedTextTappedCallback(action: @escaping () -> AttributedTextTappedCallback) -> Self {
-        then({ $0.onAttributedTextTappedCallback = action })
     }
     
     /// Triggered when the carousel button tapped.

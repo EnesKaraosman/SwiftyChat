@@ -16,7 +16,6 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
     public let customCell: ((Any) -> AnyView)?
     public let onQuickReplyItemSelected: (QuickReplyItem) -> Void
     public let contactFooterSection: (ContactItem, Message) -> [ContactCellButton]
-    public let onTextTappedCallback: () -> AttributedTextTappedCallback
     public let onCarouselItemAction: (CarouselItemButton, Message) -> Void
     
     @ViewBuilder private func messageCell() -> some View {
@@ -26,8 +25,7 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
             TextCell(
                 text: text,
                 message: message,
-                size: size,
-                callback: onTextTappedCallback
+                size: size
             )
             
         case .location(let location):

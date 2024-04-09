@@ -9,33 +9,46 @@
 import SwiftUI
 
 internal struct TextCell<Message: ChatMessage>: View {
-    
+
     public let text: String
     public let message: Message
     public let size: CGSize
-    public let callback: () -> AttributedTextTappedCallback
-    
+
     @EnvironmentObject var style: ChatMessageCellStyle
-    
+
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
     }
-    
-    private let enabledDetectors: [DetectorType] = [
-        .address, .date, .phoneNumber, .url, .transitInformation
-    ]
-    
+
     private var maxWidth: CGFloat {
         size.width * (Device.isLandscape ? 0.6 : 0.75)
     }
-    
-    private var action: AttributedTextTappedCallback {
-        return callback()
+
+    private var attributedString: AttributedString? {
+        try? .init(markdown: text)
     }
-    
+
     // MARK: - Default Text
     private var defaultText: some View {
         Text(text)
+            .applyChatStyle(for: text, cellStyle: cellStyle)
+    }
+
+    @ViewBuilder public var body: some View {
+        if let attributedString {
+            Text(attributedString)
+                .applyChatStyle(for: text, cellStyle: cellStyle)
+        } else {
+            defaultText
+        }
+
+    }
+}
+
+extension Text {
+    func applyChatStyle(for text: String, cellStyle: TextCellStyle) -> some View {
+        self
+            .font(cellStyle.textStyle.font)
             .fontWeight(cellStyle.textStyle.fontWeight)
             .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
             .lineLimit(nil)
@@ -58,64 +71,4 @@ internal struct TextCell<Message: ChatMessage>: View {
                     )
             )
     }
-    
-    private var attributedText: some View {
-        let textStyle = cellStyle.attributedTextStyle
-        
-        let attributes = AZTextFrameAttributes(
-            string: text,
-            width: maxWidth,
-            font: cellStyle.attributedTextStyle.font
-        )
-        
-        let textHeight = attributes.calculatedTextHeight()
-        
-        let frame = text.frameSize(maxWidth: maxWidth, maxHeight: nil)
-        let textWidth = frame.width
-        
-        MessageLabel.defaultAttributes[.foregroundColor] = textStyle.textColor
-        MessageLabel.defaultAttributes[.underlineColor] = textStyle.textColor
-        
-        return AttributedTextCell(text: text, width: maxWidth) {
-            
-            $0.enabledDetectors = enabledDetectors
-            $0.didSelectAddress = action.didSelectAddress
-            $0.didSelectDate = action.didSelectDate
-            $0.didSelectPhoneNumber = action.didSelectPhoneNumber
-            $0.didSelectURL = action.didSelectURL
-            $0.didSelectTransitInformation = action.didSelectTransitInformation
-            $0.font = textStyle.font.withWeight(textStyle.fontWeight)
-            $0.textColor = textStyle.textColor
-            $0.textAlignment = message.isSender ? .right : .left
-        }
-        .frame(width: textWidth, height: textHeight)
-        .padding(cellStyle.textPadding)
-        .background(cellStyle.cellBackgroundColor)
-        .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
-        .overlay(
-            RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-                .stroke(
-                    cellStyle.cellBorderColor,
-                    lineWidth: cellStyle.cellBorderWidth
-                )
-                .shadow(
-                    color: cellStyle.cellShadowColor,
-                    radius: cellStyle.cellShadowRadius
-                )
-        )
-    }
-    
-    @ViewBuilder public var body: some View {
-        if text.containsHtml() ||
-            AttributeDetective(
-                text: text,
-                enabledDetectors: enabledDetectors
-            ).doesContain()
-        {
-            attributedText
-        } else {
-            defaultText
-        }
-    }
-    
 }
