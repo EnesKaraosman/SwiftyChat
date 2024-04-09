@@ -29,7 +29,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
     private var imageWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
-    
+
     public var body: some View {
         thumbnailView
             .overlay(thumbnailOverlay)
@@ -90,7 +90,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
         }
         .foregroundColor(.white)
     }
-    
+
     @ViewBuilder private var thumbnailOverlay: some View {
         if isThisVideoPlaying {
             pipMessageView

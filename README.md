@@ -1,5 +1,4 @@
-![Version](https://img.shields.io/badge/version-2.1.0-blue)
-![Swift 5.3](https://img.shields.io/badge/Swift-5.3-orange.svg)
+![Swift 5.8](https://img.shields.io/badge/Swift-5.8-orange.svg)
 
 # SwiftyChat
 
@@ -17,7 +16,8 @@ For Flutter version check [this link](https://github.com/EnesKaraosman/swifty_ch
 ### About 
 
 Simple Chat Interface to quick start with [built-in](#message-kinds) message cells. <br>
-Fully written in pure SwiftUI.
+
+> Note: Enable "Picture in Picture" background mode from Xcode "Sign in and Capabilities" to be used in video message kinds (Optional) 
 
 ### Features
 - [x] HTML String support like `<li>, <a>` (not like h1 or font based tag)

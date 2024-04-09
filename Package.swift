@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.8
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -6,8 +6,8 @@ import PackageDescription
 let package = Package(
     name: "SwiftyChat",
     platforms: [
-        .iOS(.v14),
-        .macOS(.v11)
+        .iOS(.v15),
+        .macOS(.v12)
     ],
     products: [
         .library(
@@ -18,7 +18,6 @@ let package = Package(
         // Image downloading library
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.11.0"),
         .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.2.0"),
-        .package(url: "https://github.com/wxxsw/VideoPlayer.git", from: "1.2.4"),
         .package(url: "https://github.com/dkk/WrappingHStack.git", from: "2.2.11")
     ],
     targets: [
@@ -29,7 +28,6 @@ let package = Package(
             dependencies: [
                 .byName(name: "Kingfisher"),
                 .byName(name: "SwiftUIEKtensions"),
-                .byName(name: "VideoPlayer"),
                 .byName(name: "WrappingHStack")
                 
             ],

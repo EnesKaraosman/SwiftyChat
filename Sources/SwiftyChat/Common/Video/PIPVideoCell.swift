@@ -1,6 +1,6 @@
 //
 //  PIPVideoCell.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 9.11.2020.
 //
@@ -15,17 +15,17 @@ internal extension CGSize {
 }
 
 internal struct PIPVideoCell<Message: ChatMessage>: View {
-    
+
     @EnvironmentObject var videoManager: VideoManager<Message>
     @EnvironmentObject var model: DeviceOrientationInfo
-    
+
     @State private var cancellables: Set<AnyCancellable> = .init()
     @State private var location: CGPoint = .zero
     @GestureState private var startLocation: CGPoint? = nil
-    
+
     private let horizontalPadding: CGFloat = 16
-    private let aspectRatio: CGFloat = 1.78
-    
+    private let aspectRatio: CGFloat = 1.4
+
     private func videoFrameHeight(in size: CGSize) -> CGFloat {
         if videoManager.isFullScreen && model.orientation == .landscape {
             return size.height
@@ -33,7 +33,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
             return videoFrameWidth(in: size) / aspectRatio
         }
     }
-    
+
     private func videoFrameWidth(in size: CGSize) -> CGFloat {
         if videoManager.isFullScreen {
             return size.width
@@ -42,11 +42,11 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
             (size.width / aspectRatio) : abs(size.width - horizontalPadding) // Padding
         }
     }
-    
+
     private enum Corner {
         case leftTop, leftBottom, rightTop, rightBottom, center
     }
-    
+
     /// When we set .position(), sets its center to given point
     private func rePositionVideoFrame(toCorner: Corner, in size: CGSize) {
         let inputViewOffset: CGFloat = videoManager.isFullScreen ? 0 : 60
@@ -81,16 +81,16 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
             }
         }
     }
-    
+
     public var body: some View {
         ZStack {
-            
+
             if videoManager.isFullScreen {
                 Color.primary.colorInvert()
                     .animation(.linear)
                     .edgesIgnoringSafeArea(.all)
             }
-            
+
             GeometryReader { geometry in
                 video
                     .frame(width: videoFrameWidth(in: geometry.size), height: videoFrameHeight(in: geometry.size))
@@ -101,7 +101,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                     .animation(.linear(duration: 0.1))
                     .onAppear { rePositionVideoFrame(toCorner: .rightTop, in: geometry.size) }
                     .onAppear {
-                        
+
                         videoManager.$isFullScreen
                             .removeDuplicates()
                             .sink { fullScreen in
@@ -110,7 +110,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                                 }
                             }
                             .store(in: &cancellables)
-                        
+
                         model.$orientation
                             .removeDuplicates()
                             .sink(receiveValue: { _ in
@@ -127,13 +127,13 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
             }
         }
     }
-    
+
     @ViewBuilder private var video: some View {
         if let message = videoManager.message, let videoItem = videoManager.videoItem {
-            VideoPlayerContainer<Message>(media: videoItem, message: message)
+            CustomPlayerView(media: videoItem, message: message)
         }
     }
-    
+
     // MARK: - Drag Gesture
     private func simpleDrag(in size: CGSize) -> some Gesture {
         DragGesture()
@@ -161,5 +161,5 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                     }
                 }
             }
-    }    
+    }
 }

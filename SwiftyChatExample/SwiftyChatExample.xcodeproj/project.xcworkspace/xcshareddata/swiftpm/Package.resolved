@@ -1,52 +1,32 @@
 {
-  "object": {
-    "pins": [
-      {
-        "package": "GSPlayer",
-        "repositoryURL": "https://github.com/wxxsw/GSPlayer.git",
-        "state": {
-          "branch": null,
-          "revision": "706fc28fcc8e33607993903eca82d9f6c7c3f6d2",
-          "version": "0.2.27"
-        }
-      },
-      {
-        "package": "Kingfisher",
-        "repositoryURL": "https://github.com/onevcat/Kingfisher.git",
-        "state": {
-          "branch": null,
-          "revision": "add0a87ec4e31e2ca2a0b2085f0559201e4f5918",
-          "version": "7.10.1"
-        }
-      },
-      {
-        "package": "SwiftUIEKtensions",
-        "repositoryURL": "https://github.com/EnesKaraosman/SwiftUIEKtensions.git",
-        "state": {
-          "branch": null,
-          "revision": "21421df3266c99b83992face9e1523c8f1acb924",
-          "version": "0.2.0"
-        }
-      },
-      {
-        "package": "VideoPlayer",
-        "repositoryURL": "https://github.com/wxxsw/VideoPlayer.git",
-        "state": {
-          "branch": null,
-          "revision": "0a271928849292713daf471398a2a9185f28709c",
-          "version": "1.2.4"
-        }
-      },
-      {
-        "package": "WrappingHStack",
-        "repositoryURL": "https://github.com/dkk/WrappingHStack.git",
-        "state": {
-          "branch": null,
-          "revision": "425d9488ba55f58f0b34498c64c054c77fc2a44b",
-          "version": "2.2.11"
-        }
+  "pins" : [
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher.git",
+      "state" : {
+        "revision" : "5b92f029fab2cce44386d28588098b5be0824ef5",
+        "version" : "7.11.0"
       }
-    ]
-  },
-  "version": 1
+    },
+    {
+      "identity" : "swiftuiektensions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/EnesKaraosman/SwiftUIEKtensions.git",
+      "state" : {
+        "revision" : "21421df3266c99b83992face9e1523c8f1acb924",
+        "version" : "0.2.0"
+      }
+    },
+    {
+      "identity" : "wrappinghstack",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dkk/WrappingHStack.git",
+      "state" : {
+        "revision" : "425d9488ba55f58f0b34498c64c054c77fc2a44b",
+        "version" : "2.2.11"
+      }
+    }
+  ],
+  "version" : 2
 }
