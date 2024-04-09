@@ -229,7 +229,7 @@ public struct MockMessages {
             
         case .Video:
             let videoItem = VideoRow(
-                url: URL(string: "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4")!,
+                url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!,
                 placeholderImage: .remote(URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg")!),
                 pictureInPicturePlayingMessage: "This video is playing in picture in picture."
             )
