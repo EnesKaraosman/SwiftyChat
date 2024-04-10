@@ -47,7 +47,7 @@ public struct MockMessages {
     // MARK: - Concrete model for Contact
     private struct ContactRow: ContactItem {
         var displayName: String
-        var image: UIImage?
+        var image: PlatformImage?
         var initials: String = ""
         var phoneNumbers: [String] = []
         var emails: [String] = []
@@ -109,12 +109,12 @@ public struct MockMessages {
         public var userName: String
         
         /// User's chat profile image, considered if `avatarURL` is nil
-        public var avatar: UIImage?
-        
+        public var avatar: PlatformImage?
+
         /// User's chat profile image URL
         public var avatarURL: URL?
         
-        public init(userName: String, avatarURL: URL? = nil, avatar: UIImage? = nil) {
+        public init(userName: String, avatarURL: URL? = nil, avatar: PlatformImage? = nil) {
             self.userName = userName
             self.avatar = avatar
             self.avatarURL = avatarURL
@@ -136,7 +136,7 @@ public struct MockMessages {
         [sender, chatbot].randomElement()!
     }
     
-    public static var mockImages: [UIImage] = []
+    public static var mockImages: [PlatformImage] = []
     
     public static func generateMessage(kind: MockMessages.Kind, count: UInt) -> [ChatMessageItem] {
         (1...count).map { _ in generateMessage(kind: kind) }
