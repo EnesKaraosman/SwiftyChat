@@ -21,7 +21,6 @@ internal extension ChatMessageCellStyle {
         incomingTextStyle: .init(
             textStyle: .init(textColor: .black, font: futuraFont),
             textPadding: 16,
-            attributedTextStyle: .init(textColor: .black),
             cellBackgroundColor: Color.chatGray,
             cellBorderWidth: 0,
             cellShadowRadius: 0,
