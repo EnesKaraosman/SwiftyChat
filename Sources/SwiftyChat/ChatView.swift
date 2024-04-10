@@ -44,7 +44,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             }
             .iOSOnlyModifier { $0.keyboardAwarePadding() }
         }
+        #if os(iOS)
         .environmentObject(DeviceOrientationInfo())
+        #endif
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
         .iOSOnlyModifier { $0.dismissKeyboardOnTappingOutside() }
@@ -107,6 +109,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         scrollTo = nil
                     }
                 }
+                #if os(iOS)
                 .iOSOnlyModifier {
                     // Auto Scroll with Keyboard Notification
                     $0.onReceive(
@@ -124,6 +127,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         perform: { _ in isKeyboardActive = false }
                     )
                 }
+                #endif
             }
         }
         .background(Color.clear)
