@@ -31,33 +31,22 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
     
-    @State private var contentSizeThatFits: CGSize = .zero
-    private var messageEditorHeight: CGFloat {
-        min(
-            contentSizeThatFits.height,
-            0.25 * UIScreen.main.bounds.height
-        )
-    }
-    
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
                 chatView(in: geometry)
-                inputView()
-                    .onPreferenceChange(ContentSizeThatFitsKey.self) {
-                        contentSizeThatFits = $0
+                    .safeAreaInset(edge: .bottom) {
+                        inputView()
                     }
-                    .frame(height: messageEditorHeight)
-                    .padding(.bottom, 12)
 
                 PIPVideoCell<Message>()
             }
-            .iOS { $0.keyboardAwarePadding() }
+            .iOSOnlyModifier { $0.keyboardAwarePadding() }
         }
         .environmentObject(DeviceOrientationInfo())
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
-        .iOS { $0.dismissKeyboardOnTappingOutside() }
+        .iOSOnlyModifier { $0.dismissKeyboardOnTappingOutside() }
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
@@ -102,7 +91,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         .frame(height: inset.bottom)
                         .id("bottom")
                 }
-                .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
+                .padding(inset)
                 .onChange(of: scrollToBottom) { value in
                     if value {
                         withAnimation {
@@ -117,7 +106,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         scrollTo = nil
                     }
                 }
-                .iOS {
+                .iOSOnlyModifier {
                     // Auto Scroll with Keyboard Notification
                     $0.onReceive(
                         NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
@@ -137,7 +126,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             }
         }
         .background(Color.clear)
-        .padding(.bottom, messageEditorHeight + 30)
     }
     
 }
