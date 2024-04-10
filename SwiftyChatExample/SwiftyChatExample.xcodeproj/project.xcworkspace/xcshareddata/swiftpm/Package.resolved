@@ -14,8 +14,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/EnesKaraosman/SwiftUIEKtensions.git",
       "state" : {
-        "revision" : "21421df3266c99b83992face9e1523c8f1acb924",
-        "version" : "0.2.0"
+        "revision" : "bf96c0d841d2bc81dac0d7e28aa9ab71cd7d6c2a",
+        "version" : "0.4.0"
       }
     },
     {

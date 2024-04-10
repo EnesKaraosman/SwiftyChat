@@ -14,7 +14,6 @@ struct BasicExampleView: View {
     
     // MARK: - InputBarView variables
     @State private var message = ""
-    @State private var isEditing = false
     
     var body: some View {
         chatView
@@ -25,7 +24,6 @@ struct BasicExampleView: View {
 
             BasicInputView(
                 message: $message,
-                isEditing: $isEditing,
                 placeholder: "Type something",
                 onCommit: { messageKind in
                     self.messages.append(
@@ -33,8 +31,6 @@ struct BasicExampleView: View {
                     )
                 }
             )
-            .padding(8)
-            .padding(.bottom, isEditing ? 0 : 8)
             .accentColor(.chatBlue)
             .background(Color.primary.colorInvert())
             .animation(.linear)

@@ -14,7 +14,6 @@ struct AdvancedExampleView: View {
     @State private var scrollToBottom = false
     
     @State private var message = ""
-    @State private var isEditing = false
     
     var body: some View {
         NavigationView {
@@ -27,7 +26,6 @@ struct AdvancedExampleView: View {
 
             BasicInputView(
                 message: $message,
-                isEditing: $isEditing,
                 placeholder: "Type something",
                 onCommit: { messageKind in
                     self.messages.append(
@@ -35,8 +33,6 @@ struct AdvancedExampleView: View {
                     )
                 }
             )
-            .padding(8)
-            .padding(.bottom, isEditing ? 0 : 8)
             .background(Color.primary.colorInvert())
             .embedInAnyView()
             

@@ -17,7 +17,7 @@ let package = Package(
     dependencies: [
         // Image downloading library
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.11.0"),
-        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.2.0"),
+        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.4.0"),
         .package(url: "https://github.com/dkk/WrappingHStack.git", from: "2.2.11")
     ],
     targets: [
