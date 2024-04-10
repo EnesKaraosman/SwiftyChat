@@ -8,14 +8,14 @@
 
 #if os(iOS)
 import UIKit
+
+public typealias PlatformImage = UIImage
 #endif
 
 #if os(macOS)
 import AppKit
-import Cocoa
 
-public typealias UIImage = NSImage
-public typealias URL = NSURL
+public typealias PlatformImage = NSImage
 #endif
 
 public protocol ChatUser: Identifiable, Equatable {
@@ -24,7 +24,7 @@ public protocol ChatUser: Identifiable, Equatable {
     var userName: String { get }
 
     /// User's chat profile image, considered if `avatarURL` is nil
-    var avatar: UIImage? { get }
+    var avatar: PlatformImage? { get }
 
     /// User's chat profile image URL
     var avatarURL: URL? { get }
