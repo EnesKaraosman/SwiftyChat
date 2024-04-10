@@ -61,7 +61,7 @@ public struct BasicInputView: View {
                 self.sendButton
             }
         }
-        .padding(.horizontal, 4)
+        .padding(.horizontal, 8)
         .padding(.bottom, 36)
     }
 }

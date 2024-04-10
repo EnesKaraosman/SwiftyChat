@@ -35,9 +35,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
                 chatView(in: geometry)
-                    .safeAreaInset(edge: .bottom) {
-                        inputView()
-                    }
+                    .safeAreaInset(
+                        edge: .bottom,
+                        content: inputView
+                    )
 
                 PIPVideoCell<Message>()
             }
