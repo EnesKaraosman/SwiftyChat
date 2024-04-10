@@ -19,7 +19,7 @@ internal struct ImageLoadingKindCell: View {
         self.imageLoadingType = kind
         self.width = width
         
-        if case .remote(let url) = kind, let width = width, height == nil {
+        if case .remote(let url) = kind, let width, height == nil {
             let path = ImageCache.default.cachePath(forKey: url.cacheKey)
             if let image = UIImage.init(contentsOfFile: path) {
                 self.height = image.size.height * (width / image.size.width)
@@ -36,19 +36,19 @@ internal struct ImageLoadingKindCell: View {
     
     @ViewBuilder private var imageView: some View {
         switch imageLoadingType {
-        case .local(let image): localImage(uiImage: image)
+        case .local(let image): localImage(image)
         case .remote(let remoteUrl): remoteImage(url: remoteUrl)
         }
     }
     
-    @ViewBuilder private func localImage(uiImage: UIImage) -> some View {
-        let _width = uiImage.size.width
-        let _height = uiImage.size.height
-        let isLandscape = _width > _height
+    @ViewBuilder private func localImage(_ image: Image.PlatformImage) -> some View {
+        let width = image.size.width
+        let height = image.size.height
+        let isLandscape = width > height
         
-        Image(uiImage: uiImage)
+        Image(image: image)
             .resizable()
-            .aspectRatio(_width / _height, contentMode: isLandscape ? .fit : .fill)
+            .aspectRatio(width / height, contentMode: isLandscape ? .fit : .fill)
             .frame(width: width, height: height)
     }
     
@@ -123,3 +123,22 @@ internal struct ImageCell<Message: ChatMessage>: View {
     }    
 }
 
+extension Image {
+    #if os(iOS)
+    typealias PlatformImage = UIImage
+    #endif
+
+    #if os(macOS)
+    typealias PlatformImage = NSImage
+    #endif
+
+    init(image: PlatformImage) {
+        #if os(iOS)
+        self.init(uiImage: image)
+        #endif
+
+        #if os(macOS)
+        self.init(nsImage: image)
+        #endif
+    }
+}
