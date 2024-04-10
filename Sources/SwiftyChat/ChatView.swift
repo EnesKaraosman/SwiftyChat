@@ -42,7 +42,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
 
                 PIPVideoCell<Message>()
             }
+            #if os(iOS)
             .iOSOnlyModifier { $0.keyboardAwarePadding() }
+            #endif
         }
         #if os(iOS)
         .environmentObject(DeviceOrientationInfo())
