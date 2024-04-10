@@ -84,8 +84,10 @@ struct AdvancedExampleView: View {
         })
         // ▼ Required
         .environmentObject(ChatMessageCellStyle())
+        #if os(iOS)
         .navigationBarHidden(true)
         .navigationBarTitle("")
+        #endif
         .listStyle(PlainListStyle())
         .onAppear {
    
