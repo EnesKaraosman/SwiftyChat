@@ -17,7 +17,9 @@ struct CustomPlayerView<Message: ChatMessage>: View {
         self.media = media
         self.message = message
 
+        #if os(iOS)
         try? AVAudioSession.sharedInstance().setCategory(.playback)
+        #endif
     }
 
     var body: some View {
