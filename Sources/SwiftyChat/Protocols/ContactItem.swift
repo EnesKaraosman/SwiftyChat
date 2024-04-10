@@ -7,10 +7,6 @@
 
 import Foundation
 
-#if canImport(UIKit)
-import UIKit
-#endif
-
 /// Represents the data for a contact.
 public protocol ContactItem {
     
@@ -18,8 +14,8 @@ public protocol ContactItem {
     var displayName: String { get }
     
     /// contact profile image
-    var image: UIImage? { get }
-    
+    var image: PlatformImage? { get }
+
     /// initials from contact first and last name
     var initials: String { get }
     
