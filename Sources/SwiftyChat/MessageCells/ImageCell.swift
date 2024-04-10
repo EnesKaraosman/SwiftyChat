@@ -21,7 +21,7 @@ internal struct ImageLoadingKindCell: View {
         
         if case .remote(let url) = kind, let width, height == nil {
             let path = ImageCache.default.cachePath(forKey: url.cacheKey)
-            if let image = UIImage.init(contentsOfFile: path) {
+            if let image = PlatformImage(contentsOfFile: path) {
                 self.height = image.size.height * (width / image.size.width)
                 return
             }
@@ -41,7 +41,7 @@ internal struct ImageLoadingKindCell: View {
         }
     }
     
-    @ViewBuilder private func localImage(_ image: Image.PlatformImage) -> some View {
+    @ViewBuilder private func localImage(_ image: PlatformImage) -> some View {
         let width = image.size.width
         let height = image.size.height
         let isLandscape = width > height
@@ -124,14 +124,6 @@ internal struct ImageCell<Message: ChatMessage>: View {
 }
 
 extension Image {
-    #if os(iOS)
-    typealias PlatformImage = UIImage
-    #endif
-
-    #if os(macOS)
-    typealias PlatformImage = NSImage
-    #endif
-
     init(image: PlatformImage) {
         #if os(iOS)
         self.init(uiImage: image)
