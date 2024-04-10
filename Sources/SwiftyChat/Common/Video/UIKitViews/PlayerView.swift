@@ -1,8 +1,7 @@
 import AVFoundation
 
-#if canImport(UIKit)
+#if os(iOS)
 import UIKit
-#endif
 
 final class PlayerView: UIView {
     override static var layerClass: AnyClass {
@@ -21,3 +20,22 @@ final class PlayerView: UIView {
         }
     }
 }
+#endif
+
+#if os(macOS)
+import AppKit
+
+final class PlayerView: NSView {
+    var playerLayer: AVPlayerLayer { layer as! AVPlayerLayer }
+
+    var player: AVPlayer? {
+        get {
+            playerLayer.player
+        }
+        set {
+            playerLayer.videoGravity = .resizeAspectFill
+            playerLayer.player = newValue
+        }
+    }
+}
+#endif
