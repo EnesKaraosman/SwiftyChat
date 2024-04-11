@@ -12,7 +12,6 @@ struct BasicExampleView: View {
     
     @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 20)
     
-    // MARK: - InputBarView variables
     @State private var message = ""
     
     var body: some View {
@@ -31,9 +30,7 @@ struct BasicExampleView: View {
                     )
                 }
             )
-            .accentColor(.chatBlue)
             .background(Color.primary.colorInvert())
-            .animation(.linear)
             .embedInAnyView()
             
         }

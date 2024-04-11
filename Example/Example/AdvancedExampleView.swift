@@ -16,9 +16,7 @@ struct AdvancedExampleView: View {
     @State private var message = ""
     
     var body: some View {
-        NavigationView {
-            chatView
-        }
+        chatView
     }
     
     private var chatView: some View {
@@ -85,8 +83,7 @@ struct AdvancedExampleView: View {
         // ▼ Required
         .environmentObject(ChatMessageCellStyle())
         #if os(iOS)
-        .navigationBarHidden(true)
-        .navigationBarTitle("")
+        .navigationBarTitle("Advanced")
         #endif
         .listStyle(PlainListStyle())
         .onAppear {

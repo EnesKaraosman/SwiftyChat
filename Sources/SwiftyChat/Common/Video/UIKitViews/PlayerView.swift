@@ -25,6 +25,8 @@ final class PlayerView: UIView {
 #if os(macOS)
 import AppKit
 
+// FIXME: - Play videos differently for macOS
+
 final class PlayerView: NSView {
     var playerLayer: AVPlayerLayer { layer as! AVPlayerLayer }
 
