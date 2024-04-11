@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct CustomControlsView<Message: ChatMessage>: View {
+struct VideoPlayerOverlay<Message: ChatMessage>: View {
     @ObservedObject var playerVM: PlayerViewModel
     @EnvironmentObject var videoManager: VideoManager<Message>
 

@@ -1,9 +1,9 @@
+#if os(iOS)
 import AVKit
 import Combine
 import SwiftUI
 
-#if os(iOS)
-struct CustomVideoPlayer: UIViewRepresentable {
+struct VideoPlayerRepresentable: UIViewRepresentable {
     @ObservedObject var playerVM: PlayerViewModel
 
     func makeUIView(context: Context) -> PlayerView {
@@ -18,36 +18,13 @@ struct CustomVideoPlayer: UIViewRepresentable {
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
-}
-#endif
 
-#if os(macOS)
-struct CustomVideoPlayer: NSViewRepresentable {
-    
-    @ObservedObject var playerVM: PlayerViewModel
-
-    func makeNSView(context: Context) -> PlayerView {
-        let view = PlayerView()
-        view.player = playerVM.player
-        context.coordinator.setController(view.playerLayer)
-        return view
-    }
-
-    func updateNSView(_ nsView: PlayerView, context: Context) { }
-
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-}
-#endif
-
-extension CustomVideoPlayer {
     class Coordinator: NSObject, AVPictureInPictureControllerDelegate {
-        private let parent: CustomVideoPlayer
+        private let parent: VideoPlayerRepresentable
         private var controller: AVPictureInPictureController?
         private var cancellable: AnyCancellable?
 
-        init(_ parent: CustomVideoPlayer) {
+        init(_ parent: VideoPlayerRepresentable) {
             self.parent = parent
             super.init()
 
@@ -67,9 +44,7 @@ extension CustomVideoPlayer {
 
         func setController(_ playerLayer: AVPlayerLayer) {
             controller = AVPictureInPictureController(playerLayer: playerLayer)
-            #if os(iOS)
             controller?.canStartPictureInPictureAutomaticallyFromInline = true
-            #endif
             controller?.delegate = self
         }
 
@@ -81,4 +56,23 @@ extension CustomVideoPlayer {
             parent.playerVM.isInPipMode = false
         }
     }
+
+    final class PlayerView: UIView {
+        override static var layerClass: AnyClass {
+            AVPlayerLayer.self
+        }
+
+        var playerLayer: AVPlayerLayer { layer as! AVPlayerLayer }
+
+        var player: AVPlayer? {
+            get {
+                playerLayer.player
+            }
+            set {
+                playerLayer.videoGravity = .resizeAspectFill
+                playerLayer.player = newValue
+            }
+        }
+    }
 }
+#endif

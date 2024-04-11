@@ -110,23 +110,25 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     }
                 }
                 #if os(iOS)
-                .iOSOnlyModifier {
-                    // Auto Scroll with Keyboard Notification
-                    $0.onReceive(
-                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-                            .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
-                        perform: { _ in
-                            if !isKeyboardActive {
-                                isKeyboardActive = true
-                                scrollToBottom = true
-                            }
+                // Auto Scroll with Keyboard Notification
+                .onReceive(
+                    NotificationCenter
+                        .default
+                        .publisher(for: UIResponder.keyboardWillShowNotification)
+                        .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
+                    perform: { _ in
+                        if !isKeyboardActive {
+                            isKeyboardActive = true
+                            scrollToBottom = true
                         }
-                    )
-                    .onReceive(
-                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
-                        perform: { _ in isKeyboardActive = false }
-                    )
-                }
+                    }
+                )
+                .onReceive(
+                    NotificationCenter
+                        .default
+                        .publisher(for: UIResponder.keyboardWillHideNotification),
+                    perform: { _ in isKeyboardActive = false }
+                )
                 #endif
             }
         }

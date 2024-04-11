@@ -5,9 +5,9 @@
 //  Created by Enes Karaosman on 9.11.2020.
 //
 
+import Combine
 import SwiftUI
 import SwiftUIEKtensions
-import Combine
 
 internal extension CGSize {
     var midX: CGFloat { width / 2 }
@@ -149,7 +149,13 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
 
     @ViewBuilder private var video: some View {
         if let message = videoManager.message, let videoItem = videoManager.videoItem {
-            CustomPlayerView(media: videoItem, message: message)
+            #if os(iOS)
+            iOSChatVideoPlayer(media: videoItem, message: message)
+            #endif
+
+            #if os(macOS)
+            MacOSChatVideoPlayer(media: videoItem, message: message)
+            #endif
         }
     }
 

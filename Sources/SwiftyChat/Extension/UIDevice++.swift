@@ -19,8 +19,6 @@ public struct Device {
 
         #endif
 
-        #if os(macOS)
         return false
-        #endif
     }
 }
