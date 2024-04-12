@@ -128,12 +128,12 @@ public struct MockMessages {
 
     public static var sender: ChatUserItem = .init(
         userName: "Sender",
-        avatarURL: URL(string: "https://ebbot.ai/wp-content/uploads/2020/04/Ebbot-Sa%CC%88ljsa%CC%88l.png")
+        avatarURL: URL(string: "https://leafac.github.io/fake-avatars/avatars/png/\(Int.random(in: 1...250)).png")
     )
 
     public static var chatbot: ChatUserItem = .init(
         userName: "Chatbot",
-        avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
+        avatarURL: URL(string: "https://leafac.github.io/fake-avatars/avatars/png/\(Int.random(in: 1...250)).png")
     )
 
     private static var randomUser: ChatUserItem {
@@ -152,7 +152,11 @@ public struct MockMessages {
         switch kind {
 
         case .Image:
-            guard let url = URL(string: "https://picsum.photos/id/\(Int.random(in: 1...100))/400/300") else { fallthrough }
+            let randomId = Int.random(in: 1...100)
+            guard let url = URL(string: "https://picsum.photos/id/\(randomId)/800/600") else {
+                fallthrough
+            }
+
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .image(.remote(url)),
@@ -238,7 +242,7 @@ public struct MockMessages {
         case .Custom:
             return ChatMessageItem(
                 user: randomUser,
-                messageKind: .custom(Lorem.sentence()),
+                messageKind: .custom("Custom Message Kind 😍🥰"),
                 isSender: randomUser == Self.sender
             )
         }
@@ -247,13 +251,17 @@ public struct MockMessages {
     public static var randomMessageKind: MockMessages.Kind {
         return [
             .Image,
-            .Text, .Text, .Text,
+            .Text, .Text,
+            .Image,
+            .Text, .Text,
             .Contact,
-            .Text, .Text, .Text,
+            .Text, .Text,
             .Carousel,
+            .Text, .Text,
             .Location,
-            .Text, .Text, .Text,
+            .Text, .Text,
             .Video,
+            .Text, .Text,
             .QuickReply,
             .Custom
         ].randomElement()!
