@@ -17,8 +17,6 @@ For Flutter version check [this link](https://github.com/EnesKaraosman/swifty_ch
 
 Simple Chat Interface to quick start with [built-in](#message-kinds) message cells. <br>
 
-> Note: Enable "Picture in Picture" background mode from Xcode "Sign in and Capabilities" to be used in video message kinds (Optional) 
-
 ### Features
 - [x] Attributed string support that came with SwiftUI
 - [x] Landscape orientation  support (autoscales message cells with the given `cellWidth` property, if exists)
@@ -26,6 +24,7 @@ Simple Chat Interface to quick start with [built-in](#message-kinds) message cel
 - [x] Dismiss keyboard (on tapping outside).
 - [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
 - [x] Scroll to bottom.
+- [x] "Picture in Picture" background mode video playing (to enable, visit >> Xcode "Sign in and Capabilities")
 - [x] Round specific corner of text messages.
 - [x] Implement custom message cells. See [CustomMessage.md](CustomMessage.md) for details.
 - [ ] Swipe to dismiss keyboard.
@@ -92,7 +91,7 @@ public enum ChatMessageKind {
 - `ChatView`
 
 Here below is minimum code required to get started (see up & running)<br> 
-For detail, visit example project [here](../master/SwiftyChatExample/SwiftyChatExample)
+For detail, visit example project [here](../master/SwiftyChatExample/Example)
 
 ```swift
 @State private var scrollToBottom = false
@@ -118,8 +117,7 @@ ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(
         scrollToBottom = true
     }
 )
-...
-...
+// ...
 ```
 
 - `InputView`
@@ -130,12 +128,10 @@ Recommended way is just clone this `BasicInputView` and modify (ex. add camera i
 
 // InputBarView variables
 @State private var message = ""
-@State private var isEditing = false
 
 var inputBarView: some View {
     BasicInputView(
         message: $message, // Typed text.
-        isEditing: $isEditing,
         placeholder: "Type something",
         onCommit: { messageKind in
             self.messages.append(
@@ -143,9 +139,6 @@ var inputBarView: some View {
             )
         }
     )
-    .padding(8)
-    .padding(.bottom, isEditing ? 0 : 8)
-    .accentColor(.chatBlue)
     .background(Color.primary.colorInvert())
     // ▼ An extension that wraps view inside AnyView
     .embedInAnyView()
@@ -195,11 +188,8 @@ You can also use your own custom message cell, see [CustomMessage.md](CustomMess
 
 <br>
 Please feel free to contribute.<br>
+
 * Create PR for a feature/bug you'd like to add/fix.
-
-### Dependencies
-
-* [Kingfisher](https://github.com/onevcat/Kingfisher.git) : Image downloading library.
 
 ### Inspiration
 
