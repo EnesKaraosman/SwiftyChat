@@ -62,7 +62,6 @@ struct BasicExampleView: View {
         #if os(iOS)
         .navigationBarTitle("Basic")
         #endif
-        .listStyle(PlainListStyle())
     }
 }
 
