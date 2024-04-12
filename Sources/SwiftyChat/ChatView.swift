@@ -28,7 +28,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
 
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
-    @State private var isKeyboardActive = false
 
     public var body: some View {
         GeometryReader { geometry in
@@ -52,8 +51,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
 
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
-        ScrollView(.vertical, showsIndicators: false) {
-            ScrollViewReader { proxy in
+        ScrollViewReader { proxy in
+            ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack {
                     ForEach(messages) { message in
                         let showDateheader = shouldShowDateHeader(
@@ -90,7 +89,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             }
                     }
                     Spacer()
-                        .frame(height: inset.bottom)
+                        .frame(height: 0)
                         .id("bottom")
                 }
                 .padding(inset)
@@ -103,7 +102,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     }
                 }
                 .onChange(of: scrollTo) { value in
-                    if let value = value {
+                    if let value {
                         proxy.scrollTo(value, anchor: .top)
                         scrollTo = nil
                     }
@@ -116,17 +115,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         .publisher(for: UIResponder.keyboardWillShowNotification)
                         .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
                     perform: { _ in
-                        if !isKeyboardActive {
-                            isKeyboardActive = true
+                        if !scrollToBottom {
                             scrollToBottom = true
                         }
                     }
-                )
-                .onReceive(
-                    NotificationCenter
-                        .default
-                        .publisher(for: UIResponder.keyboardWillHideNotification),
-                    perform: { _ in isKeyboardActive = false }
                 )
 #endif
             }
