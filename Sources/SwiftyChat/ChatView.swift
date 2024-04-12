@@ -155,7 +155,7 @@ internal extension ChatView {
         .onTapGesture { onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
         .modifier(
-            AvatarModifier<Message, User>(
+            AvatarModifier<Message>(
                 message: message,
                 showAvatarForMessage: shouldShowAvatarForMessage(
                     forThisMessage: avatarShow

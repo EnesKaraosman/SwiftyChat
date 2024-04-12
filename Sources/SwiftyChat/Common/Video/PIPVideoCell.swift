@@ -67,7 +67,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     /// When we set .position(), sets its center to given point
     private func rePositionVideoFrame(toCorner: Corner, in size: CGSize) {
         let inputViewOffset: CGFloat = videoManager.isFullScreen ? 0 : 60
-        let horizontalPadding = videoManager.isFullScreen ? 0 : horizontalPadding
+        let hPadding = videoManager.isFullScreen ? 0 : horizontalPadding
         withAnimation(.easeIn) {
             switch toCorner {
             case .center:
@@ -77,22 +77,22 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                 )
             case .leftTop:
                 location = .init(
-                    x: (videoFrameWidth(in: size) / 2) + (horizontalPadding / 2),
+                    x: (videoFrameWidth(in: size) / 2) + (hPadding / 2),
                     y: videoFrameHeight(in: size) / 2
                 )
             case .leftBottom:
                 location = .init(
-                    x: (videoFrameWidth(in: size) / 2) + (horizontalPadding / 2),
+                    x: (videoFrameWidth(in: size) / 2) + (hPadding / 2),
                     y: size.height - videoFrameHeight(in: size) / 2 - inputViewOffset
                 )
             case .rightTop:
                 location = .init(
-                    x: size.width - (videoFrameWidth(in: size) / 2) - (horizontalPadding / 2),
+                    x: size.width - (videoFrameWidth(in: size) / 2) - (hPadding / 2),
                     y: videoFrameHeight(in: size) / 2
                 )
             case .rightBottom:
                 location = .init(
-                    x: size.width - (videoFrameWidth(in: size) / 2) - (horizontalPadding / 2),
+                    x: size.width - (videoFrameWidth(in: size) / 2) - (hPadding / 2),
                     y: size.height - videoFrameHeight(in: size) / 2 - inputViewOffset
                 )
             }

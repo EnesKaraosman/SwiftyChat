@@ -8,7 +8,7 @@
 import SwiftUI
 import Kingfisher
 
-internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier {
+internal struct AvatarModifier<Message: ChatMessage>: ViewModifier {
 
     let message: Message
     let showAvatarForMessage: Bool
