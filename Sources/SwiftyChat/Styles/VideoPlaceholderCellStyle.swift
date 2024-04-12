@@ -1,6 +1,6 @@
 //
 //  Video.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 6.11.2020.
 //
@@ -8,9 +8,7 @@
 import SwiftUI
 
 public struct VideoPlaceholderCellStyle {
-    
-    public var cellWidth: (CGSize) -> CGFloat
-    
+    public let cellWidth: (CGSize) -> CGFloat
     public let cellBackgroundColor: Color
     public let cellAspectRatio: CGFloat
     public let cellCornerRadius: CGFloat
@@ -19,16 +17,16 @@ public struct VideoPlaceholderCellStyle {
     public let cellShadowRadius: CGFloat
     public let cellShadowColor: Color
     public let cellBlurRadius: CGFloat
-    
+
     public init(
         cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.4 : 0.75) },
         cellBackgroundColor: Color = Color.secondary.opacity(0.1),
-        cellAspectRatio:  CGFloat = 1.78,
+        cellAspectRatio: CGFloat = 1.78,
         cellCornerRadius: CGFloat = 8,
-        cellBorderColor:  Color = .clear,
-        cellBorderWidth:  CGFloat = 0,
+        cellBorderColor: Color = .clear,
+        cellBorderWidth: CGFloat = 0,
         cellShadowRadius: CGFloat = 2,
-        cellShadowColor:  Color = .secondary,
+        cellShadowColor: Color = .secondary,
         cellBlurRadius: CGFloat = 3
     ) {
         self.cellWidth = cellWidth
@@ -42,4 +40,3 @@ public struct VideoPlaceholderCellStyle {
         self.cellBlurRadius = cellBlurRadius
     }
 }
-

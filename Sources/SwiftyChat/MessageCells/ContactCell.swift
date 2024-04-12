@@ -1,6 +1,6 @@
 //
 //  DefaultContactCell.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 25.05.2020.
 //
@@ -11,7 +11,7 @@ public struct ContactCellButton: Identifiable {
     public let id = UUID()
     public let title: String
     public let action: () -> Void
-    
+
     public init(title: String, action: @escaping () -> Void) {
         self.title = title
         self.action = action
@@ -19,28 +19,28 @@ public struct ContactCellButton: Identifiable {
 }
 
 internal struct ContactCell<Message: ChatMessage>: View {
-    
-    public let contact: ContactItem
-    public let message: Message
-    public let size: CGSize
-    public let footerSection: (ContactItem, Message) -> [ContactCellButton]
-    
+
+    let contact: ContactItem
+    let message: Message
+    let size: CGSize
+    let footerSection: (ContactItem, Message) -> [ContactCellButton]
+
     @EnvironmentObject var style: ChatMessageCellStyle
-    
+
     private var cellStyle: ContactCellStyle {
         style.contactCellStyle
     }
-    
+
     private var imageStyle: CommonImageStyle {
         cellStyle.imageStyle
     }
-    
+
     private var cardWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
-    
-    // MARK: - Image
-    @ViewBuilder private var contactImage: some View {
+
+    @ViewBuilder
+    private var contactImage: some View {
         if let contactImage = contact.image {
             Image(image: contactImage)
                 .resizable()
@@ -63,11 +63,11 @@ internal struct ContactCell<Message: ChatMessage>: View {
                 )
         }
     }
-    
+
     private var buttons: [ContactCellButton] {
         return footerSection(contact, message)
     }
-    
+
     private var buttonActionFooter: some View {
         HStack {
             ForEach(0..<buttons.count, id: \.self) { idx in
@@ -77,7 +77,7 @@ internal struct ContactCell<Message: ChatMessage>: View {
                         TapGesture().onEnded(buttons[idx].action)
                     )
                     .frame(maxWidth: .infinity)
-                
+
                 if idx != buttons.count - 1 {
                     Divider()
                 }
@@ -85,24 +85,21 @@ internal struct ContactCell<Message: ChatMessage>: View {
         }
         .frame(height: 40)
     }
-    
-    // MARK: - Body
-    public var body: some View {
+
+    var body: some View {
         VStack(spacing: 0) {
-            
             HStack {
                 contactImage
                 fullNameLabel
                 Spacer()
                 Image(systemName: "chevron.right")
                     .shadow(color: .secondary, radius: 1)
-                
+
             }.padding()
-            
+
             Spacer()
             Divider()
             buttonActionFooter
-            
         }
         .frame(width: cardWidth)
         .background(
@@ -120,10 +117,9 @@ internal struct ContactCell<Message: ChatMessage>: View {
                     radius: cellStyle.cellShadowRadius
                 )
         )
-        
+
     }
-    
-    // MARK: - Fullname Label
+
     private var fullNameLabel: some View {
         Text(contact.displayName)
             .font(cellStyle.fullNameLabelStyle.font)

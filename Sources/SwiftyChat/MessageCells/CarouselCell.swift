@@ -1,6 +1,6 @@
 //
 //  DefaultCarouselCell.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 23.07.2020.
 //
@@ -13,7 +13,7 @@ public struct CarouselItemButton: Identifiable {
     public let title: String
     public let url: URL?
     public let payload: String?
-    
+
     public init(title: String, url: URL? = nil, payload: String? = nil) {
         self.title = title
         self.url = url
@@ -28,14 +28,13 @@ extension CarouselItem {
 }
 
 internal struct CarouselCell<Message: ChatMessage>: View {
-    
-    public let carouselItems: [CarouselItem]
-    public let size: CGSize
-    public let message: Message
-    public let onCarouselItemAction: (CarouselItemButton, Message) -> Void
-    
-    
-    public var body: some View {
+
+    let carouselItems: [CarouselItem]
+    let size: CGSize
+    let message: Message
+    let onCarouselItemAction: (CarouselItemButton, Message) -> Void
+
+    var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
             HStack {
                 ForEach(carouselItems, id: \.id) { item in
@@ -50,49 +49,49 @@ internal struct CarouselCell<Message: ChatMessage>: View {
             }
         }
     }
-    
+
 }
 
 internal struct CarouselItemView: View {
-    
-    public let item: CarouselItem
-    public let size: CGSize
-    public let isSender: Bool
-    public let callback: (CarouselItemButton) -> Void
+
+    let item: CarouselItem
+    let size: CGSize
+    let isSender: Bool
+    let callback: (CarouselItemButton) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
-    
+
     private var cellStyle: CarouselCellStyle {
         style.carouselCellStyle
     }
-    
+
     private var itemWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
-    
-    public var body: some View {
+
+    var body: some View {
         VStack {
-            
+
             KFImage(item.imageURL)
                 .resizable()
                 .scaledToFit()
-            
+
             Group {
                 Text(item.title)
                     .fontWeight(cellStyle.titleLabelStyle.fontWeight)
                     .font(cellStyle.titleLabelStyle.font)
                     .foregroundColor(cellStyle.titleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
-                
+
                 Text(item.subtitle)
                     .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
                     .font(cellStyle.subtitleLabelStyle.font)
                     .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
-                
+
             }
             .fixedSize(horizontal: false, vertical: true)
             .padding(8)
-            
+
             HStack {
                 ForEach(item.buttons) { (button) in
                     Button(action: { callback(button) }) {
@@ -108,7 +107,7 @@ internal struct CarouselItemView: View {
                     )
                 }
             }
-            
+
         }
         .background(cellStyle.cellBackgroundColor)
         .frame(width: itemWidth)
@@ -124,7 +123,5 @@ internal struct CarouselItemView: View {
                     radius: cellStyle.cellShadowRadius
                 )
         )
-        
     }
-    
 }

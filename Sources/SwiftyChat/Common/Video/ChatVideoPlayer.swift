@@ -3,7 +3,7 @@ import AVKit
 import SwiftUI
 
 #if os(iOS)
-struct iOSChatVideoPlayer<Message: ChatMessage>: View {
+struct IOSChatVideoPlayer<Message: ChatMessage>: View {
     @StateObject private var playerVM = PlayerViewModel()
     let media: VideoItem
     let message: Message

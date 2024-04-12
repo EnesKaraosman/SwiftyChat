@@ -1,13 +1,6 @@
-//
-//  RoundedCornerShape.swift
-//  
-//
-//  Created by Karl Söderberg on 2021-10-11.
-//
-
 import SwiftUI
 
-// defines OptionSet, which corners to be rounded – same as UIRectCorner
+/// Defines OptionSet, which corners to be rounded – same as UIRectCorner
 public struct RectCorner: OptionSet, Sendable {
 
     public let rawValue: Int
@@ -29,8 +22,7 @@ public struct RectCorner: OptionSet, Sendable {
     ]
 }
 
-
-// draws shape with specified rounded corners applying corner radius
+/// Draws shape with specified rounded corners applying corner radius
 struct RoundedCornerShape: Shape {
 
     var radius: CGFloat = .zero
@@ -39,35 +31,42 @@ struct RoundedCornerShape: Shape {
     func path(in rect: CGRect) -> Path {
         var path = Path()
 
-        let p1 = CGPoint(x: rect.minX, y: corners.contains(.topLeft) ? rect.minY + radius  : rect.minY )
-        let p2 = CGPoint(x: corners.contains(.topLeft) ? rect.minX + radius : rect.minX, y: rect.minY )
+        let path1 = CGPoint(x: rect.minX, y: corners.contains(.topLeft) ? rect.minY + radius  : rect.minY )
+        let path2 = CGPoint(x: corners.contains(.topLeft) ? rect.minX + radius : rect.minX, y: rect.minY )
 
-        let p3 = CGPoint(x: corners.contains(.topRight) ? rect.maxX - radius : rect.maxX, y: rect.minY )
-        let p4 = CGPoint(x: rect.maxX, y: corners.contains(.topRight) ? rect.minY + radius  : rect.minY )
+        let path3 = CGPoint(x: corners.contains(.topRight) ? rect.maxX - radius : rect.maxX, y: rect.minY )
+        let path4 = CGPoint(x: rect.maxX, y: corners.contains(.topRight) ? rect.minY + radius  : rect.minY )
 
-        let p5 = CGPoint(x: rect.maxX, y: corners.contains(.bottomRight) ? rect.maxY - radius : rect.maxY )
-        let p6 = CGPoint(x: corners.contains(.bottomRight) ? rect.maxX - radius : rect.maxX, y: rect.maxY )
+        let path5 = CGPoint(x: rect.maxX, y: corners.contains(.bottomRight) ? rect.maxY - radius : rect.maxY )
+        let path6 = CGPoint(x: corners.contains(.bottomRight) ? rect.maxX - radius : rect.maxX, y: rect.maxY )
 
-        let p7 = CGPoint(x: corners.contains(.bottomLeft) ? rect.minX + radius : rect.minX, y: rect.maxY )
-        let p8 = CGPoint(x: rect.minX, y: corners.contains(.bottomLeft) ? rect.maxY - radius : rect.maxY )
+        let path7 = CGPoint(x: corners.contains(.bottomLeft) ? rect.minX + radius : rect.minX, y: rect.maxY )
+        let path8 = CGPoint(x: rect.minX, y: corners.contains(.bottomLeft) ? rect.maxY - radius : rect.maxY )
 
-
-        path.move(to: p1)
-        path.addArc(tangent1End: CGPoint(x: rect.minX, y: rect.minY),
-                    tangent2End: p2,
-                    radius: radius)
-        path.addLine(to: p3)
-        path.addArc(tangent1End: CGPoint(x: rect.maxX, y: rect.minY),
-                    tangent2End: p4,
-                    radius: radius)
-        path.addLine(to: p5)
-        path.addArc(tangent1End: CGPoint(x: rect.maxX, y: rect.maxY),
-                    tangent2End: p6,
-                    radius: radius)
-        path.addLine(to: p7)
-        path.addArc(tangent1End: CGPoint(x: rect.minX, y: rect.maxY),
-                    tangent2End: p8,
-                    radius: radius)
+        path.move(to: path1)
+        path.addArc(
+            tangent1End: CGPoint(x: rect.minX, y: rect.minY),
+            tangent2End: path2,
+            radius: radius
+        )
+        path.addLine(to: path3)
+        path.addArc(
+            tangent1End: CGPoint(x: rect.maxX, y: rect.minY),
+            tangent2End: path4,
+            radius: radius
+        )
+        path.addLine(to: path5)
+        path.addArc(
+            tangent1End: CGPoint(x: rect.maxX, y: rect.maxY),
+            tangent2End: path6,
+            radius: radius
+        )
+        path.addLine(to: path7)
+        path.addArc(
+            tangent1End: CGPoint(x: rect.minX, y: rect.maxY),
+            tangent2End: path8,
+            radius: radius
+        )
         path.closeSubpath()
 
         return path

@@ -15,7 +15,7 @@ public protocol VideoItem {
 
     /// A placeholder image for when the image is obtained asynchronously.
     var placeholderImage: ImageLoadingKind { get }
-    
+
     /// The message is shown in thumbnailView when the video is playing.
     var pictureInPicturePlayingMessage: String { get }
 }

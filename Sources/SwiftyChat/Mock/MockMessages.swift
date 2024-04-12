@@ -6,10 +6,12 @@
 //  Copyright © 2020 All rights reserved.
 //
 
+// swiftlint:disable identifier_name
+
 import Foundation
 
 public struct MockMessages {
-    
+
     public enum Kind {
         case Text
         case Image
@@ -19,7 +21,7 @@ public struct MockMessages {
         case Carousel
         case Video
         case Custom
-        
+
         private var messageKind: ChatMessageKind {
             switch self {
             case .Text: return .text("")
@@ -28,18 +30,24 @@ public struct MockMessages {
             case .Contact: return .contact(ContactRow(displayName: ""))
             case .QuickReply: return .quickReply([])
             case .Carousel: return .carousel([CarouselRow(title: "", imageURL: nil, subtitle: "", buttons: [])])
-            case .Video: return .video(VideoRow(url: URL(string: "")!, placeholderImage: .remote(URL(string: "")!), pictureInPicturePlayingMessage: ""))
+            case .Video: return .video(
+                VideoRow(
+                    url: URL(string: "")!,
+                    placeholderImage: .remote(URL(string: "")!),
+                    pictureInPicturePlayingMessage: ""
+                )
+            )
             case .Custom: return .custom("")
             }
         }
     }
-    
+
     // MARK: - Concrete model for Location
     private struct LocationRow: LocationItem {
         var latitude: Double
         var longitude: Double
     }
-    
+
     // MARK: - Concrete model for Contact
     private struct ContactRow: ContactItem {
         var displayName: String
@@ -48,13 +56,13 @@ public struct MockMessages {
         var phoneNumbers: [String] = []
         var emails: [String] = []
     }
-    
+
     // MARK: - Concrete model for QuickReply
     private struct QuickReplyRow: QuickReplyItem {
         var title: String
         var payload: String
     }
-    
+
     // MARK: - Concrete model for Carousel
     private struct CarouselRow: CarouselItem {
         var title: String
@@ -62,23 +70,23 @@ public struct MockMessages {
         var subtitle: String
         var buttons: [CarouselItemButton]
     }
-    
+
     // MARK: - Concrete model for Video
     private struct VideoRow: VideoItem {
         var url: URL
         var placeholderImage: ImageLoadingKind
         var pictureInPicturePlayingMessage: String
     }
-    
+
     // MARK: - Concrete model for ChatMessage
     public struct ChatMessageItem: ChatMessage {
-        
+
         public let id = UUID()
         public var user: ChatUserItem
         public var messageKind: ChatMessageKind
         public var isSender: Bool
         public var date: Date
-        
+
         public init(
             user: ChatUserItem,
             messageKind: ChatMessageKind,
@@ -91,56 +99,56 @@ public struct MockMessages {
             self.date = date
         }
     }
-    
+
     // MARK: - Concrete model for ChatUser
     public struct ChatUserItem: ChatUser {
-        
+
         public static func == (lhs: ChatUserItem, rhs: ChatUserItem) -> Bool {
             lhs.id == rhs.id
         }
-        
+
         public let id = UUID().uuidString
-        
+
         /// Username
         public var userName: String
-        
+
         /// User's chat profile image, considered if `avatarURL` is nil
         public var avatar: PlatformImage?
 
         /// User's chat profile image URL
         public var avatarURL: URL?
-        
+
         public init(userName: String, avatarURL: URL? = nil, avatar: PlatformImage? = nil) {
             self.userName = userName
             self.avatar = avatar
             self.avatarURL = avatarURL
         }
-        
+
     }
-    
+
     public static var sender: ChatUserItem = .init(
         userName: "Sender",
         avatarURL: URL(string: "https://ebbot.ai/wp-content/uploads/2020/04/Ebbot-Sa%CC%88ljsa%CC%88l.png")
     )
-    
+
     public static var chatbot: ChatUserItem = .init(
         userName: "Chatbot",
         avatarURL: URL(string: "https://3.bp.blogspot.com/-vO7C5BPCaCQ/WigyjG6Q8lI/AAAAAAAAfyQ/1tobZMMwZ2YEI0zx5De7kD31znbUAth0gCLcBGAs/s200/TOMI_avatar_full.png")
     )
-    
+
     private static var randomUser: ChatUserItem {
         [sender, chatbot].randomElement()!
     }
-    
+
     public static var mockImages: [PlatformImage] = []
-    
+
     public static func generateMessage(kind: MockMessages.Kind, count: UInt) -> [ChatMessageItem] {
         (1...count).map { _ in generateMessage(kind: kind) }
     }
-    
+
     public static func generateMessage(kind: MockMessages.Kind) -> ChatMessageItem {
         let randomUser = Self.randomUser
-        
+
         switch kind {
 
         case .Image:
@@ -150,14 +158,14 @@ public struct MockMessages {
                 messageKind: .image(.remote(url)),
                 isSender: randomUser == Self.sender
             )
-            
+
         case .Text:
             return ChatMessageItem(
                 user: randomUser,
                 messageKind: .text(Lorem.sentence()),
                 isSender: randomUser == Self.sender
             )
-            
+
         case .Carousel:
             return ChatMessageItem(
                 user: Self.chatbot,
@@ -181,7 +189,7 @@ public struct MockMessages {
                 ]),
                 isSender: false
             )
-            
+
         case .QuickReply:
             let quickReplies: [QuickReplyRow] = (1...Int.random(in: 2...4)).map { idx in
                 return QuickReplyRow(title: "Option.\(idx)", payload: "opt\(idx)")
@@ -191,7 +199,7 @@ public struct MockMessages {
                 messageKind: .quickReply(quickReplies),
                 isSender: randomUser == Self.sender
             )
-            
+
         case .Location:
             let location = LocationRow(
                 latitude: Double.random(in: 36...42),
@@ -202,7 +210,7 @@ public struct MockMessages {
                 messageKind: .location(location),
                 isSender: randomUser == Self.sender
             )
-            
+
         case .Contact:
             let contacts = [
                 ContactRow(displayName: "Enes Karaosman"),
@@ -214,7 +222,7 @@ public struct MockMessages {
                 messageKind: .contact(contacts.randomElement()!),
                 isSender: randomUser == Self.sender
             )
-            
+
         case .Video:
             let videoItem = VideoRow(
                 url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!,
@@ -235,7 +243,7 @@ public struct MockMessages {
             )
         }
     }
-    
+
     public static var randomMessageKind: MockMessages.Kind {
         return [
             .Image,
@@ -250,8 +258,8 @@ public struct MockMessages {
             .Custom
         ].randomElement()!
     }
-    
+
     public static func generatedMessages(count: Int = 30) -> [ChatMessageItem] {
         (1...count).map { _ in generateMessage(kind: randomMessageKind)}
-    }    
+    }
 }

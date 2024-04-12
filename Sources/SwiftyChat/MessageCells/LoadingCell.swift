@@ -9,22 +9,21 @@
 import SwiftUI
 
 internal struct LoadingCell<Message: ChatMessage>: View {
-    
-    public let message: Message
-    public let size: CGSize
-    
+
+    let message: Message
+    let size: CGSize
+
     @EnvironmentObject var style: ChatMessageCellStyle
-    
+
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
     }
-    
-    
+
     private var maxWidth: CGFloat {
         size.width * (Device.isLandscape ? 0.6 : 0.75)
     }
-    
-    @ViewBuilder public var body: some View {
+
+    var body: some View {
         LoadingThreeBalls(color: cellStyle.textStyle.textColor, size: .init(width: 40, height: 8))
             .frame(height: 42)
             .foregroundColor(cellStyle.textStyle.textColor)
@@ -32,7 +31,6 @@ internal struct LoadingCell<Message: ChatMessage>: View {
             .background(cellStyle.cellBackgroundColor)
             .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
             .overlay(
-                
                 RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
                     .stroke(
                         cellStyle.cellBorderColor,
@@ -46,9 +44,11 @@ internal struct LoadingCell<Message: ChatMessage>: View {
     }
 }
 
+#if DEBUG
 struct Loadingcell_Previews: PreviewProvider {
     static var previews: some View {
         LoadingCell(message: MockMessages.generateMessage(kind: .Text), size: .zero)
             .environmentObject(ChatMessageCellStyle.init())
     }
 }
+#endif

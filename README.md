@@ -200,7 +200,6 @@ Please feel free to contribute.<br>
 ### Dependencies
 
 * [Kingfisher](https://github.com/onevcat/Kingfisher.git) : Image downloading library.
-* [VideoPlayer](https://github.com/wxxsw/VideoPlayer.git) : VideoPlayer library.
 
 ### Inspiration
 

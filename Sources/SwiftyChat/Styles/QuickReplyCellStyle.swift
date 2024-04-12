@@ -1,6 +1,6 @@
 //
 //  QuickReplyCellStyle.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 27.07.2020.
 //
@@ -8,20 +8,20 @@
 import SwiftUI
 
 public struct QuickReplyCellStyle {
-    
+
     /// If the total characters of all item's title is greater than this value, items ordered vertically
     public let characterLimitToChangeStackOrientation: Int
-    
+
     public let selectedItemColor: Color
     public let selectedItemFont: Font
     public let selectedItemFontWeight: Font.Weight
     public let selectedItemBackgroundColor: Color
-    
+
     public let unselectedItemColor: Color
     public let unselectedItemFont: Font
     public let unselectedItemFontWeight: Font.Weight
     public let unselectedItemBackgroundColor: Color
-    
+
     public let itemVerticalPadding: CGFloat
     public let itemHorizontalPadding: CGFloat
     public let itemBorderWidth: CGFloat
@@ -29,7 +29,7 @@ public struct QuickReplyCellStyle {
     public let itemCornerRadius: CGFloat
     public let itemShadowColor: Color
     public let itemShadowRadius: CGFloat
-    
+
     public init(
         characterLimitToChangeStackOrientation: Int = 30,
         selectedItemColor: Color = .green,

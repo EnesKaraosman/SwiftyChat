@@ -6,8 +6,10 @@
 //  Copyright © 2020 All rights reserved.
 //
 
+import Foundation
+
 #if os(iOS)
-import UIKit
+import class UIKit.UIImage
 
 public typealias PlatformImage = UIImage
 #endif

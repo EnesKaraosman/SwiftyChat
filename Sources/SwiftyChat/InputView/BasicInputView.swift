@@ -1,6 +1,6 @@
 //
 //  BasicInputView.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 19.10.2020.
 //
@@ -8,12 +8,12 @@
 import SwiftUI
 
 public struct BasicInputView: View {
-    
+
     @Binding private var message: String
     private let placeholder: String
-    
+
     private var onCommit: ((ChatMessageKind) -> Void)?
-    
+
     public init(
         message: Binding<String>,
         placeholder: String = "",
@@ -23,7 +23,7 @@ public struct BasicInputView: View {
         self.placeholder = placeholder
         self.onCommit = onCommit
     }
-    
+
     @ViewBuilder
     private var messageEditorView: some View {
         if #available(iOS 16.0, macOS 13.0, *) {
@@ -34,7 +34,7 @@ public struct BasicInputView: View {
                 .frame(maxHeight: 64)
         }
     }
-    
+
     private var sendButton: some View {
         Button(action: {
             self.onCommit?(.text(message))
@@ -52,7 +52,7 @@ public struct BasicInputView: View {
         })
         .disabled(message.isEmpty)
     }
-    
+
     public var body: some View {
         VStack(spacing: .zero) {
             Divider().padding(.bottom, 8)

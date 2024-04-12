@@ -24,7 +24,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
 
     @State private var cancellables: Set<AnyCancellable> = .init()
     @State private var location: CGPoint = .zero
-    @GestureState private var startLocation: CGPoint? = nil
+    @GestureState private var startLocation: CGPoint?
 
     private let horizontalPadding: CGFloat = 16
     private let aspectRatio: CGFloat = 1.4
@@ -67,7 +67,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     /// When we set .position(), sets its center to given point
     private func rePositionVideoFrame(toCorner: Corner, in size: CGSize) {
         let inputViewOffset: CGFloat = videoManager.isFullScreen ? 0 : 60
-        let _horizontalPadding = videoManager.isFullScreen ? 0 : horizontalPadding
+        let horizontalPadding = videoManager.isFullScreen ? 0 : horizontalPadding
         withAnimation(.easeIn) {
             switch toCorner {
             case .center:
@@ -77,29 +77,29 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                 )
             case .leftTop:
                 location = .init(
-                    x: (videoFrameWidth(in: size) / 2) + (_horizontalPadding / 2),
+                    x: (videoFrameWidth(in: size) / 2) + (horizontalPadding / 2),
                     y: videoFrameHeight(in: size) / 2
                 )
             case .leftBottom:
                 location = .init(
-                    x: (videoFrameWidth(in: size) / 2) + (_horizontalPadding / 2),
+                    x: (videoFrameWidth(in: size) / 2) + (horizontalPadding / 2),
                     y: size.height - videoFrameHeight(in: size) / 2 - inputViewOffset
                 )
             case .rightTop:
                 location = .init(
-                    x: size.width - (videoFrameWidth(in: size) / 2) - (_horizontalPadding / 2),
+                    x: size.width - (videoFrameWidth(in: size) / 2) - (horizontalPadding / 2),
                     y: videoFrameHeight(in: size) / 2
                 )
             case .rightBottom:
                 location = .init(
-                    x: size.width - (videoFrameWidth(in: size) / 2) - (_horizontalPadding / 2),
+                    x: size.width - (videoFrameWidth(in: size) / 2) - (horizontalPadding / 2),
                     y: size.height - videoFrameHeight(in: size) / 2 - inputViewOffset
                 )
             }
         }
     }
 
-    public var body: some View {
+    var body: some View {
         ZStack {
 
             if videoManager.isFullScreen {
@@ -121,7 +121,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
 
                         videoManager.$isFullScreen
                             .removeDuplicates()
-                            .sink { fullScreen in
+                            .sink { _ in
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                                     self.rePositionVideoFrame(toCorner: .center, in: geometry.size)
                                 }
@@ -150,7 +150,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     @ViewBuilder private var video: some View {
         if let message = videoManager.message, let videoItem = videoManager.videoItem {
             #if os(iOS)
-            iOSChatVideoPlayer(media: videoItem, message: message)
+            IOSChatVideoPlayer(media: videoItem, message: message)
             #endif
 
             #if os(macOS)
@@ -168,10 +168,10 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                 newLocation.y += value.translation.height
                 self.location = newLocation
             }
-            .updating($startLocation) { (value, startLocation, transaction) in
+            .updating($startLocation) { _, startLocation, _ in
                 startLocation = startLocation ?? location
             }
-            .onEnded { (value) in
+            .onEnded { _ in
                 if self.location.y > size.midY {
                     if self.location.x > size.midX {
                         rePositionVideoFrame(toCorner: .rightBottom, in: size)

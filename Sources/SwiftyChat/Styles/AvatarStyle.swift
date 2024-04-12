@@ -1,6 +1,6 @@
 //
 //  AvatarStyle.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 5.08.2020.
 //
@@ -14,10 +14,10 @@ public enum AvatarPosition {
 }
 
 public struct AvatarStyle {
-    
+
     public let imageStyle: CommonImageStyle
     public let avatarPosition: AvatarPosition
-    
+
     public init(
         imageStyle: CommonImageStyle = CommonImageStyle(),
         avatarPosition: AvatarPosition = .alignToMessageCenter(spacing: 8)
