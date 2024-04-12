@@ -1,6 +1,6 @@
 //
 //  TextCellStyle.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 12.08.2020.
 //
@@ -8,10 +8,10 @@
 import SwiftUI
 
 public struct TextCellStyle: CommonViewStyle {
-    
+
     public let textStyle: CommonTextStyle
     public let textPadding: CGFloat
-    
+
     // MARK: - CellContainerStyle
     public let cellBackgroundColor: Color
     public let cellCornerRadius: CGFloat
@@ -20,7 +20,7 @@ public struct TextCellStyle: CommonViewStyle {
     public let cellShadowRadius: CGFloat
     public let cellShadowColor: Color
     public let cellRoundedCorners: RectCorner
-    
+
     public init(
         textStyle: CommonTextStyle = CommonTextStyle(
             textColor: .white,

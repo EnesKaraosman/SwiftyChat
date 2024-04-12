@@ -1,6 +1,6 @@
 //
 //  TextTappedCallback.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 3.06.2020.
 //
@@ -8,13 +8,13 @@
 import Foundation
 
 public struct AttributedTextTappedCallback {
-    
+
     public var didSelectAddress: (_ addressComponents: [String: String]) -> Void
     public var didSelectDate: (_ date: Date) -> Void
     public var didSelectPhoneNumber: (_ phoneNumber: String) -> Void
     public var didSelectURL: (_ url: URL) -> Void
     public var didSelectTransitInformation: (_ transitInformation: [String: String]) -> Void
-    
+
     public init(
         didSelectAddress: @escaping (_ addressComponents: [String: String]) -> Void = { _ in },
         didSelectDate: @escaping (_ date: Date) -> Void = { _ in },

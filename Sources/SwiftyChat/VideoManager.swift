@@ -15,11 +15,11 @@ internal final class VideoManager<Message: ChatMessage>: ObservableObject {
     @Published var message: Message?
     @Published var isFullScreen = false
     var videoItem: VideoItem? {
-        if let message = message, 
+        if let message = message,
             case let ChatMessageKind.video(videoItem) = message.messageKind {
             return videoItem
         }
-        
+
         return nil
     }
 

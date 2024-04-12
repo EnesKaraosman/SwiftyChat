@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 5.11.2020.
 //
@@ -10,22 +10,22 @@ import SwiftUI
 /// When play button is tapped, it lets videoManager know about VideoItem
 /// So manager knows when to display actual videoPlayer above `ChatView`
 internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
-    
+
     public let media: VideoItem
     public let message: Message
     public let size: CGSize
-    
+
     @EnvironmentObject var style: ChatMessageCellStyle
     @EnvironmentObject var videoManager: VideoManager<Message>
-    
+
     private var isThisVideoPlaying: Bool {
         videoManager.videoItem != nil && videoManager.message?.id == message.id
     }
-    
+
     private var cellStyle: VideoPlaceholderCellStyle {
         style.videoPlaceholderCellStyle
     }
-    
+
     private var imageWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
@@ -43,7 +43,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
                 }
             }
     }
-    
+
     @ViewBuilder private var thumbnailView: some View {
         ImageLoadingKindCell(
             media.placeholderImage,
@@ -66,7 +66,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
             radius: cellStyle.cellShadowRadius
         )
     }
-    
+
     private var playButton: some View {
         Image(systemName: "play.circle.fill")
             .resizable()
@@ -74,7 +74,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
             .frame(width: 40)
             .foregroundColor(.secondary)
     }
-    
+
     private var pipMessageView: some View {
         VStack {
             Image(systemName: "rectangle.on.rectangle.angled")
@@ -98,5 +98,4 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
             playButton
         }
     }
-    
 }

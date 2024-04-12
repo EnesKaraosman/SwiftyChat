@@ -14,38 +14,38 @@ public enum ImageLoadingKind {
 }
 
 public enum ChatMessageKind: CustomStringConvertible {
-    
+
     /// A text message,
     /// supports emoji 👍🏻 (auto scales if text is all about emojis)
     case text(String)
-    
+
     /// An image message, from local(UIImage) or remote(URL).
     case image(ImageLoadingKind)
-    
+
     /// An image message, from local(UIImage) or remote(URL).
     case imageText(ImageLoadingKind, String)
-    
+
     /// A location message, pins given location & presents on MapKit.
     case location(LocationItem)
-    
+
     /// A contact message, generally for sharing purpose.
     case contact(ContactItem)
-    
+
     /// Multiple options, disable itself after selection.
     case quickReply([QuickReplyItem])
-    
+
     /// `CarouselItem` contains title, subtitle, image & button in a scrollable view
     case carousel([CarouselItem])
-    
+
     /// A video message, opens the given URL.
     case video(VideoItem)
-    
+
     /// Loading indicator contained in chat bubble
     case loading
-    
+
     /// A custom message cell
     case custom(Any)
-    
+
     public var description: String {
         switch self {
         case .image(let imageLoadingType):
@@ -80,5 +80,5 @@ public enum ChatMessageKind: CustomStringConvertible {
         case .custom:
             return "MessageKind.custom"
         }
-    }    
+    }
 }

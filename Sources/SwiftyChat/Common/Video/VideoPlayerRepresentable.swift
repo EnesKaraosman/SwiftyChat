@@ -48,11 +48,15 @@ struct VideoPlayerRepresentable: UIViewRepresentable {
             controller?.delegate = self
         }
 
-        func pictureInPictureControllerDidStartPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+        func pictureInPictureControllerDidStartPictureInPicture(
+            _ pictureInPictureController: AVPictureInPictureController
+        ) {
             parent.playerVM.isInPipMode = true
         }
 
-        func pictureInPictureControllerWillStopPictureInPicture(_ pictureInPictureController: AVPictureInPictureController) {
+        func pictureInPictureControllerWillStopPictureInPicture(
+            _ pictureInPictureController: AVPictureInPictureController
+        ) {
             parent.playerVM.isInPipMode = false
         }
     }
@@ -62,6 +66,7 @@ struct VideoPlayerRepresentable: UIViewRepresentable {
             AVPlayerLayer.self
         }
 
+        // swiftlint:disable:next force_cast
         var playerLayer: AVPlayerLayer { layer as! AVPlayerLayer }
 
         var player: AVPlayer? {

@@ -10,21 +10,21 @@ import SwiftUI
 import MapKit
 
 internal struct LocationCell<Message: ChatMessage>: View {
-    
+
     public let location: LocationItem
     public let message: Message
     public let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
-    
+
     private var mapWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
-    
+
     private var cellStyle: LocationCellStyle {
         style.locationCellStyle
     }
-    
-    public var body: some View {
+
+    var body: some View {
         mapView
             .frame(
                 width: mapWidth,
@@ -43,7 +43,7 @@ internal struct LocationCell<Message: ChatMessage>: View {
                 radius: cellStyle.cellShadowRadius
             )
     }
-    
+
     @ViewBuilder private var mapView: some View {
         Map(
             coordinateRegion: .constant(
@@ -65,7 +65,7 @@ internal struct LocationCell<Message: ChatMessage>: View {
             }
         )
     }
-    
+
     private struct LocationRow: LocationItem, Identifiable {
         let id: String = UUID().uuidString
         var latitude: Double
@@ -73,5 +73,5 @@ internal struct LocationCell<Message: ChatMessage>: View {
         var coordinate: CLLocationCoordinate2D {
             CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         }
-    }    
+    }
 }

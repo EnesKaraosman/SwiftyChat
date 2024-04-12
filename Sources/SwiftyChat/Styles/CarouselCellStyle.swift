@@ -1,6 +1,6 @@
 //
 //  CarouselCellStyle.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 24.07.2020.
 //
@@ -8,18 +8,18 @@
 import SwiftUI
 
 public struct CarouselCellStyle: CommonViewStyle {
-    
+
     public let titleLabelStyle: CommonTextStyle
     public let subtitleLabelStyle: CommonTextStyle
-    
+
     public let buttonFont: Font
     public let buttonTitleColor: Color
     public let buttonTitleFontWeight: Font.Weight
     public let buttonBackgroundColor: Color
-    
+
     /// Cell width in a given available proxy (GeometryReader)
     public let cellWidth: (CGSize) -> CGFloat
-    
+
     // MARK: - CellContainerStyle
     public let cellBackgroundColor: Color
     public let cellCornerRadius: CGFloat
@@ -27,7 +27,7 @@ public struct CarouselCellStyle: CommonViewStyle {
     public let cellBorderWidth: CGFloat
     public let cellShadowRadius: CGFloat
     public let cellShadowColor: Color
-    
+
     public init(
         titleLabelStyle: CommonTextStyle = CommonTextStyle(
             textColor: .primary,
@@ -64,5 +64,5 @@ public struct CarouselCellStyle: CommonViewStyle {
         self.cellShadowRadius = cellShadowRadius
         self.cellShadowColor = cellShadowColor
     }
-    
+
 }

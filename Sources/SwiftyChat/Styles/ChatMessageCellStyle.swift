@@ -9,46 +9,46 @@
 import SwiftUI
 
 public final class ChatMessageCellStyle: ObservableObject {
-    
+
     /// Incoming Text Style
     let incomingTextStyle: TextCellStyle
-    
+
     /// Outgoing Text Style
     let outgoingTextStyle: TextCellStyle
-    
+
     /// Cell container inset for incoming messages
     let incomingCellEdgeInsets: EdgeInsets
-    
+
     /// Cell container inset for outgoing messages
     let outgoingCellEdgeInsets: EdgeInsets
-    
+
     /// Contact Cell Style
     let contactCellStyle: ContactCellStyle
-    
+
     /// Image Cell Style
     let imageCellStyle: ImageCellStyle
-    
+
     /// Image and Text Cell Style
     let imageTextCellStyle: ImageTextCellStyle
-    
+
     /// Quick Reply Cell Style
     let quickReplyCellStyle: QuickReplyCellStyle
-    
+
     /// Carousel Cell Style
     let carouselCellStyle: CarouselCellStyle
-    
+
     /// Location Cell Style
     let locationCellStyle: LocationCellStyle
-    
+
     /// Video Placeholder Cell Style
     let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
-    
+
     /// Incoming Avatar Style
     let incomingAvatarStyle: AvatarStyle
-    
+
     /// Outgoing Avatar Style
     let outgoingAvatarStyle: AvatarStyle
-    
+
     public init(
         incomingTextStyle: TextCellStyle = TextCellStyle(
             textStyle: CommonTextStyle(
@@ -91,7 +91,7 @@ public final class ChatMessageCellStyle: ObservableObject {
         self.videoPlaceholderCellStyle = videoPlaceholderCellStyle
         self.incomingAvatarStyle = incomingAvatarStyle
         self.outgoingAvatarStyle = outgoingAvatarStyle
-        
+
         objectWillChange.send()
     }
 }

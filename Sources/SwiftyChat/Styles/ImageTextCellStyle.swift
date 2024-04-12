@@ -8,12 +8,11 @@
 import SwiftUI
 
 public struct ImageTextCellStyle: CommonViewStyle {
-    
+
     public let textStyle: CommonTextStyle
     public let textPadding: CGFloat
-    
-    public var cellWidth: (CGSize) -> CGFloat
-    
+    public let cellWidth: (CGSize) -> CGFloat
+
     // MARK: - CellContainerStyles
     public let cellBackgroundColor: Color
     public let cellCornerRadius: CGFloat
@@ -22,7 +21,7 @@ public struct ImageTextCellStyle: CommonViewStyle {
     public let cellShadowRadius: CGFloat
     public let cellShadowColor: Color
     public let cellRoundedCorners: RectCorner
-    
+
     public init(
         textStyle: CommonTextStyle = CommonTextStyle(
             textColor: .white,

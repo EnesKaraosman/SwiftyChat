@@ -4,27 +4,28 @@
 //
 //  Created by Nick Sarno on 1/12/21.
 //
-import SwiftUI
+
 import Combine
+import SwiftUI
 
 struct LoadingThreeBalls: View {
-    
+
     let timer: Publishers.Autoconnect<Timer.TimerPublisher>
     let timing: Double
-    
+
     let maxCounter = 3
     @State var counter = 0
-    
+
     let frame: CGSize
     let primaryColor: Color
-    
+
     init(color: Color = .black, size: CGSize = .init(width: 50, height: 8), speed: Double = 0.5) {
         timing = speed
         timer = Timer.publish(every: timing, on: .main, in: .common).autoconnect()
         frame = size
         primaryColor = color
     }
-    
+
     var body: some View {
         HStack(spacing: 0) {
             ForEach(0..<maxCounter, id: \.self) { index in
@@ -42,8 +43,10 @@ struct LoadingThreeBalls: View {
     }
 }
 
+#if DEBUG
 struct LoadingThreeBalls_Previews: PreviewProvider {
     static var previews: some View {
         LoadingThreeBalls()
     }
 }
+#endif

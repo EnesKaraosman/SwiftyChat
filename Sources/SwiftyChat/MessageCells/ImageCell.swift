@@ -10,15 +10,15 @@ import SwiftUI
 import Kingfisher
 
 internal struct ImageLoadingKindCell: View {
-    
+
     private let imageLoadingType: ImageLoadingKind
     private let width: CGFloat?
     private let height: CGFloat?
-    
+
     init(_ kind: ImageLoadingKind, width: CGFloat? = nil, height: CGFloat? = nil) {
         self.imageLoadingType = kind
         self.width = width
-        
+
         if case .remote(let url) = kind, let width, height == nil {
             let path = ImageCache.default.cachePath(forKey: url.cacheKey)
             if let image = PlatformImage(contentsOfFile: path) {
@@ -26,32 +26,32 @@ internal struct ImageLoadingKindCell: View {
                 return
             }
         }
-        
+
         self.height = height
     }
-    
+
     var body: some View {
         imageView
     }
-    
+
     @ViewBuilder private var imageView: some View {
         switch imageLoadingType {
         case .local(let image): localImage(image)
         case .remote(let remoteUrl): remoteImage(url: remoteUrl)
         }
     }
-    
+
     @ViewBuilder private func localImage(_ image: PlatformImage) -> some View {
         let width = image.size.width
         let height = image.size.height
         let isLandscape = width > height
-        
+
         Image(image: image)
             .resizable()
             .aspectRatio(width / height, contentMode: isLandscape ? .fit : .fill)
             .frame(width: width, height: height)
     }
-    
+
     // MARK: - case Remote Image
     @ViewBuilder private func remoteImage(url: URL) -> some View {
         /**
@@ -61,7 +61,7 @@ internal struct ImageLoadingKindCell: View {
          })
          We can grab size & manage aspect ratio via a @State property
          but the list scroll behaviour becomes messy.
-         
+
          So for now we use fixed width & scale height properly.
          */
         KFImage(url)
@@ -69,24 +69,24 @@ internal struct ImageLoadingKindCell: View {
             .scaledToFill()
             .frame(width: width, height: height)
     }
-    
+
 }
 
 internal struct ImageCell<Message: ChatMessage>: View {
-    
-    public let message: Message
-    public let imageLoadingType: ImageLoadingKind
-    public let size: CGSize
+
+    let message: Message
+    let imageLoadingType: ImageLoadingKind
+    let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
-    
+
     private var imageWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
-    
+
     private var cellStyle: ImageCellStyle {
         style.imageCellStyle
     }
-    
+
     @ViewBuilder private var imageView: some View {
         if case let ImageLoadingKind.local(uiImage) = imageLoadingType {
             let width = uiImage.size.width
@@ -104,8 +104,8 @@ internal struct ImageCell<Message: ChatMessage>: View {
             )
         }
     }
-    
-    @ViewBuilder public var body: some View {
+
+    var body: some View {
         imageView
             .background(cellStyle.cellBackgroundColor)
             .cornerRadius(cellStyle.cellCornerRadius)
@@ -120,17 +120,17 @@ internal struct ImageCell<Message: ChatMessage>: View {
                 color: cellStyle.cellShadowColor,
                 radius: cellStyle.cellShadowRadius
             )
-    }    
+    }
 }
 
 extension Image {
     init(image: PlatformImage) {
-        #if os(iOS)
+#if os(iOS)
         self.init(uiImage: image)
-        #endif
+#endif
 
-        #if os(macOS)
+#if os(macOS)
         self.init(nsImage: image)
-        #endif
+#endif
     }
 }

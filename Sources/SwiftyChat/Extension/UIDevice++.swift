@@ -7,15 +7,15 @@
 //
 
 #if canImport(UIKit)
-import UIKit
+import class UIKit.UIDevice
 #endif
 
 public struct Device {
 
     public static var isLandscape: Bool {
         #if os(iOS)
-        return UIDevice.current.orientation == .landscapeLeft ||
-        UIDevice.current.orientation == .landscapeRight
+        let orientation = UIDevice.current.orientation
+        return orientation == .landscapeLeft || orientation == .landscapeRight
 
         #endif
 

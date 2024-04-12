@@ -1,6 +1,6 @@
 //
 //  ContactCellStyle.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 7.08.2020.
 //
@@ -8,11 +8,11 @@
 import SwiftUI
 
 public struct ContactCellStyle: CommonViewStyle {
-    
+
     public let cellWidth: (CGSize) -> CGFloat
     public let imageStyle: CommonImageStyle
     public let fullNameLabelStyle: CommonTextStyle
-    
+
     // MARK: - CellContainerStyle
     public let cellBackgroundColor: Color
     public let cellCornerRadius: CGFloat
@@ -20,7 +20,7 @@ public struct ContactCellStyle: CommonViewStyle {
     public let cellBorderWidth: CGFloat
     public let cellShadowRadius: CGFloat
     public let cellShadowColor: Color
-    
+
     public init(
         cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.45 : 0.75) },
         imageStyle: CommonImageStyle = CommonImageStyle(

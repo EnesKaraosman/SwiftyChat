@@ -10,27 +10,26 @@ import SwiftUI
 
 /// Modifies the content if text contains emoji
 internal struct EmojiModifier: ViewModifier {
-    
-    public let text: String
-    
-    public let defaultFont: Font
-    
+
+    let text: String
+    let defaultFont: Font
+
     private var font: Font? {
-        var _font: Font = defaultFont
+        var modifiedFont: Font = defaultFont
         if text.containsOnlyEmoji {
             let count = text.count
             switch count {
-            case 1: _font = .system(size: 50)
-            case 2: _font = .system(size: 38)
-            case 3: _font = .system(size: 25)
-            default: _font = defaultFont
+            case 1: modifiedFont = .system(size: 50)
+            case 2: modifiedFont = .system(size: 38)
+            case 3: modifiedFont = .system(size: 25)
+            default: modifiedFont = defaultFont
             }
         }
-        
-        return _font
+
+        return modifiedFont
     }
-    
-    public func body(content: Content) -> some View {
+
+    func body(content: Content) -> some View {
         content.font(font)
     }
 }

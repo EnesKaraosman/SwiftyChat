@@ -1,6 +1,6 @@
 //
 //  AvatarModifier.swift
-//  
+//
 //
 //  Created by Enes Karaosman on 30.07.2020.
 //
@@ -8,46 +8,45 @@
 import SwiftUI
 import Kingfisher
 
-internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifier {
-    
-    public let message: Message
-    
-    public let showAvatarForMessage: Bool
-    
+internal struct AvatarModifier<Message: ChatMessage>: ViewModifier {
+
+    let message: Message
+    let showAvatarForMessage: Bool
+
     @EnvironmentObject var style: ChatMessageCellStyle
-    
+
     private var isSender: Bool { message.isSender }
-    
-    private var user: User { message.user as! User }
-    
+
+    private var user: Message.User { message.user }
+
     private var incomingAvatarStyle: AvatarStyle { style.incomingAvatarStyle }
-    
+
     private var outgoingAvatarStyle: AvatarStyle { style.outgoingAvatarStyle }
-    
+
     private var incomingAvatarPosition: AvatarPosition { incomingAvatarStyle.avatarPosition }
-    
+
     private var outgoingAvatarPosition: AvatarPosition { outgoingAvatarStyle.avatarPosition }
-    
+
     /// Current avatar style
     private var currentStyle: AvatarStyle { isSender ? outgoingAvatarStyle : incomingAvatarStyle }
-    
+
     /// Current avatar position
     private var currentAvatarPosition: AvatarPosition { isSender ? outgoingAvatarPosition : incomingAvatarPosition }
-    
+
     private var alignToMessageBottom: some View {
         VStack {
             Spacer()
             avatar
         }
     }
-    
+
     private var alignToMessageTop: some View {
         VStack {
             avatar
             Spacer()
         }
     }
-    
+
     private var alignToMessageCenter: some View {
         VStack {
             Spacer()
@@ -55,10 +54,10 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
             Spacer()
         }
     }
-    
+
     private var avatar: some View {
         let imageStyle = currentStyle.imageStyle
-        
+
         return avatarImage
             .frame(
                 width: imageStyle.imageSize.width,
@@ -78,13 +77,13 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
                     )
             )
     }
-    
+
     private var blankAvatar: some View {
         return Spacer()
     }
-    
+
     @ViewBuilder private var avatarImage: some View {
-        if(!showAvatarForMessage){
+        if !showAvatarForMessage {
             blankAvatar
         } else if let imageURL = user.avatarURL, currentStyle.imageStyle.imageSize.width > 0 {
             KFImage(imageURL).resizable()
@@ -92,7 +91,7 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
             Image(image: avatar).resizable()
         }
     }
-    
+
     @ViewBuilder private var positionedAvatar: some View {
         switch currentAvatarPosition {
         case .alignToMessageTop: alignToMessageTop
@@ -100,7 +99,7 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
         case .alignToMessageBottom: alignToMessageBottom
         }
     }
-    
+
     private var avatarSpacing: CGFloat {
         switch currentAvatarPosition {
         case .alignToMessageTop(let spacing): return spacing
@@ -108,13 +107,12 @@ internal struct AvatarModifier<Message: ChatMessage, User: ChatUser>: ViewModifi
         case .alignToMessageBottom(let spacing): return spacing
         }
     }
-    
-    public func body(content: Content) -> some View {
+
+    func body(content: Content) -> some View {
         HStack(spacing: avatarSpacing) {
             if !isSender { positionedAvatar.zIndex(2) }
             content
             if isSender { positionedAvatar.zIndex(2) }
         }
     }
-    
 }

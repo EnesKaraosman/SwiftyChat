@@ -10,22 +10,22 @@ import SwiftUI
 import WrappingHStack
 
 internal struct QuickReplyCell: View {
-    
-    public var quickReplies: [QuickReplyItem]
-    public var quickReplySelected: (QuickReplyItem) -> Void
+
+    var quickReplies: [QuickReplyItem]
+    var quickReplySelected: (QuickReplyItem) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
-    
+
     private var totalOptionsLength: Int {
         quickReplies.map { $0.title.count }.reduce(0, +)
     }
-    
+
     private var cellStyle: QuickReplyCellStyle {
         style.quickReplyCellStyle
     }
-    
+
     @State private var isDisabled = false
     @State private var selectedIndex: Int?
-    
+
     private func colors(selectedIndex: Int?) -> [Color] {
         var colors = (1...quickReplies.count).map { _ in cellStyle.unselectedItemColor }
         if let idx = selectedIndex {
@@ -33,15 +33,17 @@ internal struct QuickReplyCell: View {
         }
         return colors
     }
-    
+
     private func itemBackground(for index: Int) -> some View {
-        let backgroundColor: Color = (index == selectedIndex ? cellStyle.selectedItemBackgroundColor : cellStyle.unselectedItemBackgroundColor)
+        let backgroundColor = index == selectedIndex ?
+            cellStyle.selectedItemBackgroundColor :
+            cellStyle.unselectedItemBackgroundColor
         return Capsule().foregroundColor(backgroundColor)
     }
-    
+
     public var body: some View {
         WrappingHStack(0..<quickReplies.count, id: \.self, alignment: .trailing, spacing: .constant(8)) { idx in
-            
+
             Button(action: {}) {
                 Text(quickReplies[idx].title)
                     .fontWeight(idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight)
@@ -70,5 +72,5 @@ internal struct QuickReplyCell: View {
             )
             .padding(.vertical, 4)
         }.disabled(isDisabled)
-    }    
+    }
 }

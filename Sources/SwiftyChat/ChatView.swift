@@ -10,11 +10,11 @@ import SwiftUI
 import SwiftUIEKtensions
 
 public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
-    
+
     @Binding private var messages: [Message]
     private var inputView: () -> AnyView
     private var customCellView: ((Any) -> AnyView)?
-    
+
     private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
@@ -26,11 +26,11 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: (() -> Void)?
-    
+
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
     @State private var isKeyboardActive = false
-    
+
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
@@ -44,14 +44,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             }
             .keyboardAwarePadding() // iOS only
         }
-        #if os(iOS)
+#if os(iOS)
         .environmentObject(DeviceOrientationInfo())
-        #endif
+#endif
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
         .dismissKeyboardOnTappingOutside() // iOS only
     }
-    
+
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
         ScrollView(.vertical, showsIndicators: false) {
             ScrollViewReader { proxy in
@@ -66,12 +66,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             thisMessage: message,
                             dateHeaderShown: showDateheader
                         )
-                        
+
                         if showDateheader {
                             Text(dateFormater.string(from: message.date))
                                 .font(.subheadline)
                         }
-                        
+
                         if shouldShowDisplayName {
                             Text(message.user.userName)
                                 .font(.caption)
@@ -109,7 +109,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         scrollTo = nil
                     }
                 }
-                #if os(iOS)
+#if os(iOS)
                 // Auto Scroll with Keyboard Notification
                 .onReceive(
                     NotificationCenter
@@ -129,12 +129,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         .publisher(for: UIResponder.keyboardWillHideNotification),
                     perform: { _ in isKeyboardActive = false }
                 )
-                #endif
+#endif
             }
         }
         .background(Color.clear)
     }
-    
+
 }
 
 internal extension ChatView {
@@ -155,7 +155,7 @@ internal extension ChatView {
         .onTapGesture { onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
         .modifier(
-            AvatarModifier<Message, User>(
+            AvatarModifier<Message>(
                 message: message,
                 showAvatarForMessage: shouldShowAvatarForMessage(
                     forThisMessage: avatarShow
@@ -179,7 +179,7 @@ public extension ChatView {
         }
         return false
     }
-    
+
     func shouldShowDisplayName(
         messages: [Message],
         thisMessage: Message,
@@ -190,7 +190,7 @@ public extension ChatView {
         } else if dateHeaderShown {
             return true
         }
-        
+
         if let messageIndex = messages.firstIndex(where: { $0.id == thisMessage.id }) {
             if messageIndex == 0 {
                 return true
@@ -202,10 +202,10 @@ public extension ChatView {
 
             return isDifferentUser
         }
-        
+
         return false
     }
-    
+
     func shouldShowAvatarForMessage(forThisMessage: Bool) -> Bool {
         (forThisMessage || !shouldShowGroupChatHeaders)
     }
@@ -256,27 +256,27 @@ public extension ChatView {
     func registerCustomCell(customCell: @escaping (Any) -> AnyView) -> Self {
         then({ $0.customCellView = customCell})
     }
-    
+
     /// Triggered when a ChatMessage is tapped.
     func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> Self {
         then({ $0.onMessageCellTapped = action })
     }
-    
+
     /// Present ContextMenu when a message cell is long pressed.
     func messageCellContextMenu(_ action: @escaping (Message) -> AnyView) -> Self {
         then({ $0.messageCellContextMenu = action })
     }
-    
+
     /// Triggered when a quickReplyItem is selected (ChatMessageKind.quickReply)
     func onQuickReplyItemSelected(_ action: @escaping (QuickReplyItem) -> Void) -> Self {
         then({ $0.onQuickReplyItemSelected = action })
     }
-    
+
     /// Present contactItem's footer buttons. (ChatMessageKind.contactItem)
     func contactItemButtons(_ section: @escaping (ContactItem, Message) -> [ContactCellButton]) -> Self {
         then({ $0.contactCellFooterSection = section })
     }
-    
+
     /// Triggered when the carousel button tapped.
     func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> Self {
         then({ $0.onCarouselItemAction = action })
