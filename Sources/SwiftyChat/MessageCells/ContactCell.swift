@@ -42,7 +42,7 @@ internal struct ContactCell<Message: ChatMessage>: View {
     // MARK: - Image
     @ViewBuilder private var contactImage: some View {
         if let contactImage = contact.image {
-            Image(uiImage: contactImage)
+            Image(image: contactImage)
                 .resizable()
                 .frame(
                     width: imageStyle.imageSize.width,

@@ -19,20 +19,6 @@ public struct Device {
 
         #endif
 
-        #if os(macOS)
         return false
-        #endif
-    }
-
-    public static var isPortrait: Bool {
-        #if os(iOS)
-        return UIDevice.current.orientation == .portrait ||
-        UIDevice.current.orientation == .portraitUpsideDown
-
-        #endif
-
-        #if os(macOS)
-        return false
-        #endif
     }
 }

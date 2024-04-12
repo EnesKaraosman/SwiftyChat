@@ -26,7 +26,7 @@ public struct BasicInputView: View {
     
     @ViewBuilder
     private var messageEditorView: some View {
-        if #available(iOS 16.0, *) {
+        if #available(iOS 16.0, macOS 13.0, *) {
             TextField(placeholder, text: $message, axis: .vertical)
                 .lineLimit(5)
         } else {

@@ -5,9 +5,9 @@
 //  Created by Enes Karaosman on 9.11.2020.
 //
 
+import Combine
 import SwiftUI
 import SwiftUIEKtensions
-import Combine
 
 internal extension CGSize {
     var midX: CGFloat { width / 2 }
@@ -17,7 +17,10 @@ internal extension CGSize {
 internal struct PIPVideoCell<Message: ChatMessage>: View {
 
     @EnvironmentObject var videoManager: VideoManager<Message>
+
+    #if os(iOS)
     @EnvironmentObject var model: DeviceOrientationInfo
+    #endif
 
     @State private var cancellables: Set<AnyCancellable> = .init()
     @State private var location: CGPoint = .zero
@@ -27,20 +30,34 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
     private let aspectRatio: CGFloat = 1.4
 
     private func videoFrameHeight(in size: CGSize) -> CGFloat {
+        let portraitVideoFrameHeight = videoFrameWidth(in: size) / aspectRatio
+
+        #if os(iOS)
         if videoManager.isFullScreen && model.orientation == .landscape {
             return size.height
         } else {
-            return videoFrameWidth(in: size) / aspectRatio
+            return portraitVideoFrameHeight
         }
+
+        #else
+        return portraitVideoFrameHeight
+        #endif
     }
 
     private func videoFrameWidth(in size: CGSize) -> CGFloat {
+        let portraitVideoFrameWidth = abs(size.width - horizontalPadding) // Padding
+
+        #if os(iOS)
         if videoManager.isFullScreen {
             return size.width
         } else {
             return model.orientation == .landscape ?
-            (size.width / aspectRatio) : abs(size.width - horizontalPadding) // Padding
+            (size.width / aspectRatio) : portraitVideoFrameWidth
         }
+
+        #else
+        return portraitVideoFrameWidth
+        #endif
     }
 
     private enum Corner {
@@ -111,6 +128,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                             }
                             .store(in: &cancellables)
 
+                        #if os(iOS)
                         model.$orientation
                             .removeDuplicates()
                             .sink(receiveValue: { _ in
@@ -119,6 +137,7 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
                                 }
                             })
                             .store(in: &cancellables)
+                        #endif
                     }
                     .onDisappear {
                         cancellables.forEach { $0.cancel() }
@@ -130,7 +149,13 @@ internal struct PIPVideoCell<Message: ChatMessage>: View {
 
     @ViewBuilder private var video: some View {
         if let message = videoManager.message, let videoItem = videoManager.videoItem {
-            CustomPlayerView(media: videoItem, message: message)
+            #if os(iOS)
+            iOSChatVideoPlayer(media: videoItem, message: message)
+            #endif
+
+            #if os(macOS)
+            MacOSChatVideoPlayer(media: videoItem, message: message)
+            #endif
         }
     }
 

@@ -6,14 +6,18 @@
 //  Copyright © 2020 All rights reserved.
 //
 
-#if os(iOS)
 import Combine
 import SwiftUI
 import SwiftUIEKtensions
 
 internal extension View {
+    /// iOS only modifier to add necessary padding according to keyboard height
     func keyboardAwarePadding() -> some View {
+        #if os(iOS)
         ModifiedContent(content: self, modifier: KeyboardAwareModifier())
+        #else
+        self
+        #endif
     }
 }
 
@@ -28,4 +32,3 @@ struct KeyboardAwareModifier: ViewModifier {
             }
     }
 }
-#endif

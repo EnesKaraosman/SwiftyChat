@@ -42,12 +42,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
 
                 PIPVideoCell<Message>()
             }
-            .iOSOnlyModifier { $0.keyboardAwarePadding() }
+            .keyboardAwarePadding() // iOS only
         }
+        #if os(iOS)
         .environmentObject(DeviceOrientationInfo())
+        #endif
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
-        .iOSOnlyModifier { $0.dismissKeyboardOnTappingOutside() }
+        .dismissKeyboardOnTappingOutside() // iOS only
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
@@ -107,23 +109,27 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         scrollTo = nil
                     }
                 }
-                .iOSOnlyModifier {
-                    // Auto Scroll with Keyboard Notification
-                    $0.onReceive(
-                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-                            .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
-                        perform: { _ in
-                            if !isKeyboardActive {
-                                isKeyboardActive = true
-                                scrollToBottom = true
-                            }
+                #if os(iOS)
+                // Auto Scroll with Keyboard Notification
+                .onReceive(
+                    NotificationCenter
+                        .default
+                        .publisher(for: UIResponder.keyboardWillShowNotification)
+                        .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
+                    perform: { _ in
+                        if !isKeyboardActive {
+                            isKeyboardActive = true
+                            scrollToBottom = true
                         }
-                    )
-                    .onReceive(
-                        NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
-                        perform: { _ in isKeyboardActive = false }
-                    )
-                }
+                    }
+                )
+                .onReceive(
+                    NotificationCenter
+                        .default
+                        .publisher(for: UIResponder.keyboardWillHideNotification),
+                    perform: { _ in isKeyboardActive = false }
+                )
+                #endif
             }
         }
         .background(Color.clear)
@@ -186,10 +192,15 @@ public extension ChatView {
         }
         
         if let messageIndex = messages.firstIndex(where: { $0.id == thisMessage.id }) {
-            if messageIndex == 0 { return true }
+            if messageIndex == 0 {
+                return true
+            }
+
             let prevMessageUserID = messages[messageIndex].user.id
             let currMessageUserID = messages[messageIndex - 1].user.id
-            return !(prevMessageUserID == currMessageUserID)
+            let isDifferentUser = prevMessageUserID != currMessageUserID
+
+            return isDifferentUser
         }
         
         return false

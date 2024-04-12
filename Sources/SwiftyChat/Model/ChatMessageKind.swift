@@ -9,7 +9,7 @@
 import SwiftUI
 
 public enum ImageLoadingKind {
-    case local(UIImage)
+    case local(PlatformImage)
     case remote(URL)
 }
 

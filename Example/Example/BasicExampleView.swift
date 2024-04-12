@@ -12,7 +12,6 @@ struct BasicExampleView: View {
     
     @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 20)
     
-    // MARK: - InputBarView variables
     @State private var message = ""
     
     var body: some View {
@@ -31,9 +30,7 @@ struct BasicExampleView: View {
                     )
                 }
             )
-            .accentColor(.chatBlue)
             .background(Color.primary.colorInvert())
-            .animation(.linear)
             .embedInAnyView()
             
         }
@@ -43,7 +40,13 @@ struct BasicExampleView: View {
             case .text(let text):
                 return Button(action: {
                     print("Copy Context Menu tapped!!")
+                    #if os(iOS)
                     UIPasteboard.general.string = text
+                    #endif
+
+                    #if os(macOS)
+                    NSPasteboard.general.setString(text, forType: .string)
+                    #endif
                 }) {
                     Text("Copy")
                     Image(systemName: "doc.on.doc")
@@ -56,7 +59,9 @@ struct BasicExampleView: View {
         }
         // ▼ Required
         .environmentObject(ChatMessageCellStyle.basicStyle)
+        #if os(iOS)
         .navigationBarTitle("Basic")
+        #endif
         .listStyle(PlainListStyle())
     }
 }
