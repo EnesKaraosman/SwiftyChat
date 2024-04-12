@@ -41,7 +41,8 @@ internal struct QuickReplyCell: View {
         return Capsule().foregroundColor(backgroundColor)
     }
 
-    public var body: some View {
+    var body: some View {
+        // TODO: Custom `Layout` can be used when min iOS target hits 16.0
         WrappingHStack(0..<quickReplies.count, id: \.self, alignment: .trailing, spacing: .constant(8)) { idx in
 
             Button(action: {}) {

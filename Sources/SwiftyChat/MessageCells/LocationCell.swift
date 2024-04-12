@@ -11,9 +11,9 @@ import MapKit
 
 internal struct LocationCell<Message: ChatMessage>: View {
 
-    public let location: LocationItem
-    public let message: Message
-    public let size: CGSize
+    let location: LocationItem
+    let message: Message
+    let size: CGSize
     @EnvironmentObject var style: ChatMessageCellStyle
 
     private var mapWidth: CGFloat {

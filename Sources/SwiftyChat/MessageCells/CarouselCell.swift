@@ -94,12 +94,17 @@ internal struct CarouselItemView: View {
 
             HStack {
                 ForEach(item.buttons) { (button) in
-                    Button(action: { callback(button) }) {
-                        Text(button.title)
-                            .fontWeight(cellStyle.buttonTitleFontWeight)
-                            .font(cellStyle.buttonFont)
-                            .foregroundColor(cellStyle.buttonTitleColor)
-                    }
+                    Button(
+                        action: {
+                            callback(button)
+                        },
+                        label: {
+                            Text(button.title)
+                                .fontWeight(cellStyle.buttonTitleFontWeight)
+                                .font(cellStyle.buttonFont)
+                                .foregroundColor(cellStyle.buttonTitleColor)
+                        }
+                    )
                     .buttonStyle(
                         CarouselItemButtonStyle(
                             backgroundColor: cellStyle.buttonBackgroundColor

@@ -10,9 +10,9 @@ import SwiftUI
 
 internal struct TextCell<Message: ChatMessage>: View {
 
-    public let text: String
-    public let message: Message
-    public let size: CGSize
+    let text: String
+    let message: Message
+    let size: CGSize
 
     @EnvironmentObject var style: ChatMessageCellStyle
 
@@ -34,7 +34,7 @@ internal struct TextCell<Message: ChatMessage>: View {
             .applyChatStyle(for: text, cellStyle: cellStyle)
     }
 
-    @ViewBuilder public var body: some View {
+    var body: some View {
         if let attributedString {
             Text(attributedString)
                 .applyChatStyle(for: text, cellStyle: cellStyle)

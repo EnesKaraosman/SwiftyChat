@@ -11,9 +11,9 @@ import SwiftUI
 /// So manager knows when to display actual videoPlayer above `ChatView`
 internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
 
-    public let media: VideoItem
-    public let message: Message
-    public let size: CGSize
+    let media: VideoItem
+    let message: Message
+    let size: CGSize
 
     @EnvironmentObject var style: ChatMessageCellStyle
     @EnvironmentObject var videoManager: VideoManager<Message>
@@ -30,7 +30,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
         cellStyle.cellWidth(size)
     }
 
-    public var body: some View {
+    var body: some View {
         thumbnailView
             .overlay(thumbnailOverlay)
             .onTapGesture {

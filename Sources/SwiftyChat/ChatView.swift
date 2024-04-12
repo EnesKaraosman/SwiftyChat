@@ -19,7 +19,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
     private var contactCellFooterSection: (ContactItem, Message) -> [ContactCellButton] = { _, _ in [] }
-    private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     private var inset: EdgeInsets
     private var dateFormater: DateFormatter = DateFormatter()

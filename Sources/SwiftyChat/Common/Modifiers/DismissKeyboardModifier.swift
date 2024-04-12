@@ -14,7 +14,7 @@ internal extension View {
 }
 
 internal struct DismissKeyboardOnTappingOutside: ViewModifier {
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
             .onTapGesture {
                 #if os(iOS)
