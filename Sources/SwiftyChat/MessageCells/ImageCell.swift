@@ -6,8 +6,8 @@
 //  Copyright © 2020 All rights reserved.
 //
 
-import SwiftUI
 import Kingfisher
+import SwiftUI
 
 internal struct ImageLoadingKindCell: View {
 
@@ -53,20 +53,13 @@ internal struct ImageLoadingKindCell: View {
     }
 
     // MARK: - case Remote Image
-    @ViewBuilder private func remoteImage(url: URL) -> some View {
-        /**
-         KFImage(url)
-         .onSuccess(perform: { (result) in
-         result.image.size
-         })
-         We can grab size & manage aspect ratio via a @State property
-         but the list scroll behaviour becomes messy.
-
-         So for now we use fixed width & scale height properly.
-         */
-        KFImage(url)
-            .resizable()
-            .scaledToFill()
+    @ViewBuilder
+    private func remoteImage(url: URL) -> some View {
+        KFAnimatedImage(url)
+            .cacheOriginalImage()
+            .fade(duration: 0.2)
+            .forceTransition()
+            .aspectRatio(contentMode: .fill)
             .frame(width: width, height: height)
     }
 
