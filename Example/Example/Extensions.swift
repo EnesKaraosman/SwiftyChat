@@ -15,7 +15,7 @@ extension Color {
 
 let futuraFont = Font.custom("Futura", size: 17)
 
-internal extension ChatMessageCellStyle {
+extension ChatMessageCellStyle {
     
     static let basicStyle = ChatMessageCellStyle(
         incomingTextStyle: .init(
