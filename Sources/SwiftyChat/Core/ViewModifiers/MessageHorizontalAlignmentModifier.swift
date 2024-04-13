@@ -20,7 +20,6 @@ struct MessageHorizontalAlignmentModifier: ViewModifier {
         return false
     }
 
-    @ViewBuilder
     func body(content: Content) -> some View {
         HStack(spacing: 0) {
             if isSender {
