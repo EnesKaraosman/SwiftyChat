@@ -96,7 +96,7 @@ struct AdvancedExampleView: View {
                 )
             )
 
-            self.messages.append(contentsOf: MessageMocker.generated(count: 53))
+            self.messages.append(contentsOf: MessageMocker.generate(count: 53))
         }
     }
 }
