@@ -213,8 +213,8 @@ extension String {
     }
 }
 
-extension Int {
-    public func randomize(variation: Int) -> Int {
+private extension Int {
+    func randomize(variation: Int) -> Int {
         let randomInt = Int.random(in: (100 - variation)..<(100+variation))
         let multiplier = Double(randomInt) / 100
         let randomized = Double(self) * multiplier

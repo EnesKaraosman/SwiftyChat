@@ -7,10 +7,11 @@
 
 import SwiftUI
 import SwiftyChat
+import SwiftyChatMock
 
 struct BasicExampleView: View {
     
-    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 20)
+    @State var messages: [MessageMocker.ChatMessageItem] = MessageMocker.generate(kind: .text, count: 20)
     
     @State private var message = ""
     
@@ -19,14 +20,14 @@ struct BasicExampleView: View {
     }
     
     private var chatView: some View {
-        ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(messages: $messages) {
+        ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(messages: $messages) {
 
             BasicInputView(
                 message: $message,
                 placeholder: "Type something",
                 onCommit: { messageKind in
                     self.messages.append(
-                        .init(user: MockMessages.sender, messageKind: messageKind, isSender: true)
+                        .init(user: MessageMocker.sender, messageKind: messageKind, isSender: true)
                     )
                 }
             )

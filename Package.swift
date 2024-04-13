@@ -12,17 +12,19 @@ let package = Package(
     products: [
         .library(
             name: "SwiftyChat",
-            targets: ["SwiftyChat"]),
+            targets: ["SwiftyChat"]
+        ),
+        .library(
+            name: "SwiftyChatMock",
+            targets: ["SwiftyChatMock"]
+        ),
     ],
     dependencies: [
-        // Image downloading library
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "7.11.0"),
         .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.4.0"),
         .package(url: "https://github.com/dkk/WrappingHStack.git", from: "2.2.11")
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "SwiftyChat",
             dependencies: [
@@ -32,6 +34,12 @@ let package = Package(
                 
             ],
             exclude: ["Demo/Preview"]
+        ),
+        .target(
+            name: "SwiftyChatMock",
+            dependencies: [
+                "SwiftyChat"
+            ]
         )
     ],
     swiftLanguageVersions: [.v5]
