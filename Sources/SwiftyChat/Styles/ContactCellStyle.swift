@@ -22,7 +22,7 @@ public struct ContactCellStyle: CommonViewStyle {
     public let cellShadowColor: Color
 
     public init(
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.45 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.4 : 0.75) },
         imageStyle: CommonImageStyle = CommonImageStyle(
             imageSize: CGSize(width: 50, height: 50),
             cornerRadius: 25,

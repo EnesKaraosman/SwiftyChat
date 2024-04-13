@@ -20,7 +20,12 @@ public struct ImageCellStyle: CommonViewStyle {
     public let cellShadowColor: Color
 
     public init(
-        cellWidth: @escaping (CGSize) -> CGFloat = { $0.width * (Device.isLandscape ? 0.4 : 0.75) },
+        cellWidth: @escaping (CGSize) -> CGFloat = { size in
+            if !Device.isLandscape {
+                return size.width * 0.75
+            }
+            return size.height * 0.8
+        },
         cellBackgroundColor: Color = Color.secondary.opacity(0.1),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
