@@ -5,8 +5,8 @@
 //  Created by Enes Karaosman on 23.07.2020.
 //
 
-import SwiftUI
 import Kingfisher
+import SwiftUI
 
 public struct CarouselItemButton: Identifiable {
     public let id = UUID()
@@ -21,7 +21,7 @@ public struct CarouselItemButton: Identifiable {
     }
 }
 
-extension CarouselItem {
+private extension CarouselItem {
     var id: String {
         (imageURL?.absoluteString ?? "").appending(subtitle)
     }

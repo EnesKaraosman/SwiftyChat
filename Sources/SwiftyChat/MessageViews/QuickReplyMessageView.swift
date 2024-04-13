@@ -43,9 +43,13 @@ struct QuickReplyMessageView: View {
     var body: some View {
         // TODO: Custom `Layout` can be used when min iOS target hits 16.0
         WrappingHStack(0..<quickReplies.count, id: \.self, alignment: .trailing, spacing: .constant(8)) { idx in
-            Button(action: {}) {
+            Button(action: {}, label: {
                 Text(quickReplies[idx].title)
-                    .fontWeight(idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight)
+                    .fontWeight(
+                        idx == selectedIndex ?
+                        cellStyle.selectedItemFontWeight :
+                            cellStyle.unselectedItemFontWeight
+                    )
                     .font(idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont)
                     .padding(.vertical, cellStyle.itemVerticalPadding)
                     .padding(.horizontal, cellStyle.itemHorizontalPadding)
@@ -61,7 +65,7 @@ struct QuickReplyMessageView: View {
                                     radius: cellStyle.itemShadowRadius,
                                     x: 0,
                                     y: 4))
-            }
+            })
             .simultaneousGesture(
                 TapGesture().onEnded { _ in
                     selectedIndex = idx

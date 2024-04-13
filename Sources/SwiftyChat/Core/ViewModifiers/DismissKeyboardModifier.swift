@@ -7,13 +7,13 @@
 
 import SwiftUI
 
-internal extension View {
+extension View {
     func dismissKeyboardOnTappingOutside() -> some View {
-        return ModifiedContent(content: self, modifier: DismissKeyboardOnTappingOutside())
+        modifier(DismissKeyboardOnTappingOutside())
     }
 }
 
-internal struct DismissKeyboardOnTappingOutside: ViewModifier {
+struct DismissKeyboardOnTappingOutside: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onTapGesture {

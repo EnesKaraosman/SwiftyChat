@@ -1,6 +1,5 @@
 //
 //  MessageKind.swift
-//  SwiftyChatbot
 //
 //  Created by Enes Karaosman on 18.05.2020.
 //  Copyright © 2020 All rights reserved.

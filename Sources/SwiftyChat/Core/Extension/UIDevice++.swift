@@ -1,6 +1,5 @@
 //
 //  UIDevice++.swift
-//  SwiftyChatbot
 //
 //  Created by Enes Karaosman on 23.05.2020.
 //  Copyright © 2020 All rights reserved.

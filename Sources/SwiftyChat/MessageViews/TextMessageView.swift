@@ -39,7 +39,6 @@ struct TextMessageView<Message: ChatMessage>: View {
         } else {
             defaultText
         }
-
     }
 }
 

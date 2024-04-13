@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-internal protocol CommonViewStyle {
+protocol CommonViewStyle {
     var cellBackgroundColor: Color { get }
     var cellCornerRadius: CGFloat { get }
     var cellBorderColor: Color { get }

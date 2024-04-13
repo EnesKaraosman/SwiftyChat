@@ -1,5 +1,5 @@
 //
-//  CellEdgeInsetsModifier.swift
+//  MessageViewEdgeInsetsModifier.swift
 //
 //
 //  Created by Enes Karaosman on 4.08.2020.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-internal struct CellEdgeInsetsModifier: ViewModifier {
+struct MessageViewEdgeInsetsModifier: ViewModifier {
 
     let isSender: Bool
 

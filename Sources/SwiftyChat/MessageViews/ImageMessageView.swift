@@ -61,7 +61,6 @@ struct ImageLoadingKindCell: View {
             .aspectRatio(contentMode: .fill)
             .frame(width: width, height: height)
     }
-
 }
 
 struct ImageMessageView<Message: ChatMessage>: View {

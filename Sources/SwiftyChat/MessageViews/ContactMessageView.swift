@@ -117,7 +117,6 @@ struct ContactMessageView<Message: ChatMessage>: View {
                     radius: cellStyle.cellShadowRadius
                 )
         )
-
     }
 
     private var fullNameLabel: some View {

@@ -1,6 +1,5 @@
 //
-//  MessageModifier.swift
-//  SwiftyChatbot
+//  MessageHorizontalAlignmentModifier.swift
 //
 //  Created by Enes Karaosman on 19.05.2020.
 //  Copyright © 2020 All rights reserved.
@@ -8,7 +7,7 @@
 
 import SwiftUI
 
-internal struct MessageHorizontalSpaceModifier: ViewModifier {
+struct MessageHorizontalAlignmentModifier: ViewModifier {
 
     var messageKind: ChatMessageKind
     var isSender: Bool
@@ -21,6 +20,7 @@ internal struct MessageHorizontalSpaceModifier: ViewModifier {
         return false
     }
 
+    @ViewBuilder
     func body(content: Content) -> some View {
         HStack(spacing: 0) {
             if isSender {

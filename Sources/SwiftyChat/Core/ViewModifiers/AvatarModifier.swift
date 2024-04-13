@@ -8,7 +8,7 @@
 import SwiftUI
 import Kingfisher
 
-internal struct AvatarModifier<Message: ChatMessage>: ViewModifier {
+struct AvatarModifier<Message: ChatMessage>: ViewModifier {
 
     let message: Message
     let showAvatarForMessage: Bool
@@ -79,10 +79,11 @@ internal struct AvatarModifier<Message: ChatMessage>: ViewModifier {
     }
 
     private var blankAvatar: some View {
-        return Spacer()
+        EmptyView()
     }
 
-    @ViewBuilder private var avatarImage: some View {
+    @ViewBuilder
+    private var avatarImage: some View {
         if !showAvatarForMessage {
             blankAvatar
         } else if let imageURL = user.avatarURL, currentStyle.imageStyle.imageSize.width > 0 {
@@ -92,7 +93,8 @@ internal struct AvatarModifier<Message: ChatMessage>: ViewModifier {
         }
     }
 
-    @ViewBuilder private var positionedAvatar: some View {
+    @ViewBuilder
+    private var positionedAvatar: some View {
         switch currentAvatarPosition {
         case .alignToMessageTop: alignToMessageTop
         case .alignToMessageCenter: alignToMessageCenter

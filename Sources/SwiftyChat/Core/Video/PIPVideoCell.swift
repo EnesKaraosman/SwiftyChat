@@ -9,12 +9,12 @@ import Combine
 import SwiftUI
 import SwiftUIEKtensions
 
-internal extension CGSize {
+private extension CGSize {
     var midX: CGFloat { width / 2 }
     var midY: CGFloat { height / 2 }
 }
 
-internal struct PIPVideoCell<Message: ChatMessage>: View {
+struct PIPVideoCell<Message: ChatMessage>: View {
 
     @EnvironmentObject var videoManager: VideoManager<Message>
 

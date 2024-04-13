@@ -7,7 +7,7 @@
 
 import Foundation
 
-internal extension Double {
+extension Double {
 
     private static var timeHMSFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()

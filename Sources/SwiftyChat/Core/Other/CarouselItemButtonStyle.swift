@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-internal struct CarouselItemButtonStyle: ButtonStyle {
+struct CarouselItemButtonStyle: ButtonStyle {
 
     let backgroundColor: Color
 
