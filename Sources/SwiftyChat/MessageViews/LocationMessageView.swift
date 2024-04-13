@@ -1,15 +1,14 @@
 //
-//  LocationCell.swift
-//  SwiftyChatbot
+//  LocationMessageView.swift
 //
 //  Created by Enes Karaosman on 22.05.2020.
 //  Copyright © 2020 All rights reserved.
 //
 
-import SwiftUI
 import MapKit
+import SwiftUI
 
-internal struct LocationCell<Message: ChatMessage>: View {
+struct LocationMessageView<Message: ChatMessage>: View {
 
     let location: LocationItem
     let message: Message
@@ -44,7 +43,7 @@ internal struct LocationCell<Message: ChatMessage>: View {
             )
     }
 
-    @ViewBuilder private var mapView: some View {
+    private var mapView: some View {
         Map(
             coordinateRegion: .constant(
                 MKCoordinateRegion(

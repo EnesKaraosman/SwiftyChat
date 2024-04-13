@@ -1,5 +1,5 @@
 //
-//  DefaultCarouselCell.swift
+//  CarouselMessageView.swift
 //
 //
 //  Created by Enes Karaosman on 23.07.2020.
@@ -27,7 +27,7 @@ extension CarouselItem {
     }
 }
 
-internal struct CarouselCell<Message: ChatMessage>: View {
+struct CarouselMessageView<Message: ChatMessage>: View {
 
     let carouselItems: [CarouselItem]
     let size: CGSize
@@ -49,10 +49,9 @@ internal struct CarouselCell<Message: ChatMessage>: View {
             }
         }
     }
-
 }
 
-internal struct CarouselItemView: View {
+private struct CarouselItemView: View {
 
     let item: CarouselItem
     let size: CGSize

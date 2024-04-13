@@ -1,6 +1,5 @@
 //
-//  TextCell.swift
-//  SwiftyChatbot
+//  TextMessageView.swift
 //
 //  Created by Enes Karaosman on 22.05.2020.
 //  Copyright © 2020 All rights reserved.
@@ -8,7 +7,7 @@
 
 import SwiftUI
 
-internal struct TextCell<Message: ChatMessage>: View {
+struct TextMessageView<Message: ChatMessage>: View {
 
     let text: String
     let message: Message
@@ -28,7 +27,6 @@ internal struct TextCell<Message: ChatMessage>: View {
         try? .init(markdown: text)
     }
 
-    // MARK: - Default Text
     private var defaultText: some View {
         Text(text)
             .applyChatStyle(for: text, cellStyle: cellStyle)
@@ -45,7 +43,7 @@ internal struct TextCell<Message: ChatMessage>: View {
     }
 }
 
-extension Text {
+private extension Text {
     func applyChatStyle(for text: String, cellStyle: TextCellStyle) -> some View {
         self
             .font(cellStyle.textStyle.font)

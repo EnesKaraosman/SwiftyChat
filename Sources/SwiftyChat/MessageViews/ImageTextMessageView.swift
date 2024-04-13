@@ -1,5 +1,5 @@
 //
-//  ImageTextCell.swift
+//  ImageTextMessageView.swift
 //
 //
 //  Created by Karl Söderberg on 25.10.2021.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-internal struct ImageTextCell<Message: ChatMessage>: View {
+struct ImageTextMessageView<Message: ChatMessage>: View {
 
     let message: Message
     let imageLoadingType: ImageLoadingKind
@@ -24,7 +24,8 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
         style.imageTextCellStyle
     }
 
-    @ViewBuilder private var imageView: some View {
+    @ViewBuilder
+    private var imageView: some View {
         if case let ImageLoadingKind.local(uiImage) = imageLoadingType {
             let width = uiImage.size.width
             let height = uiImage.size.height
@@ -53,10 +54,8 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                 .padding(cellStyle.textPadding)
         }
         .background(cellStyle.cellBackgroundColor)
-
         .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
         .overlay(
-
             RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
                 .stroke(
                     cellStyle.cellBorderColor,

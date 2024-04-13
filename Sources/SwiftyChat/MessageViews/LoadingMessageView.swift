@@ -1,6 +1,5 @@
 //
-//  LoadingCell.swift
-//  SwiftyChat
+//  LoadingMessageView.swift
 //
 //  Created by Karl Söderberg on 16.11.2021.
 //  Copyright © 2020 All rights reserved.
@@ -8,7 +7,7 @@
 
 import SwiftUI
 
-internal struct LoadingCell<Message: ChatMessage>: View {
+struct LoadingMessageView<Message: ChatMessage>: View {
 
     let message: Message
     let size: CGSize
@@ -47,7 +46,7 @@ internal struct LoadingCell<Message: ChatMessage>: View {
 #if DEBUG
 struct Loadingcell_Previews: PreviewProvider {
     static var previews: some View {
-        LoadingCell(message: MockMessages.generateMessage(kind: .Text), size: .zero)
+        LoadingMessageView(message: MockMessages.generateMessage(kind: .Text), size: .zero)
             .environmentObject(ChatMessageCellStyle.init())
     }
 }

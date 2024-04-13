@@ -1,6 +1,5 @@
 //
-//  SwiftUIView.swift
-//
+//  VideoMessageView.swift
 //
 //  Created by Enes Karaosman on 5.11.2020.
 //
@@ -9,7 +8,7 @@ import SwiftUI
 
 /// When play button is tapped, it lets videoManager know about VideoItem
 /// So manager knows when to display actual videoPlayer above `ChatView`
-internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
+struct VideoMessageView<Message: ChatMessage>: View {
 
     let media: VideoItem
     let message: Message
@@ -44,7 +43,7 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
             }
     }
 
-    @ViewBuilder private var thumbnailView: some View {
+    private var thumbnailView: some View {
         ImageLoadingKindCell(
             media.placeholderImage,
             width: imageWidth,

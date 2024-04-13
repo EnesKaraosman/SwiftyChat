@@ -1,6 +1,5 @@
 //
-//  QuickReplyCell.swift
-//  SwiftyChatbot
+//  QuickReplyMessageView.swift
 //
 //  Created by Enes Karaosman on 22.05.2020.
 //  Copyright © 2020 All rights reserved.
@@ -9,7 +8,7 @@
 import SwiftUI
 import WrappingHStack
 
-internal struct QuickReplyCell: View {
+struct QuickReplyMessageView: View {
 
     var quickReplies: [QuickReplyItem]
     var quickReplySelected: (QuickReplyItem) -> Void
@@ -44,7 +43,6 @@ internal struct QuickReplyCell: View {
     var body: some View {
         // TODO: Custom `Layout` can be used when min iOS target hits 16.0
         WrappingHStack(0..<quickReplies.count, id: \.self, alignment: .trailing, spacing: .constant(8)) { idx in
-
             Button(action: {}) {
                 Text(quickReplies[idx].title)
                     .fontWeight(idx == selectedIndex ? cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight)
@@ -55,7 +53,7 @@ internal struct QuickReplyCell: View {
                     .background(itemBackground(for: idx))
                     .foregroundColor(colors(selectedIndex: selectedIndex)[idx])
                     .overlay(
-                        Capsule()
+                        RoundedRectangle(cornerRadius: cellStyle.itemCornerRadius)
                             .stroke(
                                 colors(selectedIndex: selectedIndex)[idx],
                                 lineWidth: cellStyle.itemBorderWidth)

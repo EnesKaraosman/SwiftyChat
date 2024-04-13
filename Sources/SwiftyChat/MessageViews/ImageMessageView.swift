@@ -1,6 +1,5 @@
 //
-//  DefaultImageCell.swift
-//  SwiftyChatbot
+//  ImageMessageView.swift
 //
 //  Created by Enes Karaosman on 23.05.2020.
 //  Copyright © 2020 All rights reserved.
@@ -9,7 +8,7 @@
 import Kingfisher
 import SwiftUI
 
-internal struct ImageLoadingKindCell: View {
+struct ImageLoadingKindCell: View {
 
     private let imageLoadingType: ImageLoadingKind
     private let width: CGFloat?
@@ -34,14 +33,16 @@ internal struct ImageLoadingKindCell: View {
         imageView
     }
 
-    @ViewBuilder private var imageView: some View {
+    @ViewBuilder
+    private var imageView: some View {
         switch imageLoadingType {
         case .local(let image): localImage(image)
         case .remote(let remoteUrl): remoteImage(url: remoteUrl)
         }
     }
 
-    @ViewBuilder private func localImage(_ image: PlatformImage) -> some View {
+    @ViewBuilder
+    private func localImage(_ image: PlatformImage) -> some View {
         let width = image.size.width
         let height = image.size.height
         let isLandscape = width > height
@@ -52,8 +53,6 @@ internal struct ImageLoadingKindCell: View {
             .frame(width: width, height: height)
     }
 
-    // MARK: - case Remote Image
-    @ViewBuilder
     private func remoteImage(url: URL) -> some View {
         KFAnimatedImage(url)
             .cacheOriginalImage()
@@ -65,7 +64,7 @@ internal struct ImageLoadingKindCell: View {
 
 }
 
-internal struct ImageCell<Message: ChatMessage>: View {
+struct ImageMessageView<Message: ChatMessage>: View {
 
     let message: Message
     let imageLoadingType: ImageLoadingKind
@@ -80,7 +79,8 @@ internal struct ImageCell<Message: ChatMessage>: View {
         style.imageCellStyle
     }
 
-    @ViewBuilder private var imageView: some View {
+    @ViewBuilder
+    private var imageView: some View {
         if case let ImageLoadingKind.local(uiImage) = imageLoadingType {
             let width = uiImage.size.width
             let height = uiImage.size.height

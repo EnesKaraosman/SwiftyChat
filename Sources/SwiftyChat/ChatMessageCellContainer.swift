@@ -21,21 +21,21 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
         switch message.messageKind {
 
         case .text(let text):
-            TextCell(
+            TextMessageView(
                 text: text,
                 message: message,
                 size: size
             )
 
         case .location(let location):
-            LocationCell(
+            LocationMessageView(
                 location: location,
                 message: message,
                 size: size
             )
 
         case .imageText(let imageLoadingType, let text):
-            ImageTextCell(
+            ImageTextMessageView(
                 message: message,
                 imageLoadingType: imageLoadingType,
                 text: text,
@@ -43,14 +43,14 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
             )
 
         case .image(let imageLoadingType):
-            ImageCell(
+            ImageMessageView(
                 message: message,
                 imageLoadingType: imageLoadingType,
                 size: size
             )
 
         case .contact(let contact):
-            ContactCell(
+            ContactMessageView(
                 contact: contact,
                 message: message,
                 size: size,
@@ -58,13 +58,13 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
             )
 
         case .quickReply(let quickReplies):
-            QuickReplyCell(
+            QuickReplyMessageView(
                 quickReplies: quickReplies,
                 quickReplySelected: onQuickReplyItemSelected
             )
 
         case .carousel(let carouselItems):
-            CarouselCell(
+            CarouselMessageView(
                 carouselItems: carouselItems,
                 size: size,
                 message: message,
@@ -72,14 +72,14 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
             )
 
         case .video(let videoItem):
-            VideoPlaceholderCell(
+            VideoMessageView(
                 media: videoItem,
                 message: message,
                 size: size
             )
 
         case .loading:
-            LoadingCell(message: message, size: size)
+            LoadingMessageView(message: message, size: size)
 
         case .custom(let custom):
             if let cell = customCell {

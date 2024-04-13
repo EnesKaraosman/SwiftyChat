@@ -1,5 +1,5 @@
 //
-//  DefaultContactCell.swift
+//  ContactMessageView.swift
 //
 //
 //  Created by Enes Karaosman on 25.05.2020.
@@ -18,7 +18,7 @@ public struct ContactCellButton: Identifiable {
     }
 }
 
-internal struct ContactCell<Message: ChatMessage>: View {
+struct ContactMessageView<Message: ChatMessage>: View {
 
     let contact: ContactItem
     let message: Message
