@@ -176,7 +176,7 @@ public struct MessageMocker {
         ].randomElement()!
     }
 
-    public static func generated(count: Int = 30) -> [ChatMessageItem] {
+    public static func generate(count: Int = 30) -> [ChatMessageItem] {
         (1...count).map { _ in generate(kind: randomMessageKind)}
     }
 }
