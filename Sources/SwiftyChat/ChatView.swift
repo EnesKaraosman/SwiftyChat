@@ -93,7 +93,6 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
                 .padding(inset)
                 .onChange(of: scrollToBottom) { value in
-                    print("scrollToBottom: \(scrollToBottom)")
                     if value {
                         withAnimation {
                             proxy.scrollTo("bottom")
