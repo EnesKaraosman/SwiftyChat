@@ -45,12 +45,3 @@ struct LoadingMessageView<Message: ChatMessage>: View {
             )
     }
 }
-
-#if DEBUG
-struct Loadingcell_Previews: PreviewProvider {
-    static var previews: some View {
-        LoadingMessageView(message: MockMessages.generateMessage(kind: .Text), size: .zero)
-            .environmentObject(ChatMessageCellStyle.init())
-    }
-}
-#endif

@@ -10,11 +10,12 @@
 		94410B752BC6B4D400C37BDB /* ExampleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B742BC6B4D400C37BDB /* ExampleApp.swift */; };
 		94410B792BC6B4D700C37BDB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94410B782BC6B4D700C37BDB /* Assets.xcassets */; };
 		94410B7C2BC6B4D700C37BDB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 94410B7B2BC6B4D700C37BDB /* Preview Assets.xcassets */; };
-		94410B842BC6B50700C37BDB /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = 94410B832BC6B50700C37BDB /* SwiftyChat */; };
 		94410B862BC6B53900C37BDB /* ChatListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B852BC6B53900C37BDB /* ChatListView.swift */; };
 		94410B882BC6B53E00C37BDB /* AdvancedExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B872BC6B53E00C37BDB /* AdvancedExampleView.swift */; };
 		94410B8A2BC6B54100C37BDB /* BasicExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B892BC6B54100C37BDB /* BasicExampleView.swift */; };
 		94410B8C2BC6B54900C37BDB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B8B2BC6B54900C37BDB /* Extensions.swift */; };
+		9498B4232BCAADBB0021FB93 /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = 9498B4222BCAADBB0021FB93 /* SwiftyChat */; };
+		9498B4252BCAADBB0021FB93 /* SwiftyChatMock in Frameworks */ = {isa = PBXBuildFile; productRef = 9498B4242BCAADBB0021FB93 /* SwiftyChatMock */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +35,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94410B842BC6B50700C37BDB /* SwiftyChat in Frameworks */,
+				9498B4252BCAADBB0021FB93 /* SwiftyChatMock in Frameworks */,
+				9498B4232BCAADBB0021FB93 /* SwiftyChat in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +48,7 @@
 			children = (
 				94410B732BC6B4D400C37BDB /* Example */,
 				94410B722BC6B4D400C37BDB /* Products */,
+				9498B4192BC982FF0021FB93 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,7 +100,8 @@
 			);
 			name = Example;
 			packageProductDependencies = (
-				94410B832BC6B50700C37BDB /* SwiftyChat */,
+				9498B4222BCAADBB0021FB93 /* SwiftyChat */,
+				9498B4242BCAADBB0021FB93 /* SwiftyChatMock */,
 			);
 			productName = Example;
 			productReference = 94410B712BC6B4D400C37BDB /* Example.app */;
@@ -128,7 +132,7 @@
 			);
 			mainGroup = 94410B682BC6B4D400C37BDB;
 			packageReferences = (
-				94410B822BC6B50700C37BDB /* XCLocalSwiftPackageReference ".." */,
+				9498B4212BCAADBB0021FB93 /* XCLocalSwiftPackageReference ".." */,
 			);
 			productRefGroup = 94410B722BC6B4D400C37BDB /* Products */;
 			projectDirPath = "";
@@ -374,16 +378,20 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		94410B822BC6B50700C37BDB /* XCLocalSwiftPackageReference ".." */ = {
+		9498B4212BCAADBB0021FB93 /* XCLocalSwiftPackageReference ".." */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ..;
 		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		94410B832BC6B50700C37BDB /* SwiftyChat */ = {
+		9498B4222BCAADBB0021FB93 /* SwiftyChat */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SwiftyChat;
+		};
+		9498B4242BCAADBB0021FB93 /* SwiftyChatMock */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftyChatMock;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

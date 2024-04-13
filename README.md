@@ -94,6 +94,9 @@ Here below is minimum code required to get started (see up & running)<br>
 For detail, visit example project [here](../master/SwiftyChatExample/Example)
 
 ```swift
+import SwiftyChat
+import SwiftyChatMock
+
 @State private var scrollToBottom = false
 @State private var messages: [MockMessages.ChatMessageItem] = [] // for quick test assign MockMessages.generatedMessages()
 

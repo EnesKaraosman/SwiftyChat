@@ -26,13 +26,13 @@ import Foundation
 
 // MARK: - Lorem
 
-public class Lorem {
+class Lorem {
     // MARK: Public
 
     /// Return a random word.
     ///
     /// - returns: Returns a random word.
-    public class func word() -> String {
+    class func word() -> String {
         wordList.randomElement()!
     }
 
@@ -41,7 +41,7 @@ public class Lorem {
     /// - parameter count: The number of words to return.
     ///
     /// - returns: Returns an array of `count` words.
-    public class func words(nbWords: Int = 3) -> [String] {
+    class func words(nbWords: Int = 3) -> [String] {
         (1...nbWords).map { _ in
             word()
         }
@@ -52,7 +52,7 @@ public class Lorem {
     /// - parameter count: The number of words the string should contain.
     ///
     /// - returns: Returns a string of `count` words.
-    public class func words(nbWords: Int = 3) -> String {
+    class func words(nbWords: Int = 3) -> String {
         words(nbWords: nbWords).joined(separator: " ")
     }
 
@@ -61,7 +61,7 @@ public class Lorem {
     /// - parameter variable: If `true`, the number of words will vary between
     /// +/- 40% of `nbWords`.
     /// - returns:
-    public class func sentence(nbWords: Int = 6, variable: Bool = true) -> String {
+    class func sentence(nbWords: Int = 6, variable: Bool = true) -> String {
         if nbWords <= 0 {
             return ""
         }
@@ -75,7 +75,7 @@ public class Lorem {
     /// - parameter nbSentences: The number of sentences to generate.
     ///
     /// - returns: Returns an array of random sentences.
-    public class func sentences(nbSentences: Int = 3) -> [String] {
+    class func sentences(nbSentences: Int = 3) -> [String] {
         (0 ..< nbSentences).map { _ in sentence() }
     }
 
@@ -85,7 +85,7 @@ public class Lorem {
     /// - parameter variable:    If `true`, the number of sentences will vary
     /// between +/- 40% of `nbSentences`.
     /// - returns: Returns a paragraph with `nbSentences` random sentences.
-    public class func paragraph(nbSentences: Int = 3, variable: Bool = true) -> String {
+    class func paragraph(nbSentences: Int = 3, variable: Bool = true) -> String {
         if nbSentences <= 0 {
             return ""
         }
@@ -97,14 +97,14 @@ public class Lorem {
     /// Generate an array of random paragraphs.
     /// - parameter nbParagraphs: The number of paragraphs to generate.
     /// - returns: Returns an array of `nbParagraphs` paragraphs.
-    public class func paragraphs(nbParagraphs: Int = 3) -> [String] {
+    class func paragraphs(nbParagraphs: Int = 3) -> [String] {
         (0 ..< nbParagraphs).map { _ in paragraph() }
     }
 
     /// Generate a string of random paragraphs.
     /// - parameter nbParagraphs: The number of paragraphs to generate.
     /// - returns: Returns a string of random paragraphs.
-    public class func paragraphs(nbParagraphs: Int = 3) -> String {
+    class func paragraphs(nbParagraphs: Int = 3) -> String {
         paragraphs(nbParagraphs: nbParagraphs).joined(separator: "\n\n")
     }
 
@@ -112,7 +112,7 @@ public class Lorem {
     /// - parameter maxNbChars: The maximum number of characters the string
     /// should contain.
     /// - returns: Returns a string of at most `maxNbChars` characters.
-    public class func text(maxNbChars: Int = 200) -> String {
+    class func text(maxNbChars: Int = 200) -> String {
         var result: [String] = []
 
         if maxNbChars < 5 {
@@ -201,7 +201,7 @@ public class Lorem {
     ]
 }
 
-extension String {
+private extension String {
     var firstCapitalized: String {
         var string = self
         string.replaceSubrange(
@@ -213,8 +213,8 @@ extension String {
     }
 }
 
-extension Int {
-    public func randomize(variation: Int) -> Int {
+private extension Int {
+    func randomize(variation: Int) -> Int {
         let randomInt = Int.random(in: (100 - variation)..<(100+variation))
         let multiplier = Double(randomInt) / 100
         let randomized = Double(self) * multiplier

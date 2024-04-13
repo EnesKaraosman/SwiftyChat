@@ -7,10 +7,11 @@
 
 import SwiftUI
 import SwiftyChat
+import SwiftyChatMock
 
 struct AdvancedExampleView: View {
 
-    @State var messages: [MockMessages.ChatMessageItem] = []
+    @State var messages: [MessageMocker.ChatMessageItem] = []
     @State private var scrollToBottom = false
 
     @State private var message = ""
@@ -20,13 +21,13 @@ struct AdvancedExampleView: View {
     }
 
     private var chatView: some View {
-        ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(messages: $messages) {
+        ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(messages: $messages, scrollToBottom: $scrollToBottom) {
             BasicInputView(
                 message: $message,
                 placeholder: "Type something",
                 onCommit: { messageKind in
                     self.messages.append(
-                        .init(user: MockMessages.sender, messageKind: messageKind, isSender: true)
+                        .init(user: MessageMocker.sender, messageKind: messageKind, isSender: true)
                     )
                 }
             )
@@ -59,8 +60,8 @@ struct AdvancedExampleView: View {
         // ▼ Implement in case ChatMessageKind.quickReply
         .onQuickReplyItemSelected { (quickReply) in
             self.messages.append(
-                MockMessages.ChatMessageItem(
-                    user: MockMessages.sender,
+                MessageMocker.ChatMessageItem(
+                    user: MessageMocker.sender,
                     messageKind: .text(quickReply.title),
                     isSender: true
                 )
@@ -83,20 +84,19 @@ struct AdvancedExampleView: View {
         #if os(iOS)
         .navigationBarTitle("Advanced")
         #endif
-        .listStyle(PlainListStyle())
         .task {
             if let portraitUrl = URL(string: "https://picsum.photos/id/\(Int.random(in: 1...100))/400/600") {
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .image(.remote(portraitUrl))))
+                self.messages.append(.init(user: MessageMocker.chatbot, messageKind: .image(.remote(portraitUrl))))
             }
 
             self.messages.append(
                 .init(
-                    user: MockMessages.chatbot,
+                    user: MessageMocker.chatbot,
                     messageKind: .text("https://github.com/EnesKaraosman/SwiftyChat and here is his phone +90 537 844 11-41, & mail: eneskaraosman53@gmail.com Today is 27 May 2020")
                 )
             )
 
-            self.messages.append(contentsOf: MockMessages.generatedMessages(count: 53))
+            self.messages.append(contentsOf: MessageMocker.generate(count: 53))
         }
     }
 }
