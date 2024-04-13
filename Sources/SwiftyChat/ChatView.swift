@@ -1,6 +1,5 @@
 //
 //  ChatView.swift
-//  SwiftyChatbot
 //
 //  Created by Enes Karaosman on 19.05.2020.
 //  Copyright © 2020 All rights reserved.
@@ -50,7 +49,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .dismissKeyboardOnTappingOutside() // iOS only
     }
 
-    @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
+    private func chatView(in geometry: GeometryProxy) -> some View {
         ScrollViewReader { proxy in
             ScrollView(.vertical, showsIndicators: false) {
                 LazyVStack {
@@ -80,7 +79,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     alignment: message.isSender ? .trailing: .leading
                                 )
                         }
-                        chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
+                        chatMessageViewContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                             .id(message.id)
                             .onAppear {
                                 if message.id == self.messages.first?.id {
@@ -94,6 +93,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
                 .padding(inset)
                 .onChange(of: scrollToBottom) { value in
+                    print("scrollToBottom: \(scrollToBottom)")
                     if value {
                         withAnimation {
                             proxy.scrollTo("bottom")
@@ -128,14 +128,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
 
 }
 
-internal extension ChatView {
+private extension ChatView {
     // MARK: - List Item
-    private func chatMessageCellContainer(
+    private func chatMessageViewContainer(
         in size: CGSize,
         with message: Message,
         with avatarShow: Bool
     ) -> some View {
-        ChatMessageCellContainer(
+        ChatMessageViewContainer(
             message: message,
             size: size,
             customCell: customCellView,
@@ -153,13 +153,13 @@ internal extension ChatView {
                 )
             )
         )
-        .modifier(MessageHorizontalSpaceModifier(messageKind: message.messageKind, isSender: message.isSender))
-        .modifier(CellEdgeInsetsModifier(isSender: message.isSender))
+        .modifier(MessageHorizontalAlignmentModifier(messageKind: message.messageKind, isSender: message.isSender))
+        .modifier(MessageViewEdgeInsetsModifier(isSender: message.isSender))
         .id(message.id)
     }
 }
 
-public extension ChatView {
+private extension ChatView {
     func shouldShowDateHeader(messages: [Message], thisMessage: Message) -> Bool {
         if let messageIndex = messages.firstIndex(where: { $0.id == thisMessage.id }) {
             if messageIndex == 0 { return true }
