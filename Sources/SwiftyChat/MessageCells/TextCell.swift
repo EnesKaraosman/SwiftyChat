@@ -14,7 +14,7 @@ internal struct TextCell<Message: ChatMessage>: View {
     public let attentions : [String]?
     public let message: Message
     public let size: CGSize
-    public let priortiy: MessagePriorityLevel
+    public let priority: MessagePriorityLevel
     public let callback: () -> AttributedTextTappedCallback
     
     @State private var showFullText = false
@@ -37,6 +37,10 @@ internal struct TextCell<Message: ChatMessage>: View {
         return callback()
     }
     
+    
+    
+    
+    
     private var showMore : some View {
             HStack {
                 Spacer()
@@ -52,10 +56,11 @@ internal struct TextCell<Message: ChatMessage>: View {
                 .padding(.bottom)
             }
     }
+
+    
     
     // MARK: - Default Text
     private var defaultText: some View {
-        
         VStack(alignment: .leading) {
             Text(text)
                 .fontWeight(cellStyle.textStyle.fontWeight)
@@ -64,14 +69,55 @@ internal struct TextCell<Message: ChatMessage>: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
-
             
             if self.computeLineCount(for: text, with: cellStyle) > 20 {
                 showMore
             }
 
-            if priortiy == .high || priortiy == .medium {
-                PriorityMessageViewStyle(priorityLevel: priortiy)
+            if priority == .high || priority == .medium {
+                PriorityMessageViewStyle(priorityLevel: priority)
+                    .padding(.bottom,10)
+                    .padding(.leading,10)
+                    .frame(alignment: .leading)
+                    .shadow (
+                        color: cellStyle.cellShadowColor,
+                        radius: cellStyle.cellShadowRadius
+                    )
+            }
+        }
+        .background(cellStyle.cellBackgroundColor)
+        .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
+        .overlay(
+
+            RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
+            .stroke(
+                cellStyle.cellBorderColor,
+                lineWidth: cellStyle.cellBorderWidth
+            )
+            .shadow(
+                color: cellStyle.cellShadowColor,
+                radius: cellStyle.cellShadowRadius
+            )
+        )
+    }
+    @available(iOS 15, *)
+    private var defaultTextiOS15: some View {
+        
+        VStack(alignment: .leading) {
+            Text(attributedText)
+                .fontWeight(cellStyle.textStyle.fontWeight)
+                .lineLimit(showFullText ? nil : 20)
+                .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(cellStyle.textStyle.textColor)
+                .padding(cellStyle.textPadding)
+            
+            if self.computeLineCount(for: text, with: cellStyle) > 20 {
+                showMore
+            }
+
+            if priority == .high || priority == .medium {
+                PriorityMessageViewStyle(priorityLevel: priority)
                     .padding(.bottom,10)
                     .padding(.leading,10)
                     .frame(alignment: .leading)
@@ -120,7 +166,11 @@ internal struct TextCell<Message: ChatMessage>: View {
         var result = AttributedString(attentionName)
         result.foregroundColor = .blue
 
-        return result +  AttributedString(text)
+        return result + self.applyPhoneNumberAttributes(to: text)
+    }
+  @available(iOS 15, *)
+   private var attributedText: AttributedString {
+       return self.applyPhoneNumberAttributes(to: text)
     }
     
     @available(iOS 15, *)
@@ -137,8 +187,8 @@ internal struct TextCell<Message: ChatMessage>: View {
                 showMore
             }
 
-            if priortiy == .high || priortiy == .medium {
-                PriorityMessageViewStyle(priorityLevel: priortiy)
+            if priority == .high || priority == .medium {
+                PriorityMessageViewStyle(priorityLevel: priority)
                     .padding(.bottom,10)
                     .padding(.leading,10)
                     .frame(alignment: .leading)
@@ -164,55 +214,6 @@ internal struct TextCell<Message: ChatMessage>: View {
         )
     }
     
-    private var attributedText: some View {
-        let textStyle = cellStyle.attributedTextStyle
-        
-        let attributes = AZTextFrameAttributes(
-            string: text,
-            width: maxWidth,
-            font: cellStyle.attributedTextStyle.font
-        )
-
-        let textHeight = attributes.calculatedTextHeight()
-        
-        let frame = text.frameSize(maxWidth: maxWidth, maxHeight: nil)
-        let textWidth = frame.width
-        
-        MessageLabel.defaultAttributes[.foregroundColor] = textStyle.textColor
-        MessageLabel.defaultAttributes[.underlineColor] = textStyle.textColor
-        
-        return AttributedTextCell(text: text, width: maxWidth) {
-            
-            $0.enabledDetectors = enabledDetectors
-            $0.didSelectAddress = action.didSelectAddress
-            $0.didSelectDate = action.didSelectDate
-            $0.didSelectPhoneNumber = action.didSelectPhoneNumber
-            $0.didSelectURL = action.didSelectURL
-            $0.didSelectTransitInformation = action.didSelectTransitInformation
-            //            $0.didSelectMention = self.action.didSelectMention
-            //            $0.didSelectHashtag = self.action.didSelectHashtag
-            
-            $0.font = textStyle.font.withWeight(textStyle.fontWeight)
-            $0.textColor = textStyle.textColor
-            $0.textAlignment = message.isSender ? .right : .left
-        }
-        .frame(width: textWidth, height: textHeight)
-        .padding(cellStyle.textPadding)
-        .background(cellStyle.cellBackgroundColor)
-        .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
-        .overlay(
-            RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-            .stroke(
-                cellStyle.cellBorderColor,
-                lineWidth: cellStyle.cellBorderWidth
-            )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
-        )
-    }
-    
     @ViewBuilder public var body: some View {
         if let attentions = attentions, attentions.count > 0 {
             if #available(iOS 15, *) {
@@ -221,8 +222,55 @@ internal struct TextCell<Message: ChatMessage>: View {
                 defaultText
             }
         }else{
-            defaultText
+            if #available(iOS 15, *) {
+                defaultTextiOS15
+            }else{
+                defaultText
+            }
         }
+        
+        
+
     }
-    
+    @available(iOS 15, *)
+    func applyPhoneNumberAttributes(to text: String) -> AttributedString {
+        var modifiedText = AttributedString(text)
+        do {
+            let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
+
+            // Use the AttributedString's string representation for NSDataDetector
+            let plainString = String(text)
+
+            // Find matches for phone numbers in the plain string
+            let matches = detector.matches(in: plainString, options: [], range: NSRange(location: 0, length: plainString.utf16.count))
+
+            for match in matches {
+                guard let range = Range(match.range, in: plainString) else { continue }
+
+                // Apply the attributes to the AttributedString
+                if let attributedRange = modifiedText.range(of: plainString[range]) {
+                    // Set the attributes for the found phone number range
+                    modifiedText[attributedRange].foregroundColor = .blue
+                    modifiedText[attributedRange].underlineColor = .blue
+                    modifiedText[attributedRange].underlineStyle = .single
+
+                    // Set the link attribute
+                    let phoneNumber = String(plainString[range])
+                    if let phoneNumberURL = URL(string: "tel://\(phoneNumber)") {
+                        modifiedText[attributedRange].link = phoneNumberURL
+                    }
+                }
+            }
+        } catch {
+            print("Error creating data detector: \(error.localizedDescription)")
+        }
+        return modifiedText
+    }
+
+
+
+}
+internal struct AttributedTextPhone: Hashable {
+    let string: String
+    let isPhoneNumber: Bool
 }

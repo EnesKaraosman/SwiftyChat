@@ -69,6 +69,16 @@ struct BasicExampleView: View {
                                            messageUUID: UUID().uuidString))
                 self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")!, MessagePriorityLevel(rawValue: -1)!),isSender: false,status: .sent,
                                            messageUUID: UUID().uuidString))
+                
+                
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("hello this is my number 09569051552", nil, .routine),isSender: false,status: .sent,
+                                           messageUUID: UUID().uuidString))
+
+                
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("hello this is my number 09569051552", ["amigo","jett"], .routine),isSender: false,status: .sent,
+                                           messageUUID: UUID().uuidString))
+
+                
 
                 self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("""
 

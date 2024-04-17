@@ -29,7 +29,7 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 attentions: attentions,
                 message: message,
                 size: size,
-                priortiy: priorityLevel,
+                priority: priorityLevel,
                 callback: onTextTappedCallback
             )
             
