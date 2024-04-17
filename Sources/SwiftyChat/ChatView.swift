@@ -54,26 +54,26 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .bottom) {
-      
+                
                 chatView(in: geometry)
                     .onTapGesture {
                         dismissKeyboard()
                     }
                 inputView()
-                         .onPreferenceChange(ContentSizeThatFitsKey.self) {
-                             contentSizeThatFits = $0
-                         }
-                         .frame(height: messageEditorHeight)
-                         .padding(.bottom, 12)
-                     
-                     PIPVideoCell<Message>()
-                 }
-                 .iOS { $0.keyboardAwarePadding() }
-             }
-             .environmentObject(DeviceOrientationInfo())
-             .environmentObject(VideoManager<Message>())
-             .edgesIgnoringSafeArea(.bottom)
-           //  .iOS { $0.dismissKeyboardOnTappingOutside() }
+                    .onPreferenceChange(ContentSizeThatFitsKey.self) {
+                        contentSizeThatFits = $0
+                    }
+                    .frame(height: messageEditorHeight)
+                    .padding(.bottom, 12)
+                
+                PIPVideoCell<Message>()
+            }
+            .iOSOnlyModifier{ $0.keyboardAwarePadding() }
+        }
+        .environmentObject(DeviceOrientationInfo())
+        .environmentObject(VideoManager<Message>())
+        .edgesIgnoringSafeArea(.bottom)
+        //  .iOS { $0.dismissKeyboardOnTappingOutside() }
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
@@ -187,7 +187,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             print("scrollTo to specific valud")
                         }
                     }
-                    .iOS {
+                    .iOSOnlyModifier {
                         // Auto Scroll with Keyboard Notification
                         $0.onReceive(
                             NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
@@ -289,7 +289,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             print("scrollTo to specific valud")
                         }
                     }
-                    .iOS {
+                    .iOSOnlyModifier {
                         // Auto Scroll with Keyboard Notification
                         $0.onReceive(
                             NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
