@@ -13,7 +13,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     @Binding private var messages: [Message]
     private var inputView: () -> AnyView
-
+    
     private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
     private var onMessageCellLongPressed: (Message) -> Void = { msg in print(msg.messageKind) }
     private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
@@ -28,7 +28,8 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: ((_ lastDate : Date) -> Void)?
     private var tappedResendAction : (Message) -> Void
-
+    private var didDismissKeyboard : () -> Void
+    
     private var inverted : Bool
     
     @Binding private var scrollTo: UUID?
@@ -36,10 +37,10 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @Binding private var hasMore: Bool
     @Binding private var isFetching: Bool
     @State private var isKeyboardActive = false
-    
     @State private var contentSizeThatFits: CGSize = .zero
     @Binding private var additionalHeight : CGFloat
-
+    
+    
     private var messageEditorHeight: CGFloat {
         min(
             contentSizeThatFits.height,
@@ -50,6 +51,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     private func dismissKeyboard(){
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            for window in windowScene.windows {
+                window.endEditing(true)
+            }
+        }
+        self.didDismissKeyboard()
     }
     public var body: some View {
         GeometryReader { geometry in
@@ -73,139 +80,151 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .environmentObject(DeviceOrientationInfo())
         .environmentObject(VideoManager<Message>())
         .edgesIgnoringSafeArea(.bottom)
-        //  .iOS { $0.dismissKeyboardOnTappingOutside() }
+        //  .iOSOnlyModifier { $0.dismissKeyboardOnTappingOutside() }
     }
     
     @ViewBuilder private func chatView(in geometry: GeometryProxy) -> some View {
-
+        
         if inverted {
             ScrollView(.vertical, showsIndicators: false) {
-                ScrollViewReader { proxy in
-                    LazyVStack {
-                        ForEach(messages) { message in
+                    ScrollViewReader { proxy in
+                        LazyVStack {
+                            ForEach(messages) { message in
+                                Group {
+                                    
+                                    switch message.messageKind {
+                                    case .systemMessage(let text):
+                                        SystemMessageCell(text: text,message:message)
+                                            .onAppear {
+                                                let total = self.messages.count
+                                                let lastItem : Message!
+                                                if total >= 5 {
+                                                    lastItem = self.messages[total - 5]
+                                                }else{
+                                                    lastItem = self.messages.last
+                                                }
+                                                if message.id == lastItem.id {
+                                                    if let lastMessage = self.messages.last{
+                                                        self.reachedTop?(lastMessage.date)
+                                                    }
+                                                }
+                                            }
+                                    default:
+                                        let showDateheader = shouldShowDateHeader(
+                                            messages: messages,
+                                            thisMessage: message
+                                        )
+                                        let shouldShowDisplayName = shouldShowDisplayName(
+                                            messages: messages,
+                                            thisMessage: message,
+                                            dateHeaderShown: showDateheader
+                                        )
+                                        ChatNameAndTime(message: message, tappedResendAction: self.tappedResendAction)
+                                        chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
+                                            .id(message.id)
+                                            .onAppear {
+                                                let total = self.messages.count
+                                                let lastItem : Message!
+                                                if total >= 5 {
+                                                    lastItem = self.messages[total - 5]
+                                                }else{
+                                                    lastItem = self.messages.last
+                                                }
+                                                if message.id == lastItem.id {
+                                                    if let lastMessage = self.messages.last{
+                                                        self.reachedTop?(lastMessage.date)
+                                                    }
+                                                }
+                                            }
+                                        
+                                        if showDateheader {
+                                            Text(dateFormater.string(from: message.date))
+                                                .font(.subheadline)
+                                        }
+                                        
+                                        if shouldShowDisplayName {
+                                            Text(message.user.userName)
+                                                .font(.caption)
+                                                .multilineTextAlignment(.trailing)
+                                                .frame(
+                                                    maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
+                                                    minHeight: 1,
+                                                    alignment: message.isSender ? .trailing: .leading
+                                                )
+                                        }
+                                    }
+                                    
+                                    if (message.id == self.messages.last!.id) && isFetching {
+                                        ProgressView()
+                                            .padding()
+                                        
+                                    }
+                                    
+                                }
+                                .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
+                                
+                            }
+                            
+                            
                             Group {
-                                
-                                switch message.messageKind {
-                                case .systemMessage(let text):
-                                    SystemMessageCell(text: text,message:message)
-                                        .onAppear {
-                                            let total = self.messages.count
-                                            let lastItem : Message!
-                                            if total >= 5 {
-                                                lastItem = self.messages[total - 5]
-                                            }else{
-                                                lastItem = self.messages.last
-                                            }
-                                            if message.id == lastItem.id {
-                                                if let lastMessage = self.messages.last{
-                                                    self.reachedTop?(lastMessage.date)
-                                                }
-                                            }
-                                        }
-                                default:
-                                    let showDateheader = shouldShowDateHeader(
-                                        messages: messages,
-                                        thisMessage: message
-                                    )
-                                    let shouldShowDisplayName = shouldShowDisplayName(
-                                        messages: messages,
-                                        thisMessage: message,
-                                        dateHeaderShown: showDateheader
-                                    )
-                                    ChatNameAndTime(message: message, tappedResendAction: self.tappedResendAction)
-                                    chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
-                                        .id(message.id)
-                                        .onAppear {
-                                            let total = self.messages.count
-                                            let lastItem : Message!
-                                            if total >= 5 {
-                                                lastItem = self.messages[total - 5]
-                                            }else{
-                                                lastItem = self.messages.last
-                                            }
-                                            if message.id == lastItem.id {
-                                                if let lastMessage = self.messages.last{
-                                                    self.reachedTop?(lastMessage.date)
-                                                }
-                                            }
-                                        }
-                                    
-                                    if showDateheader {
-                                        Text(dateFormater.string(from: message.date))
-                                            .font(.subheadline)
-                                    }
-                                    
-                                    if shouldShowDisplayName {
-                                        Text(message.user.userName)
-                                            .font(.caption)
-                                            .multilineTextAlignment(.trailing)
-                                            .frame(
-                                                maxWidth: geometry.size.width * (UIDevice.isLandscape ? 0.6 : 0.75),
-                                                minHeight: 1,
-                                                alignment: message.isSender ? .trailing: .leading
-                                            )
+                                if messages.count == 0 && isFetching {
+                                    Spacer(minLength: geometry.size.height / 2)
+                                    VStack(alignment: .center) {
+                                        ProgressView()
+                                            .padding()
+                                        Text("Fetching Messages")
                                     }
                                 }
-                       
-                                if (message.id == self.messages.last!.id) && isFetching {
-                                    ProgressView()
-                                        .padding()
-
-                                }
-                                
                             }
                             .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
-                            
                         }
+                        .background(
+                            GeometryReader {
+                                Color.clear.preference(key: ViewOffsetKey.self, value: -$0.frame(in: .named("scroll")).origin.y)
+                            }
+                        )
+                        .onPreferenceChange(ViewOffsetKey.self) { _ in
+                            if isKeyboardActive {
+                                self.dismissKeyboard()
+                            }
+                        }
+                        .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
+                        .onChange(of: scrollToBottom) { value in
+                            if value {
+                                withAnimation {
+                                    proxy.scrollTo("bottom")
+                                }
+                                scrollToBottom = false
+                            }
+                        }
+                        .onChange(of: scrollTo) { value in
+                            if let value = value {
+                                proxy.scrollTo(value, anchor: .bottom)
+                                scrollTo = nil
+                                print("scrollTo to specific valud")
+                            }
+                        }
+                        .iOSOnlyModifier {
+                            // Auto Scroll with Keyboard Notification
+                            $0.onReceive(
+                                NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+                                    .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
+                                perform: { _ in
+                                    if !isKeyboardActive {
+                                        isKeyboardActive = true
+                                        scrollToBottom = true
+                                    }
+                                }
+                            )
+                            .onReceive(
+                                NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
+                                perform: { _ in isKeyboardActive = false }
+                            )
+                        }
+                    }
                    
-                        
-                        Group {
-                            if messages.count == 0 && isFetching {
-                                Spacer(minLength: geometry.size.height / 2)
-                                VStack(alignment: .center) {
-                                    ProgressView()
-                                        .padding()
-                                    Text("Fetching Messages")
-                                }
-                            }
-                        }
-                        .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
-                    }
-                    .padding(EdgeInsets(top: inset.top, leading: inset.leading, bottom: 0, trailing: inset.trailing))
-                    .onChange(of: scrollToBottom) { value in
-                        if value {
-                            withAnimation { 
-                                proxy.scrollTo("bottom")
-                            }
-                            scrollToBottom = false
-                        }
-                    }
-                    .onChange(of: scrollTo) { value in
-                        if let value = value {
-                            proxy.scrollTo(value, anchor: .bottom)
-                            scrollTo = nil
-                            print("scrollTo to specific valud")
-                        }
-                    }
-                    .iOSOnlyModifier {
-                        // Auto Scroll with Keyboard Notification
-                        $0.onReceive(
-                            NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-                                .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
-                            perform: { _ in
-                                if !isKeyboardActive {
-                                    isKeyboardActive = true
-                                    scrollToBottom = true
-                                }
-                            }
-                        )
-                        .onReceive(
-                            NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
-                            perform: { _ in isKeyboardActive = false }
-                        )
-                    }
-                }
             }
+            .coordinateSpace(name: "scroll")
             .background(Color.clear)
             .padding(.top, messageEditorHeight + 30)
             .rotationEffect(Angle(degrees: 180)).scaleEffect(x:  -1.0, y: 1.0, anchor: .center)
@@ -252,7 +271,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     if message.id == lastItem.id {
                                         if let lastMessage = self.messages.last{
                                             self.reachedTop?(lastMessage.date)
-
+                                            
                                         }
                                     }
                                 }
@@ -289,33 +308,22 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             print("scrollTo to specific valud")
                         }
                     }
-                    .iOSOnlyModifier {
-                        // Auto Scroll with Keyboard Notification
-                        $0.onReceive(
-                            NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-                                .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
-                            perform: { _ in
-                                if !isKeyboardActive {
-                                    isKeyboardActive = true
-                                    scrollToBottom = true
-                                }
-                            }
-                        )
-                        .onReceive(
-                            NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification),
-                            perform: { _ in isKeyboardActive = false }
-                        )
-                    }
                 }
             }
             .background(Color.clear)
             .padding(.bottom, messageEditorHeight + 30)
         }
-
+        
     }
-    
 }
 
+struct ViewOffsetKey: PreferenceKey {
+    typealias Value = CGFloat
+    static var defaultValue = CGFloat.zero
+    static func reduce(value: inout Value, nextValue: () -> Value) {
+        value += nextValue()
+    }
+}
 internal extension ChatView {
     // MARK: - List Item
     private func chatMessageCellContainer(
@@ -402,20 +410,22 @@ public extension ChatView {
     ///                                 Also only shows avatar for first message in chain.
     ///                                 (disabled by default)
     ///   - inputView: inputView view to provide message
-    ///   
+    ///
     init(additionalHeight : Binding<CGFloat> = .constant(0.0),
-        isFetching : Binding<Bool> = .constant(false),
-        inverted : Bool = false,
-        messages: Binding<[Message]>,
-        scrollToBottom: Binding<Bool> = .constant(false),
-        hasMore : Binding<Bool> = .constant(false),
-        scrollTo: Binding<UUID?> = .constant(nil),
-        dateHeaderTimeInterval: TimeInterval = 3600,
-        shouldShowGroupChatHeaders: Bool = false,
-        inputView: @escaping () -> AnyView,
-        inset: EdgeInsets = .init(),
-        reachedTop: ((_ lastDate : Date) -> Void)? = nil,
-        tappedResendAction : @escaping (Message) -> Void
+         isFetching : Binding<Bool> = .constant(false),
+         inverted : Bool = false,
+         messages: Binding<[Message]>,
+         scrollToBottom: Binding<Bool> = .constant(false),
+         hasMore : Binding<Bool> = .constant(false),
+         scrollTo: Binding<UUID?> = .constant(nil),
+         dateHeaderTimeInterval: TimeInterval = 3600,
+         shouldShowGroupChatHeaders: Bool = false,
+         inputView: @escaping () -> AnyView,
+         inset: EdgeInsets = .init(),
+         reachedTop: ((_ lastDate : Date) -> Void)? = nil,
+         tappedResendAction : @escaping (Message) -> Void,
+         didDismissKeyboard :@escaping () -> Void
+         
     ) {
         self._additionalHeight = additionalHeight
         _messages = messages
@@ -430,6 +440,7 @@ public extension ChatView {
         self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
         self.reachedTop = reachedTop
         self.tappedResendAction = tappedResendAction
+        self.didDismissKeyboard = didDismissKeyboard
         _scrollTo = scrollTo
         _hasMore = hasMore
         self.inverted = inverted

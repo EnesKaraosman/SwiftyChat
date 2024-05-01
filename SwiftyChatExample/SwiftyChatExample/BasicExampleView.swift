@@ -30,7 +30,7 @@ public struct Reply : ReplyItem {
 }
 struct BasicExampleView: View {
     
-    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 1)
+    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 100)
     
     // MARK: - InputBarView variables
     @State private var message = ""
@@ -216,6 +216,9 @@ Fusce sodales eget sem et venenatis. Nam consequat lorem quis diam pharetra iacu
             
         }tappedResendAction: { message in
             print("resend tapped message ",message.messageKind.description)
+        
+        }didDismissKeyboard: {
+            
         }
         .onMessageCellLongpressed({ message in
             print(  message.messageKind.description)
