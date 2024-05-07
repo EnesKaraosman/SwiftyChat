@@ -46,7 +46,7 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size,
-                            priortiy: .medium
+                            priortiy: .attention
                         )
                         .highPriorityGesture(
                             TapGesture()
@@ -61,7 +61,7 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size,
-                            priortiy: .high
+                            priortiy: .attention
                         )
                         .highPriorityGesture(
                             TapGesture()
@@ -77,7 +77,7 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size, 
-                            priortiy: .medium
+                            priortiy: .attention
                         )
                         .highPriorityGesture(
                             TapGesture()
