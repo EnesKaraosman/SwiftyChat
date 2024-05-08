@@ -14,7 +14,9 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
     public let media: VideoItem
     public let message: Message
     public let size: CGSize
-    public let priortiy: MessagePriorityLevel
+    public let priority: MessagePriorityLevel
+    public let actionStatus: ActionItemStatus?
+    public let didTappedViewTask : (Message) -> Void
 
     @EnvironmentObject var style: ChatMessageCellStyle
     @EnvironmentObject var videoManager: VideoManager<Message>
@@ -53,15 +55,34 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
                 width: imageWidth,
                 height: imageWidth / cellStyle.cellAspectRatio
             )
-            if priortiy == .high || priortiy == .medium {
-                PriorityMessageViewStyle(priorityLevel: priortiy)
-                    .padding(.bottom,10)
-                    .padding(.leading,10)
-                    .frame(alignment: .leading)
-                    .shadow (
-                        color: cellStyle.cellShadowColor,
-                        radius: cellStyle.cellShadowRadius
-                    )
+            HStack(){
+                if priority == .high || priority == .medium {
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                }
+                
+                if let status = actionStatus {
+                    Spacer()
+                    TaskMessageViewSytle(status: status)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .trailing)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                        .onTapGesture(perform: {
+                            self.didTappedViewTask(self.message)
+                        })
+                }
             }
         }
         .clipped()

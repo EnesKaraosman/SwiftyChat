@@ -18,19 +18,22 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
     public let onTextTappedCallback: () -> AttributedTextTappedCallback
     public let onCarouselItemAction: (CarouselItemButton, Message) -> Void
     public let didTappedMedia: (String) -> Void
+    public let didTappedViewTask: (Message) -> Void
 
     @ViewBuilder private func messageCell() -> some View {
         
         switch message.messageKind {
             
-        case .text(let text, let attentions, let priorityLevel):
+        case .text(let text, let attentions, let priorityLevel, let actionStatus):
             TextCell(
                 text: text,
                 attentions: attentions,
                 message: message,
                 size: size,
                 priority: priorityLevel,
-                callback: onTextTappedCallback
+                actionStatus:actionStatus,
+                callback: onTextTappedCallback,
+                didTappedViewTask: didTappedViewTask
             )
             
         case .location(let location):
@@ -40,22 +43,26 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 size: size
             )
             
-        case .imageText(let imageLoadingType, let text, let attentions, let priorityLevel):
+        case .imageText(let imageLoadingType, let text, let attentions, let priorityLevel, let actionStatus):
             ImageTextCell(
                 message: message,
                 attentions: attentions,
                 imageLoadingType: imageLoadingType,
                 text: text,
                 size: size,
-                priortiy:priorityLevel
+                priority:priorityLevel,
+                actionStatus:actionStatus,
+                didTappedViewTask : didTappedViewTask
             )
             
-        case .image(let imageLoadingType, let priorityLevel):
+        case .image(let imageLoadingType, let priorityLevel, let actionStatus):
             ImageCell(
                 message: message,
                 imageLoadingType: imageLoadingType,
                 size: size,
-                priortiy: priorityLevel
+                priority: priorityLevel,
+                actionStatus: actionStatus,
+                didTappedViewTask : didTappedViewTask
             )
             
         case .contact(let contact):
@@ -80,12 +87,14 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
                 onCarouselItemAction: onCarouselItemAction
             )
             
-        case .video(let videoItem, let priorityLevel):
+        case .video(let videoItem, let priorityLevel, let actionStatus):
             VideoPlaceholderCell(
                 media: videoItem,
                 message: message,
                 size: size,
-                priortiy: priorityLevel
+                priority: priorityLevel,
+                actionStatus : actionStatus,
+                didTappedViewTask : didTappedViewTask
             )
             
         case .loading:
@@ -93,31 +102,38 @@ internal struct ChatMessageCellContainer<Message: ChatMessage>: View {
         case .systemMessage(let text):
             SystemMessageCell(text: text,message: message)
         
-        case .videoText(let videoItem, let text, let attentions, let priorityLevel):
+        case .videoText(let videoItem, let text, let attentions, let priorityLevel, let actionStatus):
             SystemMessageCell(text: text,message: message)
             
-        case .reply(let reply, let replies, let priorityLevel):
+        case .reply(let reply, let replies, let priorityLevel, let actionStatus):
             ReplyCell(message: message,
                       replies: replies,
                       reply: reply,
                       size: size,
-                      priortiy: priorityLevel, didTappedMedia: didTappedMedia)
+                      priority: priorityLevel,
+                      actionStatus : actionStatus,
+                      didTappedMedia: didTappedMedia,
+                      didTappedViewTask : didTappedViewTask)
         
-        case .pdf(let image, let text, let attentions, let pdfURL, let priorityLevel):
+        case .pdf(let image, let text, let attentions, let pdfURL, let priorityLevel, let actionStatus):
             PdfTextCell(message: message,
                         attentions: attentions,
                         imageLoadingType: image,
                         pdfURL: pdfURL,
                         text: text,
                         size: size,
-                        priortiy: priorityLevel)
+                        priority: priorityLevel,
+                        actionStatus : actionStatus,
+                        didTappedViewTask : didTappedViewTask)
             
-        case .audio(let url, let priorityLevel):
+        case .audio(let url, let priorityLevel, let actionStatus):
             
            AudioCell(message: message,
                      audioURL: url,
                      size: size,
-                     priortiy: priorityLevel)
+                     priority: priorityLevel,
+                     actionStatus:actionStatus,
+                     didTappedViewTask:didTappedViewTask)
 
         }
         

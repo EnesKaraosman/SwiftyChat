@@ -31,13 +31,13 @@ public struct MockMessages {
         
         private var messageKind: ChatMessageKind {
             switch self {
-            case .Text: return .text("",nil, MessagePriorityLevel(rawValue: -1)!)
-            case .Image: return .image(.remote(URL(string: "")!), MessagePriorityLevel(rawValue: -1)!)
+            case .Text: return .text("",nil, MessagePriorityLevel(rawValue: -1)!, nil)
+            case .Image: return .image(.remote(URL(string: "")!), MessagePriorityLevel(rawValue: -1)!, nil)
             case .Location: return .location(LocationRow(latitude: .nan, longitude: .nan))
             case .Contact: return .contact(ContactRow(displayName: ""))
             case .QuickReply: return .quickReply([])
             case .Carousel: return .carousel([CarouselRow(title: "", imageURL: nil, subtitle: "", buttons: [])])
-            case .Video: return .video(VideoRow(url: URL(string: "")!, placeholderImage: .remote(URL(string: "")!), pictureInPicturePlayingMessage: ""), MessagePriorityLevel(rawValue: -1)!)
+            case .Video: return .video(VideoRow(url: URL(string: "")!, placeholderImage: .remote(URL(string: "")!), pictureInPicturePlayingMessage: ""), MessagePriorityLevel(rawValue: -1)!, nil)
             }
         }
     }
@@ -170,7 +170,7 @@ public struct MockMessages {
             guard let url = URL(string: "https://picsum.photos/id/\(Int.random(in: 1...100))/400/300") else { fallthrough }
             return ChatMessageItem(
                 user: randomUser,
-                messageKind: .image(.remote(url), MessagePriorityLevel(rawValue: -1)!),
+                messageKind: .image(.remote(url), MessagePriorityLevel(rawValue: -1)!, nil),
                 isSender: randomUser == Self.sender,
                 messageUUID: UUID().uuidString
             )
@@ -178,7 +178,7 @@ public struct MockMessages {
         case .Text:
             return ChatMessageItem(
                 user: randomUser,
-                messageKind: .text(Lorem.sentence(),nil, .high),
+                messageKind: .text(Lorem.sentence(),nil, .high, nil),
                 isSender: randomUser == Self.sender,
                 messageUUID: UUID().uuidString
             )
@@ -254,7 +254,7 @@ public struct MockMessages {
             )
             return ChatMessageItem(
                 user: randomUser,
-                messageKind: .video(videoItem, MessagePriorityLevel(rawValue: -1)!),
+                messageKind: .video(videoItem, MessagePriorityLevel(rawValue: -1)!, nil),
                 isSender: randomUser == Self.sender,
                 messageUUID: UUID().uuidString
             )

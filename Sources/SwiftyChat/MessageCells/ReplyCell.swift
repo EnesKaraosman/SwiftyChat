@@ -13,8 +13,10 @@ internal struct ReplyCell<Message: ChatMessage>: View {
     public let replies : [any ReplyItem]
     public let reply : any ReplyItem
     public let size: CGSize
-    public let priortiy: MessagePriorityLevel
+    public let priority: MessagePriorityLevel
+    public let actionStatus: ActionItemStatus?
     public let didTappedMedia: ((String) -> Void)
+    public let didTappedViewTask : (Message) -> Void
 
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
@@ -29,7 +31,7 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                 VStack(alignment: message.isSender ? .trailing : .leading,spacing: 0) {
                     ForEach(replies, id: \.id) { item in
                         
-                        ReplyItemCell(reply: item, message: message, size: size, priortiy: priortiy, didTappedMedia: didTappedMedia)
+                        ReplyItemCell(reply: item, message: message, size: size, priority: priority, didTappedMedia: didTappedMedia)
                             .padding(.bottom)
                             .overlay (
                                 VStack {
@@ -46,7 +48,11 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size,
-                            priortiy: .attention
+                            priority: .attention,
+                            actionStatus:nil,
+                            didTappedViewTask: {_ in
+                                
+                            }
                         )
                         .highPriorityGesture(
                             TapGesture()
@@ -61,7 +67,11 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size,
-                            priortiy: .attention
+                            priority: .attention,
+                            actionStatus:nil,
+                            didTappedViewTask: {_ in
+                                
+                            }
                         )
                         .highPriorityGesture(
                             TapGesture()
@@ -77,7 +87,10 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             message: message,
                             imageLoadingType: ImageLoadingKind.remote(URL(string: reply.thumbnailURL!)!),
                             size: size, 
-                            priortiy: .attention
+                            priority: .attention,
+                            actionStatus:nil,
+                            didTappedViewTask: {_ in
+                            }
                         )
                         .highPriorityGesture(
                             TapGesture()
@@ -100,15 +113,34 @@ internal struct ReplyCell<Message: ChatMessage>: View {
                             .padding(.top,10)
 
                     }
-                    if priortiy == .high || priortiy == .medium {
-                        PriorityMessageViewStyle(priorityLevel: priortiy)
-                            .padding(.bottom,10)
-                            .padding(.leading,10)
-                            .frame(alignment: .leading)
-                            .shadow (
-                                color: cellStyle.cellShadowColor,
-                                radius: cellStyle.cellShadowRadius
-                            )
+                    HStack(){
+                        if priority == .high || priority == .medium {
+                            PriorityMessageViewStyle(priorityLevel: priority)
+                                .padding(.bottom,10)
+                                .padding(.trailing,10)
+                                .padding(.leading,10)
+                                .frame(alignment: .leading)
+                                .shadow (
+                                    color: cellStyle.cellShadowColor,
+                                    radius: cellStyle.cellShadowRadius
+                                )
+                        }
+                        
+                        if let status = actionStatus {
+                            Spacer()
+                            TaskMessageViewSytle(status: status)
+                                .padding(.bottom,10)
+                                .padding(.trailing,10)
+                                .padding(.leading,10)
+                                .frame(alignment: .trailing)
+                                .shadow (
+                                    color: cellStyle.cellShadowColor,
+                                    radius: cellStyle.cellShadowRadius
+                                )
+                                .onTapGesture(perform: {
+                                    self.didTappedViewTask(self.message)
+                                })
+                        }
                     }
                 }
 

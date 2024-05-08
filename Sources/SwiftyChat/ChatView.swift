@@ -22,6 +22,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var onAttributedTextTappedCallback: () -> AttributedTextTappedCallback = { return AttributedTextTappedCallback() }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     private var didTappedMedia: (String) -> Void = { (_) in }
+    private var didTappedViewTask: (Message) -> Void = { (_) in }
     private var inset: EdgeInsets
     private var dateFormater: DateFormatter = DateFormatter()
     private var dateHeaderTimeInterval: TimeInterval
@@ -338,7 +339,8 @@ internal extension ChatView {
             contactFooterSection: contactCellFooterSection,
             onTextTappedCallback: onAttributedTextTappedCallback,
             onCarouselItemAction: onCarouselItemAction,
-            didTappedMedia: didTappedMedia
+            didTappedMedia: didTappedMedia,
+            didTappedViewTask: didTappedViewTask
         )
         .onTapGesture { onMessageCellTapped(message) }
         .onLongPressGesture(minimumDuration: 0.2) {
@@ -484,5 +486,9 @@ public extension ChatView {
     
     func didTappedMedia(_ action: @escaping (String) -> Void) -> Self {
         then({ $0.didTappedMedia = action })
+    }
+    
+    func didTappedViewTask(_ action: @escaping (Message) -> Void) -> Self {
+        then({ $0.didTappedViewTask = action })
     }
 }

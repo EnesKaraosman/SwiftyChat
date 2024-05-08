@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct PriorityMessageViewStyle: View {
     public var priorityLevel : MessagePriorityLevel
-    private let fontSize = 8.5
+    private let fontSize = 12.0
     // Public initializer
     public init(priorityLevel: MessagePriorityLevel) {
         self.priorityLevel = priorityLevel
@@ -26,6 +26,7 @@ public struct PriorityMessageViewStyle: View {
 
             }else{
                 Image(systemName: priorityLevel.logo)
+                    .foregroundColor(priorityLevel.foregroundColor)
                     .font(.system(size: fontSize))
 
             }
@@ -34,8 +35,7 @@ public struct PriorityMessageViewStyle: View {
                  .foregroundColor(priorityLevel.foregroundColor)
                  .font(.system(size: fontSize))
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 6)
+        .padding()
         .background(Color(hex: "f8f9fc"))
         .clipShape(Capsule())
 

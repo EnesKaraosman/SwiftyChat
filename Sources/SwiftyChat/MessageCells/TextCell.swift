@@ -15,8 +15,9 @@ internal struct TextCell<Message: ChatMessage>: View {
     public let message: Message
     public let size: CGSize
     public let priority: MessagePriorityLevel
+    public let actionStatus: ActionItemStatus?
     public let callback: () -> AttributedTextTappedCallback
-    
+    public let didTappedViewTask : (Message) -> Void
     @State private var showFullText = false
 
     @EnvironmentObject var style: ChatMessageCellStyle
@@ -73,17 +74,39 @@ internal struct TextCell<Message: ChatMessage>: View {
             if self.computeLineCount(for: text, with: cellStyle) > 20 {
                 showMore
             }
-
-            if priority == .high || priority == .medium {
-                PriorityMessageViewStyle(priorityLevel: priority)
-                    .padding(.bottom,10)
-                    .padding(.leading,10)
-                    .frame(alignment: .leading)
-                    .shadow (
-                        color: cellStyle.cellShadowColor,
-                        radius: cellStyle.cellShadowRadius
-                    )
+            
+            HStack(){
+                if priority == .high || priority == .medium {
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                }
+               
+                if let status = actionStatus {
+                    Spacer()
+                    TaskMessageViewSytle(status: status)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .trailing)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                        .onTapGesture(perform: {
+                            self.didTappedViewTask(self.message)
+                        })
+                }
             }
+            
+
+
         }
         .background(cellStyle.cellBackgroundColor)
         .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
@@ -116,16 +139,37 @@ internal struct TextCell<Message: ChatMessage>: View {
                 showMore
             }
 
-            if priority == .high || priority == .medium {
-                PriorityMessageViewStyle(priorityLevel: priority)
-                    .padding(.bottom,10)
-                    .padding(.leading,10)
-                    .frame(alignment: .leading)
-                    .shadow (
-                        color: cellStyle.cellShadowColor,
-                        radius: cellStyle.cellShadowRadius
-                    )
+            
+            HStack(){
+                if priority == .high || priority == .medium {
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                }
+                
+                if let status = actionStatus {
+                    Spacer()
+                    TaskMessageViewSytle(status: status)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .trailing)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                        .onTapGesture(perform: {
+                            self.didTappedViewTask(self.message)
+                        })
+                }
             }
+            
         }
         .background(cellStyle.cellBackgroundColor)
         .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
@@ -187,16 +231,37 @@ internal struct TextCell<Message: ChatMessage>: View {
                 showMore
             }
 
-            if priority == .high || priority == .medium {
-                PriorityMessageViewStyle(priorityLevel: priority)
-                    .padding(.bottom,10)
-                    .padding(.leading,10)
-                    .frame(alignment: .leading)
-                    .shadow (
-                        color: cellStyle.cellShadowColor,
-                        radius: cellStyle.cellShadowRadius
-                    )
+            
+            HStack(){
+                if priority == .high || priority == .medium {
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                }
+                
+                if let status = actionStatus {
+                    Spacer()
+                    TaskMessageViewSytle(status: status)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .trailing)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                        .onTapGesture(perform: {
+                            self.didTappedViewTask(self.message)
+                        })
+                }
             }
+            
         }
         .background(cellStyle.cellBackgroundColor)
         .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))

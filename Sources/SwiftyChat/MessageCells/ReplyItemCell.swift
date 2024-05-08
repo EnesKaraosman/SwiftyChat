@@ -12,7 +12,7 @@ struct ReplyItemCell<Message: ChatMessage>: View {
     public let reply : any ReplyItem
     public let message: Message
     public let size: CGSize
-    public let priortiy: MessagePriorityLevel
+    public let priority: MessagePriorityLevel
 
     public let didTappedMedia: ((String) -> Void)
     private var cellStyle: TextCellStyle {
@@ -110,14 +110,23 @@ struct ReplyItemCell<Message: ChatMessage>: View {
                                       message: message,
                                       imageLoadingType: ImageLoadingKind.remote(URL(string: thumbnailURL)!),
                                       size: size,
-                                      priortiy: priortiy
+                                      priority: priority,
+                                      actionStatus:nil,
+                                      didTappedViewTask: {_ in
+                                          
+                                      }
                                   )
+                    
                               }else if let photo = UIImage(systemName: "photo"){
                                   ImageCell(
                                       message: message,
                                       imageLoadingType: ImageLoadingKind.local(photo),
                                       size: size,
-                                      priortiy: priortiy
+                                      priority: priority,
+                                      actionStatus:nil,
+                                      didTappedViewTask: {_ in
+                                          
+                                      }
                                   )
                               }
                 Text(reply.date)

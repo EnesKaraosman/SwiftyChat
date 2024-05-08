@@ -78,7 +78,10 @@ internal struct ImageCell<Message: ChatMessage>: View {
     public let message: Message
     public let imageLoadingType: ImageLoadingKind
     public let size: CGSize
-    public let priortiy: MessagePriorityLevel
+    public let priority: MessagePriorityLevel
+    public let actionStatus: ActionItemStatus?
+    public let didTappedViewTask : (Message) -> Void
+    
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var imageWidth: CGFloat {
@@ -110,12 +113,35 @@ internal struct ImageCell<Message: ChatMessage>: View {
     @ViewBuilder public var body: some View {
         VStack(alignment: .leading) {
             imageView
-            if priortiy == .high || priortiy == .medium {
-                PriorityMessageViewStyle(priorityLevel: priortiy)
-                    .padding(.bottom,10)
-                    .padding(.leading,10)
-                    .frame(alignment: .leading)
+            HStack(){
+                if priority == .high || priority == .medium {
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.leading,10)
+                        .padding(.trailing,10)
 
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                }
+                
+                if let status = actionStatus {
+                    Spacer()
+                    TaskMessageViewSytle(status: status)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .trailing)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                        .onTapGesture(perform: {
+                            self.didTappedViewTask(self.message)
+                        })
+                }
             }
         }
         .background(cellStyle.cellBackgroundColor)

@@ -40,45 +40,51 @@ struct BasicExampleView: View {
     var body: some View {
         chatView
             .onAppear {
-                let reply = Reply(fileType: .text, displayName: "Amigo Reyes", thumbnailURL: nil, fileURL: nil, text: "my sample reply", date: "Feb 15, 2023, 6:05 PM")
-//                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text: "my 1", date: "Feb 15, 2023, 6:05 PM"),
-//                               Reply(fileType: .text, displayName: "Amigo 2", thumbnailURL: nil, fileURL: nil, text: "my 2", date: "Feb 10, 2023, 6:05 PM"),
-//                               Reply(fileType: .text, displayName: "Amigo 3", thumbnailURL: nil, fileURL: nil, text: "my 3", date: "Feb 12, 2023, 6:05 PM")]
-//                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
-//                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text: Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
-//                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
-//                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "hello", date: "Feb 15, 2023, 6:05 PM")]
-                
-                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "hello", date: "Feb 15, 2023, 6:05 PM")]
-                let repliesImage = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "1", date: "Feb 15, 2023, 6:05 PM"),
-                                    Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "2", date: "Feb 15, 2023, 6:05 PM"),
-                                    Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "3", date: "Feb 15, 2023, 6:05 PM"),
-                                    Reply(fileType: .image, displayName: "Amigo 1", thumbnailURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", fileURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", text:  nil, date: "Feb 15, 2023, 6:05 PM")]
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies, MessagePriorityLevel(rawValue: -1)!),
-                                           messageUUID: UUID().uuidString))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, repliesImage, MessagePriorityLevel(rawValue: -1)!),isSender: true,
-                                           messageUUID: UUID().uuidString))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies, MessagePriorityLevel(rawValue: -1)!),isSender: true,status: .sending,
-                                           messageUUID: UUID().uuidString))
-                let placeHolder = ImageLoadingKind.local (UIImage(systemName: "video")!)
-                let videItem = TestVideo(url: URL(string: "https://medchat.s3.amazonaws.com/0ad14146-690c-4a92-9341-b8fd5b226b1bD67F6B53-12E3-4AA9-9EF7-3991D33D914E.mov")!, placeholderImage: placeHolder, pictureInPicturePlayingMessage: "Video")
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .video(videItem, MessagePriorityLevel(rawValue: -1)!),isSender: true,status: .sent,
-                                           messageUUID: UUID().uuidString))
-                
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://medchat.s3.amazonaws.com/7a865af9-1dc8-46e7-baa8-61a64d3b48fdrecorded-audio.mp3")!, MessagePriorityLevel(rawValue: -1)!),isSender: true,status: .sent,
-                                           messageUUID: UUID().uuidString))
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")!, MessagePriorityLevel(rawValue: -1)!),isSender: false,status: .sent,
-                                           messageUUID: UUID().uuidString))
-                
-                
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("hello this is my number 09569051552", nil, .routine),isSender: false,status: .sent,
-                                           messageUUID: UUID().uuidString))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("Amigo Reyes", nil, .attention, nil), messageUUID: UUID().uuidString))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("New task(s) are assigned to you on action items. \n Note: Operation Singil: si ocs", ["Jett Calleja"], .attention, .pending), messageUUID: UUID().uuidString))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("New task(s) are assigned to you on action items. \n Note: Operation Singil: si ocs", ["Jett Calleja"], .medium, .pending), messageUUID: UUID().uuidString))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("New task(s) are assigned to you on action items. \n Note: Operation Singil: si ocs", ["Jett Calleja"], .attention, .done), messageUUID: UUID().uuidString))
 
-                
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("hello this is my number 09569051552", ["amigo","jett"], .routine),isSender: false,status: .sent,
-                                           messageUUID: UUID().uuidString))
-
-                
+//
+//                let reply = Reply(fileType: .text, displayName: "Amigo Reyes", thumbnailURL: nil, fileURL: nil, text: "my sample reply", date: "Feb 15, 2023, 6:05 PM")
+////                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text: "my 1", date: "Feb 15, 2023, 6:05 PM"),
+////                               Reply(fileType: .text, displayName: "Amigo 2", thumbnailURL: nil, fileURL: nil, text: "my 2", date: "Feb 10, 2023, 6:05 PM"),
+////                               Reply(fileType: .text, displayName: "Amigo 3", thumbnailURL: nil, fileURL: nil, text: "my 3", date: "Feb 12, 2023, 6:05 PM")]
+////                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
+////                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text: Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
+////                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  Lorem.paragraphs(nbParagraphs: 5), date: "Feb 15, 2023, 6:05 PM"),
+////                               Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "hello", date: "Feb 15, 2023, 6:05 PM")]
+//                
+//                let replies = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "hello", date: "Feb 15, 2023, 6:05 PM")]
+//                let repliesImage = [Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "1", date: "Feb 15, 2023, 6:05 PM"),
+//                                    Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "2", date: "Feb 15, 2023, 6:05 PM"),
+//                                    Reply(fileType: .text, displayName: "Amigo 1", thumbnailURL: nil, fileURL: nil, text:  "3", date: "Feb 15, 2023, 6:05 PM"),
+//                                    Reply(fileType: .image, displayName: "Amigo 1", thumbnailURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", fileURL: "https://medchat.s3.amazonaws.com/c5f0fac8-8745-44ac-8e37-72db62c775a8Screenshot%202023-02-21%20at%204.54.01%20PM.png", text:  nil, date: "Feb 15, 2023, 6:05 PM")]
+//                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies, MessagePriorityLevel(rawValue: -1)!, nil),
+//                                           messageUUID: UUID().uuidString))
+//                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, repliesImage, MessagePriorityLevel(rawValue: -1)!, nil),isSender: true,
+//                                           messageUUID: UUID().uuidString))
+//                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .reply(reply, replies, MessagePriorityLevel(rawValue: -1)!, nil),isSender: true,status: .sending,
+//                                           messageUUID: UUID().uuidString))
+//                let placeHolder = ImageLoadingKind.local (UIImage(systemName: "video")!)
+//                let videItem = TestVideo(url: URL(string: "https://medchat.s3.amazonaws.com/0ad14146-690c-4a92-9341-b8fd5b226b1bD67F6B53-12E3-4AA9-9EF7-3991D33D914E.mov")!, placeholderImage: placeHolder, pictureInPicturePlayingMessage: "Video")
+//                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .video(videItem, MessagePriorityLevel(rawValue: -1)!, nil),isSender: true,status: .sent,
+//                                           messageUUID: UUID().uuidString))
+//                
+//                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://medchat.s3.amazonaws.com/7a865af9-1dc8-46e7-baa8-61a64d3b48fdrecorded-audio.mp3")!, MessagePriorityLevel(rawValue: -1)!, nil),isSender: true,status: .sent,
+//                                           messageUUID: UUID().uuidString))
+//                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .audio(URL(string: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3")!, MessagePriorityLevel(rawValue: -1)!, nil),isSender: false,status: .sent,
+//                                           messageUUID: UUID().uuidString))
+//                
+//                
+//                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("hello this is my number 09569051552", nil, .routine, nil),isSender: false,status: .sent,
+//                                           messageUUID: UUID().uuidString))
+//
+//                
+//                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("hello this is my number 09569051552", ["amigo","jett"], .routine, nil),isSender: false,status: .sent,
+//                                           messageUUID: UUID().uuidString))
+//
+//                
                 /*
                  Reply(id: 6181D406-24DC-428D-93F0-92726E1C55B5, fileType: SwiftyChat.ReplyItemKind.pdf, displayName: "Kristopher Amiel Reyes", thumbnailURL: Optional("https://medchat.s3.amazonaws.com/thumb_8d84cd13-1f1a-45cb-9fde-b9d1441d81cc.png"), fileURL: Optional("https://medchat.s3.amazonaws.com/d0a91cce-b789-48e9-91d4-2c01ed412185Lotrisone.pdf"), text: Optional("FWD:\n  @Rose\nFWD:\n \n--------\nCarlota Sulit - 05/6/2024 12:06 AM\n--------\nKristopher Amiel Reyes - 05/7/2024 6:07 PM"), date: "May 8 2024 at 1:07 AM")
 
@@ -230,6 +236,9 @@ struct BasicExampleView: View {
         }didDismissKeyboard: {
             
         }
+        .didTappedViewTask({ message in
+            print("didtapped view task \(message.messageKind)")
+        })
         .onMessageCellLongpressed({ message in
             print(  message.messageKind.description)
             self.showingOptions = true

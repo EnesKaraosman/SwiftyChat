@@ -9,6 +9,39 @@
 import SwiftUI
 
 
+public enum ActionItemStatus : String , Codable {
+    case pending = "pending"
+    case done = "done"
+    
+    public var body : String {
+        switch self {
+        case .pending:
+            return "Task Pending".uppercased()
+        case .done:
+            return "DONE".uppercased()
+        }
+    }
+    
+    public  var foregroundColor : Color {
+        switch self {
+        case .pending:
+            return Color.yellow
+        case .done:
+            return Color.green
+        }
+    }
+    
+    public  var logo : String {
+        switch  self {
+        case .pending:
+            return "checkmark.circle"
+        case .done:
+            return "checkmark.circle"
+        }
+    }
+    
+}
+
 public enum SendStatus :String, Codable {
     case sent = "sent"
     case sending = "sending"
@@ -67,13 +100,13 @@ public enum ChatMessageKind: CustomStringConvertible {
     
     /// A text message,
     /// supports emoji 👍🏻 (auto scales if text is all about emojis)
-    case text(String,[String]?,MessagePriorityLevel)
+    case text(String,[String]?,MessagePriorityLevel,ActionItemStatus?)
     
     /// An image message, from local(UIImage) or remote(URL).
-    case image(ImageLoadingKind,MessagePriorityLevel)
+    case image(ImageLoadingKind,MessagePriorityLevel,ActionItemStatus?)
     
     /// An image message, from local(UIImage) or remote(URL).
-    case imageText(ImageLoadingKind, String,[String]?,MessagePriorityLevel)
+    case imageText(ImageLoadingKind, String,[String]?,MessagePriorityLevel,ActionItemStatus?)
     
     /// A location message, pins given location & presents on MapKit.
     case location(LocationItem)
@@ -88,39 +121,39 @@ public enum ChatMessageKind: CustomStringConvertible {
     case carousel([CarouselItem])
     
     /// A video message, opens the given URL.
-    case video(VideoItem,MessagePriorityLevel)
+    case video(VideoItem,MessagePriorityLevel,ActionItemStatus?)
     
-    case videoText(VideoItem,String,[String]?,MessagePriorityLevel)
+    case videoText(VideoItem,String,[String]?,MessagePriorityLevel,ActionItemStatus?)
 
     /// Loading indicator contained in chat bubble
     case loading
     
     case systemMessage(String)
     
-    case reply(any ReplyItem,[any ReplyItem],MessagePriorityLevel)
+    case reply(any ReplyItem,[any ReplyItem],MessagePriorityLevel,ActionItemStatus?)
     
-    case pdf(ImageLoadingKind,String,[String]?,URL,MessagePriorityLevel)
+    case pdf(ImageLoadingKind,String,[String]?,URL,MessagePriorityLevel,ActionItemStatus?)
     
-    case audio(URL,MessagePriorityLevel)
+    case audio(URL,MessagePriorityLevel,ActionItemStatus?)
     
     
     public var description: String {
         switch self {
-        case .image(let imageLoadingType, _):
+        case .image(let imageLoadingType, _, _):
             switch imageLoadingType {
             case .local(let localImage):
                 return "MessageKind.image(local: \(localImage))"
             case .remote(let remoteImageUrl):
                 return "MessageKind.image(remote: \(remoteImageUrl))"
             }
-        case .imageText(let imageLoadingType, let text, _, _):
+        case .imageText(let imageLoadingType, let text, _, _, _):
             switch imageLoadingType {
             case .local(let localImage):
                 return "MessageKind.imageText(local: \(localImage), text:\(text)"
             case .remote(let remoteImageUrl):
                 return "MessageKind.imageText(remote: \(remoteImageUrl), text:\(text))"
             }
-        case .text(let text,let attentions, _):
+        case .text(let text,let attentions, _, _):
             return "MessageKind.text(\(text) attentions\(attentions)"
         case .location(let location):
             return "MessageKind.location(lat: \(location.latitude), lon: \(location.longitude))"
@@ -131,25 +164,25 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.quickReplies(options: \(options))"
         case .carousel(let carouselItems):
             return "MessageKind.carousel(itemCount: \(carouselItems.count))"
-        case .video(let videoItem, _):
+        case .video(let videoItem, _, _):
             return "MessageKind.video(url: \(videoItem.url))"
         case .loading:
             return "MessageKind.loading"
         case .systemMessage(let message):
             return "MessageKind.systemMessage \(message)"
-        case .videoText(let videoItem,let text,let attentions, _):
+        case .videoText(let videoItem,let text,let attentions, _, _):
             return "MessageKind.video(url: \(videoItem.url) text \(text) tag \(attentions)"
-        case . reply(let reply, let replies, _):
+        case . reply(let reply, let replies, _, _):
             return "MessageKind.reply reply \(reply) and replies \(replies)"
         
-        case . pdf(let image, let text, let attentions,let pdfUrl, _):
+        case . pdf(let image, let text, let attentions,let pdfUrl, _, _):
             switch image {
             case .local(let localImage):
                 return "MessageKind.pdf(local: \(localImage), text:\(text), attentions: \(attentions), pdfURL :\(pdfUrl)"
             case .remote(let remoteImageUrl):
                 return "MessageKind.pdf(local: \(remoteImageUrl), text:\(text), attentions: \(attentions), pdfURL :\(pdfUrl)"
             }
-        case .audio(let url, _):
+        case .audio(let url, _ , _):
             return "MessageKind.audio URL: \(url)"
 
         }
