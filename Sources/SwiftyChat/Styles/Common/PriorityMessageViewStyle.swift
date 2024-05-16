@@ -1,6 +1,6 @@
 //
 //  SwiftUIView.swift
-//  
+//
 //
 //  Created by AL Reyes on 11/15/23.
 //
@@ -22,23 +22,24 @@ public struct PriorityMessageViewStyle: View {
                     .foregroundColor(priorityLevel.foregroundColor)
                     .rotationEffect(.degrees(-90))
                     .font(.system(size: fontSize))
-
-
+                
+                
             }else{
                 Image(systemName: priorityLevel.logo)
                     .foregroundColor(priorityLevel.foregroundColor)
                     .font(.system(size: fontSize))
-
+                
             }
             Text(priorityLevel.body)
-                 .fontWeight(.semibold)
-                 .foregroundColor(priorityLevel.foregroundColor)
-                 .font(.system(size: fontSize))
+                .font(.caption)
+                .fontWeight(.semibold)
+                .foregroundColor(priorityLevel.foregroundColor)
+                .font(.system(size: fontSize))
         }
-        .padding()
+        .padding(12)
         .background(Color(hex: "f8f9fc"))
         .clipShape(Capsule())
-
+        
     }
 }
 
