@@ -48,6 +48,7 @@ public enum SendStatus :String, Codable {
     case failed = "failed"
 }
 public enum MessagePriorityLevel : Int, Codable{
+    case critical = 3
     case high = 2
     case medium = 1
     case routine = 0
@@ -55,6 +56,8 @@ public enum MessagePriorityLevel : Int, Codable{
     
     public var body : String {
         switch self {
+        case .critical:
+            return "Critical Priority"
         case .high:
             return "High Priority"
         case .medium:
@@ -68,6 +71,8 @@ public enum MessagePriorityLevel : Int, Codable{
     
     public  var foregroundColor : Color {
         switch self {
+        case . critical:
+            return Color.red
         case .high:
             return Color.red
         case .medium:
@@ -80,6 +85,8 @@ public enum MessagePriorityLevel : Int, Codable{
     
     public  var logo : String {
         switch  self {
+        case .critical:
+            return "waveform.path.ecg.rectangle"
         case .high:
             return "chevron.right.2"
         case .medium:
