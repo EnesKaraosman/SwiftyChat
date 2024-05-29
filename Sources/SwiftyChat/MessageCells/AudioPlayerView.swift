@@ -18,60 +18,57 @@ struct AudioPlayerView: View {
     @StateObject private var soundManager = SoundManager()
 
     var body: some View {
-        
-            HStack {
-                Button(action: {
-                    isPlaying.toggle()
-                    if isPlaying {
-                        soundManager.playSound(sound: audioURL.absoluteString)
-                    } else {
-                        soundManager.stopSound()
-                    }
-                }) {
-                    Image(systemName: isPlaying ? "stop.circle.fill" : "play.circle.fill")
-                        .font(.system(size: 25))
-                        .foregroundColor(.white)
-                        .background(
-                            RoundedRectangle(cornerRadius: 22)
-                                .stroke(Color.gray, lineWidth: 1)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 22)
-                                        .foregroundColor(Color.clear)
-                                        .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
-                                )
-                        )
-                        .padding(.trailing)
+        HStack {
+            Button(action: {
+                isPlaying.toggle()
+                if isPlaying {
+                    soundManager.playSound(sound: audioURL.absoluteString)
+                } else {
+                    soundManager.stopSound()
                 }
-                .frame(width: 38, height: 38)
+            }) {
+                Image(systemName: isPlaying ? "stop.circle.fill" : "play.circle.fill")
+                    .font(.system(size: 25))
+                    .foregroundColor(.white)
+                    .background(
+                        RoundedRectangle(cornerRadius: 22)
+                            .stroke(Color.gray, lineWidth: 1)
+                            .background(
+                                RoundedRectangle(cornerRadius: 22)
+                                    .foregroundColor(Color.clear)
+                                    .shadow(color: Color.black.opacity(0.3), radius: 8, x: 0, y: 4)
+                            )
+                    )
+                    .padding(.trailing)
+            }
+            .frame(width: 38, height: 38)
 
-                if let totalTime = totalTime {
-                    Slider(value: $currentTime, in: 0...totalTime, step: 1)
-                        .disabled(true)
-                    Text(formatTimeString(time: totalTime))
+            if let totalTime = totalTime {
+                Slider(value: $currentTime, in: 0...totalTime, step: 1)
+                    .disabled(true)
+                Text(formatTimeString(time: totalTime))
+                    .font(.system(size: 15))
+                    .foregroundColor(.gray)
+            } else {
+                Spacer()
+                if isLoadingTotalTime {
+                    ProgressView()
+                        .frame(width: 30, height: 30)
+                } else {
+                    Text("Fetching...")
                         .font(.system(size: 15))
                         .foregroundColor(.gray)
-                } else {
-                    Spacer()
-                    if isLoadingTotalTime {
-                        ProgressView()
-                            .frame(width: 30, height: 30)
-                    } else {
-                        Text("Fetching...")
-                            .font(.system(size: 15))
-                            .foregroundColor(.gray)
-                    }
                 }
             }
-            .frame(width: 280, height: 60)
-            .padding(.horizontal)
-            .onAppear {
-                fetchTotalTime()
-            }
-            .onReceive(soundManager.currentTimePublisher) { time in
-                currentTime = time
-            }
-        
-     
+        }
+        .frame(width: 280, height: 60)
+        .padding(.horizontal)
+        .onAppear {
+            fetchTotalTime()
+        }
+        .onReceive(soundManager.currentTimePublisher) { time in
+            currentTime = time
+        }
     }
     
     func formatTimeString(time: Double) -> String {
@@ -96,6 +93,7 @@ struct AudioPlayerView: View {
     }
 }
 
+
 class SoundManager: ObservableObject {
     private var audioPlayer: AVPlayer?
     private var timeObserver: Any?
@@ -104,10 +102,13 @@ class SoundManager: ObservableObject {
 
     func playSound(sound: String) {
         if let url = URL(string: sound) {
-            audioPlayer = AVPlayer(url: url)
-            audioPlayer?.play()
-            
-            addTimeObserver()
+            downloadAndCacheAudio(from: url) { [weak self] cachedURL in
+                guard let self = self, let cachedURL = cachedURL else { return }
+                self.audioPlayer = AVPlayer(url: cachedURL)
+                self.audioPlayer?.play()
+                
+                self.addTimeObserver()
+            }
         }
     }
 
@@ -119,9 +120,15 @@ class SoundManager: ObservableObject {
     }
     
     func getTotalDuration(audioURL: URL, completion: @escaping (Double) -> Void) {
-        let asset = AVURLAsset(url: audioURL)
-        let duration = asset.duration.seconds
-        completion(duration)
+        downloadAndCacheAudio(from: audioURL) { cachedURL in
+            guard let cachedURL = cachedURL else {
+                completion(0)
+                return
+            }
+            let asset = AVURLAsset(url: cachedURL)
+            let duration = asset.duration.seconds
+            completion(duration)
+        }
     }
     
     private func addTimeObserver() {
@@ -136,5 +143,32 @@ class SoundManager: ObservableObject {
             audioPlayer?.removeTimeObserver(observer)
             timeObserver = nil
         }
+    }
+    
+    private func downloadAndCacheAudio(from url: URL, completion: @escaping (URL?) -> Void) {
+        let cacheDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
+        let cachedFileURL = cacheDirectory.appendingPathComponent(url.lastPathComponent)
+        
+        if FileManager.default.fileExists(atPath: cachedFileURL.path) {
+            completion(cachedFileURL)
+            return
+        }
+        
+        let task = URLSession.shared.downloadTask(with: url) { location, response, error in
+            guard let location = location, error == nil else {
+                completion(nil)
+                return
+            }
+            
+            do {
+                try FileManager.default.moveItem(at: location, to: cachedFileURL)
+                completion(cachedFileURL)
+            } catch {
+                print("Error caching audio file: \(error)")
+                completion(nil)
+            }
+        }
+        
+        task.resume()
     }
 }
