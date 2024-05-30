@@ -16,26 +16,14 @@ public struct TaskMessageViewSytle: View {
     }
     public var body: some View {
         
-        if status == .pending {
-            Text("VIEW TASK")
-                .font(.caption)
-                .fontWeight(.bold)
-                .foregroundColor(Color.blue)
-                .font(.system(size: fontSize))
-                .padding(12)
-                .background(Color(hex: "f8f9fc"))
-                .clipShape(Capsule())
-
-        }else{
-            Text("Done")
-                .font(.caption)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .font(.system(size: fontSize))
-                .padding()
-                .background(Color.green)
-                .clipShape(Capsule())
-        }
+        Text("VIEW TASK")
+            .font(.caption)
+            .fontWeight(.bold)
+            .foregroundColor(Color.blue)
+            .font(.system(size: fontSize))
+            .padding(12)
+            .background(Color(hex: "f8f9fc"))
+            .clipShape(Capsule())
     }
     
     

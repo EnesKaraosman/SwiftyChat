@@ -18,7 +18,7 @@ public enum ActionItemStatus : String , Codable {
         case .pending:
             return "Task Pending".uppercased()
         case .done:
-            return "DONE".uppercased()
+            return "TASK DONE".uppercased()
         }
     }
     
@@ -27,7 +27,7 @@ public enum ActionItemStatus : String , Codable {
         case .pending:
             return Color.yellow
         case .done:
-            return Color.green
+            return Color.blue
         }
     }
     
