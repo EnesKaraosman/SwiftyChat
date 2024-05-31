@@ -43,7 +43,7 @@ struct AudioPlayerView: View {
             }
             .frame(width: 38, height: 38)
 
-            if let totalTime = totalTime {
+            if let totalTime = totalTime,totalTime > 0 {
                 Slider(value: $currentTime, in: 0...totalTime, step: 1)
                     .disabled(true)
                 Text(formatTimeString(time: totalTime))
