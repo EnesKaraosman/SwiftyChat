@@ -63,7 +63,7 @@ public enum MessagePriorityLevel : Int, Codable{
         case .medium:
             return "Medium Priority"
         case .routine:
-            return "Routine Priority"
+            return "Routine"
         case .attention:
             return "Attention Priority"
         }
@@ -92,7 +92,7 @@ public enum MessagePriorityLevel : Int, Codable{
         case .medium:
             return "equal"
         default:
-            return "line.diagonal"
+            return "chevron.right.2"
 
         }
     }

@@ -96,17 +96,15 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
                         .padding(cellStyle.textPadding)
                 }
                 HStack(){
-                    if priority == .high || priority == .medium {
-                        PriorityMessageViewStyle(priorityLevel: priority)
-                            .padding(.bottom,10)
-                            .padding(.trailing,10)
-                            .padding(.leading,10)
-                            .frame(alignment: .leading)
-                            .shadow (
-                                color: cellStyle.cellShadowColor,
-                                radius: cellStyle.cellShadowRadius
-                            )
-                    }
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
                     
                     if let status = actionStatus {
                         Spacer()
@@ -146,17 +144,15 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
             VStack(alignment: .leading, spacing: 0) {
                 imageView
                 HStack(){
-                    if priority == .high || priority == .medium {
-                        PriorityMessageViewStyle(priorityLevel: priority)
-                            .padding(.bottom,10)
-                            .padding(.trailing,10)
-                            .padding(.leading,10)
-                            .frame(alignment: .leading)
-                            .shadow (
-                                color: cellStyle.cellShadowColor,
-                                radius: cellStyle.cellShadowRadius
-                            )
-                    }
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
                     
                     if let status = actionStatus {
                         Spacer()

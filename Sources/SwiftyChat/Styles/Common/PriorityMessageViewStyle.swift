@@ -17,19 +17,11 @@ public struct PriorityMessageViewStyle: View {
     
     public var body: some View {
         HStack {
-            if priorityLevel == .high {
-                Image(systemName: priorityLevel.logo)
-                    .foregroundColor(priorityLevel.foregroundColor)
-                    .rotationEffect(.degrees(-90))
-                    .font(.system(size: fontSize))
-                
-                
-            }else{
-                Image(systemName: priorityLevel.logo)
-                    .foregroundColor(priorityLevel.foregroundColor)
-                    .font(.system(size: fontSize))
-                
-            }
+            Image(systemName: priorityLevel.logo)
+                .foregroundColor(priorityLevel.foregroundColor)
+                .rotationEffect(.degrees(self.degree()))
+                .font(.system(size: fontSize))
+
             Text(priorityLevel.body)
                 .font(.caption)
                 .fontWeight(.semibold)
@@ -41,9 +33,23 @@ public struct PriorityMessageViewStyle: View {
         .clipShape(Capsule())
         
     }
+    
+    
+    private func degree() -> Double {
+        
+        if priorityLevel == .high {
+            return -90
+        }
+        
+        if priorityLevel == .routine {
+            return 90
+        }
+        
+        return 0
+    }
 }
 
 #Preview {
-    PriorityMessageViewStyle(priorityLevel: .high)
+    PriorityMessageViewStyle(priorityLevel: .routine)
     
 }
