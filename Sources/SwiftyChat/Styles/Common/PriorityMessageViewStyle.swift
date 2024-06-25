@@ -41,7 +41,7 @@ public struct PriorityMessageViewStyle: View {
             return -90
         }
         
-        if priorityLevel == .routine {
+        if priorityLevel == .routine && priorityLevel == .attention {
             return 90
         }
         

@@ -62,10 +62,8 @@ public enum MessagePriorityLevel : Int, Codable{
             return "High Priority"
         case .medium:
             return "Medium Priority"
-        case .routine:
+        default:
             return "Routine"
-        case .attention:
-            return "Attention Priority"
         }
     }
     
