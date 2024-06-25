@@ -76,15 +76,18 @@ internal struct TextCell<Message: ChatMessage>: View {
             }
             
             HStack(){
-                PriorityMessageViewStyle(priorityLevel: priority)
-                    .padding(.bottom,10)
-                    .padding(.trailing,10)
-                    .padding(.leading,10)
-                    .frame(alignment: .leading)
-                    .shadow (
-                        color: cellStyle.cellShadowColor,
-                        radius: cellStyle.cellShadowRadius
-                    )
+                if priority != .attention {
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                }
+
                 
                 if let status = actionStatus {
                     Spacer()
@@ -139,15 +142,18 @@ internal struct TextCell<Message: ChatMessage>: View {
 
             
             HStack(){
-                PriorityMessageViewStyle(priorityLevel: priority)
-                    .padding(.bottom,10)
-                    .padding(.trailing,10)
-                    .padding(.leading,10)
-                    .frame(alignment: .leading)
-                    .shadow (
-                        color: cellStyle.cellShadowColor,
-                        radius: cellStyle.cellShadowRadius
-                    )
+                if priority != .attention {
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                }
+                
                 if let status = actionStatus {
                     Spacer()
                     TaskMessageViewSytle(status: status)
@@ -228,7 +234,17 @@ internal struct TextCell<Message: ChatMessage>: View {
 
             
             HStack(){
-                    
+                if priority != .attention {
+                    PriorityMessageViewStyle(priorityLevel: priority)
+                        .padding(.bottom,10)
+                        .padding(.trailing,10)
+                        .padding(.leading,10)
+                        .frame(alignment: .leading)
+                        .shadow (
+                            color: cellStyle.cellShadowColor,
+                            radius: cellStyle.cellShadowRadius
+                        )
+                }
                 
                 if let status = actionStatus {
                     Spacer()
