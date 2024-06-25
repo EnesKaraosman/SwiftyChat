@@ -85,6 +85,8 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
             }
             
             HStack(){
+
+                if let status = actionStatus {
                     PriorityMessageViewStyle(priorityLevel: priority)
                         .padding(.bottom,10)
                         .padding(.trailing,10)
@@ -94,10 +96,6 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                             color: cellStyle.cellShadowColor,
                             radius: cellStyle.cellShadowRadius
                         )
-
-
-                
-                if let status = actionStatus {
                     Spacer()
                     TaskMessageViewSytle(status: status)
                         .padding(.bottom,10)
