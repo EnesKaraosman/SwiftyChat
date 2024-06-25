@@ -96,7 +96,6 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
                         .padding(cellStyle.textPadding)
                 }
                 HStack(){
-                    if priority != .attention {
                         PriorityMessageViewStyle(priorityLevel: priority)
                             .padding(.bottom,10)
                             .padding(.trailing,10)
@@ -106,7 +105,6 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
                                 color: cellStyle.cellShadowColor,
                                 radius: cellStyle.cellShadowRadius
                             )
-                    }
                     if let status = actionStatus {
                         Spacer()
                         TaskMessageViewSytle(status: status)
@@ -145,7 +143,6 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
             VStack(alignment: .leading, spacing: 0) {
                 imageView
                 HStack(){
-                    if priority != .attention {
                         PriorityMessageViewStyle(priorityLevel: priority)
                             .padding(.bottom,10)
                             .padding(.trailing,10)
@@ -155,7 +152,6 @@ internal struct PdfTextCell<Message: ChatMessage>: View {
                                 color: cellStyle.cellShadowColor,
                                 radius: cellStyle.cellShadowRadius
                             )
-                    }
 
                     
                     if let status = actionStatus {

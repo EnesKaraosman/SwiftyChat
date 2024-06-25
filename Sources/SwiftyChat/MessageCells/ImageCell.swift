@@ -114,7 +114,6 @@ internal struct ImageCell<Message: ChatMessage>: View {
         VStack(alignment: .leading) {
             imageView
             HStack(){
-                if priority != .attention {
                     PriorityMessageViewStyle(priorityLevel: priority)
                         .padding(.bottom,10)
                         .padding(.leading,10)
@@ -125,7 +124,6 @@ internal struct ImageCell<Message: ChatMessage>: View {
                             color: cellStyle.cellShadowColor,
                             radius: cellStyle.cellShadowRadius
                         )
-                }
 
                 
                 if let status = actionStatus {

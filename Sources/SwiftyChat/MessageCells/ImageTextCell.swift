@@ -85,7 +85,6 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
             }
             
             HStack(){
-                if priority != .attention {
                     PriorityMessageViewStyle(priorityLevel: priority)
                         .padding(.bottom,10)
                         .padding(.trailing,10)
@@ -95,7 +94,6 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
                             color: cellStyle.cellShadowColor,
                             radius: cellStyle.cellShadowRadius
                         )
-                }
 
 
                 
