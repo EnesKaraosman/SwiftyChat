@@ -81,7 +81,7 @@ public struct MockMessages {
     // MARK: - Concrete model for ChatMessage
     public struct ChatMessageItem: ChatMessage {
         
-        public let id : UUID
+        public let id = UUID()
         public var objectId : String
         public var messageUUID : String
         public var user: ChatUserItem
@@ -99,7 +99,6 @@ public struct MockMessages {
             status : SendStatus = .sent,
             messageUUID : String
         ) {
-            self.id = UUID(uuidString: objectId)!
             self.objectId = objectId
             self.user = user
             self.messageKind = messageKind
