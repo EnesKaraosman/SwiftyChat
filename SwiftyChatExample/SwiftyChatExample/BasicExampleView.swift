@@ -30,7 +30,7 @@ public struct Reply : ReplyItem {
 }
 struct BasicExampleView: View {
     
-    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 1)
+    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 30)
     
     // MARK: - InputBarView variables
     @State private var message = ""
@@ -52,7 +52,7 @@ struct BasicExampleView: View {
     private var chatView: some View {
         
         ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(inverted : true , messages: $messages) {
-
+            
             BasicInputView(
                 message: $message,
                 isEditing: $isEditing,
@@ -71,6 +71,10 @@ struct BasicExampleView: View {
             .animation(.linear)
             .embedInAnyView()
             
+        }reachedTop: { lastDate in
+            print("Top cell \(lastDate)")
+        }reachedBottom: { lastDate in
+            print("Bottom cell \(lastDate)")
         }tappedResendAction: { message in
             print("resend tapped message ",message.messageKind.description)
         
@@ -84,6 +88,7 @@ struct BasicExampleView: View {
             print(  message.messageKind.description)
             self.showingOptions = true
         })
+        
             
         
         .actionSheet(isPresented: $showingOptions) {

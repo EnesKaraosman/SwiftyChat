@@ -28,6 +28,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: ((_ lastDate : Date) -> Void)?
+    private var reachedBottom: ((_ lastDate : Date) -> Void)?
     private var tappedResendAction : (Message) -> Void
     private var didDismissKeyboard : () -> Void
     
@@ -97,18 +98,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                     case .systemMessage(let text):
                                         SystemMessageCell(text: text,message:message)
                                             .onAppear {
-                                                let total = self.messages.count
-                                                let lastItem : Message!
-                                                if total >= 5 {
-                                                    lastItem = self.messages[total - 5]
-                                                }else{
-                                                    lastItem = self.messages.last
-                                                }
-                                                if message.id == lastItem.id {
-                                                    if let lastMessage = self.messages.last{
-                                                        self.reachedTop?(lastMessage.date)
-                                                    }
-                                                }
+                                                self.checkMessagePosition(message)
                                             }
                                     default:
                                         let showDateheader = shouldShowDateHeader(
@@ -124,18 +114,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                                         chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                                             .id(message.id)
                                             .onAppear {
-                                                let total = self.messages.count
-                                                let lastItem : Message!
-                                                if total >= 5 {
-                                                    lastItem = self.messages[total - 5]
-                                                }else{
-                                                    lastItem = self.messages.last
-                                                }
-                                                if message.id == lastItem.id {
-                                                    if let lastMessage = self.messages.last{
-                                                        self.reachedTop?(lastMessage.date)
-                                                    }
-                                                }
+                                                self.checkMessagePosition(message)
                                             }
                                         
                                         if showDateheader {
@@ -262,19 +241,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                             chatMessageCellContainer(in: geometry.size, with: message, with: shouldShowDisplayName)
                                 .id(message.id)
                                 .onAppear {
-                                    let total = self.messages.count
-                                    let lastItem : Message!
-                                    if total >= 5 {
-                                        lastItem = self.messages[total - 5]
-                                    }else{
-                                        lastItem = self.messages.last
-                                    }
-                                    if message.id == lastItem.id {
-                                        if let lastMessage = self.messages.last{
-                                            self.reachedTop?(lastMessage.date)
-                                            
-                                        }
-                                    }
+                                    self.checkMessagePosition(message)
                                 }
                         }
                         if messages.count == 0 && isFetching {
@@ -315,6 +282,30 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
             .padding(.bottom, messageEditorHeight + 30)
         }
         
+    }
+    
+    private func checkMessagePosition(_ message: Message) {
+        let total = self.messages.count
+        let lastItem: Message!
+        let firstItem = self.messages.first
+        
+        if total >= 5 {
+            lastItem = self.messages[total - 5]
+        } else {
+            lastItem = self.messages.last
+        }
+        
+        if message.id == lastItem.id {
+            if let lastMessage = self.messages.last {
+                self.reachedTop?(lastMessage.date)
+            }
+        }
+        
+        if let firstItem = firstItem, message.id == firstItem.id {
+            if let firstMessage = self.messages.first {
+                self.reachedBottom?(firstMessage.date)
+            }
+        }
     }
 }
 
@@ -425,6 +416,7 @@ public extension ChatView {
          inputView: @escaping () -> AnyView,
          inset: EdgeInsets = .init(),
          reachedTop: ((_ lastDate : Date) -> Void)? = nil,
+         reachedBottom: ((_ lastDate : Date) -> Void)? = nil,
          tappedResendAction : @escaping (Message) -> Void,
          didDismissKeyboard :@escaping () -> Void
          
@@ -441,6 +433,7 @@ public extension ChatView {
         self.dateHeaderTimeInterval = dateHeaderTimeInterval
         self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
         self.reachedTop = reachedTop
+        self.reachedBottom = reachedBottom
         self.tappedResendAction = tappedResendAction
         self.didDismissKeyboard = didDismissKeyboard
         _scrollTo = scrollTo
