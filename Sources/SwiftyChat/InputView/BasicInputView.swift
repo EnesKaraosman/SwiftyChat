@@ -18,16 +18,37 @@ public struct BasicInputView: View {
     private var internalAttributedMessage: Binding<NSAttributedString> {
         Binding<NSAttributedString>(
             get: {
-                NSAttributedString(
-                    string: self.message,
-                    attributes: [
-                        NSAttributedString.Key.font: UIFont.preferredFont(forTextStyle: .body),
-                        NSAttributedString.Key.foregroundColor: UIColor.label,
-                    ]
-                )
+                createAttributedMessage(from: self.message, with: nil)
+
             },
             set: { self.message = $0.string }
         )
+    }
+    
+    private func createAttributedMessage(from message: String, with names: [String]?) -> NSAttributedString {
+        let attributedString = NSMutableAttributedString(
+            string: message,
+            attributes: [
+                .font: UIFont.preferredFont(forTextStyle: .body),
+                .foregroundColor: UIColor.label,
+            ]
+        )
+        if let names = names {
+            for name in names {
+                let pattern = "@\(name)"
+                if let regex = try? NSRegularExpression(pattern: pattern, options: .caseInsensitive) {
+                    let range = NSRange(location: 0, length: message.utf16.count)
+                    regex.enumerateMatches(in: message, options: [], range: range) { match, _, _ in
+                        if let matchRange = match?.range {
+                            attributedString.addAttribute(.foregroundColor, value: UIColor.blue, range: matchRange)
+                        }
+                    }
+                }
+            }
+        }
+
+        
+        return attributedString
     }
 
     private var onCommit: ((ChatMessageKind) -> Void)?
@@ -53,6 +74,7 @@ public struct BasicInputView: View {
     }
 
     private var messageEditorView: some View {
+        
         MultilineTextField(
             attributedText: self.internalAttributedMessage,
             placeholder: placeholder,
