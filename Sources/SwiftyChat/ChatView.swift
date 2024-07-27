@@ -285,26 +285,15 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     }
     
     private func checkMessagePosition(_ message: Message) {
-        let total = self.messages.count
-        let lastItem: Message!
-        let firstItem = self.messages.first
-        
-        if total >= 5 {
-            lastItem = self.messages[total - 5]
-        } else {
-            lastItem = self.messages.last
-        }
-        
+        guard let firstItem = self.messages.first else { return }
+        guard let lastItem = self.messages.last else { return }
+
         if message.id == lastItem.id {
-            if let lastMessage = self.messages.last {
-                self.reachedTop?(lastMessage.date)
-            }
+            self.reachedTop?(lastItem.date)
         }
-        
-        if let firstItem = firstItem, message.id == firstItem.id {
-            if let firstMessage = self.messages.first {
-                self.reachedBottom?(firstMessage.date)
-            }
+
+        if message.id == firstItem.id {
+            self.reachedBottom?(firstItem.date)
         }
     }
 }
