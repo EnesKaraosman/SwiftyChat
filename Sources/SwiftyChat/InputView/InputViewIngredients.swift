@@ -47,15 +47,12 @@ public struct MultilineTextField: View {
     @Binding private var isEditing: Bool
 
     @State private var contentSizeThatFits: CGSize = .zero
-    @State private var lastSearchTerm: String?
 
     private let placeholder: String
     private let textAttributes: TextAttributes
 
     private let onEditingChanged: ((Bool) -> Void)?
     private let onCommit: (() -> Void)?
-    private let onMention: ((String) -> Void)?
-
     private var placeholderInset: EdgeInsets {
         .init(top: 8.0, leading: 8.0, bottom: 8.0, trailing: 8.0)
     }
@@ -74,8 +71,7 @@ public struct MultilineTextField: View {
         isEditing: Binding<Bool>,
         textAttributes: TextAttributes = .init(),
         onEditingChanged: ((Bool) -> Void)? = nil,
-        onCommit: (() -> Void)? = nil,
-        onMention: ((String) -> Void)? = nil
+        onCommit: (() -> Void)? = nil
     ) {
         self._attributedText = attributedText
         self.placeholder = placeholder
@@ -88,7 +84,6 @@ public struct MultilineTextField: View {
 
         self.onEditingChanged = onEditingChanged
         self.onCommit = onCommit
-        self.onMention = onMention
     }
 
     public var body: some View {
@@ -99,16 +94,6 @@ public struct MultilineTextField: View {
             onEditingChanged: onEditingChanged,
             onCommit: onCommit
         )
-        .onChange(of: attributedText) { newValue in
-            let text = newValue.string
-            if let searchTerm = extractLastSearchTerm(from: text),
-               searchTerm != lastSearchTerm {
-                if let mention = onMention {
-                    mention(searchTerm)
-                }
-                lastSearchTerm = searchTerm
-            }
-        }
         .onPreferenceChange(ContentSizeThatFitsKey.self) {
             self.contentSizeThatFits = $0
         }
@@ -122,22 +107,6 @@ public struct MultilineTextField: View {
                 .padding(placeholderInset)
         }
     }
-    
-    private func extractLastSearchTerm(from text: String) -> String? {
-        let pattern = "@([\\w ]+)"
-        let regex = try? NSRegularExpression(pattern: pattern)
-        let range = NSRange(text.startIndex..<text.endIndex, in: text)
-        var lastSearchTerm: String?
-        
-        regex?.enumerateMatches(in: text, range: range) { match, _, _ in
-            if let match = match, let range = Range(match.range(at: 1), in: text) {
-                lastSearchTerm = String(text[range]).trimmingCharacters(in: .whitespacesAndNewlines)
-            }
-        }
-        
-        return lastSearchTerm
-    }
-
 }
 
 // MARK: - AttributedText
