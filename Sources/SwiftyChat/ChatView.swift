@@ -287,11 +287,17 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     private func checkMessagePosition(_ message: Message) {
         guard let firstItem = self.messages.first else { return }
         guard let lastItem = self.messages.last else { return }
-
-        if message.id == lastItem.id {
-            self.reachedTop?(lastItem.date)
+        
+        if self.messages.count > 3 {
+            let thirdLastItem = self.messages[self.messages.count - 3]
+            if message.id == thirdLastItem.id {
+                self.reachedTop?(lastItem.date)
+            }
+        } else {
+            if message.id == lastItem.id {
+                self.reachedTop?(lastItem.date)
+            }
         }
-
         if message.id == firstItem.id {
             self.reachedBottom?(firstItem.date)
         }
