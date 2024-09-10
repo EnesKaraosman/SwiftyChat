@@ -186,7 +186,8 @@ internal struct TextCell<Message: ChatMessage>: View {
     
     private func computeLineCount(for text: String, with style: TextCellStyle) -> Int {
         //Font what is Font in swiftUI
-        let fontSize: CGFloat = 14 // Assuming you have a font size in your style
+        let systemFont = UIFont.preferredFont(forTextStyle: .body) // You can change .body to any other text style
+        let fontSize: CGFloat = systemFont.pointSize // Assuming you have a font size in your style
         let averageCharacterWidth: CGFloat = fontSize * 0.5 // This is a rough estimate
         let containerWidth: CGFloat = maxWidth // Use the calculated maxWidth for the text container
         let charactersPerLine = max(1, containerWidth / averageCharacterWidth)

@@ -30,7 +30,7 @@ public struct Reply : ReplyItem {
 }
 struct BasicExampleView: View {
     
-    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 30)
+    @State var messages: [MockMessages.ChatMessageItem] = MockMessages.generateMessage(kind: .Text, count: 1)
     
     // MARK: - InputBarView variables
     @State private var message = ""
@@ -46,6 +46,16 @@ struct BasicExampleView: View {
 //                
 //                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("New task(s) are assigned to you on action items. \n Note: Operation Singil: si ocs", ["Jett Calleja"], .high, .pending), messageUUID: UUID().uuidString))
 //                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("New task(s) are assigned to you on action items. \n Note: Operation Singil: si ocs", ["Jett Calleja"], .high, .pending), messageUUID: UUID().uuidString))
+                
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("""
+                                                                                          The standard Lorem Ipsum passage, used since the 1500s
+                                                                                          \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\"
+
+                                                                                          Section 1.10.32 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC
+                                                                                          \"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
+                                                                                          
+                                                                                          """, nil, .routine, nil), messageUUID: UUID().uuidString))
+
             }
     }
     
