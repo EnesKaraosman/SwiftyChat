@@ -128,12 +128,12 @@ internal struct TextCell<Message: ChatMessage>: View {
             Text(attributedText)
                 .fontWeight(cellStyle.textStyle.fontWeight)
                 .lineLimit(showFullText ? nil : 20)
-                .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+                .modifier(EmojiModifier(text: String(attributedText.characters), defaultFont: cellStyle.textStyle.font))
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
             
-            if self.computeLineCount(for: text, with: cellStyle) > 20 {
+            if self.computeLineCount(for: String(attributedText.characters), with: cellStyle) > 20 {
                 showMore
             }
 
@@ -220,11 +220,12 @@ internal struct TextCell<Message: ChatMessage>: View {
         VStack(alignment: .leading) {
             Text(formattedTagString)
                 .fontWeight(cellStyle.textStyle.fontWeight)
-                .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+                .lineLimit(showFullText ? nil : 20)
+                .modifier(EmojiModifier(text: String(formattedTagString.characters), defaultFont: cellStyle.textStyle.font))
                 .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
-            if self.computeLineCount(for: text, with: cellStyle) > 20 {
+            if self.computeLineCount(for: String(formattedTagString.characters), with: cellStyle) > 20 {
                 showMore
             }
 

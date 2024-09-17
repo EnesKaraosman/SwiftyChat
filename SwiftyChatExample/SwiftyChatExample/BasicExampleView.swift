@@ -54,7 +54,7 @@ struct BasicExampleView: View {
                                                                                           Section 1.10.32 of \"de Finibus Bonorum et Malorum\", written by Cicero in 45 BC
                                                                                           \"Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam
                                                                                           
-                                                                                          """, nil, .routine, nil), messageUUID: UUID().uuidString))
+                                                                                          """, ["Jett Calleja"], .high, .pending), messageUUID: UUID().uuidString))
 
             }
     }
