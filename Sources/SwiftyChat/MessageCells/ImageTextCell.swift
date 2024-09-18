@@ -18,6 +18,7 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
     public let priority: MessagePriorityLevel
     public let actionStatus: ActionItemStatus?
     public let didTappedViewTask : (Message) -> Void
+    @State private var showFullText = false
 
     @EnvironmentObject var style: ChatMessageCellStyle
     
@@ -35,6 +36,9 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
 
         return result +  AttributedString(text)
     }
+    private var maxWidth: CGFloat {
+        size.width * (UIDevice.isLandscape ? 0.6 : 0.75)
+    }
     
     private var imageWidth: CGFloat {
         cellStyle.cellWidth(size)
@@ -42,6 +46,21 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
     
     private var cellStyle: ImageTextCellStyle {
         style.imageTextCellStyle
+    }
+    private var showMore : some View {
+            HStack {
+                Spacer()
+                Button(action: {
+                    showFullText.toggle() // Toggle between showing full text a     nd truncated text
+                }) {
+                    Text(showFullText ? "Show less" : "Show more")
+                        .font(.system(size: 12))
+                        .fontWeight(.bold)
+                        .foregroundColor(Color.blue)
+                }
+                .padding(.trailing)
+                .padding(.bottom)
+            }
     }
     
     @ViewBuilder private var imageView: some View {
@@ -70,7 +89,8 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
             if #available(iOS 15, *) {
                 Text(formattedTagString)
                     .fontWeight(cellStyle.textStyle.fontWeight)
-                    .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+                    .lineLimit(showFullText ? nil : 20)
+                    .modifier(EmojiModifier(text: String(formattedTagString.characters), defaultFont: cellStyle.textStyle.font))
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(cellStyle.textStyle.textColor)
                     .padding(cellStyle.textPadding)
@@ -78,10 +98,14 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
             } else {
                 Text(text)
                     .fontWeight(cellStyle.textStyle.fontWeight)
+                    .lineLimit(showFullText ? nil : 20)
                     .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
                     .fixedSize(horizontal: false, vertical: true)
                     .foregroundColor(cellStyle.textStyle.textColor)
                     .padding(cellStyle.textPadding)
+            }
+            if self.computeLineCount(for: text, with: cellStyle) > 20 {
+                showMore
             }
             
             HStack(){
@@ -129,5 +153,15 @@ internal struct ImageTextCell<Message: ChatMessage>: View {
             )
     }
     
+    private func computeLineCount(for text: String, with style: ImageTextCellStyle) -> Int {
+        //Font what is Font in swiftUI
+        let systemFont = UIFont.preferredFont(forTextStyle: .body) // You can change .body to any other text style
+        let fontSize: CGFloat = systemFont.pointSize // Assuming you have a font size in your style
+        let averageCharacterWidth: CGFloat = fontSize * 0.5 // This is a rough estimate
+        let containerWidth: CGFloat = maxWidth // Use the calculated maxWidth for the text container
+        let charactersPerLine = max(1, containerWidth / averageCharacterWidth)
+        let lineCount = Int(ceil(CGFloat(text.count) / charactersPerLine))
+        return lineCount
+    }
 }
 
