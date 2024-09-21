@@ -33,6 +33,7 @@ struct ImageLoadingKindCell: View {
         imageView
     }
 
+    @MainActor
     @ViewBuilder
     private var imageView: some View {
         switch imageLoadingType {
@@ -53,6 +54,7 @@ struct ImageLoadingKindCell: View {
             .frame(width: width, height: height)
     }
 
+    @MainActor
     private func remoteImage(url: URL) -> some View {
         KFAnimatedImage(url)
             .cacheOriginalImage()

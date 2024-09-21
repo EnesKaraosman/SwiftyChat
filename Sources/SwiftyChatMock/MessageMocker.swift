@@ -23,15 +23,20 @@ public struct MessageMocker {
         case video
         case custom
     }
+    
+    private static func avatarUrl(_ id: Int) -> URL? {
+        let string = "https://github.com/radically-straightforward/radically-straightforward/blob/main/examples/avatars/png/\(id).png?raw=true"
+        return URL(string: string)
+    }
 
     public static var sender: ChatUserItem = .init(
         userName: "Sender",
-        avatarURL: URL(string: "https://leafac.github.io/fake-avatars/avatars/png/\(Int.random(in: 1...250)).png")
+        avatarURL: avatarUrl(Int.random(in: 1...250))
     )
 
     public static var chatbot: ChatUserItem = .init(
         userName: "Chatbot",
-        avatarURL: URL(string: "https://leafac.github.io/fake-avatars/avatars/png/\(Int.random(in: 1...250)).png")
+        avatarURL: avatarUrl(Int.random(in: 1...250))
     )
 
     private static var randomUser: ChatUserItem {
