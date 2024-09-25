@@ -294,13 +294,34 @@ internal struct TextCell<Message: ChatMessage>: View {
 
     }
     @available(iOS 15, *)
-    func applyPhoneNumberAttributes(to text: String) -> AttributedString {
-        var modifiedText = AttributedString(text)
+
+    func applyPhoneNumberAttributes(to inputText: String) -> AttributedString {
+        var modifiedText = AttributedString("")
+        // Step 1: Detect if the input text contains HTML tags
+        let containsHTMLTags = inputText.range(of: "<[^>]+>", options: .regularExpression) != nil
+
+        // Step 2: Convert HTML string to NSAttributedString if HTML tags are detected
+        if containsHTMLTags, let data = inputText.data(using: .utf8) {
+            if let nsAttributedString = try? NSAttributedString(
+                data: data,
+                options: [.documentType: NSAttributedString.DocumentType.html,
+                          .characterEncoding: String.Encoding.utf8.rawValue],
+                documentAttributes: nil
+            ) {
+                // Convert NSAttributedString to SwiftUI's AttributedString
+                modifiedText = AttributedString(nsAttributedString)
+            }
+        } else {
+            // Treat it as plain text if no HTML tags are detected
+            modifiedText = AttributedString(inputText)
+        }
+        
+        // Step 3: Phone number detection using NSDataDetector
         do {
             let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
 
-            // Use the AttributedString's string representation for NSDataDetector
-            let plainString = String(text)
+            // Get plain string from the AttributedString to search for phone numbers
+            let plainString = String(modifiedText.characters)
 
             // Find matches for phone numbers in the plain string
             let matches = detector.matches(in: plainString, options: [], range: NSRange(location: 0, length: plainString.utf16.count))
@@ -325,6 +346,7 @@ internal struct TextCell<Message: ChatMessage>: View {
         } catch {
             print("Error creating data detector: \(error.localizedDescription)")
         }
+
         return modifiedText
     }
 
