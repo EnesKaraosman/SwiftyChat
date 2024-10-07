@@ -57,7 +57,23 @@ struct BasicExampleView: View {
 //                                                                                          """, ["Jett Calleja"], .high, .pending), messageUUID: UUID().uuidString))
 
                 
-                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("<p>Hello world amazing normal message <strong>BOLD </strong>space <strong><em>Italic</em></strong></p>", nil, .routine, .none), messageUUID: UUID().uuidString))
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(
+                """
+                <p>Hello world amazing normal message <strong>BOLD </strong>space <strong><em>Italic</em></strong></p>
+                <ul>
+                    <li><strong>Bullet 1</strong></li>
+                    <li><em>Bullet 2 with italic</em></li>
+                </ul>
+                <ol>
+                    <li><u>Numbered item 1 with underline</u></li>
+                    <li>Numbered item 2</li>
+                </ol>
+                """
+                , nil, .routine, .none), messageUUID: UUID().uuidString))
+                
+                
+                
+                self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text("<p>Hello world amazing normal message <strong>BOLD </strong>space <strong><em>Italic</em></strong><s> strike testing</s></p>", nil, .routine, .none), messageUUID: UUID().uuidString))
 
                 self.messages.append(.init(user: MockMessages.chatbot, messageKind: .text(
                 """

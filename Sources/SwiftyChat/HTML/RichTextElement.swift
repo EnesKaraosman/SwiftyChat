@@ -9,7 +9,6 @@ public class RichTextElement: Codable {
     public var text: String?
     public var styles: TextStyle?
     public var newLine: Bool
-    
     // Custom initializer
     public init(text: String? = nil, styles: TextStyle? = nil, newLine: Bool = false) {
         self.text = text
@@ -43,15 +42,15 @@ public class TextStyle: Codable {
     var italic: Bool = false
     var underLine: Bool = false
     var strike: Bool = false
-    var bullet: Bool = false
-    var number: Bool = false
+    var bullets: [RichTextElement]?
+    var numbers: [RichTextElement]?
     
-    public init(bold: Bool = false, italic: Bool = false, underLine: Bool = false,strike : Bool = false, bullet: Bool = false, number: Bool = false) {
+    public init(bold: Bool = false, italic: Bool = false, underLine: Bool = false,strike : Bool = false, bullets: [RichTextElement]? = nil, numbers: [RichTextElement]? = nil) {
         self.bold = bold
         self.italic = italic
         self.underLine = underLine
-        self.bullet = bullet
-        self.number = number
+        self.bullets = bullets
+        self.numbers = numbers
         self.strike = strike
     }
     func copy() -> TextStyle {
@@ -59,8 +58,8 @@ public class TextStyle: Codable {
         style.bold = self.bold
         style.italic = self.italic
         style.underLine = self.underLine
-        style.bullet = self.bullet
-        style.number = self.number
+        style.bullets = self.bullets
+        style.numbers = self.numbers
         style.strike = self.strike
         return style
     }
