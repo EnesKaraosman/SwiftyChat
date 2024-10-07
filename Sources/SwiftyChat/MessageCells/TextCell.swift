@@ -126,11 +126,11 @@ internal struct TextCell<Message: ChatMessage>: View {
         
         VStack(alignment: .leading) {
             Text(attributedText)
-                .fontWeight(cellStyle.textStyle.fontWeight)
+         //       .fontWeight(cellStyle.textStyle.fontWeight)
                 .lineLimit(showFullText ? nil : 20)
                 .modifier(EmojiModifier(text: String(attributedText.characters), defaultFont: cellStyle.textStyle.font))
                 .fixedSize(horizontal: false, vertical: true)
-                .foregroundColor(cellStyle.textStyle.textColor)
+           //     .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
             
             if self.computeLineCount(for: String(attributedText.characters), with: cellStyle) > 20 {
@@ -207,11 +207,11 @@ internal struct TextCell<Message: ChatMessage>: View {
         var result = AttributedString(attentionName)
         result.foregroundColor = .blue
 
-        return result + self.applyPhoneNumberAttributes(to: text)
+        return result + self.applyPhoneNumberAttributes(to: text,style: cellStyle.textStyle)
     }
   @available(iOS 15, *)
    private var attributedText: AttributedString {
-       return self.applyPhoneNumberAttributes(to: text)
+       return self.applyPhoneNumberAttributes(to: text,style: cellStyle.textStyle)
     }
     
     @available(iOS 15, *)
@@ -219,11 +219,11 @@ internal struct TextCell<Message: ChatMessage>: View {
         
         VStack(alignment: .leading) {
             Text(formattedTagString)
-                .fontWeight(cellStyle.textStyle.fontWeight)
+            //    .fontWeight(cellStyle.textStyle.fontWeight)
                 .lineLimit(showFullText ? nil : 20)
                 .modifier(EmojiModifier(text: String(formattedTagString.characters), defaultFont: cellStyle.textStyle.font))
                 .fixedSize(horizontal: false, vertical: true)
-                .foregroundColor(cellStyle.textStyle.textColor)
+            //    .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
             if self.computeLineCount(for: String(formattedTagString.characters), with: cellStyle) > 20 {
                 showMore
@@ -293,62 +293,61 @@ internal struct TextCell<Message: ChatMessage>: View {
         
 
     }
+
+
     @available(iOS 15, *)
+    func applyPhoneNumberAttributes(to inputText: String, style: CommonTextStyle) -> AttributedString {
+        var modifiedText = AttributedString()
 
-    func applyPhoneNumberAttributes(to inputText: String) -> AttributedString {
-        var modifiedText = AttributedString("")
         // Step 1: Detect if the input text contains HTML tags
-        let containsHTMLTags = inputText.range(of: "<[^>]+>", options: .regularExpression) != nil
+        let containsHTMLTags = inputText.containsHtml()
 
-        // Step 2: Convert HTML string to NSAttributedString if HTML tags are detected
-        if containsHTMLTags, let data = inputText.data(using: .utf8) {
-            if let nsAttributedString = try? NSAttributedString(
-                data: data,
-                options: [.documentType: NSAttributedString.DocumentType.html,
-                          .characterEncoding: String.Encoding.utf8.rawValue],
-                documentAttributes: nil
-            ) {
-                // Convert NSAttributedString to SwiftUI's AttributedString
-                modifiedText = AttributedString(nsAttributedString)
-            }
+        // Step 2: Use the custom createAttributeText function to handle HTML conversion
+        if containsHTMLTags {
+            // Convert HTML string to AttributedString using your custom createAttributeText
+            modifiedText = HtmlManager.shared.createAttributeText(from: inputText, defaultStyle: style)
         } else {
             // Treat it as plain text if no HTML tags are detected
             modifiedText = AttributedString(inputText)
+            // Apply default font and text color to the entire text
+            modifiedText.font = style.font
+            modifiedText.foregroundColor = style.textColor
         }
-        
         // Step 3: Phone number detection using NSDataDetector
-        do {
-            let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
+             do {
+                 let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
 
-            // Get plain string from the AttributedString to search for phone numbers
-            let plainString = String(modifiedText.characters)
+                 // Get plain string from the AttributedString to search for phone numbers
+                 let plainString = String(modifiedText.characters)
 
-            // Find matches for phone numbers in the plain string
-            let matches = detector.matches(in: plainString, options: [], range: NSRange(location: 0, length: plainString.utf16.count))
+                 // Find matches for phone numbers in the plain string
+                 let matches = detector.matches(in: plainString, options: [], range: NSRange(location: 0, length: plainString.utf16.count))
 
-            for match in matches {
-                guard let range = Range(match.range, in: plainString) else { continue }
+                 for match in matches {
+                     guard let range = Range(match.range, in: plainString) else { continue }
 
-                // Apply the attributes to the AttributedString
-                if let attributedRange = modifiedText.range(of: plainString[range]) {
-                    // Set the attributes for the found phone number range
-                    modifiedText[attributedRange].foregroundColor = .blue
-                    modifiedText[attributedRange].underlineColor = .blue
-                    modifiedText[attributedRange].underlineStyle = .single
+                     // Apply the attributes to the AttributedString
+                     if let attributedRange = modifiedText.range(of: plainString[range]) {
+                         // Set the attributes for the found phone number range
+                         modifiedText[attributedRange].foregroundColor = .blue
+                         modifiedText[attributedRange].underlineColor = .blue
+                         modifiedText[attributedRange].underlineStyle = .single
 
-                    // Set the link attribute
-                    let phoneNumber = String(plainString[range])
-                    if let phoneNumberURL = URL(string: "tel://\(phoneNumber)") {
-                        modifiedText[attributedRange].link = phoneNumberURL
-                    }
-                }
-            }
-        } catch {
-            print("Error creating data detector: \(error.localizedDescription)")
-        }
+                         // Set the link attribute
+                         let phoneNumber = String(plainString[range])
+                         if let phoneNumberURL = URL(string: "tel://\(phoneNumber)") {
+                             modifiedText[attributedRange].link = phoneNumberURL
+                         }
+                     }
+                 }
+             } catch {
+                 print("Error creating data detector: \(error.localizedDescription)")
+             }
+
 
         return modifiedText
     }
+
 
 
 

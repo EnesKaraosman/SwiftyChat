@@ -69,6 +69,16 @@ internal extension String {
     
 }
 
+extension UIFont {
+    /// Helper function to apply font traits (e.g., bold, italic).
+    func withTraits(_ traits: UIFontDescriptor.SymbolicTraits) -> UIFont {
+        guard let descriptor = self.fontDescriptor.withSymbolicTraits(traits) else {
+            return self
+        }
+        return UIFont(descriptor: descriptor, size: 0)
+    }
+}
+
 internal extension NSAttributedString {
     func htmlString() -> String? {
         do {
