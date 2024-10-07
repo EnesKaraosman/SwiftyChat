@@ -106,7 +106,7 @@ public class HtmlManager : NSObject {
                 let tag = isClosingTag ? String(tagContent.dropFirst()) : tagContent
                 
                 switch tag {
-                case "b", "strong", "i", "em", "u", "ins", "li", "ol":
+                case "b", "strong", "i", "em", "u", "ins", "li", "ol","s","del":
                     if isClosingTag {
                         // Pop the style from the stack
                         if styleStack.count > 1 {
@@ -126,6 +126,8 @@ public class HtmlManager : NSObject {
                             newStyle.bullet = true
                         case "ol":
                             newStyle.number = true
+                        case "s", "del":
+                            newStyle.strike = true
                         default:
                             break
                         }

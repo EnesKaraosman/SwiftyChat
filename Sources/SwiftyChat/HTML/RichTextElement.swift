@@ -42,15 +42,17 @@ public class TextStyle: Codable {
     var bold: Bool = false
     var italic: Bool = false
     var underLine: Bool = false
+    var strike: Bool = false
     var bullet: Bool = false
     var number: Bool = false
     
-    public init(bold: Bool = false, italic: Bool = false, underLine: Bool = false, bullet: Bool = false, number: Bool = false) {
+    public init(bold: Bool = false, italic: Bool = false, underLine: Bool = false,strike : Bool = false, bullet: Bool = false, number: Bool = false) {
         self.bold = bold
         self.italic = italic
         self.underLine = underLine
         self.bullet = bullet
         self.number = number
+        self.strike = strike
     }
     func copy() -> TextStyle {
         let style = TextStyle()
@@ -59,6 +61,7 @@ public class TextStyle: Codable {
         style.underLine = self.underLine
         style.bullet = self.bullet
         style.number = self.number
+        style.strike = self.strike
         return style
     }
 }

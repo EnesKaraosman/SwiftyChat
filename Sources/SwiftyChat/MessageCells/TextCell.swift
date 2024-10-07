@@ -19,7 +19,7 @@ internal struct TextCell<Message: ChatMessage>: View {
     public let callback: () -> AttributedTextTappedCallback
     public let didTappedViewTask : (Message) -> Void
     @State private var showFullText = false
-
+    
     @EnvironmentObject var style: ChatMessageCellStyle
     
     private var cellStyle: TextCellStyle {
@@ -43,21 +43,21 @@ internal struct TextCell<Message: ChatMessage>: View {
     
     
     private var showMore : some View {
-            HStack {
-                Spacer()
-                Button(action: {
-                    showFullText.toggle() // Toggle between showing full text a     nd truncated text
-                }) {
-                    Text(showFullText ? "Show less" : "Show more")
-                        .font(.system(size: 12))
-                        .fontWeight(.bold)
-                        .foregroundColor(Color.blue)
-                }
-                .padding(.trailing)
-                .padding(.bottom)
+        HStack {
+            Spacer()
+            Button(action: {
+                showFullText.toggle() // Toggle between showing full text a     nd truncated text
+            }) {
+                Text(showFullText ? "Show less" : "Show more")
+                    .font(.system(size: 12))
+                    .fontWeight(.bold)
+                    .foregroundColor(Color.blue)
             }
+            .padding(.trailing)
+            .padding(.bottom)
+        }
     }
-
+    
     
     
     // MARK: - Default Text
@@ -76,7 +76,7 @@ internal struct TextCell<Message: ChatMessage>: View {
             }
             
             HStack(){
-
+                
                 if let status = actionStatus {
                     PriorityMessageViewStyle(priorityLevel: priority)
                         .padding(.bottom,10)
@@ -103,22 +103,22 @@ internal struct TextCell<Message: ChatMessage>: View {
                 }
             }
             
-
-
+            
+            
         }
         .background(cellStyle.cellBackgroundColor)
         .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
         .overlay(
-
+            
             RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-            .stroke(
-                cellStyle.cellBorderColor,
-                lineWidth: cellStyle.cellBorderWidth
-            )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
         )
     }
     @available(iOS 15, *)
@@ -126,17 +126,17 @@ internal struct TextCell<Message: ChatMessage>: View {
         
         VStack(alignment: .leading) {
             Text(attributedText)
-         //       .fontWeight(cellStyle.textStyle.fontWeight)
+            //       .fontWeight(cellStyle.textStyle.fontWeight)
                 .lineLimit(showFullText ? nil : 20)
                 .modifier(EmojiModifier(text: String(attributedText.characters), defaultFont: cellStyle.textStyle.font))
                 .fixedSize(horizontal: false, vertical: true)
-           //     .foregroundColor(cellStyle.textStyle.textColor)
+            //     .foregroundColor(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
             
             if self.computeLineCount(for: String(attributedText.characters), with: cellStyle) > 20 {
                 showMore
             }
-
+            
             
             HStack(){
                 
@@ -170,19 +170,19 @@ internal struct TextCell<Message: ChatMessage>: View {
         .background(cellStyle.cellBackgroundColor)
         .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
         .overlay(
-
+            
             RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-            .stroke(
-                cellStyle.cellBorderColor,
-                lineWidth: cellStyle.cellBorderWidth
-            )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
         )
     }
- 
+    
     
     private func computeLineCount(for text: String, with style: TextCellStyle) -> Int {
         //Font what is Font in swiftUI
@@ -206,12 +206,12 @@ internal struct TextCell<Message: ChatMessage>: View {
         
         var result = AttributedString(attentionName)
         result.foregroundColor = .blue
-
+        
         return result + self.applyPhoneNumberAttributes(to: text,style: cellStyle.textStyle)
     }
-  @available(iOS 15, *)
-   private var attributedText: AttributedString {
-       return self.applyPhoneNumberAttributes(to: text,style: cellStyle.textStyle)
+    @available(iOS 15, *)
+    private var attributedText: AttributedString {
+        return self.applyPhoneNumberAttributes(to: text,style: cellStyle.textStyle)
     }
     
     @available(iOS 15, *)
@@ -228,10 +228,10 @@ internal struct TextCell<Message: ChatMessage>: View {
             if self.computeLineCount(for: String(formattedTagString.characters), with: cellStyle) > 20 {
                 showMore
             }
-
+            
             
             HStack(){
-
+                
                 if let status = actionStatus {
                     PriorityMessageViewStyle(priorityLevel: priority)
                         .padding(.bottom,10)
@@ -262,16 +262,16 @@ internal struct TextCell<Message: ChatMessage>: View {
         .background(cellStyle.cellBackgroundColor)
         .clipShape(RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners))
         .overlay(
-
+            
             RoundedCornerShape(radius: cellStyle.cellCornerRadius, corners: cellStyle.cellRoundedCorners)
-            .stroke(
-                cellStyle.cellBorderColor,
-                lineWidth: cellStyle.cellBorderWidth
-            )
-            .shadow(
-                color: cellStyle.cellShadowColor,
-                radius: cellStyle.cellShadowRadius
-            )
+                .stroke(
+                    cellStyle.cellBorderColor,
+                    lineWidth: cellStyle.cellBorderWidth
+                )
+                .shadow(
+                    color: cellStyle.cellShadowColor,
+                    radius: cellStyle.cellShadowRadius
+                )
         )
     }
     
@@ -291,10 +291,10 @@ internal struct TextCell<Message: ChatMessage>: View {
         }
         
         
-
+        
     }
-
-
+    
+    
     @available(iOS 15, *)
     func applyPhoneNumberAttributes(to inputText: String, style: CommonTextStyle) -> AttributedString {
         var modifiedText = AttributedString()
@@ -355,11 +355,9 @@ internal struct TextCell<Message: ChatMessage>: View {
         
         return modifiedText
     }
-
-
-
-
+    
 }
+
 internal struct AttributedTextPhone: Hashable {
     let string: String
     let isPhoneNumber: Bool
