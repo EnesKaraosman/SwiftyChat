@@ -38,6 +38,28 @@ internal extension String {
 
 internal extension String {
     
+    var cleanHtml: String {
+        // Convert the HTML string to Data
+        guard let data = self.data(using: .utf8) else {
+            return self // Return original string if conversion fails
+        }
+
+        // Try to convert the HTML data to an attributed string
+        if let attributedString = try? NSAttributedString(data: data,
+                                                          options: [.documentType: NSAttributedString.DocumentType.html,
+                                                                    .characterEncoding: String.Encoding.utf8.rawValue],
+                                                          documentAttributes: nil) {
+            // Return the plain string from the attributed string
+            return attributedString.string
+        } else {
+            return self // Return original string if conversion fails
+        }
+    }
+    
+    func containsEscapedHtml() -> Bool {
+        return self.contains("&lt;") || self.contains("&gt;")
+    }
+    
     var htmlToAttributedString: NSAttributedString? {
         guard let data = data(using: .utf8) else { return nil }
         do {
