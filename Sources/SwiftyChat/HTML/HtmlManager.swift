@@ -140,10 +140,11 @@ public class HtmlManager : NSObject {
                 // It's text content, possibly containing newlines
                 let texts = fragment.components(separatedBy: "\n")
                 for (index, text) in texts.enumerated() {
-                    let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
-                    if !trimmedText.isEmpty {
+                    // Remove this trimming to preserve spaces
+                    // let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !text.isEmpty {
                         let currentStyle = styleStack.last!
-                        let element = RichTextElement(text: trimmedText, styles: currentStyle.copy())
+                        let element = RichTextElement(text: text, styles: currentStyle.copy())
                         elements.append(element)
                     }
                     if index < texts.count - 1 {
