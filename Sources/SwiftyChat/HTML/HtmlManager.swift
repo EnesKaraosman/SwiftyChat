@@ -161,6 +161,8 @@ public class HtmlManager : NSObject {
             var styleStack: [TextStyle] = [TextStyle()] // Initialize the style stack with a default style
             
             for match in matches {
+                
+                print("matches ",match)
                 let matchRange = match.range(at: 0)
                 guard let range = Range(matchRange, in: html) else { continue }
                 let fragment = String(html[range])
