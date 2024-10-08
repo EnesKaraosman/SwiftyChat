@@ -68,7 +68,7 @@ struct BasicExampleView: View {
                     <li><u>Numbered item 1 with underline</u></li>
                     <li>Numbered item 2</li>
                 </ol>
-                """
+                """.trimmingCharacters(in: .whitespacesAndNewlines)
                 , nil, .routine, .none), messageUUID: UUID().uuidString))
                 
                 

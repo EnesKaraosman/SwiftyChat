@@ -38,10 +38,7 @@ public class RichTextElement: Codable {
 }
 
 public class ListItemStyle : Codable {
-    var bold: Bool = false
-    var italic: Bool = false
-    var underLine: Bool = false
-    var strike: Bool = false
+    var elements: [RichTextElement] = []
 }
 
 public class TextStyle: Codable {

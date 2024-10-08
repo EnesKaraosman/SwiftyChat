@@ -46,6 +46,7 @@ public class HtmlManager : NSObject {
             if element.newLine {
                 attributedString.append(AttributedString("\n"))
             } else if let text = element.text {
+                // Handle regular text
                 var substring = AttributedString(text)
                 var uiFont = baseUIFont
 
@@ -67,66 +68,88 @@ public class HtmlManager : NSObject {
 
                 attributedString.append(substring)
             } else if let styles = element.styles {
-                // Handle bullets
-                if let bullets = styles.bullets {
-                    for bulletItem in bullets {
-                        var bulletString = AttributedString("• ")
-                        var uiFont = baseUIFont
+                // Handle lists
+                if styles.bullet {
+                    // Handle bullet list
+                    for listItem in styles.bulletStyles {
+                        var itemAttributedString = AttributedString()
+                        // Process each element within the list item
+                        for itemElement in listItem.elements {
+                            if itemElement.newLine {
+                                itemAttributedString.append(AttributedString("\n"))
+                            } else if let itemText = itemElement.text {
+                                var itemSubstring = AttributedString(itemText)
+                                var uiFont = baseUIFont
 
-                        // Apply styles to bulletItem
-                        if let bulletStyles = bulletItem.styles {
-                            uiFont = fontWithTraits(baseFont: baseUIFont, bold: bulletStyles.bold, italic: bulletStyles.italic)
-                        }
+                                if let itemStyles = itemElement.styles {
+                                    // Apply styles from itemElement
+                                    uiFont = fontWithTraits(baseFont: baseUIFont, bold: itemStyles.bold, italic: itemStyles.italic)
+                                    // Underline and strike-through
+                                    if itemStyles.underLine {
+                                        itemSubstring.underlineStyle = .single
+                                    }
+                                    if itemStyles.strike {
+                                        itemSubstring.strikethroughStyle = .single
+                                    }
+                                }
+                                // Apply the font to the substring
+                                itemSubstring.font = Font(uiFont)
+                                // Apply default text color
+                                itemSubstring.foregroundColor = defaultStyle.textColor
 
-                        var bulletText = AttributedString(bulletItem.text ?? "")
-                        bulletText.font = Font(uiFont)
-                        bulletText.foregroundColor = defaultStyle.textColor
-
-                        // Underline and strike-through
-                        if let bulletStyles = bulletItem.styles {
-                            if bulletStyles.underLine {
-                                bulletText.underlineStyle = .single
+                                itemAttributedString.append(itemSubstring)
                             }
-                            if bulletStyles.strike {
-                                bulletText.strikethroughStyle = .single
-                            }
                         }
-
-                        bulletString.append(bulletText)
+                        // Prepend bullet character
+                        let bulletText = "\u{2022} "
+                        var bulletString = AttributedString(bulletText)
+                        bulletString.font = Font(baseUIFont)
+                        bulletString.foregroundColor = defaultStyle.textColor
+                        // Combine bullet and item text
+                        bulletString.append(itemAttributedString)
                         attributedString.append(bulletString)
-                        attributedString.append(AttributedString("\n"))
+                        attributedString.append(AttributedString("\n")) // Add newline after each list item
                     }
-                }
+                } else if styles.number {
+                    // Handle numbered list
+                    for (index, listItem) in styles.numberStyles.enumerated() {
+                        var itemAttributedString = AttributedString()
+                        // Process each element within the list item
+                        for itemElement in listItem.elements {
+                            if itemElement.newLine {
+                                itemAttributedString.append(AttributedString("\n"))
+                            } else if let itemText = itemElement.text {
+                                var itemSubstring = AttributedString(itemText)
+                                var uiFont = baseUIFont
 
-                // Handle numbers
-                if let numbers = styles.numbers {
-                    for (index, numberItem) in numbers.enumerated() {
-                        let numberPrefix = "\(index + 1). "
-                        var numberString = AttributedString(numberPrefix)
-                        var uiFont = baseUIFont
+                                if let itemStyles = itemElement.styles {
+                                    // Apply styles from itemElement
+                                    uiFont = fontWithTraits(baseFont: baseUIFont, bold: itemStyles.bold, italic: itemStyles.italic)
+                                    // Underline and strike-through
+                                    if itemStyles.underLine {
+                                        itemSubstring.underlineStyle = .single
+                                    }
+                                    if itemStyles.strike {
+                                        itemSubstring.strikethroughStyle = .single
+                                    }
+                                }
+                                // Apply the font to the substring
+                                itemSubstring.font = Font(uiFont)
+                                // Apply default text color
+                                itemSubstring.foregroundColor = defaultStyle.textColor
 
-                        // Apply styles to numberItem
-                        if let numberStyles = numberItem.styles {
-                            uiFont = fontWithTraits(baseFont: baseUIFont, bold: numberStyles.bold, italic: numberStyles.italic)
-                        }
-
-                        var numberText = AttributedString(numberItem.text ?? "")
-                        numberText.font = Font(uiFont)
-                        numberText.foregroundColor = defaultStyle.textColor
-
-                        // Underline and strike-through
-                        if let numberStyles = numberItem.styles {
-                            if numberStyles.underLine {
-                                numberText.underlineStyle = .single
+                                itemAttributedString.append(itemSubstring)
                             }
-                            if numberStyles.strike {
-                                numberText.strikethroughStyle = .single
-                            }
                         }
-
-                        numberString.append(numberText)
+                        // Prepend number and period
+                        let numberText = "\(index + 1). "
+                        var numberString = AttributedString(numberText)
+                        numberString.font = Font(baseUIFont)
+                        numberString.foregroundColor = defaultStyle.textColor
+                        // Combine number and item text
+                        numberString.append(itemAttributedString)
                         attributedString.append(numberString)
-                        attributedString.append(AttributedString("\n"))
+                        attributedString.append(AttributedString("\n")) // Add newline after each list item
                     }
                 }
             }
@@ -152,85 +175,132 @@ public class HtmlManager : NSObject {
     }
     
     public func richTextElementFromHtml(html: String) -> [RichTextElement] {
-            var elements: [RichTextElement] = []
+        var elements: [RichTextElement] = []
+        let tagRegex = try! NSRegularExpression(pattern: "(<[^>]+>|[^<]+)", options: [])
+        let matches = tagRegex.matches(in: html, options: [], range: NSRange(html.startIndex..., in: html))
+        
+        var styleStack: [TextStyle] = [TextStyle()] // Main style stack
+        var isInListItem = false
+        var currentListType: String? = nil // "ul" or "ol"
+        var listItemStyleStack: [TextStyle] = [] // Style stack for list items
+        var listItems: [ListItemStyle] = [] // Accumulated list items
+        var listItemElements: [RichTextElement] = [] // Elements within a list item
+        
+        for match in matches {
+            let matchRange = match.range(at: 0)
+            guard let range = Range(matchRange, in: html) else { continue }
+            let fragment = String(html[range])
             
-            // Updated regular expression to capture tags and text
-            let tagRegex = try! NSRegularExpression(pattern: "(<[^>]+>|[^<]+)", options: [])
-            let matches = tagRegex.matches(in: html, options: [], range: NSRange(html.startIndex..., in: html))
-            
-            var styleStack: [TextStyle] = [TextStyle()] // Initialize the style stack with a default style
-            
-            for match in matches {
+            if fragment.hasPrefix("<") {
+                // It's a tag
+                let tagContent = fragment.trimmingCharacters(in: CharacterSet(charactersIn: "<>")).lowercased()
+                let isClosingTag = tagContent.hasPrefix("/")
+                let tag = isClosingTag ? String(tagContent.dropFirst()) : tagContent
                 
-                print("matches ",match)
-                let matchRange = match.range(at: 0)
-                guard let range = Range(matchRange, in: html) else { continue }
-                let fragment = String(html[range])
-                
-                if fragment.hasPrefix("<") {
-                    // It's a tag
-                    let tagContent = fragment.trimmingCharacters(in: CharacterSet(charactersIn: "<>")).lowercased()
-                    let isClosingTag = tagContent.hasPrefix("/")
-                    let tag = isClosingTag ? String(tagContent.dropFirst()) : tagContent
-                    //ol is number
-                    //ul is bullets
-                    //li is list inside ol or ul
+                if isClosingTag {
+                    // Handling closing tags
                     switch tag {
-                    case "b", "strong", "i", "em", "u", "ins", "li", "ol","s","del":
-                        if isClosingTag {
-                            // Pop the style from the stack
-                            if styleStack.count > 1 {
-                                styleStack.removeLast()
-                            }
-                        } else {
-                            // Push a new style onto the stack
-                            let newStyle = styleStack.last!.copy()
-                            switch tag {
-                            case "b", "strong":
-                                newStyle.bold = true
-                            case "i", "em":
-                                newStyle.italic = true
-                            case "u", "ins":
-                                newStyle.underLine = true
-                            case "ul":
-                              //  newStyle.bullets
-                                break
-                            case "ol":
-                            //    newStyle.numbers
-                                break
-
-                            case "s", "del":
-                                newStyle.strike = true
-                            default:
-                                break
-                            }
-                            styleStack.append(newStyle)
+                    case "li":
+                        // End of list item
+                        let listItemStyle = ListItemStyle()
+                        listItemStyle.elements = listItemElements
+                        listItems.append(listItemStyle)
+                        listItemElements = []
+                        listItemStyleStack = []
+                        isInListItem = false
+                    case "ul", "ol":
+                        // End of list
+                        currentListType = nil
+                        let listStyle = TextStyle()
+                        if tag == "ul" {
+                            listStyle.bullet = true
+                            listStyle.bulletStyles = listItems
+                        } else if tag == "ol" {
+                            listStyle.number = true
+                            listStyle.numberStyles = listItems
                         }
-                    case "br":
-                        elements.append(RichTextElement(newLine: true))
+                        elements.append(RichTextElement(text: nil, styles: listStyle, newLine: false))
+                        listItems = []
+                    default:
+                        // Pop the appropriate style stack
+                        if isInListItem && listItemStyleStack.count > 0 {
+                            listItemStyleStack.removeLast()
+                        } else if styleStack.count > 1 {
+                            styleStack.removeLast()
+                        }
+                    }
+                } else {
+                    // Handling opening tags
+                    var newStyle: TextStyle
+                    if isInListItem {
+                        newStyle = (listItemStyleStack.last ?? TextStyle()).copy()
+                    } else {
+                        newStyle = (styleStack.last ?? TextStyle()).copy()
+                    }
+                    
+                    switch tag {
+                    case "b", "strong":
+                        newStyle.bold = true
+                    case "i", "em":
+                        newStyle.italic = true
+                    case "u", "ins":
+                        newStyle.underLine = true
+                    case "ul":
+                        currentListType = "ul"
+                    case "ol":
+                        currentListType = "ol"
+                    case "li":
+                        isInListItem = true
+                        listItemStyleStack = [newStyle]
+                    case "s", "del":
+                        newStyle.strike = true
                     default:
                         break
                     }
-                } else {
-                    // It's text content, possibly containing newlines
+                    
+                    // Push the new style onto the appropriate stack
+                    if tag != "li" {
+                        if isInListItem {
+                            listItemStyleStack.append(newStyle)
+                        } else {
+                            styleStack.append(newStyle)
+                        }
+                    }
+                }
+            } else {
+                // It's text content
+                if isInListItem {
+                    // Collect styled text fragments within the list item
                     let texts = fragment.components(separatedBy: "\n")
                     for (index, text) in texts.enumerated() {
-                        // Remove this trimming to preserve spaces
-                        // let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if !text.isEmpty {
+                            let currentStyle = listItemStyleStack.last ?? TextStyle()
+                            let element = RichTextElement(text: text, styles: currentStyle.copy())
+                            listItemElements.append(element)
+                        }
+                        if index < texts.count - 1 {
+                            // Newline detected within text
+                            listItemElements.append(RichTextElement(newLine: true))
+                        }
+                    }
+                } else {
+                    // Process text outside list items
+                    let texts = fragment.components(separatedBy: "\n")
+                    for (index, text) in texts.enumerated() {
                         if !text.isEmpty {
                             let currentStyle = styleStack.last!
                             let element = RichTextElement(text: text, styles: currentStyle.copy())
                             elements.append(element)
                         }
                         if index < texts.count - 1 {
-                            // Newline detected within text
                             elements.append(RichTextElement(newLine: true))
                         }
                     }
                 }
             }
-            return elements
         }
+        return elements
+    }
     
     
     
