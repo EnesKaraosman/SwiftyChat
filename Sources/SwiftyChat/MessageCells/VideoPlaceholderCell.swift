@@ -56,7 +56,6 @@ internal struct VideoPlaceholderCell<Message: ChatMessage>: View {
                 height: imageWidth / cellStyle.cellAspectRatio
             )
             HStack(){
-
                 if let status = actionStatus {
                     PriorityMessageViewStyle(priorityLevel: priority)
                         .padding(.bottom,10)

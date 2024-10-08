@@ -37,29 +37,44 @@ public class RichTextElement: Codable {
     }
 }
 
+public class ListItemStyle : Codable {
+    var bold: Bool = false
+    var italic: Bool = false
+    var underLine: Bool = false
+    var strike: Bool = false
+}
+
 public class TextStyle: Codable {
     var bold: Bool = false
     var italic: Bool = false
     var underLine: Bool = false
     var strike: Bool = false
-    var bullets: [RichTextElement]?
-    var numbers: [RichTextElement]?
+    var bullet : Bool = false
+    var number : Bool = false
+    var bulletStyles : [ListItemStyle] = []
+    var numberStyles : [ListItemStyle] = []
     
-    public init(bold: Bool = false, italic: Bool = false, underLine: Bool = false,strike : Bool = false, bullets: [RichTextElement]? = nil, numbers: [RichTextElement]? = nil) {
+    public init(bold: Bool = false, italic: Bool = false, underLine: Bool = false,strike : Bool = false, bullet: Bool = false, number: Bool = false) {
         self.bold = bold
         self.italic = italic
         self.underLine = underLine
-        self.bullets = bullets
-        self.numbers = numbers
+        self.bullet = bullet
+        self.number = number
         self.strike = strike
+    }
+    func addBulletStyle(item : ListItemStyle) {
+        self.bulletStyles.append(item)
+    }
+    func addNumberStyle(item : ListItemStyle) {
+        self.numberStyles.append(item)
     }
     func copy() -> TextStyle {
         let style = TextStyle()
         style.bold = self.bold
         style.italic = self.italic
         style.underLine = self.underLine
-        style.bullets = self.bullets
-        style.numbers = self.numbers
+        style.bullet = self.bullet
+        style.number = self.number
         style.strike = self.strike
         return style
     }
