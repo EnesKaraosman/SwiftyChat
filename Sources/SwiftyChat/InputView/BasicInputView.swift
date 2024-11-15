@@ -37,8 +37,8 @@ public struct BasicInputView: View {
 
     private var sendButton: some View {
         Button(action: {
-            self.onCommit?(.text(message))
-            self.message.removeAll()
+            onCommit?(.text(message))
+            message.removeAll()
         }, label: {
             Circle().fill(Color(.systemBlue))
                 .frame(width: 36, height: 36)
@@ -57,8 +57,8 @@ public struct BasicInputView: View {
         VStack(spacing: .zero) {
             Divider().padding(.bottom, 8)
             HStack {
-                self.messageEditorView
-                self.sendButton
+                messageEditorView
+                sendButton
             }
         }
         .padding(.horizontal, 8)

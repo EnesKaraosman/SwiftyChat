@@ -10,15 +10,15 @@ import SwiftyChat
 import SwiftyChatMock
 
 struct BasicExampleView: View {
-    
+
     @State var messages: [MessageMocker.ChatMessageItem] = MessageMocker.generate(kind: .text, count: 20)
-    
+
     @State private var message = ""
-    
+
     var body: some View {
         chatView
     }
-    
+
     private var chatView: some View {
         ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(messages: $messages) {
 
@@ -33,25 +33,27 @@ struct BasicExampleView: View {
             )
             .background(Color.primary.colorInvert())
             .embedInAnyView()
-            
+
         }
         // ▼ Optional, Present context menu when cell long pressed
         .messageCellContextMenu { message -> AnyView in
             switch message.messageKind {
             case .text(let text):
-                return Button(action: {
-                    print("Copy Context Menu tapped!!")
-                    #if os(iOS)
-                    UIPasteboard.general.string = text
-                    #endif
-
-                    #if os(macOS)
-                    NSPasteboard.general.setString(text, forType: .string)
-                    #endif
-                }) {
-                    Text("Copy")
-                    Image(systemName: "doc.on.doc")
-                }.embedInAnyView()
+                return Button(
+                    action: {
+                        print("Copy Context Menu tapped!!")
+                        #if os(iOS)
+                        UIPasteboard.general.string = text
+                        #endif
+                        #if os(macOS)
+                        NSPasteboard.general.setString(text, forType: .string)
+                        #endif
+                    },
+                    label: {
+                        Text("Copy")
+                        Image(systemName: "doc.on.doc")
+                    }
+                ).embedInAnyView()
             default:
                 // If you don't want to implement contextMenu action
                 // for a specific case, simply return EmptyView like below;

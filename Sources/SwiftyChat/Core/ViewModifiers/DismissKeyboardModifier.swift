@@ -19,11 +19,10 @@ struct DismissKeyboardOnTappingOutside: ViewModifier {
             .onTapGesture {
                 #if os(iOS)
                 let keyWindow = UIApplication.shared.connectedScenes
-                    .filter({$0.activationState == .foregroundActive})
-                    .map({$0 as? UIWindowScene})
-                    .compactMap({$0})
+                    .filter({ $0.activationState == .foregroundActive })
+                    .compactMap({ $0 as? UIWindowScene })
                     .first?.windows
-                    .filter({$0.isKeyWindow}).first
+                    .filter(\.isKeyWindow).first
                 keyWindow?.endEditing(true)
                 #endif
             }

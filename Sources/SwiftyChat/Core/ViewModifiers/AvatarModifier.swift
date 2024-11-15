@@ -103,10 +103,10 @@ struct AvatarModifier<Message: ChatMessage>: ViewModifier {
     }
 
     private var avatarSpacing: CGFloat {
-        switch currentAvatarPosition {
-        case .alignToMessageTop(let spacing): return spacing
-        case .alignToMessageCenter(let spacing): return spacing
-        case .alignToMessageBottom(let spacing): return spacing
+        return switch currentAvatarPosition {
+        case .alignToMessageTop(let spacing): spacing
+        case .alignToMessageCenter(let spacing): spacing
+        case .alignToMessageBottom(let spacing): spacing
         }
     }
 

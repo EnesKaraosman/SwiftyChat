@@ -16,22 +16,15 @@ struct ChatMessageViewContainer<Message: ChatMessage>: View {
     let contactFooterSection: (ContactItem, Message) -> [ContactCellButton]
     let onCarouselItemAction: (CarouselItemButton, Message) -> Void
 
-    @ViewBuilder private func messageCell() -> some View {
+    @ViewBuilder
+    private func messageCell() -> some View {
         switch message.messageKind {
 
         case .text(let text):
-            TextMessageView(
-                text: text,
-                message: message,
-                size: size
-            )
+            TextMessageView(text: text, message: message, size: size)
 
         case .location(let location):
-            LocationMessageView(
-                location: location,
-                message: message,
-                size: size
-            )
+            LocationMessageView(location: location, message: message, size: size)
 
         case .imageText(let imageLoadingType, let text):
             ImageTextMessageView(
@@ -71,11 +64,7 @@ struct ChatMessageViewContainer<Message: ChatMessage>: View {
             )
 
         case .video(let videoItem):
-            VideoMessageView(
-                media: videoItem,
-                message: message,
-                size: size
-            )
+            VideoMessageView(media: videoItem, message: message, size: size)
 
         case .loading:
             LoadingMessageView(message: message, size: size)

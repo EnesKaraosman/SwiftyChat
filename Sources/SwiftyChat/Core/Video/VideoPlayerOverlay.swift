@@ -1,8 +1,11 @@
 import SwiftUI
 
 struct VideoPlayerOverlay<Message: ChatMessage>: View {
-    @ObservedObject var playerVM: PlayerViewModel
-    @EnvironmentObject var videoManager: VideoManager<Message>
+    @ObservedObject
+    var playerVM: PlayerViewModel
+
+    @EnvironmentObject
+    var videoManager: VideoManager<Message>
 
     init(for playerViewModel: PlayerViewModel) {
         self.playerVM = playerViewModel
@@ -61,16 +64,15 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
             .overlay(
                 Image(
                     systemName: videoManager.isFullScreen ?
-                    "arrow.down.right.and.arrow.up.left" :
-                        "arrow.up.left.and.arrow.down.right"
+                    "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right"
                 )
                 .font(Font.body.weight(.semibold))
                 .foregroundColor(Color.white)
                 .padding()
             )
-            .onTapGesture {
+            .onTapGesture { [weak videoManager] in
                 withAnimation {
-                    videoManager.isFullScreen.toggle()
+                    videoManager?.isFullScreen.toggle()
                 }
             }
     }
@@ -85,8 +87,8 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
                     .foregroundColor(Color.white)
                     .padding()
             )
-            .onTapGesture {
-                self.videoManager.flushState()
+            .onTapGesture { [weak videoManager] in
+                videoManager?.flushState()
             }
     }
 }

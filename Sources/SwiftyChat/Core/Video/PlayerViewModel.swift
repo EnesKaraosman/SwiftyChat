@@ -2,23 +2,35 @@ import AVFoundation
 import Combine
 
 final class PlayerViewModel: ObservableObject {
-    let player = AVPlayer()
-    @Published var isInPipMode: Bool = false
-    @Published var isPlaying = false
-    @Published var isEditingCurrentTime = false
-    @Published var currentTime: Double = .zero
-    @Published var duration: Double?
+    let player: AVPlayer
+
+    @Published
+    var isEditingCurrentTime = false
+
+    @Published
+    var currentTime: Double = .zero
+
+    @Published
+    var isInPipMode: Bool = false
+
+    @Published
+    private(set) var isPlaying = false
+
+    @Published
+    private(set) var duration: Double?
 
     private var subscriptions: Set<AnyCancellable> = []
     private var timeObserver: Any?
 
     deinit {
-        if let timeObserver = timeObserver {
+        if let timeObserver {
             player.removeTimeObserver(timeObserver)
         }
     }
 
     init() {
+        player = AVPlayer()
+
         $isEditingCurrentTime
             .dropFirst()
             .filter({ $0 == false })

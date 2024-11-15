@@ -69,29 +69,21 @@ struct PIPVideoCell<Message: ChatMessage>: View {
         let inputViewOffset: CGFloat = videoManager.isFullScreen ? 0 : 60
         let hPadding = videoManager.isFullScreen ? 0 : horizontalPadding
         withAnimation(.easeIn) {
-            switch toCorner {
-            case .center:
-                location = .init(
-                    x: size.width / 2,
-                    y: size.height / 2
-                )
-            case .leftTop:
-                location = .init(
+            location = switch toCorner {
+            case .center: .init(x: size.width / 2, y: size.height / 2)
+            case .leftTop: .init(
                     x: (videoFrameWidth(in: size) / 2) + (hPadding / 2),
                     y: videoFrameHeight(in: size) / 2
                 )
-            case .leftBottom:
-                location = .init(
+            case .leftBottom: .init(
                     x: (videoFrameWidth(in: size) / 2) + (hPadding / 2),
                     y: size.height - videoFrameHeight(in: size) / 2 - inputViewOffset
                 )
-            case .rightTop:
-                location = .init(
+            case .rightTop: .init(
                     x: size.width - (videoFrameWidth(in: size) / 2) - (hPadding / 2),
                     y: videoFrameHeight(in: size) / 2
                 )
-            case .rightBottom:
-                location = .init(
+            case .rightBottom: .init(
                     x: size.width - (videoFrameWidth(in: size) / 2) - (hPadding / 2),
                     y: size.height - videoFrameHeight(in: size) / 2 - inputViewOffset
                 )
@@ -117,9 +109,8 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                     .gesture(simpleDrag(in: geometry.size))
                     .animation(.linear(duration: 0.1))
                     .onAppear { rePositionVideoFrame(toCorner: .rightTop, in: geometry.size) }
-                    .onAppear {
-
-                        videoManager.$isFullScreen
+                    .onAppear { [weak videoManager] in
+                        videoManager?.$isFullScreen
                             .removeDuplicates()
                             .sink { _ in
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
@@ -141,7 +132,6 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                     }
                     .onDisappear {
                         cancellables.forEach { $0.cancel() }
-                        print("☠️ pip disappeared..")
                     }
             }
         }
@@ -166,20 +156,20 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                 var newLocation = startLocation ?? location
                 newLocation.x += value.translation.width
                 newLocation.y += value.translation.height
-                self.location = newLocation
+                location = newLocation
             }
             .updating($startLocation) { _, startLocation, _ in
                 startLocation = startLocation ?? location
             }
             .onEnded { _ in
-                if self.location.y > size.midY {
-                    if self.location.x > size.midX {
+                if location.y > size.midY {
+                    if location.x > size.midX {
                         rePositionVideoFrame(toCorner: .rightBottom, in: size)
                     } else {
                         rePositionVideoFrame(toCorner: .leftBottom, in: size)
                     }
                 } else {
-                    if self.location.x > size.midX {
+                    if location.x > size.midX {
                         rePositionVideoFrame(toCorner: .rightTop, in: size)
                     } else {
                         rePositionVideoFrame(toCorner: .leftTop, in: size)

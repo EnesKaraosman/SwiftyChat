@@ -9,8 +9,8 @@ import SwiftUI
 
 struct MessageHorizontalAlignmentModifier: ViewModifier {
 
-    var messageKind: ChatMessageKind
-    var isSender: Bool
+    let messageKind: ChatMessageKind
+    let isSender: Bool
 
     private var isSpaceFreeMessageKind: Bool {
         if case ChatMessageKind.carousel = messageKind {

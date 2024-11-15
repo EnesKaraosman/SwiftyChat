@@ -21,7 +21,10 @@ struct AdvancedExampleView: View {
     }
 
     private var chatView: some View {
-        ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(messages: $messages, scrollToBottom: $scrollToBottom) {
+        ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(
+            messages: $messages,
+            scrollToBottom: $scrollToBottom
+        ) {
             BasicInputView(
                 message: $message,
                 placeholder: "Type something",
@@ -44,13 +47,17 @@ struct AdvancedExampleView: View {
         .messageCellContextMenu { message -> AnyView in
             switch message.messageKind {
             case .text:
-                return Button(action: {
-                    print("Forward Context Menu tapped!!")
-                    // Forward text
-                }) {
-                    Text("Forward")
-                    Image(systemName: "arrowshape.turn.up.right")
-                }.embedInAnyView()
+                return Button(
+                    action: {
+                        print("Forward Context Menu tapped!!")
+                        // Forward text
+                    },
+                    label: {
+                        Text("Forward")
+                        Image(systemName: "arrowshape.turn.up.right")
+                    }
+                )
+                .embedInAnyView()
             default:
                 // If you don't want to implement contextMenu action
                 // for a specific case, simply return EmptyView like below;
@@ -68,7 +75,7 @@ struct AdvancedExampleView: View {
             )
         }
         // ▼ Implement in case ChatMessageKind.contact
-        .contactItemButtons { (contact, message) -> [ContactCellButton] in
+        .contactItemButtons { (contact, _) -> [ContactCellButton] in
             return [
                 .init(title: "Save", action: {
                     print(contact.displayName)
@@ -76,7 +83,7 @@ struct AdvancedExampleView: View {
             ]
         }
         // ▼ Optional
-        .onCarouselItemAction(action: { (button, message) in
+        .onCarouselItemAction(action: { (_, message) in
             print(message.messageKind.description)
         })
         // ▼ Required

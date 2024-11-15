@@ -14,7 +14,7 @@ struct LoadingThreeBalls: View {
     let timing: Double
 
     let maxCounter = 3
-    @State var counter = 0
+    @State private var counter = 0
 
     let frame: CGSize
     let primaryColor: Color
@@ -44,9 +44,9 @@ struct LoadingThreeBalls: View {
 }
 
 #if DEBUG
-struct LoadingThreeBalls_Previews: PreviewProvider {
-    static var previews: some View {
-        LoadingThreeBalls()
-    }
+@available(iOS 17.0, macOS 14.0, tvOS 17.0, watchOS 10.0, *)
+#Preview(traits: .sizeThatFitsLayout) {
+    LoadingThreeBalls()
+        .padding()
 }
 #endif

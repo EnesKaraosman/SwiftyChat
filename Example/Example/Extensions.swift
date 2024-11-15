@@ -16,7 +16,7 @@ extension Color {
 let futuraFont = Font.custom("Futura", size: 17)
 
 extension ChatMessageCellStyle {
-    
+
     static let basicStyle = ChatMessageCellStyle(
         incomingTextStyle: .init(
             textStyle: .init(textColor: .black, font: futuraFont),
@@ -36,5 +36,4 @@ extension ChatMessageCellStyle {
         ),
         incomingAvatarStyle: .init(imageStyle: .init(imageSize: .zero))
     )
-    
 }

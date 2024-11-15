@@ -16,8 +16,8 @@ public struct Device {
         let orientation = UIDevice.current.orientation
         return orientation == .landscapeLeft || orientation == .landscapeRight
 
-        #endif
-
+        #else
         return false
+        #endif
     }
 }

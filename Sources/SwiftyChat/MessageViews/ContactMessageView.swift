@@ -65,7 +65,7 @@ struct ContactMessageView<Message: ChatMessage>: View {
     }
 
     private var buttons: [ContactCellButton] {
-        return footerSection(contact, message)
+        footerSection(contact, message)
     }
 
     private var buttonActionFooter: some View {
