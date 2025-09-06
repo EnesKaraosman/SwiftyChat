@@ -36,8 +36,11 @@ struct VideoMessageView<Message: ChatMessage>: View {
                 if isThisVideoPlaying { return }
                 withAnimation {
                     videoManager.flushState()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
-                        videoManager.message = message
+                    Task {
+                        try? await Task.sleep(nanoseconds: 700_000_000)
+                        await MainActor.run {
+                            videoManager.message = message
+                        }
                     }
                 }
             }
@@ -90,7 +93,8 @@ struct VideoMessageView<Message: ChatMessage>: View {
         .foregroundColor(.white)
     }
 
-    @ViewBuilder private var thumbnailOverlay: some View {
+    @ViewBuilder
+    private var thumbnailOverlay: some View {
         if isThisVideoPlaying {
             pipMessageView
         } else {

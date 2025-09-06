@@ -3,6 +3,7 @@ import AVKit
 import Combine
 import SwiftUI
 
+@MainActor
 struct VideoPlayerRepresentable: UIViewRepresentable {
     @ObservedObject var playerVM: PlayerViewModel
 
@@ -19,6 +20,7 @@ struct VideoPlayerRepresentable: UIViewRepresentable {
         Coordinator(self)
     }
 
+    @MainActor
     class Coordinator: NSObject, AVPictureInPictureControllerDelegate {
         private let parent: VideoPlayerRepresentable
         private var controller: AVPictureInPictureController?

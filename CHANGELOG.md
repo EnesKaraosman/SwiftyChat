@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [2.8.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.8.0)
+Released on 2025-09-06.
+
+#### Added
+- PIPVideoCellViewModel: centralized sizing, positioning and delayed reposition scheduling for picture-in-picture video cells.
+
+#### Changed
+- Refactor: `PIPVideoCell` rewritten to use `PIPVideoCellViewModel`, removed Combine-based cancellables and adopted structured concurrency (`Task`) for delayed actions and lifecycle.
+- Main-thread safety: annotate `VideoManager` and `VideoPlayerRepresentable` with `@MainActor`.
+- Concurrency: replaced `DispatchQueue` delayed calls with `Task.sleep` in `VideoMessageView`.
+
+#### Update
+- Dependency: Kingfisher bumped to 8.5.0
+
 ## [2.5.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.5.0)
 Released on 2024-04-09.
 

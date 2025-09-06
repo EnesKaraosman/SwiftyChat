@@ -47,8 +47,7 @@ struct QuickReplyMessageView: View {
                 Text(quickReplies[idx].title)
                     .fontWeight(
                         idx == selectedIndex ?
-                        cellStyle.selectedItemFontWeight :
-                            cellStyle.unselectedItemFontWeight
+                            cellStyle.selectedItemFontWeight : cellStyle.unselectedItemFontWeight
                     )
                     .font(idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont)
                     .padding(.vertical, cellStyle.itemVerticalPadding)
@@ -60,11 +59,14 @@ struct QuickReplyMessageView: View {
                         RoundedRectangle(cornerRadius: cellStyle.itemCornerRadius)
                             .stroke(
                                 colors(selectedIndex: selectedIndex)[idx],
-                                lineWidth: cellStyle.itemBorderWidth)
-                            .shadow(color: cellStyle.itemShadowColor,
-                                    radius: cellStyle.itemShadowRadius,
-                                    x: 0,
-                                    y: 4))
+                                lineWidth: cellStyle.itemBorderWidth
+                            )
+                            .shadow(
+                                color: cellStyle.itemShadowColor,
+                                radius: cellStyle.itemShadowRadius,
+                                x: 0, y: 4
+                            )
+                    )
             })
             .simultaneousGesture(
                 TapGesture().onEnded { _ in
