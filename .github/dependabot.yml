@@ -1,0 +1,16 @@
+# Dependabot configuration: scans Swift Package Manager dependencies monthly
+version: 2
+updates:
+  - package-ecosystem: "swift"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+      time: "04:00"
+      timezone: "UTC"
+    open-pull-requests-limit: 5
+    rebase-strategy: "auto"
+    # Label PRs created by Dependabot for easier filtering
+    labels:
+      - "dependencies"
+      - "dependabot"
