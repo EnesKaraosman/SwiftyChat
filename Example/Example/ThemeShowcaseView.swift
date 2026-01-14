@@ -66,9 +66,11 @@ struct ThemeShowcaseView: View {
             }
         }
         .navigationTitle("Theme: \(selectedTheme.name)")
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .automatic) {
                 Button {
                     showThemePicker = true
                 } label: {
@@ -122,7 +124,7 @@ struct ThemeShowcaseView: View {
         }
         .padding(.horizontal)
         .padding(.vertical, 12)
-        .background(Color(.secondarySystemBackground))
+        .background(Color.adaptiveSecondaryBackground)
     }
     
     // MARK: - Themed Input View
@@ -158,7 +160,7 @@ struct ThemeShowcaseView: View {
             .padding(.vertical, 10)
             .padding(.bottom, 20)
         }
-        .background(Color(.secondarySystemBackground))
+        .background(Color.adaptiveSecondaryBackground)
     }
     
     // MARK: - Actions
@@ -265,21 +267,32 @@ struct ThemePickerSheet: View {
     @Environment(\.dismiss) private var dismiss
     
     var body: some View {
-        NavigationView {
-            List(ChatTheme.allThemes) { theme in
-                ThemeRow(theme: theme, isSelected: theme.id == selectedTheme.id)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        withAnimation {
-                            selectedTheme = theme
-                        }
-                        dismiss()
+        NavigationStack {
+            ScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(ChatTheme.allThemes) { theme in
+                        ThemeRow(theme: theme, isSelected: theme.id == selectedTheme.id)
+                            .contentShape(Rectangle())
+                            .onTapGesture {
+                                withAnimation {
+                                    selectedTheme = theme
+                                }
+                                dismiss()
+                            }
+
+                        Divider()
+                            .padding(.leading, 66)
                     }
+                }
+                .padding(.vertical, 8)
             }
+            .background(Color.adaptiveBackground)
             .navigationTitle("Choose Theme")
+            #if os(iOS)
             .navigationBarTitleDisplayMode(.inline)
+            #endif
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
+                ToolbarItem(placement: .automatic) {
                     Button("Done") {
                         dismiss()
                     }
@@ -336,7 +349,8 @@ struct ThemeRow: View {
                     .font(.title2)
             }
         }
-        .padding(.vertical, 8)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
     }
 }
 

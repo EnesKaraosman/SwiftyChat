@@ -93,9 +93,11 @@ struct MessageTypesGalleryView: View {
             .environmentObject(ChatMessageCellStyle.galleryStyle)
         }
         .navigationTitle("Message Types")
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .automatic) {
                 Button("Clear") {
                     messages.removeAll()
                 }
@@ -133,7 +135,7 @@ struct MessageTypesGalleryView: View {
             
             Divider()
         }
-        .background(Color(.secondarySystemBackground))
+        .background(Color.adaptiveSecondaryBackground)
     }
     
     // MARK: - Input View
@@ -176,7 +178,7 @@ struct MessageTypesGalleryView: View {
             .padding()
             .padding(.bottom, 20)
         }
-        .background(Color(.secondarySystemBackground))
+        .background(Color.adaptiveSecondaryBackground)
     }
     
     // MARK: - Add Sample Messages
@@ -329,7 +331,7 @@ struct MessageTypeButton: View {
             }
             .frame(width: 70, height: 50)
             .foregroundColor(isSelected ? .white : .primary)
-            .background(isSelected ? Color.blue : Color(.tertiarySystemBackground))
+            .background(isSelected ? Color.blue : Color.adaptiveTertiaryBackground)
             .cornerRadius(10)
         }
     }
@@ -373,7 +375,7 @@ extension ChatMessageCellStyle {
         incomingTextStyle: TextCellStyle(
             textStyle: CommonTextStyle(textColor: .primary, font: .body),
             textPadding: 12,
-            cellBackgroundColor: Color(.secondarySystemBackground),
+            cellBackgroundColor: Color.adaptiveSecondaryBackground,
             cellCornerRadius: 16,
             cellShadowRadius: 2,
             cellShadowColor: Color.black.opacity(0.1),
@@ -399,7 +401,7 @@ extension ChatMessageCellStyle {
             subtitleLabelStyle: CommonTextStyle(textColor: .secondary, font: .subheadline),
             buttonTitleColor: .white,
             buttonBackgroundColor: .blue,
-            cellBackgroundColor: Color(.secondarySystemBackground),
+            cellBackgroundColor: Color.adaptiveSecondaryBackground,
             cellCornerRadius: 12
         ),
         incomingAvatarStyle: AvatarStyle(

@@ -50,9 +50,11 @@ struct InteractiveChatView: View {
         }
         .environmentObject(ChatMessageCellStyle.interactiveStyle)
         .navigationTitle("Chat Demo")
+        #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)
+        #endif
         .toolbar {
-            ToolbarItem(placement: .navigationBarTrailing) {
+            ToolbarItem(placement: .automatic) {
                 Button("Restart") {
                     restartConversation()
                 }
@@ -76,7 +78,7 @@ struct InteractiveChatView: View {
                 }
                 .padding(.horizontal)
                 .padding(.vertical, 4)
-                .background(Color(.secondarySystemBackground))
+                .background(Color.adaptiveSecondaryBackground)
             }
             
             Divider()
@@ -90,14 +92,14 @@ struct InteractiveChatView: View {
                 Button(action: sendCurrentMessage) {
                     Image(systemName: "arrow.up.circle.fill")
                         .font(.title)
-                        .foregroundColor(inputMessage.isEmpty ? Color(.systemGray3) : .blue)
+                        .foregroundColor(inputMessage.isEmpty ? Color.adaptiveGray : .blue)
                 }
                 .disabled(inputMessage.isEmpty)
             }
             .padding()
             .padding(.bottom, 20)
         }
-        .background(Color(.secondarySystemBackground))
+        .background(Color.adaptiveSecondaryBackground)
     }
     
     // MARK: - Conversation Logic
@@ -410,7 +412,7 @@ extension ChatMessageCellStyle {
                 font: .system(size: 16, weight: .regular, design: .rounded)
             ),
             textPadding: 14,
-            cellBackgroundColor: Color(.secondarySystemBackground),
+            cellBackgroundColor: Color.adaptiveSecondaryBackground,
             cellCornerRadius: 20,
             cellBorderColor: .clear,
             cellBorderWidth: 0,
@@ -445,9 +447,9 @@ extension ChatMessageCellStyle {
             subtitleLabelStyle: CommonTextStyle(textColor: .secondary, font: .subheadline),
             buttonTitleColor: .white,
             buttonBackgroundColor: .blue,
-            cellBackgroundColor: Color(.secondarySystemBackground),
+            cellBackgroundColor: Color.adaptiveSecondaryBackground,
             cellCornerRadius: 16,
-            cellBorderColor: Color(.separator),
+            cellBorderColor: Color.secondary.opacity(0.3),
             cellBorderWidth: 1
         ),
         incomingAvatarStyle: AvatarStyle(

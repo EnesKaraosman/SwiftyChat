@@ -95,7 +95,11 @@ struct ChatListView: View {
                     Text("Resources")
                 }
             }
+            #if os(iOS)
             .listStyle(.insetGrouped)
+            #else
+            .listStyle(.sidebar)
+            #endif
             .navigationTitle("SwiftyChat")
         }
     }

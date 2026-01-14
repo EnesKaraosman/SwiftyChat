@@ -8,6 +8,49 @@
 import SwiftUI
 import SwiftyChat
 
+// MARK: - Cross-platform Color Helpers
+private extension Color {
+    static var systemBackground: Color {
+        #if os(iOS)
+        Color(.systemBackground)
+        #else
+        Color(nsColor: .windowBackgroundColor)
+        #endif
+    }
+    
+    static var secondarySystemBackground: Color {
+        #if os(iOS)
+        Color(.secondarySystemBackground)
+        #else
+        Color(nsColor: .controlBackgroundColor)
+        #endif
+    }
+    
+    static var systemGray6: Color {
+        #if os(iOS)
+        Color(.systemGray6)
+        #else
+        Color(nsColor: .controlBackgroundColor)
+        #endif
+    }
+    
+    static var systemGray5: Color {
+        #if os(iOS)
+        Color(.systemGray5)
+        #else
+        Color(nsColor: .separatorColor)
+        #endif
+    }
+    
+    static var systemBlueColor: Color {
+        #if os(iOS)
+        Color(.systemBlue)
+        #else
+        Color(nsColor: .systemBlue)
+        #endif
+    }
+}
+
 // MARK: - Theme Definition
 struct ChatTheme: Identifiable {
     let id: String
@@ -35,7 +78,7 @@ extension ChatTheme {
                     font: .system(size: 16, weight: .regular, design: .rounded)
                 ),
                 textPadding: 14,
-                cellBackgroundColor: Color(.systemGray6),
+                cellBackgroundColor: Color.systemGray6,
                 cellCornerRadius: 20,
                 cellBorderColor: .clear,
                 cellBorderWidth: 0,
@@ -76,8 +119,8 @@ extension ChatTheme {
                 imageStyle: CommonImageStyle(imageSize: .zero)
             )
         ),
-        backgroundColor: Color(.systemBackground),
-        inputBackgroundColor: Color(.systemBackground),
+        backgroundColor: Color.systemBackground,
+        inputBackgroundColor: Color.systemBackground,
         accentColor: .blue,
         icon: "bubble.left.and.bubble.right.fill"
     )
@@ -166,7 +209,7 @@ extension ChatTheme {
                     font: .system(size: 16, weight: .regular, design: .serif)
                 ),
                 textPadding: 14,
-                cellBackgroundColor: Color(.secondarySystemBackground),
+                cellBackgroundColor: Color.secondarySystemBackground,
                 cellCornerRadius: 16,
                 cellBorderColor: Color.orange.opacity(0.3),
                 cellBorderWidth: 1,
@@ -203,7 +246,7 @@ extension ChatTheme {
                 subtitleLabelStyle: CommonTextStyle(textColor: .secondary, font: .subheadline),
                 buttonTitleColor: .white,
                 buttonBackgroundColor: .orange,
-                cellBackgroundColor: Color(.secondarySystemBackground),
+                cellBackgroundColor: Color.secondarySystemBackground,
                 cellCornerRadius: 16
             ),
             incomingAvatarStyle: AvatarStyle(
@@ -219,8 +262,8 @@ extension ChatTheme {
                 imageStyle: CommonImageStyle(imageSize: .zero)
             )
         ),
-        backgroundColor: Color(.systemBackground),
-        inputBackgroundColor: Color(.secondarySystemBackground),
+        backgroundColor: Color.systemBackground,
+        inputBackgroundColor: Color.secondarySystemBackground,
         accentColor: .orange,
         icon: "sun.max.fill"
     )
@@ -237,7 +280,7 @@ extension ChatTheme {
                     font: .system(size: 16, weight: .regular)
                 ),
                 textPadding: 12,
-                cellBackgroundColor: Color(.secondarySystemBackground),
+                cellBackgroundColor: Color.secondarySystemBackground,
                 cellCornerRadius: 18,
                 cellBorderColor: Color(red: 0.2, green: 0.6, blue: 0.4).opacity(0.3),
                 cellBorderWidth: 1,
@@ -270,7 +313,7 @@ extension ChatTheme {
                 subtitleLabelStyle: CommonTextStyle(textColor: .secondary, font: .subheadline),
                 buttonTitleColor: .white,
                 buttonBackgroundColor: Color(red: 0.2, green: 0.6, blue: 0.4),
-                cellBackgroundColor: Color(.secondarySystemBackground),
+                cellBackgroundColor: Color.secondarySystemBackground,
                 cellCornerRadius: 14
             ),
             incomingAvatarStyle: AvatarStyle(
@@ -286,8 +329,8 @@ extension ChatTheme {
                 imageStyle: CommonImageStyle(imageSize: .zero)
             )
         ),
-        backgroundColor: Color(.systemBackground),
-        inputBackgroundColor: Color(.secondarySystemBackground),
+        backgroundColor: Color.systemBackground,
+        inputBackgroundColor: Color.secondarySystemBackground,
         accentColor: Color(red: 0.2, green: 0.6, blue: 0.4),
         icon: "leaf.fill"
     )
@@ -304,7 +347,7 @@ extension ChatTheme {
                     font: .system(size: 17)
                 ),
                 textPadding: 12,
-                cellBackgroundColor: Color(.systemGray5),
+                cellBackgroundColor: Color.systemGray5,
                 cellCornerRadius: 18,
                 cellBorderColor: .clear,
                 cellBorderWidth: 0,
@@ -318,7 +361,7 @@ extension ChatTheme {
                     font: .system(size: 17)
                 ),
                 textPadding: 12,
-                cellBackgroundColor: Color(.systemBlue),
+                cellBackgroundColor: Color.systemBlueColor,
                 cellCornerRadius: 18,
                 cellBorderColor: .clear,
                 cellBorderWidth: 0,
@@ -339,8 +382,8 @@ extension ChatTheme {
                 imageStyle: CommonImageStyle(imageSize: .zero)
             )
         ),
-        backgroundColor: Color(.systemBackground),
-        inputBackgroundColor: Color(.systemBackground),
+        backgroundColor: Color.systemBackground,
+        inputBackgroundColor: Color.systemBackground,
         accentColor: .blue,
         icon: "message.fill"
     )

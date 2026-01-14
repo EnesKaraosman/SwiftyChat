@@ -8,7 +8,42 @@
 import SwiftUI
 import SwiftyChat
 
-// MARK: - Colors
+// MARK: - Cross-platform Color Helpers
+extension Color {
+    static var adaptiveBackground: Color {
+        #if os(iOS)
+        Color(.systemBackground)
+        #else
+        Color(nsColor: .windowBackgroundColor)
+        #endif
+    }
+    
+    static var adaptiveSecondaryBackground: Color {
+        #if os(iOS)
+        Color(.secondarySystemBackground)
+        #else
+        Color(nsColor: .controlBackgroundColor)
+        #endif
+    }
+    
+    static var adaptiveTertiaryBackground: Color {
+        #if os(iOS)
+        Color(.tertiarySystemBackground)
+        #else
+        Color(nsColor: .textBackgroundColor)
+        #endif
+    }
+    
+    static var adaptiveGray: Color {
+        #if os(iOS)
+        Color(.systemGray3)
+        #else
+        Color(nsColor: .systemGray)
+        #endif
+    }
+}
+
+// MARK: - App Colors
 extension Color {
     static let chatBlue = Color(#colorLiteral(red: 0.1405690908, green: 0.1412397623, blue: 0.25395751, alpha: 1))
     static let chatGray = Color(#colorLiteral(red: 0.7861273885, green: 0.7897668481, blue: 0.7986581922, alpha: 1))
@@ -29,7 +64,7 @@ extension ChatMessageCellStyle {
         incomingTextStyle: .init(
             textStyle: .init(textColor: .primary, font: futuraFont),
             textPadding: 16,
-            cellBackgroundColor: Color(.secondarySystemBackground),
+            cellBackgroundColor: Color.secondary.opacity(0.15),
             cellBorderWidth: 0,
             cellShadowRadius: 0,
             cellRoundedCorners: [.topRight, .bottomRight, .bottomLeft]
@@ -53,7 +88,7 @@ extension ChatMessageCellStyle {
                 font: roundedFont
             ),
             textPadding: 14,
-            cellBackgroundColor: Color(.systemGray6),
+            cellBackgroundColor: Color.secondary.opacity(0.15),
             cellCornerRadius: 20,
             cellShadowRadius: 4,
             cellShadowColor: Color.black.opacity(0.1),
