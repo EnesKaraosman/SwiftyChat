@@ -36,8 +36,9 @@ struct VideoMessageView<Message: ChatMessage>: View {
                 if isThisVideoPlaying { return }
                 withAnimation {
                     videoManager.flushState()
+                    // Small delay to allow flush animation to complete
                     Task {
-                        try? await Task.sleep(nanoseconds: 700_000_000)
+                        try? await Task.sleep(nanoseconds: 100_000_000)
                         await MainActor.run {
                             videoManager.message = message
                         }

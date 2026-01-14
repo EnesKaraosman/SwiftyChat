@@ -24,8 +24,19 @@ struct ContactMessageView<Message: ChatMessage>: View {
     let message: Message
     let size: CGSize
     let footerSection: (ContactItem, Message) -> [ContactCellButton]
+    
+    // Cache buttons to avoid recomputation
+    private let cachedButtons: [ContactCellButton]
 
     @EnvironmentObject var style: ChatMessageCellStyle
+    
+    init(contact: ContactItem, message: Message, size: CGSize, footerSection: @escaping (ContactItem, Message) -> [ContactCellButton]) {
+        self.contact = contact
+        self.message = message
+        self.size = size
+        self.footerSection = footerSection
+        self.cachedButtons = footerSection(contact, message)
+    }
 
     private var cellStyle: ContactCellStyle {
         style.contactCellStyle
@@ -64,21 +75,17 @@ struct ContactMessageView<Message: ChatMessage>: View {
         }
     }
 
-    private var buttons: [ContactCellButton] {
-        footerSection(contact, message)
-    }
-
     private var buttonActionFooter: some View {
         HStack {
-            ForEach(0..<buttons.count, id: \.self) { idx in
-                Button(buttons[idx].title) {}
+            ForEach(0..<cachedButtons.count, id: \.self) { idx in
+                Button(cachedButtons[idx].title) {}
                     .buttonStyle(BorderlessButtonStyle())
                     .simultaneousGesture(
-                        TapGesture().onEnded(buttons[idx].action)
+                        TapGesture().onEnded(cachedButtons[idx].action)
                     )
                     .frame(maxWidth: .infinity)
 
-                if idx != buttons.count - 1 {
+                if idx != cachedButtons.count - 1 {
                     Divider()
                 }
             }

@@ -23,19 +23,31 @@ struct TextMessageView<Message: ChatMessage>: View {
         size.width * (Device.isLandscape ? 0.6 : 0.75)
     }
 
-    private var attributedString: AttributedString? {
-        try? .init(markdown: text)
+    // Cache expensive computations
+    private let cachedAttributedString: AttributedString?
+    private let cachedIsEmojiOnly: Bool
+    private let cachedEmojiCount: Int
+    
+    init(text: String, message: Message, size: CGSize) {
+        self.text = text
+        self.message = message
+        self.size = size
+        
+        // Compute once during initialization
+        self.cachedAttributedString = try? AttributedString(markdown: text)
+        self.cachedIsEmojiOnly = text.containsOnlyEmoji
+        self.cachedEmojiCount = text.count
     }
 
     private var defaultText: some View {
         Text(text)
-            .applyChatStyle(for: text, cellStyle: cellStyle)
+            .applyChatStyle(for: cachedIsEmojiOnly, emojiCount: cachedEmojiCount, cellStyle: cellStyle)
     }
 
     var body: some View {
-        if let attributedString {
-            Text(attributedString)
-                .applyChatStyle(for: text, cellStyle: cellStyle)
+        if let cachedAttributedString {
+            Text(cachedAttributedString)
+                .applyChatStyle(for: cachedIsEmojiOnly, emojiCount: cachedEmojiCount, cellStyle: cellStyle)
         } else {
             defaultText
         }
@@ -43,13 +55,14 @@ struct TextMessageView<Message: ChatMessage>: View {
 }
 
 private extension Text {
-    func applyChatStyle(for text: String, cellStyle: TextCellStyle) -> some View {
+    func applyChatStyle(for isEmojiOnly: Bool, emojiCount: Int, cellStyle: TextCellStyle) -> some View {
         self
             .font(cellStyle.textStyle.font)
             .fontWeight(cellStyle.textStyle.fontWeight)
-            .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
+            .modifier(EmojiModifier(isEmojiOnly: isEmojiOnly, emojiCount: emojiCount, defaultFont: cellStyle.textStyle.font))
             .lineLimit(nil)
             .foregroundColor(cellStyle.textStyle.textColor)
+            .fixedSize(horizontal: false, vertical: true)
             .padding(cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
             .roundedCorners(

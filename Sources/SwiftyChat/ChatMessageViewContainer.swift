@@ -7,7 +7,13 @@
 
 import SwiftUI
 
-struct ChatMessageViewContainer<Message: ChatMessage>: View {
+struct ChatMessageViewContainer<Message: ChatMessage>: View, Equatable {
+    
+    static func == (lhs: ChatMessageViewContainer<Message>, rhs: ChatMessageViewContainer<Message>) -> Bool {
+        // Compare message identity to determine if re-render is needed
+        lhs.message.id == rhs.message.id &&
+        lhs.size == rhs.size
+    }
 
     let message: Message
     let size: CGSize

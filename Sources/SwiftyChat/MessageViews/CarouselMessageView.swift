@@ -8,8 +8,14 @@
 import Kingfisher
 import SwiftUI
 
-public struct CarouselItemButton: Identifiable {
-    public let id = UUID()
+public struct CarouselItemButton: Identifiable, Hashable {
+    public var id: String {
+        var hasher = Hasher()
+        hasher.combine(title)
+        hasher.combine(url?.absoluteString)
+        hasher.combine(payload)
+        return "\(hasher.finalize())"
+    }
     public let title: String
     public let url: URL?
     public let payload: String?
@@ -18,6 +24,16 @@ public struct CarouselItemButton: Identifiable {
         self.title = title
         self.url = url
         self.payload = payload
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(url?.absoluteString)
+        hasher.combine(payload)
+    }
+    
+    public static func == (lhs: CarouselItemButton, rhs: CarouselItemButton) -> Bool {
+        lhs.title == rhs.title && lhs.url == rhs.url && lhs.payload == rhs.payload
     }
 }
 
@@ -48,6 +64,7 @@ struct CarouselMessageView<Message: ChatMessage>: View {
                 }
             }
         }
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
 
@@ -66,13 +83,25 @@ private struct CarouselItemView: View {
     private var itemWidth: CGFloat {
         cellStyle.cellWidth(size)
     }
+    
+    // Fixed image height based on item width (16:9 aspect ratio)
+    private var imageHeight: CGFloat {
+        itemWidth * 9 / 16
+    }
 
     var body: some View {
         VStack {
 
             KFImage(item.imageURL)
                 .resizable()
-                .scaledToFit()
+                .placeholder { _ in
+                    Rectangle()
+                        .fill(Color.secondary.opacity(0.2))
+                        .frame(width: itemWidth, height: imageHeight)
+                }
+                .aspectRatio(contentMode: .fill)
+                .frame(width: itemWidth, height: imageHeight)
+                .clipped()
 
             Group {
                 Text(item.title)
@@ -80,12 +109,14 @@ private struct CarouselItemView: View {
                     .font(cellStyle.titleLabelStyle.font)
                     .foregroundColor(cellStyle.titleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
+                    .lineLimit(2)
 
                 Text(item.subtitle)
                     .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
                     .font(cellStyle.subtitleLabelStyle.font)
                     .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
+                    .lineLimit(2)
 
             }
             .fixedSize(horizontal: false, vertical: true)

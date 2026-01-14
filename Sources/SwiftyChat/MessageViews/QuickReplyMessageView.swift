@@ -10,13 +10,9 @@ import WrappingHStack
 
 struct QuickReplyMessageView: View {
 
-    var quickReplies: [QuickReplyItem]
-    var quickReplySelected: (QuickReplyItem) -> Void
+    let quickReplies: [QuickReplyItem]
+    let quickReplySelected: (QuickReplyItem) -> Void
     @EnvironmentObject var style: ChatMessageCellStyle
-
-    private var totalOptionsLength: Int {
-        quickReplies.map { $0.title.count }.reduce(0, +)
-    }
 
     private var cellStyle: QuickReplyCellStyle {
         style.quickReplyCellStyle
@@ -25,12 +21,8 @@ struct QuickReplyMessageView: View {
     @State private var isDisabled = false
     @State private var selectedIndex: Int?
 
-    private func colors(selectedIndex: Int?) -> [Color] {
-        var colors = (1...quickReplies.count).map { _ in cellStyle.unselectedItemColor }
-        if let idx = selectedIndex {
-            colors[idx] = cellStyle.selectedItemColor
-        }
-        return colors
+    private func itemColor(for index: Int) -> Color {
+        index == selectedIndex ? cellStyle.selectedItemColor : cellStyle.unselectedItemColor
     }
 
     private func itemBackground(for index: Int) -> some View {
@@ -54,11 +46,11 @@ struct QuickReplyMessageView: View {
                     .padding(.horizontal, cellStyle.itemHorizontalPadding)
                     .frame(height: cellStyle.itemHeight)
                     .background(itemBackground(for: idx))
-                    .foregroundColor(colors(selectedIndex: selectedIndex)[idx])
+                    .foregroundColor(itemColor(for: idx))
                     .overlay(
                         RoundedRectangle(cornerRadius: cellStyle.itemCornerRadius)
                             .stroke(
-                                colors(selectedIndex: selectedIndex)[idx],
+                                itemColor(for: idx),
                                 lineWidth: cellStyle.itemBorderWidth
                             )
                             .shadow(
@@ -76,6 +68,8 @@ struct QuickReplyMessageView: View {
                 }
             )
             .padding(.vertical, 4)
-        }.disabled(isDisabled)
+        }
+        .disabled(isDisabled)
+        .fixedSize(horizontal: false, vertical: true)
     }
 }
