@@ -14,6 +14,10 @@
 		94410B882BC6B53E00C37BDB /* AdvancedExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B872BC6B53E00C37BDB /* AdvancedExampleView.swift */; };
 		94410B8A2BC6B54100C37BDB /* BasicExampleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B892BC6B54100C37BDB /* BasicExampleView.swift */; };
 		94410B8C2BC6B54900C37BDB /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B8B2BC6B54900C37BDB /* Extensions.swift */; };
+		94410B902BC6B55000C37BDB /* ThemeShowcaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B8F2BC6B55000C37BDB /* ThemeShowcaseView.swift */; };
+		94410B922BC6B55100C37BDB /* MessageTypesGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B912BC6B55100C37BDB /* MessageTypesGalleryView.swift */; };
+		94410B942BC6B55200C37BDB /* InteractiveChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B932BC6B55200C37BDB /* InteractiveChatView.swift */; };
+		94410B962BC6B55300C37BDB /* ChatThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 94410B952BC6B55300C37BDB /* ChatThemes.swift */; };
 		9498B4232BCAADBB0021FB93 /* SwiftyChat in Frameworks */ = {isa = PBXBuildFile; productRef = 9498B4222BCAADBB0021FB93 /* SwiftyChat */; };
 		9498B4252BCAADBB0021FB93 /* SwiftyChatMock in Frameworks */ = {isa = PBXBuildFile; productRef = 9498B4242BCAADBB0021FB93 /* SwiftyChatMock */; };
 /* End PBXBuildFile section */
@@ -28,6 +32,10 @@
 		94410B892BC6B54100C37BDB /* BasicExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicExampleView.swift; sourceTree = "<group>"; };
 		94410B8B2BC6B54900C37BDB /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		94410B8D2BC6B5C800C37BDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		94410B8F2BC6B55000C37BDB /* ThemeShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeShowcaseView.swift; sourceTree = "<group>"; };
+		94410B912BC6B55100C37BDB /* MessageTypesGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTypesGalleryView.swift; sourceTree = "<group>"; };
+		94410B932BC6B55200C37BDB /* InteractiveChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveChatView.swift; sourceTree = "<group>"; };
+		94410B952BC6B55300C37BDB /* ChatThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatThemes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +76,11 @@
 				94410B852BC6B53900C37BDB /* ChatListView.swift */,
 				94410B872BC6B53E00C37BDB /* AdvancedExampleView.swift */,
 				94410B892BC6B54100C37BDB /* BasicExampleView.swift */,
+				94410B8F2BC6B55000C37BDB /* ThemeShowcaseView.swift */,
+				94410B912BC6B55100C37BDB /* MessageTypesGalleryView.swift */,
+				94410B932BC6B55200C37BDB /* InteractiveChatView.swift */,
 				94410B8B2BC6B54900C37BDB /* Extensions.swift */,
+				94410B972BC6B55400C37BDB /* Themes */,
 				94410B782BC6B4D700C37BDB /* Assets.xcassets */,
 				94410B7A2BC6B4D700C37BDB /* Preview Content */,
 			);
@@ -81,6 +93,14 @@
 				94410B7B2BC6B4D700C37BDB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		94410B972BC6B55400C37BDB /* Themes */ = {
+			isa = PBXGroup;
+			children = (
+				94410B952BC6B55300C37BDB /* ChatThemes.swift */,
+			);
+			path = Themes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -165,6 +185,10 @@
 				94410B882BC6B53E00C37BDB /* AdvancedExampleView.swift in Sources */,
 				94410B862BC6B53900C37BDB /* ChatListView.swift in Sources */,
 				94410B752BC6B4D400C37BDB /* ExampleApp.swift in Sources */,
+				94410B902BC6B55000C37BDB /* ThemeShowcaseView.swift in Sources */,
+				94410B922BC6B55100C37BDB /* MessageTypesGalleryView.swift in Sources */,
+				94410B942BC6B55200C37BDB /* InteractiveChatView.swift in Sources */,
+				94410B962BC6B55300C37BDB /* ChatThemes.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
