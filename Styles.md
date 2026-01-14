@@ -28,6 +28,21 @@ public class ChatMessageCellStyle: ObservableObject {
 }
 ```
 
+## Pre-built Themes
+
+SwiftyChat 3.0 includes 8 pre-built themes for quick customization. Check the Example app's `ChatThemes.swift` for implementation details.
+
+| Theme | Accent Color | Description |
+|-------|--------------|-------------|
+| Modern | Blue | Clean and minimal |
+| Classic | Green | Traditional messaging |
+| Dark Neon | Pink | Cyberpunk vibes |
+| Minimal | Gray | Subtle and clean |
+| Ocean | Teal | Calming sea-inspired |
+| Sunset | Orange | Warm gradients |
+| Nature | Green | Fresh and eco-friendly |
+| Lavender | Purple | Soft and relaxing |
+
 ## Styles
 * [Text](#text)
 * [QuickReply](#quick-reply)

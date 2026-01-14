@@ -1,5 +1,44 @@
 # CHANGELOG
 
+## [3.0.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/3.0.0)
+
+Released on 2026-01-14.
+
+### ⚡ Performance Improvements
+
+This release brings significant performance optimizations that dramatically improve scroll smoothness and responsiveness:
+
+- **O(n²) → O(n) message rendering**: Cached message metadata (date headers, grouping info) to eliminate redundant calculations during scrolling.
+- **Shared DateFormatter**: Replaced repeated `DateFormatter` instantiations with a static cached formatter.
+- **Cached emoji detection**: Emoji-only text detection and markdown parsing are now cached per message.
+- **Async image cache lookups**: Moved Kingfisher cache lookups off the main thread to prevent UI blocking.
+- **Equatable conformance**: Added `Equatable` to `ChatMessageViewContainer` for better SwiftUI diffing.
+- **Faster video playback**: Reduced video play delay from 700ms to 100ms.
+- **Deterministic CarouselItemButton IDs**: Improved SwiftUI's identity tracking for carousel buttons.
+- **Stable image placeholders**: Fixed scroll jitter by using consistent 4:3 aspect ratio placeholders for images.
+- **MessageRow optimization**: Introduced `MessageRow` struct with stable IDs for improved list performance.
+
+### 🎨 Example App Enhancements
+
+- **ThemeShowcaseView**: Interactive theme preview with live switching between 8 pre-built themes.
+- **MessageTypesGalleryView**: Comprehensive gallery showcasing all message types.
+- **InteractiveChatView**: Simulated chatbot conversation demo.
+- **ChatThemes**: Pre-built themes (Modern, Classic, Dark Neon, Minimal, Ocean, Sunset, Nature, Lavender).
+
+### 🖥️ Cross-Platform Improvements
+
+- **macOS compatibility**: Full macOS support for the Example app with adaptive colors and navigation.
+- **Adaptive colors**: Platform-specific background colors using `NSColor` on macOS and `UIColor` on iOS.
+- **Dark mode fixes**: Consistent theme appearance in both light and dark modes.
+
+### 🔧 Maintenance
+
+- **Dependency Updates**: Kingfisher bumped to 8.6.2.
+- **CI/CD**: Configured Dependabot, upgraded Xcode to 16.1, macOS runner to v15.
+- **GitHub Actions**: Updated stale action to v10.
+
+---
+
 ## [2.8.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/2.8.0)
 
 Released on 2025-09-06.

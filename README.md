@@ -1,10 +1,13 @@
 ![Swift 5.8](https://img.shields.io/badge/Swift-5.8-orange.svg)
+![iOS 15+](https://img.shields.io/badge/iOS-15%2B-blue.svg)
+![macOS 12+](https://img.shields.io/badge/macOS-12%2B-blue.svg)
 
 # SwiftyChat
 
 For Flutter version check [this link](https://github.com/EnesKaraosman/swifty_chat)
 
 ### Content
+
 * [About](#about)
 * [Features](#features)
 * [Quick Preview](#quick-preview)
@@ -12,23 +15,28 @@ For Flutter version check [this link](https://github.com/EnesKaraosman/swifty_ch
 * [Message Kinds](#message-kinds)
 * [Usage](#usage)
 * [Style & Customization](#style-and-customization)
+* [Pre-built Themes](#pre-built-themes)
 
-### About 
+### About
 
 Simple Chat Interface to quick start with [built-in](#message-kinds) message cells. <br>
+Highly optimized for smooth scrolling and responsive user experience.
 
 ### Features
-- [x] Attributed string support that came with SwiftUI
-- [x] Landscape orientation  support (autoscales message cells with the given `cellWidth` property, if exists)
-- [x] User Avatar (with different position options, optional usage)
-- [x] Dismiss keyboard (on tapping outside).
-- [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
-- [x] Scroll to bottom.
-- [x] "Picture in Picture" background mode video playing (to enable, visit >> Xcode "Sign in and Capabilities")
-- [x] Round specific corner of text messages.
-- [x] Implement custom message cells. See [CustomMessage.md](CustomMessage.md) for details.
-- [ ] Swipe to dismiss keyboard.
 
+- [x] **High Performance**: Optimized rendering with O(n) complexity, cached formatters, and async image loading
+* [x] Attributed string support that came with SwiftUI
+* [x] Landscape orientation support (autoscales message cells with the given `cellWidth` property, if exists)
+* [x] User Avatar (with different position options, optional usage)
+* [x] Dismiss keyboard (on tapping outside)
+* [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
+* [x] Scroll to bottom
+* [x] "Picture in Picture" background mode video playing (to enable, visit >> Xcode "Sign in and Capabilities")
+* [x] Round specific corner of text messages
+* [x] Implement custom message cells. See [CustomMessage.md](CustomMessage.md) for details
+* [x] **Pre-built Themes**: 8 ready-to-use themes for quick customization
+* [x] **Cross-platform**: Full iOS and macOS support
+* [ ] Swipe to dismiss keyboard
 
 ### Quick Preview
 
@@ -36,27 +44,27 @@ Simple Chat Interface to quick start with [built-in](#message-kinds) message cel
 
 <details>
   <summary>Basic Example Preview</summary>
-    
+
   | Text (Light)      | Text (Dark)  |
 :-------------------------:|:-------------------------:|
 <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-1.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-2.png" width="240"/>
+
 <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-3.png" height="240"/>
 
 </details>
 
 <details>
   <summary>Advanced Example Preview</summary>
-    
+
   | Contact, QuickReply, Text, Carousel      | Map, Image  | ContextMenu |
 :-------------------------:|:-------------------------:|:-------------------------:
 <img src="../master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/map_image.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/contextMenu.png" width="240"/>
 
 </details>
 
-
 ### Installation
 
-SPM: https://github.com/EnesKaraosman/SwiftyChat.git
+SPM: <https://github.com/EnesKaraosman/SwiftyChat.git>
 
 ### Message Kinds
 
@@ -86,11 +94,12 @@ public enum ChatMessageKind {
     case video(VideoItem)
 }
 ```
+
 ### Usage
 
-- `ChatView`
+* `ChatView`
 
-Here below is minimum code required to get started (see up & running)<br> 
+Here below is minimum code required to get started (see up & running)<br>
 For detail, visit example project [here](../master/SwiftyChatExample/Example)
 
 ```swift
@@ -123,10 +132,11 @@ ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(
 // ...
 ```
 
-- `InputView`
+* `InputView`
 
 You can investigate existing `BasicInputView` in project. <br>You can use it if it suits your need, or create a new one.<br>
 Recommended way is just clone this `BasicInputView` and modify (ex. add camera icon etc.)
+
 ```swift
 
 // InputBarView variables
@@ -193,6 +203,23 @@ You can also use your own custom message cell, see [CustomMessage.md](CustomMess
 Please feel free to contribute.<br>
 
 * Create PR for a feature/bug you'd like to add/fix.
+
+### Pre-built Themes
+
+SwiftyChat comes with 8 pre-built themes for quick customization:
+
+| Theme | Description |
+|-------|-------------|
+| **Modern** | Clean blue accent with minimal design |
+| **Classic** | Traditional green messaging style |
+| **Dark Neon** | Cyberpunk-inspired with neon pink accents |
+| **Minimal** | Subtle gray tones for a clean look |
+| **Ocean** | Calming teal and sea-inspired colors |
+| **Sunset** | Warm orange gradients |
+| **Nature** | Fresh green, eco-friendly appearance |
+| **Lavender** | Soft purple, relaxing aesthetic |
+
+Check the Example app's `ThemeShowcaseView` for live theme switching demos.
 
 ### Inspiration
 
