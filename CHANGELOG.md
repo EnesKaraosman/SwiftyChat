@@ -1,5 +1,59 @@
 # CHANGELOG
 
+## [4.0.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.0.0)
+
+Released on 2026-04-06.
+
+### Breaking Changes
+
+- **Removed `User` generic parameter from `ChatView`**: `ChatView<Message, User>` is now `ChatView<Message, InputView>`. The `User` type was redundant — it's inferred from `Message.User` (the `ChatMessage` associated type). If you were specifying explicit generics, remove the `User` parameter:
+  ```swift
+  // Before
+  ChatView<MyMessage, MyUser>(messages: $msgs) { ... }
+  // After
+  ChatView(messages: $msgs) { ... }
+  ```
+- **Removed `AnyView` from public API**: The `inputView` closure, `registerCustomCell`, and `messageCellContextMenu` now use `@ViewBuilder` generics. No more `.embedInAnyView()` wrapping needed:
+  ```swift
+  // Before
+  ChatView(messages: $msgs) {
+      MyInputView().embedInAnyView()
+  }
+  .registerCustomCell { data in AnyView(MyCell(data: data)) }
+
+  // After
+  ChatView(messages: $msgs) {
+      MyInputView()
+  }
+  .registerCustomCell { data in MyCell(data: data) }
+  ```
+
+### Added
+
+- **Swift 6 support**: Migrated to Swift 6 language mode with full concurrency safety.
+- **Platform bump**: Minimum targets raised to iOS 17+ and macOS 14+.
+- **Modern SwiftUI APIs**: Uses `@Observable`, `.scrollDismissesKeyboard(.immediately)`, `.defaultScrollAnchor(.bottom)`, `.safeAreaInset(edge:)`, `.onGeometryChange`, and `@Entry` for environment values.
+- **Scroll to specific message**: New `scrollTo: Binding<UUID?>` parameter on `ChatView`.
+
+### Improved
+
+- **BasicInputView redesign**: Pill-shaped text field, `arrow.up.circle.fill` send button with animated state, subtle top shadow replacing the old divider.
+- **Keyboard handling**: Native spring-matched keyboard animation using `UIResponder` notification curve values.
+
+### Fixed
+
+- **Metadata cache index bug**: Corrected swapped current/previous message indices in `rebuildMessageMetadataCache()`, `buildInitialCache()`, `shouldShowDateHeader()`, and `shouldShowDisplayName()`. Date headers could appear at wrong boundaries due to the reversed time interval calculation.
+
+### Documentation
+
+- Updated README, Styles.md, and CustomMessage.md to reflect all current APIs, correct platform versions, and modern usage patterns.
+
+### Dependencies
+
+- Kingfisher bumped from 8.6.2 to 8.8.0.
+
+---
+
 ## [3.0.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/3.0.0)
 
 Released on 2026-01-14.
