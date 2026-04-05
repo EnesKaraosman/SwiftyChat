@@ -26,7 +26,17 @@ public struct BasicInputView: View {
 
     private var messageEditorView: some View {
         TextField(placeholder, text: $message, axis: .vertical)
-            .lineLimit(5)
+            .lineLimit(1...5)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 8)
+            .background(
+                RoundedRectangle(cornerRadius: 20)
+                    #if os(iOS)
+                    .fill(Color(.secondarySystemBackground))
+                    #else
+                    .fill(Color(.controlBackgroundColor))
+                    #endif
+            )
     }
 
     private var sendButton: some View {
@@ -34,33 +44,33 @@ public struct BasicInputView: View {
             onCommit?(.text(message))
             message.removeAll()
         }, label: {
-            Circle().fill(Color(.systemBlue))
-                .frame(width: 36, height: 36)
-                .overlay(
-                    Image(systemName: "paperplane.fill")
-                        .resizable()
-                        .foregroundStyle(.white)
-                        .offset(x: -1, y: 1)
-                        .padding(8)
-                )
+            Image(systemName: "arrow.up.circle.fill")
+                .font(.system(size: 32))
+                .symbolRenderingMode(.palette)
+                .foregroundStyle(.white, message.isEmpty ? Color.gray.opacity(0.5) : Color.accentColor)
         })
         .disabled(message.isEmpty)
+        .animation(.easeInOut(duration: 0.15), value: message.isEmpty)
     }
 
     public var body: some View {
-        VStack(spacing: .zero) {
-            Divider().padding(.bottom, 8)
-            HStack {
-                messageEditorView
-                sendButton
-            }
+        HStack(alignment: .bottom, spacing: 8) {
+            messageEditorView
+            sendButton
         }
-        .padding(.horizontal, 8)
-        .padding(.bottom, 8)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
         #if os(iOS)
-        .background(Color(.systemBackground))
+        .background(
+            Color(.systemBackground)
+                .shadow(color: .black.opacity(0.06), radius: 8, x: 0, y: -2)
+                .ignoresSafeArea(edges: .bottom)
+        )
         #else
-        .background(.background)
+        .background(
+            Color(.windowBackgroundColor)
+                .shadow(color: Color.black.opacity(0.06), radius: 8, x: 0, y: -2)
+        )
         #endif
     }
 }
