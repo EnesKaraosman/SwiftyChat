@@ -41,28 +41,12 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
 
+    @State private var containerSize: CGSize = .zero
+    #if os(iOS)
+    @State private var keyboardHeight: CGFloat = 0
+    #endif
+
     public var body: some View {
-        GeometryReader { geometry in
-            ZStack(alignment: .bottom) {
-                chatView(in: geometry)
-                    .safeAreaInset(
-                        edge: .bottom,
-                        content: inputView
-                    )
-
-                PIPVideoCell<Message>()
-            }
-            .keyboardAwarePadding() // iOS only
-        }
-#if os(iOS)
-        .environmentObject(DeviceOrientationInfo())
-#endif
-        .environment(videoManager)
-        .ignoresSafeArea(.container, edges: .bottom)
-        .dismissKeyboardOnTappingOutside() // iOS only
-    }
-
-    private func chatView(in geometry: GeometryProxy) -> some View {
         ScrollViewReader { proxy in
             ScrollView(.vertical) {
                 LazyVStack {
@@ -70,9 +54,9 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         MessageRow(
                             message: message,
                             metadata: messageMetadataCache[message.id] ?? (showDateHeader: false, showDisplayName: false),
-                            geometrySize: geometry.size,
+                            geometrySize: containerSize,
                             chatMessageViewContainer: { msg, showName in
-                                chatMessageViewContainer(in: geometry.size, with: msg, with: showName)
+                                chatMessageViewContainer(in: containerSize, with: msg, with: showName)
                             },
                             onFirstMessageAppear: {
                                 self.reachedTop?()
@@ -88,8 +72,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 .padding(inset)
             }
             .scrollIndicators(.hidden)
-            .onChange(of: messages.map(\.id)) {
+            .safeAreaInset(edge: .bottom) {
+                inputView()
+            }
+            .onChange(of: messages.count) {
                 rebuildMessageMetadataCache()
+                withAnimation {
+                    proxy.scrollTo("bottom")
+                }
             }
             .onChange(of: scrollToBottom) { oldValue, newValue in
                 if newValue {
@@ -105,22 +95,43 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                     scrollTo = nil
                 }
             }
-#if os(iOS)
-            // Auto Scroll with Keyboard Notification
-            .onReceive(
-                NotificationCenter
-                    .default
-                    .publisher(for: UIResponder.keyboardWillShowNotification)
-                    .debounce(for: .milliseconds(400), scheduler: RunLoop.main),
-                perform: { _ in
-                    if !scrollToBottom {
-                        scrollToBottom = true
-                    }
-                }
-            )
-#endif
         }
-        .background(Color.clear)
+        #if os(iOS)
+        .offset(y: -keyboardHeight)
+        .ignoresSafeArea(.keyboard)
+        .onReceive(
+            NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
+        ) { notification in
+            if let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                let bottomInset = UIApplication.shared.connectedScenes
+                    .compactMap({ $0 as? UIWindowScene }).first?
+                    .windows.first?.safeAreaInsets.bottom ?? 0
+                withAnimation(.easeOut(duration: 0.25)) {
+                    keyboardHeight = frame.height - bottomInset
+                }
+            }
+        }
+        .onReceive(
+            NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
+        ) { _ in
+            withAnimation(.easeOut(duration: 0.25)) {
+                keyboardHeight = 0
+            }
+        }
+        #endif
+        .onGeometryChange(for: CGSize.self) { proxy in
+            proxy.size
+        } action: { newSize in
+            containerSize = newSize
+        }
+        .overlay(alignment: .bottom) {
+            PIPVideoCell<Message>()
+        }
+#if os(iOS)
+        .environmentObject(DeviceOrientationInfo())
+#endif
+        .environment(videoManager)
+        .dismissKeyboardOnTappingOutside()
     }
 
 }

@@ -56,6 +56,11 @@ public struct BasicInputView: View {
             }
         }
         .padding(.horizontal, 8)
-        .padding(.bottom, 36)
+        .padding(.bottom, 8)
+        #if os(iOS)
+        .background(Color(.systemBackground))
+        #else
+        .background(.background)
+        #endif
     }
 }
