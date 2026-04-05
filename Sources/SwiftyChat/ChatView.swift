@@ -65,26 +65,29 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                         )
                         .id(message.id)
                     }
-                    Spacer()
-                        .frame(height: 0)
-                        .id("bottom")
                 }
                 .padding(inset)
             }
             .scrollIndicators(.hidden)
+            .scrollDismissesKeyboard(.immediately)
+            .defaultScrollAnchor(.bottom)
             .safeAreaInset(edge: .bottom) {
                 inputView()
             }
             .onChange(of: messages.count) {
                 rebuildMessageMetadataCache()
-                withAnimation {
-                    proxy.scrollTo("bottom")
+                if let last = messages.last {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        proxy.scrollTo(last.id, anchor: .bottom)
+                    }
                 }
             }
             .onChange(of: scrollToBottom) { oldValue, newValue in
                 if newValue {
-                    withAnimation {
-                        proxy.scrollTo("bottom")
+                    if let last = messages.last {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            proxy.scrollTo(last.id, anchor: .bottom)
+                        }
                     }
                     scrollToBottom = false
                 }
@@ -106,15 +109,15 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 let bottomInset = UIApplication.shared.connectedScenes
                     .compactMap({ $0 as? UIWindowScene }).first?
                     .windows.first?.safeAreaInsets.bottom ?? 0
-                withAnimation(.easeOut(duration: 0.25)) {
+                withAnimation(Self.keyboardAnimation(from: notification)) {
                     keyboardHeight = frame.height - bottomInset
                 }
             }
         }
         .onReceive(
             NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
-        ) { _ in
-            withAnimation(.easeOut(duration: 0.25)) {
+        ) { notification in
+            withAnimation(Self.keyboardAnimation(from: notification)) {
                 keyboardHeight = 0
             }
         }
@@ -133,6 +136,18 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
         .environment(videoManager)
         .dismissKeyboardOnTappingOutside()
     }
+
+    #if os(iOS)
+    private static func keyboardAnimation(from notification: Notification) -> Animation {
+        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
+        let curveRaw = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 7
+        if curveRaw == 7 {
+            // iOS keyboard uses a custom spring curve (raw value 7)
+            return .spring(duration: duration, bounce: 0, blendDuration: 0)
+        }
+        return .easeOut(duration: duration)
+    }
+    #endif
 
 }
 
