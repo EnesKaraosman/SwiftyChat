@@ -191,12 +191,12 @@ private extension ChatView {
             if index == 0 {
                 showDateHeader = true
             } else {
-                let prevMessage = messages[index]
-                let currMessage = messages[index - 1]
-                let timeInterval = prevMessage.date - currMessage.date
+                let currMessage = messages[index]
+                let prevMessage = messages[index - 1]
+                let timeInterval = currMessage.date - prevMessage.date
                 showDateHeader = timeInterval > dateHeaderTimeInterval
             }
-            
+
             let showDisplayName: Bool
             if !shouldShowGroupChatHeaders {
                 showDisplayName = false
@@ -205,23 +205,23 @@ private extension ChatView {
             } else if index == 0 {
                 showDisplayName = true
             } else {
-                let prevMessageUserID = messages[index].user.id
-                let currMessageUserID = messages[index - 1].user.id
-                showDisplayName = prevMessageUserID != currMessageUserID
+                let currMessageUserID = messages[index].user.id
+                let prevMessageUserID = messages[index - 1].user.id
+                showDisplayName = currMessageUserID != prevMessageUserID
             }
-            
+
             newCache[message.id] = (showDateHeader, showDisplayName)
         }
-        
+
         messageMetadataCache = newCache
     }
     
     func shouldShowDateHeader(messages: [Message], thisMessage: Message) -> Bool {
         if let messageIndex = messages.firstIndex(where: { $0.id == thisMessage.id }) {
             if messageIndex == 0 { return true }
-            let prevMessage = messages[messageIndex]
-            let currMessage = messages[messageIndex - 1]
-            let timeInterval = prevMessage.date - currMessage.date
+            let currMessage = messages[messageIndex]
+            let prevMessage = messages[messageIndex - 1]
+            let timeInterval = currMessage.date - prevMessage.date
             return timeInterval > dateHeaderTimeInterval
         }
         return false
@@ -243,9 +243,9 @@ private extension ChatView {
                 return true
             }
 
-            let prevMessageUserID = messages[messageIndex].user.id
-            let currMessageUserID = messages[messageIndex - 1].user.id
-            let isDifferentUser = prevMessageUserID != currMessageUserID
+            let currMessageUserID = messages[messageIndex].user.id
+            let prevMessageUserID = messages[messageIndex - 1].user.id
+            let isDifferentUser = currMessageUserID != prevMessageUserID
 
             return isDifferentUser
         }
@@ -272,12 +272,12 @@ private extension ChatView {
             if index == 0 {
                 showDateHeader = true
             } else {
-                let prevMessage = messages[index]
-                let currMessage = messages[index - 1]
-                let timeInterval = prevMessage.date - currMessage.date
+                let currMessage = messages[index]
+                let prevMessage = messages[index - 1]
+                let timeInterval = currMessage.date - prevMessage.date
                 showDateHeader = timeInterval > dateHeaderTimeInterval
             }
-            
+
             let showDisplayName: Bool
             if !shouldShowGroupChatHeaders {
                 showDisplayName = false
@@ -286,11 +286,11 @@ private extension ChatView {
             } else if index == 0 {
                 showDisplayName = true
             } else {
-                let prevMessageUserID = messages[index].user.id
-                let currMessageUserID = messages[index - 1].user.id
-                showDisplayName = prevMessageUserID != currMessageUserID
+                let currMessageUserID = messages[index].user.id
+                let prevMessageUserID = messages[index - 1].user.id
+                showDisplayName = currMessageUserID != prevMessageUserID
             }
-            
+
             cache[message.id] = (showDateHeader, showDisplayName)
         }
         
