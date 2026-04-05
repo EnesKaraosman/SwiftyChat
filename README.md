@@ -1,52 +1,38 @@
-![Swift 5.8](https://img.shields.io/badge/Swift-5.8-orange.svg)
-![iOS 15+](https://img.shields.io/badge/iOS-15%2B-blue.svg)
-![macOS 12+](https://img.shields.io/badge/macOS-12%2B-blue.svg)
+![Swift 6.0](https://img.shields.io/badge/Swift-6.0-orange.svg)
+![iOS 17+](https://img.shields.io/badge/iOS-17%2B-blue.svg)
+![macOS 14+](https://img.shields.io/badge/macOS-14%2B-blue.svg)
 
 # SwiftyChat
 
-For Flutter version check [this link](https://github.com/EnesKaraosman/swifty_chat)
+A lightweight SwiftUI chat UI with [built-in message types](#message-kinds), theming, and cross-platform support.
 
-### Content
+Also available for [Flutter](https://github.com/EnesKaraosman/swifty_chat).
 
-* [About](#about)
-* [Features](#features)
-* [Quick Preview](#quick-preview)
-* [Installation](#installation)
-* [Message Kinds](#message-kinds)
-* [Usage](#usage)
-* [Style & Customization](#style-and-customization)
-* [Pre-built Themes](#pre-built-themes)
+## Features
 
-### About
+- High-performance rendering (O(n) complexity, cached formatters, async image loading)
+- 10 built-in message types including text, image, video, location, carousel, and quick replies
+- 8 pre-built [themes](#pre-built-themes) with full style customization via environment
+- [Custom message cells](CustomMessage.md) for any message type you need
+- Cross-platform: iOS 17+ and macOS 14+
+- Landscape orientation support with auto-scaling cells
+- User avatars with configurable positioning
+- Keyboard dismiss on tap and scroll
+- Scroll to bottom or to a specific message
+- Picture-in-Picture video playback
+- Per-corner rounding on text bubbles
+- Multiline input bar ([BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
+- Attributed string / markdown support
 
-Simple Chat Interface to quick start with [built-in](#message-kinds) message cells. <br>
-Highly optimized for smooth scrolling and responsive user experience.
-
-### Features
-
-- [x] **High Performance**: Optimized rendering with O(n) complexity, cached formatters, and async image loading
-* [x] Attributed string support that came with SwiftUI
-* [x] Landscape orientation support (autoscales message cells with the given `cellWidth` property, if exists)
-* [x] User Avatar (with different position options, optional usage)
-* [x] Dismiss keyboard (on tapping outside)
-* [x] Multiline Input Bar added (investigate [BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
-* [x] Scroll to bottom
-* [x] "Picture in Picture" background mode video playing (to enable, visit >> Xcode "Sign in and Capabilities")
-* [x] Round specific corner of text messages
-* [x] Implement custom message cells. See [CustomMessage.md](CustomMessage.md) for details
-* [x] **Pre-built Themes**: 8 ready-to-use themes for quick customization
-* [x] **Cross-platform**: Full iOS and macOS support
-* [ ] Swipe to dismiss keyboard
-
-### Quick Preview
+## Preview
 
 <img src="../master/Sources/SwiftyChat/Demo/Preview/swiftyChatGIF.gif" height="240"/>
 
 <details>
-  <summary>Basic Example Preview</summary>
+  <summary>Basic Example</summary>
 
-  | Text (Light)      | Text (Dark)  |
-:-------------------------:|:-------------------------:|
+  | Light | Dark |
+:---:|:---:|
 <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-1.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-2.png" width="240"/>
 
 <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-3.png" height="240"/>
@@ -54,174 +40,116 @@ Highly optimized for smooth scrolling and responsive user experience.
 </details>
 
 <details>
-  <summary>Advanced Example Preview</summary>
+  <summary>Advanced Example</summary>
 
-  | Contact, QuickReply, Text, Carousel      | Map, Image  | ContextMenu |
-:-------------------------:|:-------------------------:|:-------------------------:
+  | Contact, QuickReply, Text, Carousel | Map, Image | ContextMenu |
+:---:|:---:|:---:
 <img src="../master/Sources/SwiftyChat/Demo/Preview/avatar_contact_qr_carousel_text.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/map_image.png" width="240"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/contextMenu.png" width="240"/>
 
 </details>
 
-### Installation
+## Installation
 
-SPM: <https://github.com/EnesKaraosman/SwiftyChat.git>
+```
+https://github.com/EnesKaraosman/SwiftyChat.git
+```
 
-### Message Kinds
+Add via Swift Package Manager in Xcode.
+
+## Message Kinds
 
 ```swift
-public enum ChatMessageKind {
-    
-    /// A text message,
-    /// supports emoji 👍🏻 (auto scales if text is all about emojis)
-    case text(String)
-    
-    /// An image message, from local(UIImage) or remote(URL).
-    case image(ImageLoadingKind)
-    
-    /// A location message, pins given location & presents on MapKit.
-    case location(LocationItem)
-    
-    /// A contact message, generally for sharing purpose.
-    case contact(ContactItem)
-    
-    /// Multiple options, disables itself after selection.
-    case quickReply([QuickReplyItem])
-    
-    /// `CarouselItem`s that contains title, subtitle, image & button in a scrollable view
-    case carousel([CarouselItem])
-    
-    /// A video message, opens the given URL.
-    case video(VideoItem)
+public enum ChatMessageKind: CustomStringConvertible {
+    case text(String)              // Auto-scales for emoji-only messages
+    case image(ImageLoadingKind)   // Local (UIImage/NSImage) or remote (URL)
+    case imageText(ImageLoadingKind, String) // Image with caption
+    case location(LocationItem)    // MapKit pin
+    case contact(ContactItem)      // Shareable contact card
+    case quickReply([QuickReplyItem]) // Tappable options, auto-disables after selection
+    case carousel([CarouselItem])  // Scrollable cards with buttons
+    case video(VideoItem)          // Video with PiP support
+    case loading                   // Animated loading indicator
+    case custom(Any)               // Your own message type
 }
 ```
 
-### Usage
+## Usage
 
-* `ChatView`
-
-Here below is minimum code required to get started (see up & running)<br>
-For detail, visit example project [here](../master/SwiftyChatExample/Example)
+### Minimal setup
 
 ```swift
 import SwiftyChat
-import SwiftyChatMock
 
+@State private var messages: [YourMessage] = []
 @State private var scrollToBottom = false
-@State private var messages: [MockMessages.ChatMessageItem] = [] // for quick test assign MockMessages.generatedMessages()
 
-// ChatMessageItem & ChatUserItem is a sample objects/structs 
-// that conforms `ChatMessage` & `ChatUser` protocols.
-ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(
+ChatView(
     messages: $messages,
     scrollToBottom: $scrollToBottom
 ) {
-    // InputView here, continue reading..
-}
-// ▼ Required
-.environmentObject(
-    // All parameters initialized by default, 
-    // change as you want.
-    ChatMessageCellStyle()
-)
-.onReceive(
-    messages.debounce(for: .milliseconds(650), scheduler: RunLoop.main),
-    perform: { _ in
-        scrollToBottom = true
-    }
-)
-// ...
-```
-
-* `InputView`
-
-You can investigate existing `BasicInputView` in project. <br>You can use it if it suits your need, or create a new one.<br>
-Recommended way is just clone this `BasicInputView` and modify (ex. add camera icon etc.)
-
-```swift
-
-// InputBarView variables
-@State private var message = ""
-
-var inputBarView: some View {
     BasicInputView(
-        message: $message, // Typed text.
+        message: $message,
         placeholder: "Type something",
         onCommit: { messageKind in
-            self.messages.append(
-                .init(user: MockMessages.sender, messageKind: messageKind, isSender: true)
-            )
+            messages.append(/* your message */)
         }
     )
-    .background(Color.primary.colorInvert())
-    // ▼ An extension that wraps view inside AnyView
-    .embedInAnyView()
 }
-
-// Pass in ChatView
-ChatView(messages: $messages) {
-    inputBarView 
-}
-...
-...
+.environment(\.chatStyle, ChatMessageCellStyle())
 ```
 
-### Style and Customization
+`YourMessage` must conform to the `ChatMessage` protocol (which has an associated `ChatUser` type). See the [Example app](../master/Example) for a complete implementation.
+
+### Input view
+
+A built-in `BasicInputView` is included. Use it as-is, or build your own — `ChatView` accepts any view via its `inputView` closure.
+
+### Styling
+
+Every visual aspect is customizable through `ChatMessageCellStyle`:
 
 ```swift
-public class ChatMessageCellStyle: ObservableObject {
-    
+public struct ChatMessageCellStyle {
     let incomingTextStyle: TextCellStyle
     let outgoingTextStyle: TextCellStyle
-    
     let incomingCellEdgeInsets: EdgeInsets
     let outgoingCellEdgeInsets: EdgeInsets
-    
     let contactCellStyle: ContactCellStyle
-    
     let imageCellStyle: ImageCellStyle
-    
+    let imageTextCellStyle: ImageTextCellStyle
     let quickReplyCellStyle: QuickReplyCellStyle
-    
     let carouselCellStyle: CarouselCellStyle
-    
     let locationCellStyle: LocationCellStyle
-    
+    let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
     let incomingAvatarStyle: AvatarStyle
     let outgoingAvatarStyle: AvatarStyle
-    
 }
 ```
 
-You must initiate this class to build a proper style & inject it as `environmentObject`, <br>
-All styles has default initializer; <br>
+Inject via `.environment(\.chatStyle, yourStyle)`. All properties have sensible defaults.
 
-For detail documentation, visit [Styles.md](../master/Styles.md)
+See [Styles.md](../master/Styles.md) for the full style reference and [CustomMessage.md](CustomMessage.md) for custom cell types.
 
-You can also use your own custom message cell, see [CustomMessage.md](CustomMessage.md) for details.
-
-<br>
-Please feel free to contribute.<br>
-
-* Create PR for a feature/bug you'd like to add/fix.
-
-### Pre-built Themes
-
-SwiftyChat comes with 8 pre-built themes for quick customization:
+## Pre-built Themes
 
 | Theme | Description |
 |-------|-------------|
-| **Modern** | Clean blue accent with minimal design |
-| **Classic** | Traditional green messaging style |
-| **Dark Neon** | Cyberpunk-inspired with neon pink accents |
-| **Minimal** | Subtle gray tones for a clean look |
-| **Ocean** | Calming teal and sea-inspired colors |
+| **Modern** | Clean blue, minimal design |
+| **Classic** | Traditional green messaging |
+| **Dark Neon** | Cyberpunk with neon pink accents |
+| **Minimal** | Subtle gray tones |
+| **Ocean** | Calming teal, sea-inspired |
 | **Sunset** | Warm orange gradients |
-| **Nature** | Fresh green, eco-friendly appearance |
-| **Lavender** | Soft purple, relaxing aesthetic |
+| **Nature** | Fresh green, eco-friendly |
+| **Lavender** | Soft purple, relaxing |
 
-Check the Example app's `ThemeShowcaseView` for live theme switching demos.
+See `ThemeShowcaseView` in the Example app for live demos.
 
-### Inspiration
+## Contributing
 
-* UIKit library [MessageKit](https://github.com/MessageKit/MessageKit).
-* SwiftUI library [Nio](https://github.com/niochat/nio).
+PRs are welcome for features, bug fixes, or documentation improvements.
+
+## Inspiration
+
+- [MessageKit](https://github.com/MessageKit/MessageKit) (UIKit)
+- [Nio](https://github.com/niochat/nio) (SwiftUI)

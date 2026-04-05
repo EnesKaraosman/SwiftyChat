@@ -24,7 +24,7 @@ struct BasicExampleView: View {
     }
 
     private var chatView: some View {
-        ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(messages: $messages) {
+        ChatView(messages: $messages) {
 
             BasicInputView(
                 message: $message,
@@ -36,14 +36,12 @@ struct BasicExampleView: View {
                 }
             )
             .background(Color.primary.colorInvert())
-            .embedInAnyView()
 
         }
-        // ▼ Optional, Present context menu when cell long pressed
-        .messageCellContextMenu { message -> AnyView in
+        .messageCellContextMenu { message in
             switch message.messageKind {
             case .text(let text):
-                return Button(
+                Button(
                     action: {
                         print("Copy Context Menu tapped!!")
                         #if os(iOS)
@@ -57,11 +55,9 @@ struct BasicExampleView: View {
                         Text("Copy")
                         Image(systemName: "doc.on.doc")
                     }
-                ).embedInAnyView()
+                )
             default:
-                // If you don't want to implement contextMenu action
-                // for a specific case, simply return EmptyView like below;
-                return EmptyView().embedInAnyView()
+                EmptyView()
             }
         }
         // ▼ Required

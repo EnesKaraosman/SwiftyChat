@@ -1,36 +1,30 @@
+# Style Reference
 
 ## ChatMessageCellStyle
 
+The main style container. Inject via `.environment(\.chatStyle, yourStyle)`. All properties have sensible defaults.
+
 ```swift
-public class ChatMessageCellStyle: ObservableObject {
-    
+public struct ChatMessageCellStyle {
     let incomingTextStyle: TextCellStyle
     let outgoingTextStyle: TextCellStyle
-    
-    let incomingCellEdgeInsets: EdgeInsets?
-    let outgoingCellEdgeInsets: EdgeInsets?
-    
+    let incomingCellEdgeInsets: EdgeInsets
+    let outgoingCellEdgeInsets: EdgeInsets
     let contactCellStyle: ContactCellStyle
-    
     let imageCellStyle: ImageCellStyle
-    
+    let imageTextCellStyle: ImageTextCellStyle
     let quickReplyCellStyle: QuickReplyCellStyle
-    
     let carouselCellStyle: CarouselCellStyle
-    
     let locationCellStyle: LocationCellStyle
-    
     let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
-    
     let incomingAvatarStyle: AvatarStyle
     let outgoingAvatarStyle: AvatarStyle
-    
 }
 ```
 
 ## Pre-built Themes
 
-SwiftyChat 3.0 includes 8 pre-built themes for quick customization. Check the Example app's `ChatThemes.swift` for implementation details.
+8 ready-to-use themes. See `ChatThemes.swift` in the Example app for implementation details.
 
 | Theme | Accent Color | Description |
 |-------|--------------|-------------|
@@ -48,6 +42,7 @@ SwiftyChat 3.0 includes 8 pre-built themes for quick customization. Check the Ex
 * [QuickReply](#quick-reply)
 * [Carousel](#carousel)
 * [Image](#image)
+* [ImageText](#image-text)
 * [Location](#location)
 * [Contact](#contact)
 * [Avatar](#avatar)
@@ -62,17 +57,19 @@ public struct TextCellStyle: CommonViewStyle {
 
     public let textStyle: CommonTextStyle
     // default = textColor: .white, font: .body, fontWeight: .regular
-    
+
     public let textPadding: CGFloat // default = 10
 
     public let cellBackgroundColor: Color
-    // default = Color(UIColor.systemPurple).opacity(0.8)
+    // default = Color.purple.opacity(0.8)
 
     public let cellCornerRadius: CGFloat // default = 8
     public let cellBorderColor:  Color   // default = .clear
     public let cellBorderWidth:  CGFloat // default = 1
     public let cellShadowRadius: CGFloat // default = 3
     public let cellShadowColor:  Color   // default = .secondary
+
+    public let cellRoundedCorners: RectCorner // default = .allCorners
 
 }
 ```
@@ -87,7 +84,7 @@ public struct QuickReplyCellStyle {
     /// If the total characters of all item's title is greater than this value, items ordered vertically
     public let characterLimitToChangeStackOrientation: Int
     // default = 30
-    
+
     public let selectedItemColor: Color // default = .green
     public let selectedItemFont: Font   // default = .callout
     public let selectedItemFontWeight: Font.Weight // default = .semibold
@@ -98,13 +95,14 @@ public struct QuickReplyCellStyle {
     public let unselectedItemFontWeight: Font.Weight // default = .semibold
     public let unselectedItemBackgroundColor: Color  // default = .clear
 
-    public let itemPadding:      CGFloat // default = 8
+    public let itemVerticalPadding:   CGFloat // default = 8
+    public let itemHorizontalPadding: CGFloat // default = 16
     public let itemBorderWidth:  CGFloat // default = 1
     public let itemHeight:       CGFloat // default = 40
     public let itemCornerRadius: CGFloat // default = 8
     public let itemShadowColor:  Color   // default = .secondary
     public let itemShadowRadius: CGFloat // default = 1
-    
+
 }
 ```
 
@@ -115,24 +113,24 @@ public struct QuickReplyCellStyle {
 ```swift
 public struct CarouselCellStyle: CommonViewStyle {
 
-    public let titleLabelStyle: CommonTextStyle 
+    public let titleLabelStyle: CommonTextStyle
     // default = textColor: .primary, font: .title, fontWeight: .bold
-    
+
     public let subtitleLabelStyle: CommonTextStyle
     // default = textColor: .secondary, font: .body, fontWeight: .regular
-    
+
     public let buttonFont: Font                   // default = .body
     public let buttonTitleColor: Color            // default = .white
     public let buttonTitleFontWeight: Font.Weight // default = .semibold
     public let buttonBackgroundColor: Color       // default = .blue
-    
+
     /// Cell width in a given available size
     public let cellWidth: (CGSize) -> CGFloat
-    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
-    
-    public let cellBackgroundColor: Color   
-    // default = Color.secondary.opacity(0.2)
-    
+    // default = { size in !Device.isLandscape ? size.width * 0.75 : size.height * 0.7 }
+
+    public let cellBackgroundColor: Color
+    // default = Color.secondary.opacity(0.1)
+
     public let cellCornerRadius: CGFloat // default = 8
     public let cellBorderColor:  Color   // default = .clear
     public let cellBorderWidth:  CGFloat // default = 1
@@ -146,20 +144,48 @@ public struct CarouselCellStyle: CommonViewStyle {
 ![](https://github.com/EnesKaraosman/SwiftyChat/blob/master/Sources/SwiftyChat/Demo/Preview/imageItem.png)
 
 ```swift
-public struct ImageCellStyle {
-    
+public struct ImageCellStyle: CommonViewStyle {
+
     /// Cell width in a given available size
-    public let cellWidth: (CGSize) -> CGFloat
-    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
-    
-    public let cellBackgroundColor: Color    
+    public var cellWidth: (CGSize) -> CGFloat
+    // default = { size in !Device.isLandscape ? size.width * 0.75 : size.height * 0.8 }
+
+    public let cellBackgroundColor: Color
     // default = Color.secondary.opacity(0.1)
-    
+
     public let cellCornerRadius: CGFloat  // default = 8
     public let cellBorderColor:  Color    // default = .clear
     public let cellBorderWidth:  CGFloat  // default = 0
     public let cellShadowRadius: CGFloat  // default = 3
     public let cellShadowColor:  Color    // default = .secondary
+}
+```
+
+### Image Text
+
+```swift
+public struct ImageTextCellStyle: CommonViewStyle {
+
+    public let textStyle: CommonTextStyle
+    // default = textColor: .white, font: .body, fontWeight: .regular
+
+    public let textPadding: CGFloat // default = 10
+
+    /// Cell width in a given available size
+    public let cellWidth: (CGSize) -> CGFloat
+    // default = { size in !Device.isLandscape ? size.width * 0.75 : size.height * 0.8 }
+
+    public let cellBackgroundColor: Color
+    // default = Color.secondary.opacity(0.1)
+
+    public let cellCornerRadius: CGFloat  // default = 8
+    public let cellBorderColor:  Color    // default = .clear
+    public let cellBorderWidth:  CGFloat  // default = 0
+    public let cellShadowRadius: CGFloat  // default = 3
+    public let cellShadowColor:  Color    // default = .secondary
+
+    public let cellRoundedCorners: RectCorner // default = .allCorners
+
 }
 ```
 
@@ -169,11 +195,11 @@ public struct ImageCellStyle {
 
 ```swift
 public struct LocationCellStyle {
-    
+
     /// Cell width in a given available size
     public let cellWidth: (CGSize) -> CGFloat
-    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
-    
+    // default = { size in !Device.isLandscape ? size.width * 0.75 : size.height * 0.8 }
+
     public let cellAspectRatio:  CGFloat // default = 0.7
     public let cellCornerRadius: CGFloat // default = 8
     public let cellBorderColor:  Color   // default = .clear
@@ -191,23 +217,23 @@ public struct LocationCellStyle {
 public struct ContactCellStyle: CommonViewStyle {
 
     public let cellWidth: (CGSize) -> CGFloat
-    //default = { $0.width * (Device.isLandscape ? 0.45 : 0.75) }
-    
+    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
+
     public let imageStyle: CommonImageStyle
-    
+
     public let fullNameLabelStyle: CommonTextStyle
     // default = textColor: .primary, font: .body, fontWeight: .semibold
-    
+
     // CellContainerStyle
     public let cellBackgroundColor: Color
     // default = Color.secondary.opacity(0.05)
-    
+
     public let cellCornerRadius: CGFloat // default = 8
     public let cellBorderColor: Color    // default = .clear
     public let cellBorderWidth: CGFloat  // default = 1
     public let cellShadowRadius: CGFloat // default = 1
     public let cellShadowColor: Color    // default = .secondary
-    
+
 }
 ```
 
@@ -222,8 +248,8 @@ public enum AvatarPosition {
 
 public struct AvatarStyle {
     public let imageStyle: CommonImageStyle
-    public let avatarPosition: AvatarPosition 
-    // default = .alignToMessageBottom(spacing: 8)
+    public let avatarPosition: AvatarPosition
+    // default = .alignToMessageCenter(spacing: 8)
 }
 ```
 
@@ -236,11 +262,11 @@ public struct VideoPlaceholderCellStyle {
 
     /// Cell width in a given available size
     public let cellWidth: (CGSize) -> CGFloat
-    // default = { $0.width * (Device.isLandscape ? 0.4 : 0.75) }
+    // default = { size in !Device.isLandscape ? size.width * 0.75 : size.height * 0.8 }
 
-    public let cellBackgroundColor: Color    
+    public let cellBackgroundColor: Color
     // default = Color.secondary.opacity(0.1)
-    
+
     public let cellAspectRatio: CGFloat  // default = 1.78
     public let cellCornerRadius: CGFloat // default = 8
     public let cellBorderColor:  Color   // default = .clear

@@ -171,10 +171,3 @@ extension ChatMessageCellStyle {
         )
     )
 }
-
-// MARK: - View Extensions
-extension View {
-    func embedInAnyView() -> AnyView {
-        AnyView(self)
-    }
-}

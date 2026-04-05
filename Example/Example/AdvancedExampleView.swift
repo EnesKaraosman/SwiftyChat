@@ -21,7 +21,7 @@ struct AdvancedExampleView: View {
     }
 
     private var chatView: some View {
-        ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(
+        ChatView(
             messages: $messages,
             scrollToBottom: $scrollToBottom
         ) {
@@ -35,33 +35,27 @@ struct AdvancedExampleView: View {
                 }
             )
             .background(Color.primary.colorInvert())
-            .embedInAnyView()
         }
-        // ▼ Optional, Implement to register a custom cell for Messagekind.custom
-        .registerCustomCell(customCell: { anyParam in AnyView(CustomExampleChatCell(anyParam: anyParam))})
-        // ▼ Optional, Implement to be notified when related cell tapped
+        .registerCustomCell { anyParam in
+            CustomExampleChatCell(anyParam: anyParam)
+        }
         .onMessageCellTapped({ (message) in
             print(message.messageKind.description)
         })
-        // ▼ Optional, Present context menu when cell long pressed
-        .messageCellContextMenu { message -> AnyView in
+        .messageCellContextMenu { message in
             switch message.messageKind {
             case .text:
-                return Button(
+                Button(
                     action: {
                         print("Forward Context Menu tapped!!")
-                        // Forward text
                     },
                     label: {
                         Text("Forward")
                         Image(systemName: "arrowshape.turn.up.right")
                     }
                 )
-                .embedInAnyView()
             default:
-                // If you don't want to implement contextMenu action
-                // for a specific case, simply return EmptyView like below;
-                return EmptyView().embedInAnyView()
+                EmptyView()
             }
         }
         // ▼ Implement in case ChatMessageKind.quickReply

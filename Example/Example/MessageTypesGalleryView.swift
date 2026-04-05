@@ -67,12 +67,11 @@ struct MessageTypesGalleryView: View {
             messageTypeSelector
             
             // Chat view
-            ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(
+            ChatView(
                 messages: $messages,
                 scrollToBottom: $scrollToBottom
             ) {
                 inputView
-                    .embedInAnyView()
             }
             .onQuickReplyItemSelected { quickReply in
                 addResponse("You selected: \(quickReply.title)")

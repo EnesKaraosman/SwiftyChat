@@ -27,12 +27,11 @@ struct ThemeShowcaseView: View {
                 themeHeader
                 
                 // Chat View
-                ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(
+                ChatView(
                     messages: $messages,
                     scrollToBottom: $scrollToBottom
                 ) {
                     themedInputView
-                        .embedInAnyView()
                 }
                 .onQuickReplyItemSelected { quickReply in
                     messages.append(

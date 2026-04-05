@@ -1,31 +1,28 @@
-# swifty_chat
+# Custom Messages
 
-### Custom Message
+You can render any message type by registering a custom cell for `ChatMessageKind.custom`.
 
-To create a custom message and look (`MessageKind.custom`) follow these steps below;
-
-1) Register a new custom message cell.
+### 1. Register a custom cell
 
 ```swift
-ChatView<MockMessages.ChatMessageItem, MockMessages.ChatUserItem>(messages: $messages) {
-    // [...]
+ChatView(messages: $messages) {
+    // input view ...
 }
-    // ▼ Optional, Implement to register a custom cell for Messagekind.custom. CustomExampleChatCell is an example View.
-    .registerCustomCell(customCell: {anyParam in AnyView(CustomExampleChatCell(anyParam: anyParam))})
+.registerCustomCell { data in
+    MyCustomCell(data: data)
+}
 ```
 
-Since `customCell` has the type `(Any) -> AnyView` you can register any View and pass Any type.
+The closure receives the `Any` value from `.custom(Any)` — cast it to your expected type inside your cell.
 
-Be aware that you need to cast `anyParam` in `CustomExampleChatCell` to the expaced type
-
-2) Add a message to your dataSource with the `MessageKind.custom(dynamic custom)` option.
-
-Since `.custom` constructor expects a `dynamic` parameter you can pass any type.
+### 2. Add a custom message
 
 ```swift
 MockMessages.ChatMessageItem(
     user: MockMessages.chatbot,
-    messageKind: .custom("⚙️ Hey! This is my custom message!!!! ⚙️),
+    messageKind: .custom("Hey! This is my custom message!"),
     isSender: false
 )
 ```
+
+You can pass any type — a `String`, a custom struct, a dictionary — whatever your custom cell knows how to render.

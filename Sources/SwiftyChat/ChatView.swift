@@ -18,14 +18,14 @@ private let sharedDateFormatter: DateFormatter = {
     return formatter
 }()
 
-public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
+public struct ChatView<Message: ChatMessage, InputView: View>: View {
 
     @Binding private var messages: [Message]
-    private var inputView: () -> AnyView
+    private var inputView: () -> InputView
     private var customCellView: ((Any) -> AnyView)?
 
     private var onMessageCellTapped: (Message) -> Void = { msg in print(msg.messageKind) }
-    private var messageCellContextMenu: (Message) -> AnyView = { _ in EmptyView().embedInAnyView() }
+    private var messageCellContextMenu: (Message) -> AnyView = { _ in AnyView(EmptyView()) }
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
     private var contactCellFooterSection: (ContactItem, Message) -> [ContactCellButton] = { _, _ in [] }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
@@ -319,7 +319,7 @@ public extension ChatView {
         scrollTo: Binding<UUID?> = .constant(nil),
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
-        inputView: @escaping () -> AnyView,
+        @ViewBuilder inputView: @escaping () -> InputView,
         inset: EdgeInsets = .init(),
         reachedTop: (() -> Void)? = nil
     ) {
@@ -342,9 +342,9 @@ public extension ChatView {
 }
 
 public extension ChatView {
-    /// Registers a custom cell view
-    func registerCustomCell(customCell: @escaping (Any) -> AnyView) -> Self {
-        then({ $0.customCellView = customCell})
+    /// Registers a custom cell view for `ChatMessageKind.custom`.
+    func registerCustomCell<Content: View>(@ViewBuilder customCell: @escaping (Any) -> Content) -> Self {
+        then({ $0.customCellView = { data in AnyView(customCell(data)) } })
     }
 
     /// Triggered when a ChatMessage is tapped.
@@ -353,8 +353,8 @@ public extension ChatView {
     }
 
     /// Present ContextMenu when a message cell is long pressed.
-    func messageCellContextMenu(_ action: @escaping (Message) -> AnyView) -> Self {
-        then({ $0.messageCellContextMenu = action })
+    func messageCellContextMenu<MenuContent: View>(@ViewBuilder _ action: @escaping (Message) -> MenuContent) -> Self {
+        then({ $0.messageCellContextMenu = { msg in AnyView(action(msg)) } })
     }
 
     /// Triggered when a quickReplyItem is selected (ChatMessageKind.quickReply)

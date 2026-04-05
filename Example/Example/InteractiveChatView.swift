@@ -28,12 +28,11 @@ struct InteractiveChatView: View {
     }
     
     var body: some View {
-        ChatView<MessageMocker.ChatMessageItem, MessageMocker.ChatUserItem>(
+        ChatView(
             messages: $messages,
             scrollToBottom: $scrollToBottom
         ) {
             inputView
-                .embedInAnyView()
         }
         .onQuickReplyItemSelected { quickReply in
             handleQuickReply(quickReply)
