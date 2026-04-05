@@ -13,15 +13,15 @@ struct EmojiModifier: ViewModifier {
     let isEmojiOnly: Bool
     let emojiCount: Int
     let defaultFont: Font
-    
-    init(isEmojiOnly: Bool, emojiCount: Int = 0, defaultFont: Font) {
+
+    nonisolated init(isEmojiOnly: Bool, emojiCount: Int = 0, defaultFont: Font) {
         self.isEmojiOnly = isEmojiOnly
         self.emojiCount = emojiCount
         self.defaultFont = defaultFont
     }
-    
+
     // Convenience initializer for text-based checking
-    init(text: String, defaultFont: Font) {
+    nonisolated init(text: String, defaultFont: Font) {
         self.isEmojiOnly = text.containsOnlyEmoji
         self.emojiCount = text.count
         self.defaultFont = defaultFont

@@ -11,12 +11,16 @@ import SwiftyChatMock
 
 struct BasicExampleView: View {
 
-    @State var messages: [MessageMocker.ChatMessageItem] = MessageMocker.generate(kind: .text, count: 20)
-
+    @State private var messages: [MessageMocker.ChatMessageItem] = []
     @State private var message = ""
 
     var body: some View {
         chatView
+            .task {
+                if messages.isEmpty {
+                    messages = MessageMocker.generate(kind: .text, count: 20)
+                }
+            }
     }
 
     private var chatView: some View {
@@ -61,7 +65,7 @@ struct BasicExampleView: View {
             }
         }
         // ▼ Required
-        .environmentObject(ChatMessageCellStyle.basicStyle)
+        .environment(\.chatStyle, ChatMessageCellStyle.basicStyle)
         #if os(iOS)
         .navigationBarTitle("Basic")
         #endif

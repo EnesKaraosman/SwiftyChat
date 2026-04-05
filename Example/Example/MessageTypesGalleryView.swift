@@ -90,7 +90,7 @@ struct MessageTypesGalleryView: View {
                     })
                 ]
             }
-            .environmentObject(ChatMessageCellStyle.galleryStyle)
+            .environment(\.chatStyle, ChatMessageCellStyle.galleryStyle)
         }
         .navigationTitle("Message Types")
         #if os(iOS)

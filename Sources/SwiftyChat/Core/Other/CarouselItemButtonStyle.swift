@@ -17,7 +17,7 @@ struct CarouselItemButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundColor(.white)
+            .foregroundStyle(.white)
             .padding()
             .frame(minWidth: 0, maxWidth: .infinity)
             .background(backgroundColor)

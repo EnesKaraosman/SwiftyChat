@@ -62,7 +62,7 @@ struct ThemeShowcaseView: View {
                         })
                     ]
                 }
-                .environmentObject(selectedTheme.style)
+                .environment(\.chatStyle, selectedTheme.style)
             }
         }
         .navigationTitle("Theme: \(selectedTheme.name)")

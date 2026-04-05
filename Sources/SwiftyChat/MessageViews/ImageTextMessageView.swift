@@ -14,7 +14,7 @@ struct ImageTextMessageView<Message: ChatMessage>: View {
     let imageLoadingType: ImageLoadingKind
     let text: String
     let size: CGSize
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
 
     private var imageWidth: CGFloat {
         cellStyle.cellWidth(size)
@@ -50,7 +50,7 @@ struct ImageTextMessageView<Message: ChatMessage>: View {
                 .fontWeight(cellStyle.textStyle.fontWeight)
                 .modifier(EmojiModifier(text: text, defaultFont: cellStyle.textStyle.font))
                 .lineLimit(nil)
-                .foregroundColor(cellStyle.textStyle.textColor)
+                .foregroundStyle(cellStyle.textStyle.textColor)
                 .padding(cellStyle.textPadding)
         }
         .background(cellStyle.cellBackgroundColor)

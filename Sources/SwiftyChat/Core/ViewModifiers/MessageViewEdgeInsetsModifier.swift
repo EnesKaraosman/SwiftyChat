@@ -11,7 +11,7 @@ struct MessageViewEdgeInsetsModifier: ViewModifier {
 
     let isSender: Bool
 
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
 
     private var insets: EdgeInsets {
         isSender ? style.outgoingCellEdgeInsets : style.incomingCellEdgeInsets

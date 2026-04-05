@@ -91,7 +91,7 @@ struct ImageMessageView<Message: ChatMessage>: View {
     let message: Message
     let imageLoadingType: ImageLoadingKind
     let size: CGSize
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
     
     // Default aspect ratio for remote images (4:3)
     private let defaultAspectRatio: CGFloat = 4.0 / 3.0
@@ -140,7 +140,7 @@ struct ImageMessageView<Message: ChatMessage>: View {
     var body: some View {
         imageView
             .background(cellStyle.cellBackgroundColor)
-            .cornerRadius(cellStyle.cellCornerRadius)
+            .clipShape(.rect(cornerRadius: cellStyle.cellCornerRadius))
             .clipped()
             .overlay(
                 RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)

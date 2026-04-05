@@ -74,7 +74,7 @@ struct RoundedCornerShape: Shape {
 }
 
 extension View {
-    func roundedCorners(radius: CGFloat, corners: RectCorner) -> some View {
+    nonisolated func roundedCorners(radius: CGFloat, corners: RectCorner) -> some View {
         clipShape(RoundedCornerShape(radius: radius, corners: corners))
     }
 }

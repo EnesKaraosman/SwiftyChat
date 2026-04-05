@@ -7,46 +7,46 @@
 
 import SwiftUI
 
-public final class ChatMessageCellStyle: ObservableObject {
+public struct ChatMessageCellStyle {
 
     /// Incoming Text Style
-    let incomingTextStyle: TextCellStyle
+    public let incomingTextStyle: TextCellStyle
 
     /// Outgoing Text Style
-    let outgoingTextStyle: TextCellStyle
+    public let outgoingTextStyle: TextCellStyle
 
     /// Cell container inset for incoming messages
-    let incomingCellEdgeInsets: EdgeInsets
+    public let incomingCellEdgeInsets: EdgeInsets
 
     /// Cell container inset for outgoing messages
-    let outgoingCellEdgeInsets: EdgeInsets
+    public let outgoingCellEdgeInsets: EdgeInsets
 
     /// Contact Cell Style
-    let contactCellStyle: ContactCellStyle
+    public let contactCellStyle: ContactCellStyle
 
     /// Image Cell Style
-    let imageCellStyle: ImageCellStyle
+    public let imageCellStyle: ImageCellStyle
 
     /// Image and Text Cell Style
-    let imageTextCellStyle: ImageTextCellStyle
+    public let imageTextCellStyle: ImageTextCellStyle
 
     /// Quick Reply Cell Style
-    let quickReplyCellStyle: QuickReplyCellStyle
+    public let quickReplyCellStyle: QuickReplyCellStyle
 
     /// Carousel Cell Style
-    let carouselCellStyle: CarouselCellStyle
+    public let carouselCellStyle: CarouselCellStyle
 
     /// Location Cell Style
-    let locationCellStyle: LocationCellStyle
+    public let locationCellStyle: LocationCellStyle
 
     /// Video Placeholder Cell Style
-    let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
+    public let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
 
     /// Incoming Avatar Style
-    let incomingAvatarStyle: AvatarStyle
+    public let incomingAvatarStyle: AvatarStyle
 
     /// Outgoing Avatar Style
-    let outgoingAvatarStyle: AvatarStyle
+    public let outgoingAvatarStyle: AvatarStyle
 
     public init(
         incomingTextStyle: TextCellStyle = TextCellStyle(
@@ -90,7 +90,10 @@ public final class ChatMessageCellStyle: ObservableObject {
         self.videoPlaceholderCellStyle = videoPlaceholderCellStyle
         self.incomingAvatarStyle = incomingAvatarStyle
         self.outgoingAvatarStyle = outgoingAvatarStyle
-
-        objectWillChange.send()
     }
+}
+
+// MARK: - Environment Key
+extension EnvironmentValues {
+    @Entry public var chatStyle: ChatMessageCellStyle = ChatMessageCellStyle()
 }

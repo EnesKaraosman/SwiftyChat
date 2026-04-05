@@ -1,11 +1,10 @@
 #if os(iOS)
 import AVKit
-import Combine
 import SwiftUI
 
 @MainActor
 struct VideoPlayerRepresentable: UIViewRepresentable {
-    @ObservedObject var playerVM: PlayerViewModel
+    var playerVM: PlayerViewModel
 
     func makeUIView(context: Context) -> PlayerView {
         let view = PlayerView()
@@ -14,34 +13,38 @@ struct VideoPlayerRepresentable: UIViewRepresentable {
         return view
     }
 
-    func updateUIView(_ uiView: PlayerView, context: Context) { }
+    func updateUIView(_ uiView: PlayerView, context: Context) {
+        // Handle PiP mode changes
+        context.coordinator.updatePipMode(playerVM.isInPipMode)
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
     }
 
     @MainActor
-    class Coordinator: NSObject, AVPictureInPictureControllerDelegate {
-        private let parent: VideoPlayerRepresentable
+    class Coordinator: NSObject, @preconcurrency AVPictureInPictureControllerDelegate {
+        private let playerVM: PlayerViewModel
         private var controller: AVPictureInPictureController?
-        private var cancellable: AnyCancellable?
+        private var lastPipMode: Bool = false
 
         init(_ parent: VideoPlayerRepresentable) {
-            self.parent = parent
+            self.playerVM = parent.playerVM
             super.init()
+        }
 
-            cancellable = parent.playerVM.$isInPipMode
-                .sink { [weak self] in
-                    guard let self = self,
-                          let controller = self.controller else { return }
-                    if $0 {
-                        if controller.isPictureInPictureActive == false {
-                            controller.startPictureInPicture()
-                        }
-                    } else if controller.isPictureInPictureActive {
-                        controller.stopPictureInPicture()
-                    }
+        func updatePipMode(_ isInPipMode: Bool) {
+            guard isInPipMode != lastPipMode else { return }
+            lastPipMode = isInPipMode
+
+            guard let controller = controller else { return }
+            if isInPipMode {
+                if !controller.isPictureInPictureActive {
+                    controller.startPictureInPicture()
                 }
+            } else if controller.isPictureInPictureActive {
+                controller.stopPictureInPicture()
+            }
         }
 
         func setController(_ playerLayer: AVPlayerLayer) {
@@ -53,13 +56,13 @@ struct VideoPlayerRepresentable: UIViewRepresentable {
         func pictureInPictureControllerDidStartPictureInPicture(
             _ pictureInPictureController: AVPictureInPictureController
         ) {
-            parent.playerVM.isInPipMode = true
+            playerVM.isInPipMode = true
         }
 
         func pictureInPictureControllerWillStopPictureInPicture(
             _ pictureInPictureController: AVPictureInPictureController
         ) {
-            parent.playerVM.isInPipMode = false
+            playerVM.isInPipMode = false
         }
     }
 

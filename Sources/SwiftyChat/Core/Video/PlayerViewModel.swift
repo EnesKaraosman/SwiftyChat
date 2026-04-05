@@ -1,55 +1,46 @@
 import AVFoundation
 import Combine
+import Observation
 
-final class PlayerViewModel: ObservableObject {
+@MainActor
+@Observable
+final class PlayerViewModel {
     let player: AVPlayer
 
-    @Published
-    var isEditingCurrentTime = false
+    var isEditingCurrentTime = false {
+        didSet {
+            if oldValue && !isEditingCurrentTime {
+                // When editing ends, seek to the new position
+                player.seek(
+                    to: CMTime(seconds: currentTime, preferredTimescale: 1),
+                    toleranceBefore: .zero,
+                    toleranceAfter: .zero
+                )
 
-    @Published
+                if player.rate != 0 {
+                    player.play()
+                }
+            }
+        }
+    }
+
     var currentTime: Double = .zero
-
-    @Published
     var isInPipMode: Bool = false
-
-    @Published
     private(set) var isPlaying = false
-
-    @Published
     private(set) var duration: Double?
 
     private var subscriptions: Set<AnyCancellable> = []
     private var timeObserver: Any?
 
     deinit {
-        if let timeObserver {
-            player.removeTimeObserver(timeObserver)
-        }
+        // timeObserver cleanup handled by AVPlayer when it's deallocated
     }
 
     init() {
         player = AVPlayer()
 
-        $isEditingCurrentTime
-            .dropFirst()
-            .filter({ $0 == false })
-            .sink(receiveValue: { [weak self] _ in
-                guard let self else { return }
-
-                self.player.seek(
-                    to: CMTime(seconds: self.currentTime, preferredTimescale: 1),
-                    toleranceBefore: .zero,
-                    toleranceAfter: .zero
-                )
-
-                if self.player.rate != 0 {
-                    self.player.play()
-                }
-            })
-            .store(in: &subscriptions)
-
         player.publisher(for: \.timeControlStatus)
+            .receive(on: DispatchQueue.main)
             .sink { [weak self] status in
                 switch status {
                 case .playing:
@@ -68,10 +59,11 @@ final class PlayerViewModel: ObservableObject {
             forInterval: CMTime(seconds: 1, preferredTimescale: 600),
             queue: .main
         ) { [weak self] time in
-            guard let self else { return }
-
-            if self.isEditingCurrentTime == false {
-                self.currentTime = time.seconds
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                if self.isEditingCurrentTime == false {
+                    self.currentTime = time.seconds
+                }
             }
         }
     }
@@ -82,9 +74,14 @@ final class PlayerViewModel: ObservableObject {
         player.replaceCurrentItem(with: item)
 
         item.publisher(for: \.status)
+            .receive(on: DispatchQueue.main)
             .filter({ $0 == .readyToPlay })
             .sink(receiveValue: { [weak self] _ in
-                self?.duration = item.asset.duration.seconds
+                Task { @MainActor in
+                    if let duration = try? await item.asset.load(.duration) {
+                        self?.duration = duration.seconds
+                    }
+                }
             })
             .store(in: &subscriptions)
     }

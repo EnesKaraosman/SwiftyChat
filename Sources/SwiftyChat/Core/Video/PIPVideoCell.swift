@@ -15,7 +15,7 @@ private extension CGSize {
 
 struct PIPVideoCell<Message: ChatMessage>: View {
 
-    @EnvironmentObject var videoManager: VideoManager<Message>
+    @Environment(VideoManager<Message>.self) var videoManager
 
     #if os(iOS)
     @EnvironmentObject var model: DeviceOrientationInfo
@@ -49,7 +49,7 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                             orientationIsLandscape: modelOrientation()
                         )
                     )
-                    .cornerRadius(videoManager.isFullScreen ? 0 : 8)
+                    .clipShape(.rect(cornerRadius: videoManager.isFullScreen ? 0 : 8))
                     .shadow(color: videoManager.isFullScreen ? .clear : .secondary, radius: 6, x: 1, y: 2)
                     .position(location)
                     .gesture(simpleDrag(in: geometry.size))
@@ -59,7 +59,7 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                         let initial = viewModel.computeLocation(for: .rightTop, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: modelOrientation())
                         withAnimation(.easeIn) { self.location = initial }
                     }
-                    .onChange(of: videoManager.isFullScreen) { _ in
+                    .onChange(of: videoManager.isFullScreen) {
                         pendingTask?.cancel()
                         pendingTask = viewModel.scheduleReposition(to: .center, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: modelOrientation()) { newLocation in
                             withAnimation(.easeIn) { self.location = newLocation }
@@ -67,7 +67,7 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                     }
 
                     #if os(iOS)
-                    .onChange(of: model.orientation) { _ in
+                    .onChange(of: model.orientation) {
                         pendingTask?.cancel()
                         pendingTask = viewModel.scheduleReposition(to: .leftTop, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: modelOrientation()) { newLocation in
                             withAnimation(.easeIn) { self.location = newLocation }

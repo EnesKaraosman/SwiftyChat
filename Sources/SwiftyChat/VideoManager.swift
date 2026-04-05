@@ -6,15 +6,18 @@
 //
 
 import Foundation
+import Observation
 
 /// Behaves like a bridge between `VideoPlaceHolderCell` & `PIPVideoCell`
 /// when placeHolder cell tapped, `message` parameter is set
 /// also this change is being observed in `PIPVideoCell`so activates video frame.
 @MainActor
-final class VideoManager<Message: ChatMessage>: ObservableObject {
+@Observable
+final class VideoManager<Message: ChatMessage> {
 
-    @Published var message: Message?
-    @Published var isFullScreen = false
+    var message: Message?
+    var isFullScreen = false
+
     var videoItem: VideoItem? {
         if let message = message,
             case let ChatMessageKind.video(videoItem) = message.messageKind {

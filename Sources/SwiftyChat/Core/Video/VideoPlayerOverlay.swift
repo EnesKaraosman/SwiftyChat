@@ -1,11 +1,9 @@
 import SwiftUI
 
 struct VideoPlayerOverlay<Message: ChatMessage>: View {
-    @ObservedObject
-    var playerVM: PlayerViewModel
+    @Bindable var playerVM: PlayerViewModel
 
-    @EnvironmentObject
-    var videoManager: VideoManager<Message>
+    @Environment(VideoManager<Message>.self) var videoManager
 
     init(for playerViewModel: PlayerViewModel) {
         self.playerVM = playerViewModel
@@ -25,12 +23,12 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
 
     private var playPauseButton: some View {
         Color.secondary.colorInvert()
-            .cornerRadius(10)
+            .clipShape(.rect(cornerRadius: 10))
             .frame(width: 50, height: 40)
             .overlay(
                 Image(systemName: playerVM.isPlaying ? "pause.fill" : "play.fill")
                     .font(Font.body.weight(.semibold))
-                    .foregroundColor(Color.white)
+                    .foregroundStyle(Color.white)
                     .padding()
             )
             .onTapGesture {
@@ -59,7 +57,7 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
 
     private var fullScreenButton: some View {
         Color.secondary.colorInvert()
-            .cornerRadius(10)
+            .clipShape(.rect(cornerRadius: 10))
             .frame(width: 50, height: 40)
             .overlay(
                 Image(
@@ -67,7 +65,7 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
                     "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right"
                 )
                 .font(Font.body.weight(.semibold))
-                .foregroundColor(Color.white)
+                .foregroundStyle(Color.white)
                 .padding()
             )
             .onTapGesture { [weak videoManager] in
@@ -79,12 +77,12 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
 
     private var closeButton: some View {
         Color.secondary.colorInvert()
-            .cornerRadius(10)
+            .clipShape(.rect(cornerRadius: 10))
             .frame(width: 50, height: 40)
             .overlay(
                 Image(systemName: "xmark")
                     .font(Font.body.weight(.semibold))
-                    .foregroundColor(Color.white)
+                    .foregroundStyle(Color.white)
                     .padding()
             )
             .onTapGesture { [weak videoManager] in

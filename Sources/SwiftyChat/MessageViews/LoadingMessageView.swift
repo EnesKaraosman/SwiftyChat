@@ -12,7 +12,7 @@ struct LoadingMessageView<Message: ChatMessage>: View {
     let message: Message
     let size: CGSize
 
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
 
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
@@ -25,7 +25,7 @@ struct LoadingMessageView<Message: ChatMessage>: View {
     var body: some View {
         LoadingThreeBalls(color: cellStyle.textStyle.textColor, size: .init(width: 40, height: 8))
             .frame(height: 42)
-            .foregroundColor(cellStyle.textStyle.textColor)
+            .foregroundStyle(cellStyle.textStyle.textColor)
             .padding(.horizontal, cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
             .roundedCorners(

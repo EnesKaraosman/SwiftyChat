@@ -7,15 +7,21 @@
 
 import SwiftUI
 
+enum DemoDestination: Hashable {
+    case interactive
+    case themeShowcase
+    case messageTypes
+    case basic
+    case advanced
+}
+
 struct ChatListView: View {
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 // Featured Section
                 Section {
-                    NavigationLink {
-                        InteractiveChatView()
-                    } label: {
+                    NavigationLink(value: DemoDestination.interactive) {
                         DemoRow(
                             icon: "bubble.left.and.bubble.right.fill",
                             iconColor: .blue,
@@ -26,12 +32,10 @@ struct ChatListView: View {
                 } header: {
                     Text("Featured")
                 }
-                
+
                 // Explore Section
                 Section {
-                    NavigationLink {
-                        ThemeShowcaseView()
-                    } label: {
+                    NavigationLink(value: DemoDestination.themeShowcase) {
                         DemoRow(
                             icon: "paintpalette.fill",
                             iconColor: .purple,
@@ -39,10 +43,8 @@ struct ChatListView: View {
                             subtitle: "Explore different visual themes"
                         )
                     }
-                    
-                    NavigationLink {
-                        MessageTypesGalleryView()
-                    } label: {
+
+                    NavigationLink(value: DemoDestination.messageTypes) {
                         DemoRow(
                             icon: "square.grid.2x2.fill",
                             iconColor: .orange,
@@ -53,12 +55,10 @@ struct ChatListView: View {
                 } header: {
                     Text("Explore Features")
                 }
-                
+
                 // Examples Section
                 Section {
-                    NavigationLink {
-                        BasicExampleView()
-                    } label: {
+                    NavigationLink(value: DemoDestination.basic) {
                         DemoRow(
                             icon: "text.bubble",
                             iconColor: .green,
@@ -66,10 +66,8 @@ struct ChatListView: View {
                             subtitle: "Simple text chat implementation"
                         )
                     }
-                    
-                    NavigationLink {
-                        AdvancedExampleView()
-                    } label: {
+
+                    NavigationLink(value: DemoDestination.advanced) {
                         DemoRow(
                             icon: "star.fill",
                             iconColor: .yellow,
@@ -80,7 +78,7 @@ struct ChatListView: View {
                 } header: {
                     Text("Code Examples")
                 }
-                
+
                 // About Section
                 Section {
                     Link(destination: URL(string: "https://github.com/EnesKaraosman/SwiftyChat")!) {
@@ -101,6 +99,20 @@ struct ChatListView: View {
             .listStyle(.sidebar)
             #endif
             .navigationTitle("SwiftyChat")
+            .navigationDestination(for: DemoDestination.self) { destination in
+                switch destination {
+                case .interactive:
+                    InteractiveChatView()
+                case .themeShowcase:
+                    ThemeShowcaseView()
+                case .messageTypes:
+                    MessageTypesGalleryView()
+                case .basic:
+                    BasicExampleView()
+                case .advanced:
+                    AdvancedExampleView()
+                }
+            }
         }
     }
 }

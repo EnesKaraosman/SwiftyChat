@@ -56,7 +56,6 @@
 			children = (
 				94410B732BC6B4D400C37BDB /* Example */,
 				94410B722BC6B4D400C37BDB /* Products */,
-				9498B4192BC982FF0021FB93 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -335,6 +334,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.eneskaraosman.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -367,6 +367,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 14.6;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.eneskaraosman.Example;
 				PRODUCT_NAME = "$(TARGET_NAME)";

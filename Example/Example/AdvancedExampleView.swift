@@ -87,7 +87,7 @@ struct AdvancedExampleView: View {
             print(message.messageKind.description)
         })
         // ▼ Required
-        .environmentObject(ChatMessageCellStyle())
+        .environment(\.chatStyle, ChatMessageCellStyle())
         #if os(iOS)
         .navigationBarTitle("Advanced")
         #endif

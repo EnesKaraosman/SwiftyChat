@@ -28,7 +28,7 @@ struct ContactMessageView<Message: ChatMessage>: View {
     // Cache buttons to avoid recomputation
     private let cachedButtons: [ContactCellButton]
 
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
     
     init(contact: ContactItem, message: Message, size: CGSize, footerSection: @escaping (ContactItem, Message) -> [ContactCellButton]) {
         self.contact = contact
@@ -60,7 +60,7 @@ struct ContactMessageView<Message: ChatMessage>: View {
                     height: imageStyle.imageSize.height
                 )
                 .scaledToFit()
-                .cornerRadius(imageStyle.cornerRadius)
+                .clipShape(.rect(cornerRadius: imageStyle.cornerRadius))
                 .overlay(
                     RoundedRectangle(cornerRadius: imageStyle.cornerRadius)
                         .stroke(
@@ -111,7 +111,7 @@ struct ContactMessageView<Message: ChatMessage>: View {
         .frame(width: cardWidth)
         .background(
             cellStyle.cellBackgroundColor
-                .cornerRadius(cellStyle.cellCornerRadius)
+                .clipShape(.rect(cornerRadius: cellStyle.cellCornerRadius))
         )
         .overlay(
             RoundedRectangle(cornerRadius: 8)
@@ -130,6 +130,6 @@ struct ContactMessageView<Message: ChatMessage>: View {
         Text(contact.displayName)
             .font(cellStyle.fullNameLabelStyle.font)
             .fontWeight(cellStyle.fullNameLabelStyle.fontWeight)
-            .foregroundColor(cellStyle.fullNameLabelStyle.textColor)
+            .foregroundStyle(cellStyle.fullNameLabelStyle.textColor)
     }
 }

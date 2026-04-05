@@ -14,8 +14,8 @@ struct VideoMessageView<Message: ChatMessage>: View {
     let message: Message
     let size: CGSize
 
-    @EnvironmentObject var style: ChatMessageCellStyle
-    @EnvironmentObject var videoManager: VideoManager<Message>
+    @Environment(\.chatStyle) var style
+    @Environment(VideoManager<Message>.self) var videoManager
 
     private var isThisVideoPlaying: Bool {
         videoManager.videoItem != nil && videoManager.message?.id == message.id
@@ -56,7 +56,7 @@ struct VideoMessageView<Message: ChatMessage>: View {
         .clipped()
         .blur(radius: cellStyle.cellBlurRadius)
         .background(cellStyle.cellBackgroundColor)
-        .cornerRadius(cellStyle.cellCornerRadius)
+        .clipShape(.rect(cornerRadius: cellStyle.cellCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
                 .stroke(
@@ -75,7 +75,7 @@ struct VideoMessageView<Message: ChatMessage>: View {
             .resizable()
             .scaledToFit()
             .frame(width: 40)
-            .foregroundColor(.secondary)
+            .foregroundStyle(.secondary)
     }
 
     private var pipMessageView: some View {
@@ -91,7 +91,7 @@ struct VideoMessageView<Message: ChatMessage>: View {
                 .padding(.top, 4)
                 .multilineTextAlignment(.center)
         }
-        .foregroundColor(.white)
+        .foregroundStyle(.white)
     }
 
     @ViewBuilder

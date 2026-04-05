@@ -13,7 +13,7 @@ struct AvatarModifier<Message: ChatMessage>: ViewModifier {
     let message: Message
     let showAvatarForMessage: Bool
 
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
 
     private var isSender: Bool { message.isSender }
 
@@ -64,7 +64,7 @@ struct AvatarModifier<Message: ChatMessage>: ViewModifier {
                 height: imageStyle.imageSize.height
             )
             .scaledToFit()
-            .cornerRadius(imageStyle.cornerRadius)
+            .clipShape(.rect(cornerRadius: imageStyle.cornerRadius))
             .overlay(
                 RoundedRectangle(cornerRadius: imageStyle.cornerRadius)
                     .stroke(

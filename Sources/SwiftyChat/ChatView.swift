@@ -36,6 +36,7 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
     
     // Cache for message metadata to avoid O(n) lookups per message
     @State private var messageMetadataCache: [Message.ID: (showDateHeader: Bool, showDisplayName: Bool)] = [:]
+    @State private var videoManager = VideoManager<Message>()
 
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
@@ -56,14 +57,14 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
 #if os(iOS)
         .environmentObject(DeviceOrientationInfo())
 #endif
-        .environmentObject(VideoManager<Message>())
-        .edgesIgnoringSafeArea(.bottom)
+        .environment(videoManager)
+        .ignoresSafeArea(.container, edges: .bottom)
         .dismissKeyboardOnTappingOutside() // iOS only
     }
 
     private func chatView(in geometry: GeometryProxy) -> some View {
         ScrollViewReader { proxy in
-            ScrollView(.vertical, showsIndicators: false) {
+            ScrollView(.vertical) {
                 LazyVStack {
                     ForEach(messages) { message in
                         MessageRow(
@@ -86,20 +87,21 @@ public struct ChatView<Message: ChatMessage, User: ChatUser>: View {
                 }
                 .padding(inset)
             }
-            .onChange(of: messages.map(\.id)) { _ in
+            .scrollIndicators(.hidden)
+            .onChange(of: messages.map(\.id)) {
                 rebuildMessageMetadataCache()
             }
-            .onChange(of: scrollToBottom) { value in
-                if value {
+            .onChange(of: scrollToBottom) { oldValue, newValue in
+                if newValue {
                     withAnimation {
                         proxy.scrollTo("bottom")
                     }
                     scrollToBottom = false
                 }
             }
-            .onChange(of: scrollTo) { value in
-                if let value {
-                    proxy.scrollTo(value, anchor: .top)
+            .onChange(of: scrollTo) { oldValue, newValue in
+                if let newValue {
+                    proxy.scrollTo(newValue, anchor: .top)
                     scrollTo = nil
                 }
             }
@@ -359,7 +361,7 @@ private struct MessageRow<Message: ChatMessage, Content: View>: View {
             if metadata.showDateHeader {
                 Text(sharedDateFormatter.string(from: message.date))
                     .font(.subheadline)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.vertical, 4)
             }
@@ -367,7 +369,7 @@ private struct MessageRow<Message: ChatMessage, Content: View>: View {
             if metadata.showDisplayName {
                 Text(message.user.userName)
                     .font(.caption)
-                    .foregroundColor(.secondary)
+                    .foregroundStyle(.secondary)
                     .frame(
                         maxWidth: geometrySize.width * (Device.isLandscape ? 0.6 : 0.75),
                         alignment: message.isSender ? .trailing : .leading

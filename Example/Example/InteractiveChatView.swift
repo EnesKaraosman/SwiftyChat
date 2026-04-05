@@ -48,7 +48,7 @@ struct InteractiveChatView: View {
                 })
             ]
         }
-        .environmentObject(ChatMessageCellStyle.interactiveStyle)
+        .environment(\.chatStyle, ChatMessageCellStyle.interactiveStyle)
         .navigationTitle("Chat Demo")
         #if os(iOS)
         .navigationBarTitleDisplayMode(.inline)

@@ -12,7 +12,7 @@ struct QuickReplyMessageView: View {
 
     let quickReplies: [QuickReplyItem]
     let quickReplySelected: (QuickReplyItem) -> Void
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
 
     private var cellStyle: QuickReplyCellStyle {
         style.quickReplyCellStyle
@@ -29,7 +29,7 @@ struct QuickReplyMessageView: View {
         let backgroundColor = index == selectedIndex ?
             cellStyle.selectedItemBackgroundColor :
             cellStyle.unselectedItemBackgroundColor
-        return Capsule().foregroundColor(backgroundColor)
+        return Capsule().foregroundStyle(backgroundColor)
     }
 
     var body: some View {
@@ -46,7 +46,7 @@ struct QuickReplyMessageView: View {
                     .padding(.horizontal, cellStyle.itemHorizontalPadding)
                     .frame(height: cellStyle.itemHeight)
                     .background(itemBackground(for: idx))
-                    .foregroundColor(itemColor(for: idx))
+                    .foregroundStyle(itemColor(for: idx))
                     .overlay(
                         RoundedRectangle(cornerRadius: cellStyle.itemCornerRadius)
                             .stroke(

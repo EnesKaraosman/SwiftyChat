@@ -4,12 +4,12 @@ import SwiftUI
 
 #if os(iOS)
 struct IOSChatVideoPlayer<Message: ChatMessage>: View {
-    @StateObject private var playerVM = PlayerViewModel()
+    @State private var playerVM = PlayerViewModel()
     let media: VideoItem
     let message: Message
 
-    @EnvironmentObject var style: ChatMessageCellStyle
-    @EnvironmentObject var videoManager: VideoManager<Message>
+    @Environment(\.chatStyle) var style
+    @Environment(VideoManager<Message>.self) var videoManager
 
     private var cellStyle: VideoPlaceholderCellStyle {
         style.videoPlaceholderCellStyle
@@ -41,12 +41,12 @@ struct IOSChatVideoPlayer<Message: ChatMessage>: View {
 
 // TODO: - Works for iOS as well but overlay is problematic currently
 struct MacOSChatVideoPlayer<Message: ChatMessage>: View {
-    @StateObject private var playerVM = PlayerViewModel()
+    @State private var playerVM = PlayerViewModel()
     let media: VideoItem
     let message: Message
 
-    @EnvironmentObject var style: ChatMessageCellStyle
-    @EnvironmentObject var videoManager: VideoManager<Message>
+    @Environment(\.chatStyle) var style
+    @Environment(VideoManager<Message>.self) var videoManager
 
     private var cellStyle: VideoPlaceholderCellStyle {
         style.videoPlaceholderCellStyle
@@ -68,12 +68,12 @@ struct MacOSChatVideoPlayer<Message: ChatMessage>: View {
 
     private var closeButton: some View {
         Color.secondary.colorInvert()
-            .cornerRadius(10)
+            .clipShape(.rect(cornerRadius: 10))
             .frame(width: 50, height: 40)
             .overlay(
                 Image(systemName: "xmark")
                     .font(Font.body.weight(.semibold))
-                    .foregroundColor(Color.white)
+                    .foregroundStyle(Color.white)
                     .padding()
             )
             .onTapGesture {

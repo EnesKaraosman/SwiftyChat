@@ -24,15 +24,9 @@ public struct BasicInputView: View {
         self.onCommit = onCommit
     }
 
-    @ViewBuilder
     private var messageEditorView: some View {
-        if #available(iOS 16.0, macOS 13.0, *) {
-            TextField(placeholder, text: $message, axis: .vertical)
-                .lineLimit(5)
-        } else {
-            TextEditor(text: $message)
-                .frame(maxHeight: 64)
-        }
+        TextField(placeholder, text: $message, axis: .vertical)
+            .lineLimit(5)
     }
 
     private var sendButton: some View {
@@ -45,7 +39,7 @@ public struct BasicInputView: View {
                 .overlay(
                     Image(systemName: "paperplane.fill")
                         .resizable()
-                        .foregroundColor(.white)
+                        .foregroundStyle(.white)
                         .offset(x: -1, y: 1)
                         .padding(8)
                 )

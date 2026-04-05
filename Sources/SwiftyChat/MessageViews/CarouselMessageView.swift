@@ -74,7 +74,7 @@ private struct CarouselItemView: View {
     let size: CGSize
     let isSender: Bool
     let callback: (CarouselItemButton) -> Void
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
 
     private var cellStyle: CarouselCellStyle {
         style.carouselCellStyle
@@ -107,14 +107,14 @@ private struct CarouselItemView: View {
                 Text(item.title)
                     .fontWeight(cellStyle.titleLabelStyle.fontWeight)
                     .font(cellStyle.titleLabelStyle.font)
-                    .foregroundColor(cellStyle.titleLabelStyle.textColor)
+                    .foregroundStyle(cellStyle.titleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
 
                 Text(item.subtitle)
                     .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
                     .font(cellStyle.subtitleLabelStyle.font)
-                    .foregroundColor(cellStyle.subtitleLabelStyle.textColor)
+                    .foregroundStyle(cellStyle.subtitleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
                     .lineLimit(2)
 
@@ -132,7 +132,7 @@ private struct CarouselItemView: View {
                             Text(button.title)
                                 .fontWeight(cellStyle.buttonTitleFontWeight)
                                 .font(cellStyle.buttonFont)
-                                .foregroundColor(cellStyle.buttonTitleColor)
+                                .foregroundStyle(cellStyle.buttonTitleColor)
                         }
                     )
                     .buttonStyle(
@@ -146,7 +146,7 @@ private struct CarouselItemView: View {
         }
         .background(cellStyle.cellBackgroundColor)
         .frame(width: itemWidth)
-        .cornerRadius(cellStyle.cellCornerRadius)
+        .clipShape(.rect(cornerRadius: cellStyle.cellCornerRadius))
         .overlay(
             RoundedRectangle(cornerRadius: cellStyle.cellCornerRadius)
                 .stroke(

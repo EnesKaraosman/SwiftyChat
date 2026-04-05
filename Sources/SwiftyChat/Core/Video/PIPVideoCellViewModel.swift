@@ -2,7 +2,7 @@ import Foundation
 import SwiftUI
 
 @MainActor
-final class PIPVideoCellViewModel: ObservableObject {
+final class PIPVideoCellViewModel {
 
     enum Corner {
         case leftTop, leftBottom, rightTop, rightBottom, center

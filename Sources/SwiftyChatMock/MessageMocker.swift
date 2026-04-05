@@ -29,12 +29,12 @@ public struct MessageMocker {
         return URL(string: string)
     }
 
-    public static var sender: ChatUserItem = .init(
+    public static let sender: ChatUserItem = .init(
         userName: "Sender",
         avatarURL: avatarUrl(Int.random(in: 1...250))
     )
 
-    public static var chatbot: ChatUserItem = .init(
+    public static let chatbot: ChatUserItem = .init(
         userName: "Chatbot",
         avatarURL: avatarUrl(Int.random(in: 1...250))
     )
@@ -142,8 +142,8 @@ public struct MessageMocker {
 
         case .video:
             let videoItem = VideoRow(
-                url: URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4")!,
-                placeholderImage: .remote(URL(string: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/images/BigBuckBunny.jpg")!),
+                url: URL(string: "https://loremipsum.video/vt/powerpoint-1.mp4")!,
+                placeholderImage: .remote(URL(string: "https://loremipsum.video/img/id_vts/powerpoint-1.png")!),
                 pictureInPicturePlayingMessage: "This video is playing in picture in picture."
             )
 
@@ -239,7 +239,7 @@ extension MessageMocker {
         }
     }
 
-    public struct ChatUserItem: ChatUser {
+    public struct ChatUserItem: ChatUser, Sendable {
         public static func == (lhs: ChatUserItem, rhs: ChatUserItem) -> Bool {
             lhs.id == rhs.id
         }
@@ -247,13 +247,13 @@ extension MessageMocker {
         public let id = UUID().uuidString
 
         /// Username
-        public var userName: String
+        public let userName: String
 
         /// User's chat profile image, considered if `avatarURL` is nil
-        public var avatar: PlatformImage?
+        public let avatar: PlatformImage?
 
         /// User's chat profile image URL
-        public var avatarURL: URL?
+        public let avatarURL: URL?
 
         public init(userName: String, avatarURL: URL? = nil, avatar: PlatformImage? = nil) {
             self.userName = userName

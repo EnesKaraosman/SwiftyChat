@@ -13,7 +13,7 @@ struct TextMessageView<Message: ChatMessage>: View {
     let message: Message
     let size: CGSize
 
-    @EnvironmentObject var style: ChatMessageCellStyle
+    @Environment(\.chatStyle) var style
 
     private var cellStyle: TextCellStyle {
         message.isSender ? style.outgoingTextStyle : style.incomingTextStyle
@@ -61,7 +61,7 @@ private extension Text {
             .fontWeight(cellStyle.textStyle.fontWeight)
             .modifier(EmojiModifier(isEmojiOnly: isEmojiOnly, emojiCount: emojiCount, defaultFont: cellStyle.textStyle.font))
             .lineLimit(nil)
-            .foregroundColor(cellStyle.textStyle.textColor)
+            .foregroundStyle(cellStyle.textStyle.textColor)
             .fixedSize(horizontal: false, vertical: true)
             .padding(cellStyle.textPadding)
             .background(cellStyle.cellBackgroundColor)
