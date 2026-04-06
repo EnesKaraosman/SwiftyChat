@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import WrappingHStack
 
 struct QuickReplyMessageView: View {
 
@@ -33,8 +32,8 @@ struct QuickReplyMessageView: View {
     }
 
     var body: some View {
-        // TODO: Custom `Layout` can be used when min iOS target hits 16.0
-        WrappingHStack(0..<quickReplies.count, id: \.self, alignment: .trailing, spacing: .constant(8)) { idx in
+        FlowLayout(horizontalSpacing: 8, verticalSpacing: 8, alignment: .trailing) {
+            ForEach(0..<quickReplies.count, id: \.self) { idx in
             Button(action: {}, label: {
                 Text(quickReplies[idx].title)
                     .fontWeight(
@@ -68,6 +67,7 @@ struct QuickReplyMessageView: View {
                 }
             )
             .padding(.vertical, 4)
+            }
         }
         .disabled(isDisabled)
         .fixedSize(horizontal: false, vertical: true)

@@ -21,16 +21,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.6.2"),
-        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.4.0"),
-        .package(url: "https://github.com/dkk/WrappingHStack.git", from: "2.2.11")
+        .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.4.0")
     ],
     targets: [
         .target(
             name: "SwiftyChat",
             dependencies: [
                 .byName(name: "Kingfisher"),
-                .byName(name: "SwiftUIEKtensions"),
-                .byName(name: "WrappingHStack")
+                .byName(name: "SwiftUIEKtensions")
                 
             ],
             exclude: ["Demo/Preview"]
