@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+---
+
+## [4.1.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.1.0)
+
+Released on 2026-04-06.
+
 ### Added
 
 - **Link preview messages**: New `ChatMessageKind.linkPreview(LinkPreviewItem)` for displaying rich URL previews with Open Graph metadata (title, description, image, hostname).
@@ -10,6 +16,26 @@
 - **`.onLinkPreviewTapped` modifier**: Dedicated tap handler that provides the URL and message, making it easy to open links in Safari or an in-app browser.
 - **Mock data**: `MessageMocker` now generates link preview messages in random message sets.
 - **Example app**: `AdvancedExampleView` and `MessageTypesGalleryView` demonstrate link preview usage with tap-to-open.
+
+### Changed
+
+- **Replaced `WrappingHStack` with native `FlowLayout`**: Quick reply message view now uses a custom `Layout` implementation instead of the third-party `WrappingHStack` package, leveraging the `Layout` protocol available since iOS 16.
+
+### Fixed
+
+- **Swift concurrency warning**: Resolved concurrency warning in `ChatMessageViewContainer`.
+
+### Changed (Example App)
+
+- **Renamed Example project**: Example project renamed to `SwiftyChatDemo` with a new app icon.
+
+### CI
+
+- Auto-select latest Xcode and added iOS/macOS build steps to GitHub Actions.
+
+### Dependencies
+
+- Removed `WrappingHStack` dependency.
 
 ---
 
