@@ -99,7 +99,7 @@ ChatView(
 .environment(\.chatStyle, ChatMessageCellStyle())
 ```
 
-`YourMessage` must conform to the `ChatMessage` protocol (which has an associated `ChatUser` type). See the [Example app](../master/Example) for a complete implementation.
+`YourMessage` must conform to the `ChatMessage` protocol (which has an associated `ChatUser` type). See the [SwiftyChatDemo app](../master/SwiftyChatDemo) for a complete implementation.
 
 ### Input view
 
@@ -145,7 +145,7 @@ See [Styles.md](../master/Styles.md) for the full style reference and [CustomMes
 | **Nature** | Fresh green, eco-friendly |
 | **Lavender** | Soft purple, relaxing |
 
-See `ThemeShowcaseView` in the Example app for live demos.
+See `ThemeShowcaseView` in the SwiftyChatDemo app for live demos.
 
 ## Contributing
 
