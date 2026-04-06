@@ -26,10 +26,11 @@ struct MessageTypesGalleryView: View {
         case quickReply = "Quick Reply"
         case carousel = "Carousel"
         case video = "Video"
+        case linkPreview = "Link Preview"
         case loading = "Loading"
-        
+
         var id: String { rawValue }
-        
+
         var icon: String {
             switch self {
             case .text: return "text.bubble"
@@ -41,10 +42,11 @@ struct MessageTypesGalleryView: View {
             case .quickReply: return "ellipsis.bubble"
             case .carousel: return "rectangle.split.3x1"
             case .video: return "play.rectangle"
+            case .linkPreview: return "link"
             case .loading: return "ellipsis"
             }
         }
-        
+
         var description: String {
             switch self {
             case .text: return "Standard text messages with markdown support"
@@ -56,6 +58,7 @@ struct MessageTypesGalleryView: View {
             case .quickReply: return "Tappable quick reply options"
             case .carousel: return "Horizontal scrolling cards"
             case .video: return "Video messages with PiP support"
+            case .linkPreview: return "Rich URL previews with Open Graph metadata"
             case .loading: return "Animated loading indicator"
             }
         }
@@ -78,6 +81,14 @@ struct MessageTypesGalleryView: View {
             }
             .onCarouselItemAction { button, _ in
                 addResponse("Carousel action: \(button.title)")
+            }
+            .onLinkPreviewTapped { url, _ in
+                #if os(iOS)
+                UIApplication.shared.open(url)
+                #endif
+                #if os(macOS)
+                NSWorkspace.shared.open(url)
+                #endif
             }
             .contactItemButtons { contact, _ in
                 [
@@ -289,6 +300,32 @@ struct MessageTypesGalleryView: View {
                 pictureInPicturePlayingMessage: "Video is playing in PiP mode"
             ))
             
+        case .linkPreview:
+            let previews: [(String, String, String, String, String)] = [
+                (
+                    "https://github.com/EnesKaraosman/SwiftyChat",
+                    "SwiftyChat",
+                    "A lightweight SwiftUI chat UI framework with rich message types.",
+                    "https://opengraph.githubassets.com/1/EnesKaraosman/SwiftyChat",
+                    "github.com"
+                ),
+                (
+                    "https://developer.apple.com/xcode/swiftui/",
+                    "SwiftUI - Xcode - Apple Developer",
+                    "SwiftUI helps you build great-looking apps across all Apple platforms.",
+                    "https://developer.apple.com/news/images/og/swiftui-og.png",
+                    "developer.apple.com"
+                )
+            ]
+            let preview = previews.randomElement()!
+            messageKind = .linkPreview(LinkPreviewRow(
+                url: URL(string: preview.0)!,
+                title: preview.1,
+                description: preview.2,
+                imageURL: URL(string: preview.3),
+                host: preview.4
+            ))
+
         case .loading:
             messageKind = .loading
         }
@@ -366,6 +403,14 @@ private struct VideoRow: VideoItem {
     var url: URL
     var placeholderImage: ImageLoadingKind
     var pictureInPicturePlayingMessage: String
+}
+
+private struct LinkPreviewRow: LinkPreviewItem {
+    var url: URL
+    var title: String?
+    var description: String?
+    var imageURL: URL?
+    var host: String?
 }
 
 // MARK: - Gallery Style

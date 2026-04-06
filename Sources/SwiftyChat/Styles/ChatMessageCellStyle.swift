@@ -42,6 +42,9 @@ public struct ChatMessageCellStyle {
     /// Video Placeholder Cell Style
     public let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
 
+    /// Link Preview Cell Style
+    public let linkPreviewCellStyle: LinkPreviewCellStyle
+
     /// Incoming Avatar Style
     public let incomingAvatarStyle: AvatarStyle
 
@@ -72,6 +75,7 @@ public struct ChatMessageCellStyle {
         carouselCellStyle: CarouselCellStyle = CarouselCellStyle(),
         locationCellStyle: LocationCellStyle = LocationCellStyle(),
         videoPlaceholderCellStyle: VideoPlaceholderCellStyle = VideoPlaceholderCellStyle(),
+        linkPreviewCellStyle: LinkPreviewCellStyle = LinkPreviewCellStyle(),
         incomingAvatarStyle: AvatarStyle = AvatarStyle(),
         outgoingAvatarStyle: AvatarStyle = AvatarStyle(
             imageStyle: CommonImageStyle(imageSize: .zero)
@@ -88,6 +92,7 @@ public struct ChatMessageCellStyle {
         self.carouselCellStyle = carouselCellStyle
         self.locationCellStyle = locationCellStyle
         self.videoPlaceholderCellStyle = videoPlaceholderCellStyle
+        self.linkPreviewCellStyle = linkPreviewCellStyle
         self.incomingAvatarStyle = incomingAvatarStyle
         self.outgoingAvatarStyle = outgoingAvatarStyle
     }

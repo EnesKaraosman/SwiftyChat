@@ -29,6 +29,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     private var onQuickReplyItemSelected: (QuickReplyItem) -> Void = { _ in }
     private var contactCellFooterSection: (ContactItem, Message) -> [ContactCellButton] = { _, _ in [] }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
+    private var onLinkPreviewTapped: (URL, Message) -> Void = { (_, _) in }
     private var inset: EdgeInsets
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
@@ -164,7 +165,8 @@ private extension ChatView {
             customCell: customCellView,
             onQuickReplyItemSelected: onQuickReplyItemSelected,
             contactFooterSection: contactCellFooterSection,
-            onCarouselItemAction: onCarouselItemAction
+            onCarouselItemAction: onCarouselItemAction,
+            onLinkPreviewTapped: onLinkPreviewTapped
         )
         .onTapGesture { onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
@@ -370,6 +372,11 @@ public extension ChatView {
     /// Triggered when the carousel button tapped.
     func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> Self {
         then({ $0.onCarouselItemAction = action })
+    }
+
+    /// Triggered when a link preview message is tapped.
+    func onLinkPreviewTapped(_ action: @escaping (URL, Message) -> Void) -> Self {
+        then({ $0.onLinkPreviewTapped = action })
     }
 }
 

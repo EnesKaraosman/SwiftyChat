@@ -68,7 +68,7 @@
 - [ ] Reply/quote messages
 - [ ] Message status indicators (sent/delivered/read)
 - [ ] Typing indicator as first-class API
-- [ ] Link preview detection
+- [x] Link preview detection
 - [ ] Swipe gestures (reply, delete)
 
 ### Phase 3 — Differentiate (v4.x)

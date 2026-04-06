@@ -80,6 +80,15 @@ struct AdvancedExampleView: View {
         .onCarouselItemAction(action: { (_, message) in
             print(message.messageKind.description)
         })
+        // ▼ Implement in case ChatMessageKind.linkPreview
+        .onLinkPreviewTapped { url, _ in
+            #if os(iOS)
+            UIApplication.shared.open(url)
+            #endif
+            #if os(macOS)
+            NSWorkspace.shared.open(url)
+            #endif
+        }
         // ▼ Required
         .environment(\.chatStyle, ChatMessageCellStyle())
         #if os(iOS)

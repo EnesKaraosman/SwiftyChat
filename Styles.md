@@ -17,6 +17,7 @@ public struct ChatMessageCellStyle {
     let carouselCellStyle: CarouselCellStyle
     let locationCellStyle: LocationCellStyle
     let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
+    let linkPreviewCellStyle: LinkPreviewCellStyle
     let incomingAvatarStyle: AvatarStyle
     let outgoingAvatarStyle: AvatarStyle
 }
@@ -47,6 +48,7 @@ public struct ChatMessageCellStyle {
 * [Contact](#contact)
 * [Avatar](#avatar)
 * [VideoPlaceholder](#video-placeholder)
+* [LinkPreview](#link-preview)
 
 ### Text
 
@@ -274,5 +276,39 @@ public struct VideoPlaceholderCellStyle {
     public let cellShadowRadius: CGFloat // default = 2
     public let cellShadowColor:  Color   // default = .secondary
     public let cellBlurRadius:   CGFloat // default = 3
+}
+```
+
+### Link Preview
+
+```swift
+public struct LinkPreviewCellStyle: CommonViewStyle {
+
+    public let titleStyle: CommonTextStyle
+    // default = textColor: .primary, font: .body, fontWeight: .semibold
+
+    public let descriptionStyle: CommonTextStyle
+    // default = textColor: .secondary, font: .subheadline, fontWeight: .regular
+
+    public let hostStyle: CommonTextStyle
+    // default = textColor: .secondary, font: .caption, fontWeight: .regular
+
+    public let imageHeight: CGFloat // default = 160
+    public let textPadding: CGFloat // default = 10
+
+    /// Cell width in a given available size
+    public let cellWidth: (CGSize) -> CGFloat
+    // default = { size in !Device.isLandscape ? size.width * 0.75 : size.height * 0.8 }
+
+    public let cellBackgroundColor: Color
+    // default = Color.secondary.opacity(0.1)
+
+    public let cellCornerRadius: CGFloat  // default = 8
+    public let cellBorderColor:  Color    // default = .clear
+    public let cellBorderWidth:  CGFloat  // default = 0
+    public let cellShadowRadius: CGFloat  // default = 3
+    public let cellShadowColor:  Color    // default = .secondary
+
+    public let cellRoundedCorners: RectCorner // default = .allCorners
 }
 ```

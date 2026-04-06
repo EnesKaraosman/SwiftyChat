@@ -21,6 +21,7 @@ public struct MessageMocker {
         case quickReply
         case carousel
         case video
+        case linkPreview
         case custom
     }
     
@@ -152,6 +153,20 @@ public struct MessageMocker {
                 messageKind: .video(videoItem),
                 isSender: randomUser == Self.sender
             )
+        case .linkPreview:
+            let linkItem = LinkPreviewRow(
+                url: URL(string: "https://github.com/EnesKaraosman/SwiftyChat")!,
+                title: "SwiftyChat - A SwiftUI Chat UI Library",
+                description: "A lightweight chat UI framework built entirely in SwiftUI, supporting text, images, video, location, contacts, and more.",
+                imageURL: URL(string: "https://opengraph.githubassets.com/1/EnesKaraosman/SwiftyChat"),
+                host: "github.com"
+            )
+            return ChatMessageItem(
+                user: randomUser,
+                messageKind: .linkPreview(linkItem),
+                isSender: randomUser == Self.sender
+            )
+
         case .custom:
             return ChatMessageItem(
                 user: randomUser,
@@ -175,6 +190,8 @@ public struct MessageMocker {
             .location,
             .text, .text,
             .video,
+            .text, .text,
+            .linkPreview,
             .text, .text,
             .quickReply,
             .custom
@@ -217,6 +234,14 @@ extension MessageMocker {
         var url: URL
         var placeholderImage: ImageLoadingKind
         var pictureInPicturePlayingMessage: String
+    }
+
+    private struct LinkPreviewRow: LinkPreviewItem {
+        var url: URL
+        var title: String?
+        var description: String?
+        var imageURL: URL?
+        var host: String?
     }
 
     public struct ChatMessageItem: ChatMessage {

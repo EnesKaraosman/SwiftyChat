@@ -39,6 +39,9 @@ public enum ChatMessageKind: CustomStringConvertible {
     /// A video message, opens the given URL.
     case video(VideoItem)
 
+    /// A link preview message showing Open Graph metadata for a URL.
+    case linkPreview(LinkPreviewItem)
+
     /// Loading indicator contained in chat bubble
     case loading
 
@@ -74,6 +77,8 @@ public enum ChatMessageKind: CustomStringConvertible {
             return "MessageKind.carousel(itemCount: \(carouselItems.count))"
         case .video(let videoItem):
             return "MessageKind.video(url: \(videoItem.url))"
+        case .linkPreview(let linkItem):
+            return "MessageKind.linkPreview(url: \(linkItem.url))"
         case .loading:
             return "MessageKind.loading"
         case .custom:

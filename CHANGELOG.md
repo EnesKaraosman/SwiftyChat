@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [Unreleased]
+
+### Added
+
+- **Link preview messages**: New `ChatMessageKind.linkPreview(LinkPreviewItem)` for displaying rich URL previews with Open Graph metadata (title, description, image, hostname).
+- **`LinkPreviewItem` protocol**: Data protocol for link preview content — consumers provide the OG metadata, keeping the library dependency-free.
+- **`LinkPreviewCellStyle`**: Fully customizable style for link preview cells (title, description, host text styles, image height, background, corners, etc.).
+- **`.onLinkPreviewTapped` modifier**: Dedicated tap handler that provides the URL and message, making it easy to open links in Safari or an in-app browser.
+- **Mock data**: `MessageMocker` now generates link preview messages in random message sets.
+- **Example app**: `AdvancedExampleView` and `MessageTypesGalleryView` demonstrate link preview usage with tap-to-open.
+
+---
+
 ## [4.0.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.0.0)
 
 Released on 2026-04-06.

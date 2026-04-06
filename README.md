@@ -11,7 +11,7 @@ Also available for [Flutter](https://github.com/EnesKaraosman/swifty_chat).
 ## Features
 
 - High-performance rendering (O(n) complexity, cached formatters, async image loading)
-- 10 built-in message types including text, image, video, location, carousel, and quick replies
+- 11 built-in message types including text, image, video, location, carousel, link previews, and quick replies
 - 8 pre-built [themes](#pre-built-themes) with full style customization via environment
 - [Custom message cells](CustomMessage.md) for any message type you need
 - Cross-platform: iOS 17+ and macOS 14+
@@ -68,6 +68,7 @@ public enum ChatMessageKind: CustomStringConvertible {
     case quickReply([QuickReplyItem]) // Tappable options, auto-disables after selection
     case carousel([CarouselItem])  // Scrollable cards with buttons
     case video(VideoItem)          // Video with PiP support
+    case linkPreview(LinkPreviewItem) // Rich URL preview with Open Graph metadata
     case loading                   // Animated loading indicator
     case custom(Any)               // Your own message type
 }
@@ -121,6 +122,7 @@ public struct ChatMessageCellStyle {
     let carouselCellStyle: CarouselCellStyle
     let locationCellStyle: LocationCellStyle
     let videoPlaceholderCellStyle: VideoPlaceholderCellStyle
+    let linkPreviewCellStyle: LinkPreviewCellStyle
     let incomingAvatarStyle: AvatarStyle
     let outgoingAvatarStyle: AvatarStyle
 }

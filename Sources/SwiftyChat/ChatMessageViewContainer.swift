@@ -20,6 +20,7 @@ struct ChatMessageViewContainer<Message: ChatMessage>: View, @preconcurrency Equ
     let onQuickReplyItemSelected: (QuickReplyItem) -> Void
     let contactFooterSection: (ContactItem, Message) -> [ContactCellButton]
     let onCarouselItemAction: (CarouselItemButton, Message) -> Void
+    let onLinkPreviewTapped: (URL, Message) -> Void
 
     @ViewBuilder
     private func messageCell() -> some View {
@@ -70,6 +71,10 @@ struct ChatMessageViewContainer<Message: ChatMessage>: View, @preconcurrency Equ
 
         case .video(let videoItem):
             VideoMessageView(media: videoItem, message: message, size: size)
+
+        case .linkPreview(let linkItem):
+            LinkPreviewMessageView(linkItem: linkItem, message: message, size: size)
+                .onTapGesture { onLinkPreviewTapped(linkItem.url, message) }
 
         case .loading:
             LoadingMessageView(message: message, size: size)
