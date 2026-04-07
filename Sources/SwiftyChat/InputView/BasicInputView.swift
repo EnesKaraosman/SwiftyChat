@@ -7,6 +7,13 @@
 
 import SwiftUI
 
+/// A ready-to-use text input bar with a multiline text field and send button.
+///
+/// `BasicInputView` provides a standard chat input experience: a rounded text field
+/// that expands up to 5 lines, and a send button that activates when text is entered.
+/// The send button delivers the text as ``ChatMessageKind/text(_:)`` via the `onCommit` closure.
+///
+/// For a fully custom input view, pass your own view to ``ChatView``'s `inputView` closure instead.
 public struct BasicInputView: View {
 
     @Binding private var message: String
@@ -14,6 +21,11 @@ public struct BasicInputView: View {
 
     private var onCommit: ((ChatMessageKind) -> Void)?
 
+    /// Creates a basic input view.
+    /// - Parameters:
+    ///   - message: Binding to the current text input.
+    ///   - placeholder: Placeholder text shown when the field is empty.
+    ///   - onCommit: Called with a ``ChatMessageKind/text(_:)`` value when the user taps send.
     public init(
         message: Binding<String>,
         placeholder: String = "",

@@ -18,6 +18,24 @@ private let sharedDateFormatter: DateFormatter = {
     return formatter
 }()
 
+/// The main chat interface view that displays messages and an input bar.
+///
+/// `ChatView` renders a scrollable list of messages with automatic date headers,
+/// avatar grouping, keyboard handling, and picture-in-picture video support.
+///
+/// Use view modifiers to handle interactions:
+/// - ``onMessageCellTapped(_:)`` — respond to message taps
+/// - ``onQuickReplyItemSelected(_:)`` — handle quick reply selection
+/// - ``onCarouselItemAction(action:)`` — handle carousel button taps
+/// - ``messageCellContextMenu(_:)`` — add long-press context menus
+/// - ``onLinkPreviewTapped(_:)`` — handle link preview taps
+/// - ``contactItemButtons(_:)`` — provide contact card action buttons
+/// - ``registerCustomCell(customCell:)`` — render ``ChatMessageKind/custom(_:)`` messages
+///
+/// Style the chat by injecting a ``ChatMessageCellStyle`` via the environment:
+/// ```swift
+/// .environment(\.chatStyle, ChatMessageCellStyle())
+/// ```
 public struct ChatView<Message: ChatMessage, InputView: View>: View {
 
     @Binding private var messages: [Message]
@@ -302,19 +320,16 @@ private extension ChatView {
 
 // MARK: - Initializers
 public extension ChatView {
-    /// ChatView constructor
+    /// Creates a new chat view.
     /// - Parameters:
-    ///   - messages: Messages to display
-    ///   - scrollToBottom: set to `true` to scrollToBottom
-    ///   - dateHeaderTimeInterval: Amount of time between messages in
-    ///                             seconds required before dateheader added
-    ///                             (Default 1 hour)
-    ///   - shouldShowGroupChatHeaders: Shows the display name of the sending
-    ///                                 user only if it is the first message in a chain.
-    ///                                 Also only shows avatar for first message in chain.
-    ///                                 (disabled by default)
-    ///   - inputView: inputView view to provide message
-    ///
+    ///   - messages: Binding to the array of messages to display.
+    ///   - scrollToBottom: Set to `true` to programmatically scroll to the newest message.
+    ///   - scrollTo: Set to a message UUID to scroll to that specific message.
+    ///   - dateHeaderTimeInterval: Minimum seconds between messages before a date header is shown (default: 3600).
+    ///   - shouldShowGroupChatHeaders: When `true`, shows display names and groups avatars by sender (default: `false`).
+    ///   - inputView: A view builder that provides the message input bar.
+    ///   - inset: Edge insets applied to the message list.
+    ///   - reachedTop: Called when the user scrolls to the first message (useful for pagination).
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
