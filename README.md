@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../master/Sources/SwiftyChat/Demo/Preview/swiftyChatGIF.gif" height="380"/>
+  <img src="Sources/SwiftyChat/Demo/Preview/swiftyChatGIF.gif" height="380"/>
 </p>
 
 <h1 align="center">SwiftyChat</h1>
@@ -46,21 +46,21 @@ Also available for [Flutter](https://github.com/EnesKaraosman/swifty_chat).
 - Scroll to bottom or to a specific message
 - Picture-in-Picture video playback
 - Per-corner rounding on text bubbles
-- Multiline input bar ([BasicInputView](../master/Sources/SwiftyChat/InputView/BasicInputView.swift))
+- Multiline input bar ([BasicInputView](Sources/SwiftyChat/InputView/BasicInputView.swift))
 - Attributed string / markdown support
 
 ## Preview
 
 | Light | Dark | Theme Showcase |
 |:---:|:---:|:---:|
-| <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-1.png" width="220"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/basic-2.png" width="220"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/theme-showcase.png" width="220"/> |
+| <img src="Sources/SwiftyChat/Demo/Preview/basic-1.png" width="220"/> | <img src="Sources/SwiftyChat/Demo/Preview/basic-2.png" width="220"/> | <img src="Sources/SwiftyChat/Demo/Preview/theme-showcase.png" width="220"/> |
 
 <details>
   <summary>More screenshots</summary>
 
   | Advanced Features | Theme (Dark) | Chatbot Demo |
   |:---:|:---:|:---:|
-  | <img src="../master/Sources/SwiftyChat/Demo/Preview/advanced-features.png" width="220"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/theme-showcase-dark.png" width="220"/> | <img src="../master/Sources/SwiftyChat/Demo/Preview/chatbot-demo.png" width="220"/> |
+  | <img src="Sources/SwiftyChat/Demo/Preview/advanced-features.png" width="220"/> | <img src="Sources/SwiftyChat/Demo/Preview/theme-showcase-dark.png" width="220"/> | <img src="Sources/SwiftyChat/Demo/Preview/chatbot-demo.png" width="220"/> |
 
 </details>
 
@@ -107,7 +107,7 @@ struct ContentView: View {
 }
 ```
 
-> `YourMessage` must conform to the `ChatMessage` protocol (which has an associated `ChatUser` type). See the [SwiftyChatDemo app](../master/SwiftyChatDemo) for a complete implementation.
+> `YourMessage` must conform to the `ChatMessage` protocol (which has an associated `ChatUser` type). See the [SwiftyChatDemo app](SwiftyChatDemo) for a complete implementation.
 
 ## Message Kinds
 
@@ -137,7 +137,7 @@ A built-in `BasicInputView` is included. Use it as-is, or build your own — `Ch
 
 Every visual aspect is customizable through `ChatMessageCellStyle` — text styles, edge insets, avatar styles, and cell styles for every message type. Inject via `.environment(\.chatStyle, yourStyle)`. All properties have sensible defaults.
 
-See [Styles.md](../master/Styles.md) for the full style reference and [CustomMessage.md](CustomMessage.md) for custom cell types.
+See [Styles.md](Styles.md) for the full style reference and [CustomMessage.md](CustomMessage.md) for custom cell types.
 
 ## Pre-built Themes
 
