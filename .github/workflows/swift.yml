@@ -29,3 +29,6 @@ jobs:
 
     - name: Build (macOS)
       run: xcodebuild build -scheme SwiftyChat -destination 'generic/platform=macOS' -quiet
+
+    - name: Build Documentation
+      run: xcodebuild docbuild -scheme SwiftyChat -destination 'generic/platform=iOS Simulator' -quiet
