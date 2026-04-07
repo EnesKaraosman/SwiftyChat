@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="Sources/SwiftyChat/Demo/Preview/swiftyChatGIF.gif" height="380"/>
+  <img src="Sources/SwiftyChat/Demo/Preview/swiftyChatGIF.gif" height="380" alt="Animated preview of the SwiftyChat chat UI"/>
 </p>
 
 <h1 align="center">SwiftyChat</h1>
@@ -53,14 +53,14 @@ Also available for [Flutter](https://github.com/EnesKaraosman/swifty_chat).
 
 | Light | Dark | Theme Showcase |
 |:---:|:---:|:---:|
-| <img src="Sources/SwiftyChat/Demo/Preview/basic-1.png" width="220"/> | <img src="Sources/SwiftyChat/Demo/Preview/basic-2.png" width="220"/> | <img src="Sources/SwiftyChat/Demo/Preview/theme-showcase.png" width="220"/> |
+| <img src="Sources/SwiftyChat/Demo/Preview/basic-1.png" width="220" alt="Light mode chat demo"/> | <img src="Sources/SwiftyChat/Demo/Preview/basic-2.png" width="220" alt="Dark mode chat demo"/> | <img src="Sources/SwiftyChat/Demo/Preview/theme-showcase.png" width="220" alt="Theme showcase with carousel and map"/> |
 
 <details>
   <summary>More screenshots</summary>
 
   | Advanced Features | Theme (Dark) | Chatbot Demo |
   |:---:|:---:|:---:|
-  | <img src="Sources/SwiftyChat/Demo/Preview/advanced-features.png" width="220"/> | <img src="Sources/SwiftyChat/Demo/Preview/theme-showcase-dark.png" width="220"/> | <img src="Sources/SwiftyChat/Demo/Preview/chatbot-demo.png" width="220"/> |
+  | <img src="Sources/SwiftyChat/Demo/Preview/advanced-features.png" width="220" alt="Advanced features with link preview"/> | <img src="Sources/SwiftyChat/Demo/Preview/theme-showcase-dark.png" width="220" alt="Theme showcase in dark mode"/> | <img src="Sources/SwiftyChat/Demo/Preview/chatbot-demo.png" width="220" alt="Chatbot demo with quick replies"/> |
 
 </details>
 

@@ -30,6 +30,8 @@ struct Message: ChatMessage {
 ```swift
 import SwiftyChat
 
+let currentUser = User(userName: "Alice")
+
 struct ContentView: View {
     @State private var messages: [Message] = []
     @State private var inputText = ""
