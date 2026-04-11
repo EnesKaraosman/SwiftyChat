@@ -4,6 +4,25 @@
 
 ---
 
+## [4.1.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.1.1)
+
+Released on 2026-04-11.
+
+### Improved
+
+- **Text message rendering**: Markdown formatting (bold, italic, strikethrough, inline code) now renders correctly — previously view-level modifiers silently overrode `AttributedString` attributes.
+- **Whitespace-preserving markdown**: Uses `inlineOnlyPreservingWhitespace` parsing so newlines in chat messages are preserved without needing double-space or `\n`.
+- **Auto-detected tappable links**: URLs, phone numbers, and addresses are automatically detected via `NSDataDetector` and rendered as underlined, tappable links.
+- **Performance**: Expensive markdown parsing and data detection are cached in `init`; only the cheap style-merge runs during SwiftUI layout passes.
+
+### Fixed
+
+- **Links not visually tappable**: Detected and markdown links are now underlined so users can tell they're interactive.
+- **Link colours overridden**: Base font and colour are applied on the `AttributedString` (with `.keepCurrent` merge policy) instead of as view-level modifiers, so link tint colours render correctly.
+- **Swift 6 concurrency**: Removed `nonisolated` workaround on `View` extension; inlined text styling in `body` to stay within `@MainActor` isolation.
+
+---
+
 ## [4.1.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.1.0)
 
 Released on 2026-04-06.
