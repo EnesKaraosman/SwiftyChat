@@ -62,8 +62,8 @@ struct ChatListView: View {
                         DemoRow(
                             icon: "text.bubble",
                             iconColor: .green,
-                            title: "Basic Example",
-                            subtitle: "Text chat with older-message loading"
+                            title: "Text Chat Example",
+                            subtitle: "Pagination and streaming replies"
                         )
                     }
 

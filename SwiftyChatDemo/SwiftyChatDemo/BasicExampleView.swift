@@ -14,6 +14,8 @@ struct BasicExampleView: View {
     @State private var messages: [MessageMocker.ChatMessageItem] = []
     @State private var message = ""
     @State private var olderPagesRemaining = 3
+    @State private var streamTask: Task<Void, Never>?
+    @State private var isStreaming = false
 
     var body: some View {
         chatView
@@ -21,6 +23,9 @@ struct BasicExampleView: View {
                 if messages.isEmpty {
                     messages = MessageMocker.generate(kind: .text, count: 20)
                 }
+            }
+            .onDisappear {
+                streamTask?.cancel()
             }
     }
 
@@ -64,6 +69,38 @@ struct BasicExampleView: View {
         #if os(iOS)
         .navigationBarTitle("Basic")
         #endif
+        .toolbar {
+            Button(isStreaming ? "Stop stream" : "Stream reply") {
+                if isStreaming {
+                    streamTask?.cancel()
+                } else {
+                    startStreaming()
+                }
+            }
+        }
+    }
+
+    private func startStreaming() {
+        let reply = "SwiftyChat can update a single message as a chatbot response arrives. Scroll up while this text grows to check that reading history stays comfortable."
+        let streamedMessage = MessageMocker.ChatMessageItem(
+            user: MessageMocker.chatbot,
+            messageKind: .text("")
+        )
+        messages.append(streamedMessage)
+        isStreaming = true
+        streamTask = Task { @MainActor in
+            var text = ""
+            for word in reply.split(separator: " ") {
+                guard !Task.isCancelled else { break }
+                text += text.isEmpty ? String(word) : " \(word)"
+                if let index = messages.firstIndex(where: { $0.id == streamedMessage.id }) {
+                    messages[index].messageKind = .text(text)
+                }
+                try? await Task.sleep(for: .milliseconds(80))
+            }
+            isStreaming = false
+            streamTask = nil
+        }
     }
 
     private func loadOlder() {
