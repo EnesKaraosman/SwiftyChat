@@ -45,6 +45,10 @@ import SwiftyChatMock
         #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [1, 2], newIDs: [1, 2, 3], visibleBottomID: 1) == nil)
     }
 
+    @Test func initiallyLoadedMessagesOpenAtBottom() {
+        #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [], newIDs: [1, 2], visibleBottomID: nil) == 2)
+    }
+
     @Test func preservesPositionWhenHistoryIsPrepended() {
         #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [3, 4], newIDs: [1, 2, 3, 4], visibleBottomID: 4) == nil)
     }
@@ -52,10 +56,12 @@ import SwiftyChatMock
     @Test func reportsTopOnceUntilOldestMessageChanges() {
         var tracker = TopReachTracker<Int>()
 
-        let first = tracker.shouldReport(10)
-        let repeatVisit = tracker.shouldReport(10)
-        let newOldest = tracker.shouldReport(5)
+        let premature = tracker.shouldReport(10, isReady: false)
+        let first = tracker.shouldReport(10, isReady: true)
+        let repeatVisit = tracker.shouldReport(10, isReady: true)
+        let newOldest = tracker.shouldReport(5, isReady: true)
 
+        #expect(!premature)
         #expect(first)
         #expect(!repeatVisit)
         #expect(newOldest)

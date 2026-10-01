@@ -9,6 +9,7 @@ import SwiftUI
 import SwiftyChat
 import SwiftyChatMock
 #if os(iOS)
+import AVFoundation
 import PhotosUI
 import UniformTypeIdentifiers
 #endif
@@ -190,7 +191,13 @@ struct BasicExampleView: View {
                     mediaError = "Could not load the selected video."
                     return
                 }
-                kind = .video(LocalVideo(url: movie.url))
+                let generator = AVAssetImageGenerator(asset: AVURLAsset(url: movie.url))
+                generator.appliesPreferredTrackTransform = true
+                let thumbnail = try? await generator.image(at: .zero).image
+                kind = .video(LocalVideo(
+                    url: movie.url,
+                    thumbnail: thumbnail.map(UIImage.init(cgImage:)) ?? UIImage(systemName: "video.fill") ?? UIImage()
+                ))
             } else {
                 guard let data = try await selection.loadTransferable(type: Data.self),
                       let image = UIImage(data: data) else {
@@ -234,8 +241,9 @@ private struct PickedMovie: Transferable {
 
 private struct LocalVideo: VideoItem {
     let url: URL
+    let thumbnail: UIImage
     var placeholderImage: ImageLoadingKind {
-        .local(UIImage(systemName: "video.fill") ?? UIImage())
+        .local(thumbnail)
     }
     let pictureInPicturePlayingMessage = "Your video is playing in picture in picture."
 }

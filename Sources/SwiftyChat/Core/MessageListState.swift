@@ -35,6 +35,7 @@ enum MessageScrollPolicy {
         newIDs: [ID],
         visibleBottomID: ID?
     ) -> ID? {
+        if oldIDs.isEmpty { return newIDs.last }
         guard !oldIDs.isEmpty,
               newIDs.count > oldIDs.count,
               newIDs.starts(with: oldIDs),
@@ -46,7 +47,8 @@ enum MessageScrollPolicy {
 struct TopReachTracker<ID: Equatable> {
     private var lastReportedID: ID?
 
-    mutating func shouldReport(_ id: ID) -> Bool {
+    mutating func shouldReport(_ id: ID, isReady: Bool) -> Bool {
+        guard isReady else { return false }
         guard lastReportedID != id else { return false }
         lastReportedID = id
         return true

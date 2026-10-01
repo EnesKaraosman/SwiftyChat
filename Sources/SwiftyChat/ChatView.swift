@@ -54,6 +54,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     
     @State private var videoManager = VideoManager<Message>()
     @State private var visibleBottomMessageID: Message.ID?
+    @State private var hasReachedBottom = false
     @State private var topReachTracker = TopReachTracker<Message.ID>()
 
     @Binding private var scrollTo: Message.ID?
@@ -83,7 +84,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                                 chatMessageViewContainer(in: containerSize, with: msg, with: showName)
                             },
                             onFirstMessageAppear: {
-                                if self.reachedTop != nil && self.topReachTracker.shouldReport(message.id) {
+                                if self.reachedTop != nil && self.topReachTracker.shouldReport(message.id, isReady: hasReachedBottom) {
                                     self.reachedTop?()
                                 }
                             },
@@ -103,14 +104,24 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                 inputView()
             }
             .onChange(of: messages.map(\.id)) { oldIDs, newIDs in
+                if newIDs.isEmpty { hasReachedBottom = false }
                 if let target = MessageScrollPolicy.targetAfterUpdate(
                     oldIDs: oldIDs,
                     newIDs: newIDs,
                     visibleBottomID: visibleBottomMessageID
                 ) {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        proxy.scrollTo(target, anchor: .bottom)
+                    if oldIDs.isEmpty {
+                        visibleBottomMessageID = target
+                    } else {
+                        withAnimation(.easeOut(duration: 0.2)) {
+                            proxy.scrollTo(target, anchor: .bottom)
+                        }
                     }
+                }
+            }
+            .onChange(of: visibleBottomMessageID) { _, visibleID in
+                if visibleID == messages.last?.id, visibleID != nil {
+                    hasReachedBottom = true
                 }
             }
             .onChange(of: scrollToBottom) { oldValue, newValue in

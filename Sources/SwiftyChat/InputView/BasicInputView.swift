@@ -53,16 +53,22 @@ public struct BasicInputView: View {
 
     private var sendButton: some View {
         Button(action: {
+            guard canSend else { return }
             onCommit?(.text(message))
             message.removeAll()
         }, label: {
             Image(systemName: "arrow.up.circle.fill")
                 .font(.system(size: 32))
                 .symbolRenderingMode(.palette)
-                .foregroundStyle(.white, message.isEmpty ? Color.gray.opacity(0.5) : Color.accentColor)
+                .foregroundStyle(.white, canSend ? Color.accentColor : Color.gray.opacity(0.5))
         })
-        .disabled(message.isEmpty)
-        .animation(.easeInOut(duration: 0.15), value: message.isEmpty)
+        .disabled(!canSend)
+        .accessibilityLabel("Send message")
+        .animation(.easeInOut(duration: 0.15), value: canSend)
+    }
+
+    private var canSend: Bool {
+        !message.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
 
     public var body: some View {
