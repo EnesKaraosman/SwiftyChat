@@ -42,3 +42,13 @@ enum MessageScrollPolicy {
         return newIDs.last
     }
 }
+
+struct TopReachTracker<ID: Equatable> {
+    private var lastReportedID: ID?
+
+    mutating func shouldReport(_ id: ID) -> Bool {
+        guard lastReportedID != id else { return false }
+        lastReportedID = id
+        return true
+    }
+}

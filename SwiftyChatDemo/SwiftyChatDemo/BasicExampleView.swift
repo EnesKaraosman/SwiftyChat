@@ -13,6 +13,7 @@ struct BasicExampleView: View {
 
     @State private var messages: [MessageMocker.ChatMessageItem] = []
     @State private var message = ""
+    @State private var olderPagesRemaining = 3
 
     var body: some View {
         chatView
@@ -24,8 +25,7 @@ struct BasicExampleView: View {
     }
 
     private var chatView: some View {
-        ChatView(messages: $messages) {
-
+        ChatView(messages: $messages, inputView: {
             BasicInputView(
                 message: $message,
                 placeholder: "Type something",
@@ -36,8 +36,7 @@ struct BasicExampleView: View {
                 }
             )
             .background(Color.primary.colorInvert())
-
-        }
+        }, reachedTop: loadOlder)
         .messageCellContextMenu { message in
             switch message.messageKind {
             case .text(let text):
@@ -65,6 +64,20 @@ struct BasicExampleView: View {
         #if os(iOS)
         .navigationBarTitle("Basic")
         #endif
+    }
+
+    private func loadOlder() {
+        guard olderPagesRemaining > 0, let oldestDate = messages.first?.date else { return }
+        let page = olderPagesRemaining
+        olderPagesRemaining -= 1
+        let olderMessages = (0..<10).map { index in
+            MessageMocker.ChatMessageItem(
+                user: MessageMocker.chatbot,
+                messageKind: .text("Earlier page \(page), message \(index + 1)"),
+                date: oldestDate.addingTimeInterval(TimeInterval(index - 10) * 60)
+            )
+        }
+        messages.insert(contentsOf: olderMessages, at: 0)
     }
 }
 

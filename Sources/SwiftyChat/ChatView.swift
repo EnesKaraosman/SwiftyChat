@@ -54,6 +54,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     
     @State private var videoManager = VideoManager<Message>()
     @State private var visibleBottomMessageID: Message.ID?
+    @State private var topReachTracker = TopReachTracker<Message.ID>()
 
     @Binding private var scrollTo: Message.ID?
     @Binding private var scrollToBottom: Bool
@@ -82,7 +83,9 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                                 chatMessageViewContainer(in: containerSize, with: msg, with: showName)
                             },
                             onFirstMessageAppear: {
-                                self.reachedTop?()
+                                if self.reachedTop != nil && self.topReachTracker.shouldReport(message.id) {
+                                    self.reachedTop?()
+                                }
                             },
                             isFirstMessage: message.id == self.messages.first?.id
                         )

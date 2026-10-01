@@ -49,6 +49,18 @@ import SwiftyChatMock
         #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [3, 4], newIDs: [1, 2, 3, 4], visibleBottomID: 4) == nil)
     }
 
+    @Test func reportsTopOnceUntilOldestMessageChanges() {
+        var tracker = TopReachTracker<Int>()
+
+        let first = tracker.shouldReport(10)
+        let repeatVisit = tracker.shouldReport(10)
+        let newOldest = tracker.shouldReport(5)
+
+        #expect(first)
+        #expect(!repeatVisit)
+        #expect(newOldest)
+    }
+
     @Test @MainActor func supportsNonUUIDMessageIDsForScrolling() {
         let message = IntMessage(id: 42, user: alice, date: start)
         let scrollTarget = Binding<Int?>.constant(42)

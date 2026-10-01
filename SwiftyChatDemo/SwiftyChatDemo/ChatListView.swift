@@ -63,7 +63,7 @@ struct ChatListView: View {
                             icon: "text.bubble",
                             iconColor: .green,
                             title: "Basic Example",
-                            subtitle: "Simple text chat implementation"
+                            subtitle: "Text chat with older-message loading"
                         )
                     }
 
