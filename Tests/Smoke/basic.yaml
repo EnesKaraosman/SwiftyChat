@@ -1,0 +1,15 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Stream reply"
+- assertVisible: "Got it!"
+- tapOn: "Stream reply"
+- assertVisible: "Stop stream"
+- extendedWaitUntil:
+    visible: "Stream reply"
+    timeout: 10000
+- tapOn: "Type something"
+- inputText: "Smoke test message"
+- tapOn: "Send message"
+- assertVisible: "Smoke test message"

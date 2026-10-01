@@ -1,0 +1,12 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- longPressOn: "Try replying to a message with its context menu."
+- tapOn: "Reply"
+- assertVisible: "Replying to Chatbot.*"
+- tapOn: "Type something"
+- inputText: "Quoted smoke reply"
+- tapOn: "Send message"
+- assertVisible: "Quoted smoke reply"

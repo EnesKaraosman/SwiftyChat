@@ -1,0 +1,15 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- scrollUntilVisible:
+    element: "Earlier page 3, message 1"
+    direction: UP
+    timeout: 20000
+- assertNotVisible: "Got it!"
+- scrollUntilVisible:
+    element: "Earlier page 2, message 1"
+    direction: UP
+    timeout: 20000
+- assertNotVisible: "Got it!"

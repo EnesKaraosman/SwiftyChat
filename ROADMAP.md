@@ -9,6 +9,7 @@ SwiftyChat targets iOS 17+ and macOS 14+ with 11 message kinds, five theme prese
 - Quick replies, contact actions, link previews, and video controls use semantic buttons.
 - Message IDs used for programmatic scrolling match the consumer's `ChatMessage.ID` type.
 - Package tests cover message-list decisions, carousel button identity, video selection, viewport orientation, and empty mock batches.
+- Simulator smoke flows cover initial position, pagination, streaming, sending, and reply context menus.
 - The text-chat demo exercises older-message loading, cancellable streaming replies, reply quotes, and delivery status. On iOS it also accepts photos and videos with PhotosPicker.
 - Existing `ChatMessage` conformers can omit reply and delivery metadata. `LinkPreviewMetadataLoader` caches successful title/host fetches and shares concurrent requests for the same URL.
 

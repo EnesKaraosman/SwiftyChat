@@ -191,6 +191,10 @@ messages.append(Message(
 
 Building a ChatGPT-style app, a customer support bot, or an in-app assistant? SwiftyChat gives you the UI layer so you can focus on the AI logic.
 
+## Testing
+
+Run package tests with `swift test`. The iOS demo also has [Maestro smoke flows](Tests/Smoke) for sending, streaming, replies, and pagination. After building and installing `SwiftyChatDemo` on a booted iOS simulator, run `maestro test --udid <simulator-udid> Tests/Smoke`.
+
 ## Contributing
 
 Contributions are welcome! Whether it's a bug fix, new feature, documentation improvement, or a new theme — we'd love your help.
