@@ -30,10 +30,14 @@ final class PlayerViewModel {
     private(set) var duration: Double?
 
     private var subscriptions: Set<AnyCancellable> = []
-    private var timeObserver: Any?
+    private var itemSubscription: AnyCancellable?
+    private var durationTask: Task<Void, Never>?
+    @ObservationIgnored nonisolated(unsafe) private var timeObserver: Any?
 
     deinit {
-        // timeObserver cleanup handled by AVPlayer when it's deallocated
+        if let timeObserver {
+            player.removeTimeObserver(timeObserver)
+        }
     }
 
     init() {
@@ -69,20 +73,23 @@ final class PlayerViewModel {
     }
 
     func setCurrentItem(_ item: AVPlayerItem) {
+        itemSubscription?.cancel()
+        durationTask?.cancel()
         currentTime = .zero
         duration = nil
         player.replaceCurrentItem(with: item)
 
-        item.publisher(for: \.status)
+        itemSubscription = item.publisher(for: \.status)
             .receive(on: DispatchQueue.main)
             .filter({ $0 == .readyToPlay })
             .sink(receiveValue: { [weak self] _ in
-                Task { @MainActor in
-                    if let duration = try? await item.asset.load(.duration) {
-                        self?.duration = duration.seconds
-                    }
+                self?.durationTask?.cancel()
+                self?.durationTask = Task { @MainActor [weak self] in
+                    guard let duration = try? await item.asset.load(.duration),
+                          !Task.isCancelled,
+                          self?.player.currentItem === item else { return }
+                    self?.duration = duration.seconds
                 }
             })
-            .store(in: &subscriptions)
     }
 }

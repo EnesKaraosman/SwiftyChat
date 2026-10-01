@@ -17,6 +17,7 @@ final class VideoManager<Message: ChatMessage> {
 
     var message: Message?
     var isFullScreen = false
+    private var pendingPlaybackTask: Task<Void, Never>?
 
     var videoItem: VideoItem? {
         if let message = message,
@@ -28,7 +29,19 @@ final class VideoManager<Message: ChatMessage> {
     }
 
     func flushState() {
+        pendingPlaybackTask?.cancel()
+        pendingPlaybackTask = nil
         message = nil
         isFullScreen = false
+    }
+
+    func play(_ message: Message) {
+        flushState()
+        pendingPlaybackTask = Task { @MainActor [weak self] in
+            try? await Task.sleep(for: .milliseconds(100))
+            guard !Task.isCancelled else { return }
+            self?.message = message
+            self?.pendingPlaybackTask = nil
+        }
     }
 }

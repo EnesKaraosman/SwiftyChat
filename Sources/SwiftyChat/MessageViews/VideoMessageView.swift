@@ -32,14 +32,7 @@ struct VideoMessageView<Message: ChatMessage>: View {
     var body: some View {
         Button {
             withAnimation {
-                videoManager.flushState()
-                // Small delay to allow flush animation to complete
-                Task {
-                    try? await Task.sleep(nanoseconds: 100_000_000)
-                    await MainActor.run {
-                        videoManager.message = message
-                    }
-                }
+                videoManager.play(message)
             }
         } label: {
             thumbnailView.overlay(thumbnailOverlay)
