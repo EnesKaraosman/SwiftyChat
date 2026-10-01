@@ -4,7 +4,7 @@ A lightweight, cross-platform SwiftUI chat UI framework with built-in message ty
 
 ## Overview
 
-SwiftyChat provides a ready-to-use chat interface for iOS 17+ and macOS 14+. It ships with 11 message types, 8 pre-built themes, and full style customization — so you can focus on your app logic instead of building chat UI from scratch.
+SwiftyChat provides a ready-to-use chat interface for iOS 17+ and macOS 14+. It ships with 11 message types, five theme presets in the demo, and full style customization — so you can focus on your app logic instead of building chat UI from scratch.
 
 ```swift
 ChatView(messages: $messages, scrollToBottom: $scrollToBottom) {

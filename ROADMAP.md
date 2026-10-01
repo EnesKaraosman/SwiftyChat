@@ -1,92 +1,24 @@
-# SwiftyChat — Strategic Analysis & Roadmap
+# SwiftyChat roadmap
 
-## Current Position
+SwiftyChat targets iOS 17+ and macOS 14+ with 11 message kinds, five theme presets in the demo, and Kingfisher as its only package dependency. The library renders supplied link-preview metadata; it does not fetch metadata from URLs.
 
-| Metric | SwiftyChat | Exyte/Chat | MessageKit |
-|--------|-----------|------------|------------|
-| Stars | 331 | 1,700 | 6,300 |
-| Platform | SwiftUI (iOS/macOS) | SwiftUI (iOS) | UIKit |
-| Message types | 9 + custom | ~8 + custom | ~8 |
-| License | Apache 2.0 | MIT | MIT |
+## Foundation completed
 
-## Strengths (Keep/Protect)
+- Message headers follow the current message order and dates.
+- Appending follows new messages only when the reader is at the bottom; prepending does not trigger a jump to the latest message.
+- Quick replies, contact actions, link previews, and video controls use semantic buttons.
+- Message IDs used for programmatic scrolling match the consumer's `ChatMessage.ID` type.
+- Package tests cover message-list decisions, carousel button identity, video selection, viewport orientation, and empty mock batches.
 
-- **Chatbot-first message types** — carousel, quick reply, loading indicator. Competitors don't have these.
-- **Cross-platform** — iOS + macOS from a single codebase. Most competitors are iOS-only.
-- **Theming system** — 8 built-in themes, environment-based `ChatMessageCellStyle`.
-- **Performance** — O(n) metadata caching, shared DateFormatter, Equatable cells, LazyVStack.
-- **Zero open issues** — well-maintained.
+## Candidates for the next product pass
 
-## Feature Gaps vs. Competitors
+1. **Streaming chatbot example:** Update a text message in place as tokens arrive and support cancellation. Measure rendering during frequent updates.
+2. **Reply and delivery status:** Design optional metadata that existing `ChatMessage` conformers can adopt without adding required protocol properties.
+3. **Media sending example:** Use native `PhotosPicker` for image and video selection in the demo before adding a library-level input API.
+4. **Optional link metadata helper:** Fetch and cache URL metadata outside message rendering, with an explicit choice by the host app to make network requests.
 
-### High Impact
+Audio, reactions, search, and other message types remain open ideas. Add them when a concrete consumer flow and API design justify them.
 
-1. **Reply/Quote messages** — Swipe-to-reply with a quoted message preview. Requires a new `ChatMessageKind` case or a `replyTo` property on `ChatMessage`.
-2. **Audio messages** — Record and play voice messages with waveform visualization. New `.audio(AudioItem)` message kind.
-3. **Link previews** — Auto-detect URLs in text and show Open Graph previews. Could be a new `.linkPreview` kind or auto-detected within `.text`.
-4. **Reactions/Emoji reactions** — Tap-and-hold to add emoji reactions. Overlay on any message type.
-5. **Media picker integration** — Built-in `PhotosPicker` for sending images/videos.
+## Performance gate
 
-### Medium Impact
-
-6. **Swipe actions** — Swipe-to-reply, swipe-to-delete.
-7. **Message status indicators** — Sent / delivered / read (single check, double check, blue check). A `MessageStatus` enum on `ChatMessage`.
-8. **Typing indicator** — First-class API for "User is typing..." (`.loading` exists but isn't surfaced well).
-9. **GIF/Sticker support** — Animated image messages via Giphy or similar.
-10. **Search within chat** — Highlight and scroll to matching messages.
-
-## Existing Code Improvements
-
-### API Modernization
-
-- **Drop `AnyView` type erasure** — `inputView: () -> AnyView` and `customCellView: (Any) -> AnyView` lose type safety and hurt diffing performance. Use `@ViewBuilder` generics instead.
-- **Replace `then()` modifier pattern** — Chainable modifiers (`.onMessageCellTapped`, `.registerCustomCell`, etc.) mutate copies via `then()`. Consider `ViewModifier` or preference keys.
-- **`ChatMessage` protocol is rigid** — Adding replies, reactions, or status requires breaking protocol changes. Use optional properties with defaults.
-
-### Performance
-
-- **Metadata cache index bug** — In `rebuildMessageMetadataCache()` and `buildInitialCache()`, `prevMessage` uses `messages[index]` and `currMessage` uses `messages[index - 1]` — names are swapped. Date headers may appear at wrong boundaries.
-- **Image prefetching** — No prefetching for messages about to scroll into view. Kingfisher supports this.
-
-### Customization
-
-- **Composable input view** — Add slots for leading actions (attachments), trailing actions (voice record), and text field customization.
-- **Message grouping** — Consecutive same-sender messages could be visually grouped (merged bubbles like iMessage).
-- **Custom date headers** — Currently hardcoded in `MessageRow`. Allow consumers to provide a custom date header view.
-
-## Roadmap
-
-### Phase 1 — Foundation Cleanup (v3.1)
-
-- [x] Fix the metadata cache index bug
-- [x] Replace `AnyView` with generic view builders
-- [ ] Make `ChatMessage` protocol more extensible (optional `replyTo`, `status`, `reactions` with defaults)
-- [ ] Composable input view with leading/trailing action slots
-
-### Phase 2 — Catch Up to Competitors (v4.0)
-
-- [ ] Reply/quote messages
-- [ ] Message status indicators (sent/delivered/read)
-- [ ] Typing indicator as first-class API
-- [x] Link preview detection
-- [ ] Swipe gestures (reply, delete)
-
-### Phase 3 — Differentiate (v4.x)
-
-- [ ] Audio messages with waveform
-- [ ] Emoji reactions overlay
-- [ ] Built-in PhotosPicker integration
-- [ ] Message search
-- [ ] visionOS support
-- [ ] Animated messages (GIF support)
-- [ ] Streaming text support (character-by-character, for AI/chatbot use cases)
-
-## Strategic Positioning
-
-Lean into what makes SwiftyChat unique rather than matching Exyte/Chat feature-for-feature:
-
-1. **Chatbot/AI chat UI** — Huge demand for chat UIs that support structured responses (carousels, quick replies, loading states, streaming text). Position as the go-to SwiftUI library for AI/chatbot interfaces.
-2. **Cross-platform** — Push macOS support, add visionOS. Few competitors do this.
-3. **Lightweight & composable** — Stay simple to integrate. No bundled backends or heavy dependencies.
-
-**Target positioning:** *"The lightweight, cross-platform SwiftUI chat UI — especially good for AI/chatbot apps."*
+Profile long chats, pagination, and repeated same-message updates with SwiftUI Instruments before changing Markdown parsing or custom layout caching. See [performance notes](PERFORMANCE_IMPROVEMENTS.md).
