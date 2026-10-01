@@ -8,6 +8,10 @@
 import SwiftUI
 import SwiftyChat
 import SwiftyChatMock
+#if os(iOS)
+import PhotosUI
+import UniformTypeIdentifiers
+#endif
 
 struct BasicExampleView: View {
 
@@ -17,6 +21,10 @@ struct BasicExampleView: View {
     @State private var streamTask: Task<Void, Never>?
     @State private var isStreaming = false
     @State private var replyPreview: ChatMessageQuote?
+    #if os(iOS)
+    @State private var selectedMedia: PhotosPickerItem?
+    @State private var mediaError: String?
+    #endif
 
     var body: some View {
         chatView
@@ -37,6 +45,20 @@ struct BasicExampleView: View {
             .onDisappear {
                 streamTask?.cancel()
             }
+            #if os(iOS)
+            .onChange(of: selectedMedia) { _, selection in
+                guard let selection else { return }
+                Task { await addPickedMedia(selection) }
+            }
+            .alert("Media unavailable", isPresented: Binding(
+                get: { mediaError != nil },
+                set: { if !$0 { mediaError = nil } }
+            )) {
+                Button("OK", role: .cancel) { mediaError = nil }
+            } message: {
+                Text(mediaError ?? "")
+            }
+            #endif
     }
 
     private var chatView: some View {
@@ -55,20 +77,28 @@ struct BasicExampleView: View {
                     }
                     .padding(8)
                 }
-                BasicInputView(
-                    message: $message,
-                    placeholder: "Type something",
-                    onCommit: { messageKind in
-                        self.messages.append(.init(
-                            user: MessageMocker.sender,
-                            messageKind: messageKind,
-                            isSender: true,
-                            replyPreview: replyPreview,
-                            deliveryStatus: .sent
-                        ))
-                        replyPreview = nil
+                HStack {
+                    #if os(iOS)
+                    PhotosPicker(selection: $selectedMedia, matching: .any(of: [.images, .videos])) {
+                        Image(systemName: "paperclip")
                     }
-                )
+                    .accessibilityLabel("Attach photo or video")
+                    #endif
+                    BasicInputView(
+                        message: $message,
+                        placeholder: "Type something",
+                        onCommit: { messageKind in
+                            self.messages.append(.init(
+                                user: MessageMocker.sender,
+                                messageKind: messageKind,
+                                isSender: true,
+                                replyPreview: replyPreview,
+                                deliveryStatus: .sent
+                            ))
+                            replyPreview = nil
+                        }
+                    )
+                }
             }
             .background(Color.primary.colorInvert())
         }, reachedTop: loadOlder)
@@ -149,7 +179,67 @@ struct BasicExampleView: View {
         }
         messages.insert(contentsOf: olderMessages, at: 0)
     }
+
+    #if os(iOS)
+    private func addPickedMedia(_ selection: PhotosPickerItem) async {
+        defer { selectedMedia = nil }
+        do {
+            let kind: ChatMessageKind
+            if selection.supportedContentTypes.contains(where: { $0.conforms(to: .movie) }) {
+                guard let movie = try await selection.loadTransferable(type: PickedMovie.self) else {
+                    mediaError = "Could not load the selected video."
+                    return
+                }
+                kind = .video(LocalVideo(url: movie.url))
+            } else {
+                guard let data = try await selection.loadTransferable(type: Data.self),
+                      let image = UIImage(data: data) else {
+                    mediaError = "Could not load the selected photo."
+                    return
+                }
+                kind = .image(.local(image))
+            }
+            messages.append(.init(
+                user: MessageMocker.sender,
+                messageKind: kind,
+                isSender: true,
+                replyPreview: replyPreview,
+                deliveryStatus: .sent
+            ))
+            replyPreview = nil
+        } catch {
+            mediaError = error.localizedDescription
+        }
+    }
+    #endif
 }
+
+#if os(iOS)
+private struct PickedMovie: Transferable {
+    let url: URL
+
+    static var transferRepresentation: some TransferRepresentation {
+        FileRepresentation(contentType: .movie) { movie in
+            SentTransferredFile(movie.url)
+        } importing: { received in
+            let ext = received.file.pathExtension.isEmpty ? "mov" : received.file.pathExtension
+            let url = FileManager.default.temporaryDirectory
+                .appendingPathComponent(UUID().uuidString)
+                .appendingPathExtension(ext)
+            try FileManager.default.copyItem(at: received.file, to: url)
+            return PickedMovie(url: url)
+        }
+    }
+}
+
+private struct LocalVideo: VideoItem {
+    let url: URL
+    var placeholderImage: ImageLoadingKind {
+        .local(UIImage(systemName: "video.fill") ?? UIImage())
+    }
+    let pictureInPicturePlayingMessage = "Your video is playing in picture in picture."
+}
+#endif
 
 struct BasicExampleView_Previews: PreviewProvider {
     static var previews: some View {
