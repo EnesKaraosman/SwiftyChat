@@ -52,7 +52,7 @@ private extension Color {
 }
 
 // MARK: - Theme Definition
-struct ChatTheme: Identifiable {
+@MainActor struct ChatTheme: Identifiable {
     let id: String
     let name: String
     let description: String

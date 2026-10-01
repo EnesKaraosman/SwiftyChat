@@ -414,7 +414,7 @@ private struct LinkPreviewRow: LinkPreviewItem {
 }
 
 // MARK: - Gallery Style
-extension ChatMessageCellStyle {
+@MainActor extension ChatMessageCellStyle {
     static let galleryStyle = ChatMessageCellStyle(
         incomingTextStyle: TextCellStyle(
             textStyle: CommonTextStyle(textColor: .primary, font: .body),

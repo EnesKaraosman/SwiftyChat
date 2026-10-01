@@ -38,7 +38,7 @@ The demo app pulls the library as a local package, so changes to `Sources/Swifty
 
 - Keep PRs focused — one feature or fix per PR
 - Include screenshots for UI changes
-- Make sure `swift build` passes on both iOS and macOS
+- Run `swift build` and build `SwiftyChatDemo` for both iOS Simulator and macOS
 - Fill out the PR template
 
 ## Reporting Bugs

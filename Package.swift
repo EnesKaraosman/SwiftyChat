@@ -20,7 +20,8 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/onevcat/Kingfisher.git", from: "8.6.2"),
+        // Kingfisher 8.13 requires Swift 6.2; keep Swift 6.0 support.
+        .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMinor(from: "8.12.0")),
         .package(url: "https://github.com/EnesKaraosman/SwiftUIEKtensions.git", from: "0.4.0")
     ],
     targets: [

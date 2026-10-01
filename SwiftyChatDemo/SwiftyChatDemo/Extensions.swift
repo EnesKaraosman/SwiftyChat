@@ -57,7 +57,7 @@ let roundedFont = Font.system(size: 16, weight: .regular, design: .rounded)
 let modernFont = Font.system(size: 16, weight: .medium)
 
 // MARK: - Pre-built Styles
-extension ChatMessageCellStyle {
+@MainActor extension ChatMessageCellStyle {
 
     /// Basic style with minimal customization
     static let basicStyle = ChatMessageCellStyle(

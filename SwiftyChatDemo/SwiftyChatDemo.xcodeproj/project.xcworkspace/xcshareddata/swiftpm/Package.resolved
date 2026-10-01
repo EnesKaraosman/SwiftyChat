@@ -6,8 +6,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/onevcat/Kingfisher.git",
       "state" : {
-        "revision" : "d30a5fad881137e2267f96a8e3fc35c58999bb94",
-        "version" : "8.6.2"
+        "revision" : "be0d257b9bd47a4e6e1265fc8c237411825f107a",
+        "version" : "8.12.0"
       }
     },
     {
@@ -17,15 +17,6 @@
       "state" : {
         "revision" : "bf96c0d841d2bc81dac0d7e28aa9ab71cd7d6c2a",
         "version" : "0.4.0"
-      }
-    },
-    {
-      "identity" : "wrappinghstack",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/dkk/WrappingHStack.git",
-      "state" : {
-        "revision" : "425d9488ba55f58f0b34498c64c054c77fc2a44b",
-        "version" : "2.2.11"
       }
     }
   ],

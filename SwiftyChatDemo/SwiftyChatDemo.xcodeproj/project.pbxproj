@@ -31,7 +31,6 @@
 		94410B872BC6B53E00C37BDB /* AdvancedExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdvancedExampleView.swift; sourceTree = "<group>"; };
 		94410B892BC6B54100C37BDB /* BasicExampleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicExampleView.swift; sourceTree = "<group>"; };
 		94410B8B2BC6B54900C37BDB /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		94410B8D2BC6B5C800C37BDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		94410B8F2BC6B55000C37BDB /* ThemeShowcaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeShowcaseView.swift; sourceTree = "<group>"; };
 		94410B912BC6B55100C37BDB /* MessageTypesGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageTypesGalleryView.swift; sourceTree = "<group>"; };
 		94410B932BC6B55200C37BDB /* InteractiveChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InteractiveChatView.swift; sourceTree = "<group>"; };
@@ -70,7 +69,6 @@
 		94410B732BC6B4D400C37BDB /* SwiftyChatDemo */ = {
 			isa = PBXGroup;
 			children = (
-				94410B8D2BC6B5C800C37BDB /* Info.plist */,
 				94410B742BC6B4D400C37BDB /* SwiftyChatDemoApp.swift */,
 				94410B852BC6B53900C37BDB /* ChatListView.swift */,
 				94410B872BC6B53E00C37BDB /* AdvancedExampleView.swift */,
@@ -246,7 +244,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -303,7 +301,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -324,7 +322,6 @@
 				DEVELOPMENT_TEAM = L9DND36YTU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SwiftyChatDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -334,14 +331,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.eneskaraosman.SwiftyChatDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -357,7 +354,6 @@
 				DEVELOPMENT_TEAM = L9DND36YTU;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SwiftyChatDemo/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -367,14 +363,14 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 14.6;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.eneskaraosman.SwiftyChatDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

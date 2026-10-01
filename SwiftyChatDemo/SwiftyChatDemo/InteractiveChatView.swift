@@ -403,7 +403,7 @@ private struct LocationRow: LocationItem {
 }
 
 // MARK: - Interactive Style
-extension ChatMessageCellStyle {
+@MainActor extension ChatMessageCellStyle {
     static let interactiveStyle = ChatMessageCellStyle(
         incomingTextStyle: TextCellStyle(
             textStyle: CommonTextStyle(

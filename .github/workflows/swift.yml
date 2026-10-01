@@ -24,11 +24,11 @@ jobs:
     - name: Build (SPM)
       run: swift build
 
-    - name: Build (iOS)
-      run: xcodebuild build -scheme SwiftyChat -destination 'generic/platform=iOS Simulator' -quiet
+    - name: Build demo (iOS)
+      run: xcodebuild build -project SwiftyChatDemo/SwiftyChatDemo.xcodeproj -scheme SwiftyChatDemo -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO -quiet
 
-    - name: Build (macOS)
-      run: xcodebuild build -scheme SwiftyChat -destination 'generic/platform=macOS' -quiet
+    - name: Build demo (macOS)
+      run: xcodebuild build -project SwiftyChatDemo/SwiftyChatDemo.xcodeproj -scheme SwiftyChatDemo -destination 'generic/platform=macOS' CODE_SIGNING_ALLOWED=NO -quiet
 
     - name: Build Documentation
       run: xcodebuild docbuild -scheme SwiftyChat -destination 'generic/platform=iOS Simulator' -quiet
