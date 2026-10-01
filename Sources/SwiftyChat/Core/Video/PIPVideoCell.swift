@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIEKtensions
 
 private extension CGSize {
     var midX: CGFloat { width / 2 }
@@ -16,10 +15,6 @@ private extension CGSize {
 struct PIPVideoCell<Message: ChatMessage>: View {
 
     @Environment(VideoManager<Message>.self) var videoManager
-
-    #if os(iOS)
-    @EnvironmentObject var model: DeviceOrientationInfo
-    #endif
 
     @State private var pendingTask: Task<Void, Never>? = nil
     @State private var location: CGPoint = .zero
@@ -41,12 +36,12 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                         width: viewModel.videoFrameWidth(
                             in: geometry.size,
                             isFullScreen: videoManager.isFullScreen,
-                            orientationIsLandscape: modelOrientation()
+                            orientationIsLandscape: geometry.size.isChatLandscape
                         ),
                         height: viewModel.videoFrameHeight(
                             in: geometry.size,
                             isFullScreen: videoManager.isFullScreen,
-                            orientationIsLandscape: modelOrientation()
+                            orientationIsLandscape: geometry.size.isChatLandscape
                         )
                     )
                     .clipShape(.rect(cornerRadius: videoManager.isFullScreen ? 0 : 8))
@@ -56,20 +51,20 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                     .animation(.linear(duration: 0.1), value: location)
                     .onAppear {
                         // initial placement
-                        let initial = viewModel.computeLocation(for: .rightTop, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: modelOrientation())
+                        let initial = viewModel.computeLocation(for: .rightTop, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: geometry.size.isChatLandscape)
                         withAnimation(.easeIn) { self.location = initial }
                     }
                     .onChange(of: videoManager.isFullScreen) {
                         pendingTask?.cancel()
-                        pendingTask = viewModel.scheduleReposition(to: .center, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: modelOrientation()) { newLocation in
+                        pendingTask = viewModel.scheduleReposition(to: .center, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: geometry.size.isChatLandscape) { newLocation in
                             withAnimation(.easeIn) { self.location = newLocation }
                         }
                     }
 
                     #if os(iOS)
-                    .onChange(of: model.orientation) {
+                    .onChange(of: geometry.size) {
                         pendingTask?.cancel()
-                        pendingTask = viewModel.scheduleReposition(to: .leftTop, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: modelOrientation()) { newLocation in
+                        pendingTask = viewModel.scheduleReposition(to: .leftTop, in: geometry.size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: geometry.size.isChatLandscape) { newLocation in
                             withAnimation(.easeIn) { self.location = newLocation }
                         }
                     }
@@ -94,14 +89,6 @@ struct PIPVideoCell<Message: ChatMessage>: View {
         }
     }
 
-    private func modelOrientation() -> Bool? {
-        #if os(iOS)
-        return model.orientation == .landscape
-        #else
-        return nil
-        #endif
-    }
-
     // MARK: - Drag Gesture
     private func simpleDrag(in size: CGSize) -> some Gesture {
         DragGesture()
@@ -121,7 +108,7 @@ struct PIPVideoCell<Message: ChatMessage>: View {
                 } else {
                     corner = location.x > size.midX ? .rightTop : .leftTop
                 }
-                let newLocation = viewModel.computeLocation(for: corner, in: size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: modelOrientation())
+                let newLocation = viewModel.computeLocation(for: corner, in: size, isFullScreen: videoManager.isFullScreen, orientationIsLandscape: size.isChatLandscape)
                 withAnimation(.easeIn) { location = newLocation }
             }
     }

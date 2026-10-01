@@ -11,7 +11,7 @@ import class UIKit.UIDevice
 
 public struct Device {
 
-    public static var isLandscape: Bool {
+    @MainActor public static var isLandscape: Bool {
         #if os(iOS)
         let orientation = UIDevice.current.orientation
         return orientation == .landscapeLeft || orientation == .landscapeRight

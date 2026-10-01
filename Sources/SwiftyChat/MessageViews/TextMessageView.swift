@@ -21,7 +21,7 @@ struct TextMessageView<Message: ChatMessage>: View {
     }
 
     private var maxWidth: CGFloat {
-        size.width * (Device.isLandscape ? 0.6 : 0.75)
+        size.width * (size.isChatLandscape ? 0.6 : 0.75)
     }
 
     private let cachedIsEmojiOnly: Bool

@@ -30,7 +30,7 @@ public struct ImageTextCellStyle: CommonViewStyle {
         ),
         textPadding: CGFloat = 10,
         cellWidth: @escaping (CGSize) -> CGFloat = { size in
-            if !Device.isLandscape {
+            if !size.isChatLandscape {
                 return size.width * 0.75
             }
             return size.height * 0.8

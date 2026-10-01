@@ -1,5 +1,5 @@
 {
-  "originHash" : "b23ce5f312bc6347ab653ca32a3fa81a85f396b9af99af57ffa47e87d7e357cd",
+  "originHash" : "92863f2781a63c31f2e17314e291224ff7047cb0cb5f4ba7ad4dffac2aed1e8d",
   "pins" : [
     {
       "identity" : "kingfisher",
@@ -8,15 +8,6 @@
       "state" : {
         "revision" : "be0d257b9bd47a4e6e1265fc8c237411825f107a",
         "version" : "8.12.0"
-      }
-    },
-    {
-      "identity" : "swiftuiektensions",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/EnesKaraosman/SwiftUIEKtensions.git",
-      "state" : {
-        "revision" : "bf96c0d841d2bc81dac0d7e28aa9ab71cd7d6c2a",
-        "version" : "0.4.0"
       }
     }
   ],

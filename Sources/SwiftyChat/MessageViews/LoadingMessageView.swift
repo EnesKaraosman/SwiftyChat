@@ -19,7 +19,7 @@ struct LoadingMessageView<Message: ChatMessage>: View {
     }
 
     private var maxWidth: CGFloat {
-        size.width * (Device.isLandscape ? 0.6 : 0.75)
+        size.width * (size.isChatLandscape ? 0.6 : 0.75)
     }
 
     var body: some View {

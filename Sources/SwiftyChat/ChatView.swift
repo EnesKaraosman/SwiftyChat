@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import SwiftUIEKtensions
 
 // Shared DateFormatter to avoid expensive instantiation
 private let sharedDateFormatter: DateFormatter = {
@@ -159,9 +158,6 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
         .overlay(alignment: .bottom) {
             PIPVideoCell<Message>()
         }
-#if os(iOS)
-        .environmentObject(DeviceOrientationInfo())
-#endif
         .environment(videoManager)
         .dismissKeyboardOnTappingOutside()
     }
@@ -255,37 +251,51 @@ public extension ChatView {
 public extension ChatView {
     /// Registers a custom cell view for `ChatMessageKind.custom`.
     func registerCustomCell<Content: View>(@ViewBuilder customCell: @escaping (Any) -> Content) -> Self {
-        then({ $0.customCellView = { data in AnyView(customCell(data)) } })
+        var view = self
+        view.customCellView = { data in AnyView(customCell(data)) }
+        return view
     }
 
     /// Triggered when a ChatMessage is tapped.
     func onMessageCellTapped(_ action: @escaping (Message) -> Void) -> Self {
-        then({ $0.onMessageCellTapped = action })
+        var view = self
+        view.onMessageCellTapped = action
+        return view
     }
 
     /// Present ContextMenu when a message cell is long pressed.
     func messageCellContextMenu<MenuContent: View>(@ViewBuilder _ action: @escaping (Message) -> MenuContent) -> Self {
-        then({ $0.messageCellContextMenu = { msg in AnyView(action(msg)) } })
+        var view = self
+        view.messageCellContextMenu = { msg in AnyView(action(msg)) }
+        return view
     }
 
     /// Triggered when a quickReplyItem is selected (ChatMessageKind.quickReply)
     func onQuickReplyItemSelected(_ action: @escaping (QuickReplyItem) -> Void) -> Self {
-        then({ $0.onQuickReplyItemSelected = action })
+        var view = self
+        view.onQuickReplyItemSelected = action
+        return view
     }
 
     /// Present contactItem's footer buttons. (ChatMessageKind.contactItem)
     func contactItemButtons(_ section: @escaping (ContactItem, Message) -> [ContactCellButton]) -> Self {
-        then({ $0.contactCellFooterSection = section })
+        var view = self
+        view.contactCellFooterSection = section
+        return view
     }
 
     /// Triggered when the carousel button tapped.
     func onCarouselItemAction(action: @escaping (CarouselItemButton, Message) -> Void) -> Self {
-        then({ $0.onCarouselItemAction = action })
+        var view = self
+        view.onCarouselItemAction = action
+        return view
     }
 
     /// Triggered when a link preview message is tapped.
     func onLinkPreviewTapped(_ action: @escaping (URL, Message) -> Void) -> Self {
-        then({ $0.onLinkPreviewTapped = action })
+        var view = self
+        view.onLinkPreviewTapped = action
+        return view
     }
 }
 
@@ -313,7 +323,7 @@ private struct MessageRow<Message: ChatMessage, Content: View>: View {
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .frame(
-                        maxWidth: geometrySize.width * (Device.isLandscape ? 0.6 : 0.75),
+                        maxWidth: geometrySize.width * (geometrySize.isChatLandscape ? 0.6 : 0.75),
                         alignment: message.isSender ? .trailing : .leading
                     )
             }

@@ -34,11 +34,11 @@ Also available for [Flutter](https://github.com/EnesKaraosman/swifty_chat).
 ## Why SwiftyChat?
 
 - **11 built-in message types** — text, image, video, location, carousel, quick replies, link previews, contacts, loading indicators, and more
-- **8 pre-built themes** with full style customization via SwiftUI environment
+- **5 demo themes** with full style customization via SwiftUI environment
 - **Cross-platform** — iOS 17+ and macOS 14+ from a single codebase
 - **High performance** — O(n) complexity, cached formatters, async image loading
 - **Chatbot-ready** — carousels, quick replies, and loading states designed for AI/bot interfaces
-- **Lightweight** — just 2 dependencies (Kingfisher + SwiftUIEKtensions)
+- **Lightweight** — Kingfisher is the only package dependency
 - [Custom message cells](CustomMessage.md) for any type you need
 - Landscape orientation support with auto-scaling cells
 - User avatars with configurable positioning
