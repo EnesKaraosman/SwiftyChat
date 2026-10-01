@@ -53,9 +53,8 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: (() -> Void)?
     
-    // Cache for message metadata to avoid O(n) lookups per message
-    @State private var messageMetadataCache: [Message.ID: (showDateHeader: Bool, showDisplayName: Bool)] = [:]
     @State private var videoManager = VideoManager<Message>()
+    @State private var visibleBottomMessageID: Message.ID?
 
     @Binding private var scrollTo: UUID?
     @Binding private var scrollToBottom: Bool
@@ -66,13 +65,19 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     #endif
 
     public var body: some View {
+        let messageMetadata = MessageMetadataBuilder.build(
+            messages,
+            dateHeaderTimeInterval: dateHeaderTimeInterval,
+            shouldShowGroupChatHeaders: shouldShowGroupChatHeaders
+        )
+
         ScrollViewReader { proxy in
             ScrollView(.vertical) {
                 LazyVStack {
                     ForEach(messages) { message in
                         MessageRow(
                             message: message,
-                            metadata: messageMetadataCache[message.id] ?? (showDateHeader: false, showDisplayName: false),
+                            metadata: messageMetadata[message.id] ?? MessageMetadata(showDateHeader: false, showDisplayName: false),
                             geometrySize: containerSize,
                             chatMessageViewContainer: { msg, showName in
                                 chatMessageViewContainer(in: containerSize, with: msg, with: showName)
@@ -86,18 +91,23 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                     }
                 }
                 .padding(inset)
+                .scrollTargetLayout()
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.immediately)
             .defaultScrollAnchor(.bottom)
+            .scrollPosition(id: $visibleBottomMessageID, anchor: .bottom)
             .safeAreaInset(edge: .bottom) {
                 inputView()
             }
-            .onChange(of: messages.count) {
-                rebuildMessageMetadataCache()
-                if let last = messages.last {
+            .onChange(of: messages.map(\.id)) { oldIDs, newIDs in
+                if let target = MessageScrollPolicy.targetAfterUpdate(
+                    oldIDs: oldIDs,
+                    newIDs: newIDs,
+                    visibleBottomID: visibleBottomMessageID
+                ) {
                     withAnimation(.easeOut(duration: 0.2)) {
-                        proxy.scrollTo(last.id, anchor: .bottom)
+                        proxy.scrollTo(target, anchor: .bottom)
                     }
                 }
             }
@@ -203,118 +213,8 @@ private extension ChatView {
 }
 
 private extension ChatView {
-    func rebuildMessageMetadataCache() {
-        var newCache: [Message.ID: (showDateHeader: Bool, showDisplayName: Bool)] = [:]
-        
-        for (index, message) in messages.enumerated() {
-            let showDateHeader: Bool
-            if index == 0 {
-                showDateHeader = true
-            } else {
-                let currMessage = messages[index]
-                let prevMessage = messages[index - 1]
-                let timeInterval = currMessage.date - prevMessage.date
-                showDateHeader = timeInterval > dateHeaderTimeInterval
-            }
-
-            let showDisplayName: Bool
-            if !shouldShowGroupChatHeaders {
-                showDisplayName = false
-            } else if showDateHeader {
-                showDisplayName = true
-            } else if index == 0 {
-                showDisplayName = true
-            } else {
-                let currMessageUserID = messages[index].user.id
-                let prevMessageUserID = messages[index - 1].user.id
-                showDisplayName = currMessageUserID != prevMessageUserID
-            }
-
-            newCache[message.id] = (showDateHeader, showDisplayName)
-        }
-
-        messageMetadataCache = newCache
-    }
-    
-    func shouldShowDateHeader(messages: [Message], thisMessage: Message) -> Bool {
-        if let messageIndex = messages.firstIndex(where: { $0.id == thisMessage.id }) {
-            if messageIndex == 0 { return true }
-            let currMessage = messages[messageIndex]
-            let prevMessage = messages[messageIndex - 1]
-            let timeInterval = currMessage.date - prevMessage.date
-            return timeInterval > dateHeaderTimeInterval
-        }
-        return false
-    }
-
-    func shouldShowDisplayName(
-        messages: [Message],
-        thisMessage: Message,
-        dateHeaderShown: Bool
-    ) -> Bool {
-        if !shouldShowGroupChatHeaders {
-            return false
-        } else if dateHeaderShown {
-            return true
-        }
-
-        if let messageIndex = messages.firstIndex(where: { $0.id == thisMessage.id }) {
-            if messageIndex == 0 {
-                return true
-            }
-
-            let currMessageUserID = messages[messageIndex].user.id
-            let prevMessageUserID = messages[messageIndex - 1].user.id
-            let isDifferentUser = currMessageUserID != prevMessageUserID
-
-            return isDifferentUser
-        }
-
-        return false
-    }
-
     func shouldShowAvatarForMessage(forThisMessage: Bool) -> Bool {
         (forThisMessage || !shouldShowGroupChatHeaders)
-    }
-}
-
-// MARK: - Cache Building
-private extension ChatView {
-    static func buildInitialCache(
-        messages: [Message],
-        dateHeaderTimeInterval: TimeInterval,
-        shouldShowGroupChatHeaders: Bool
-    ) -> [Message.ID: (showDateHeader: Bool, showDisplayName: Bool)] {
-        var cache: [Message.ID: (showDateHeader: Bool, showDisplayName: Bool)] = [:]
-        
-        for (index, message) in messages.enumerated() {
-            let showDateHeader: Bool
-            if index == 0 {
-                showDateHeader = true
-            } else {
-                let currMessage = messages[index]
-                let prevMessage = messages[index - 1]
-                let timeInterval = currMessage.date - prevMessage.date
-                showDateHeader = timeInterval > dateHeaderTimeInterval
-            }
-
-            let showDisplayName: Bool
-            if !shouldShowGroupChatHeaders {
-                showDisplayName = false
-            } else if showDateHeader {
-                showDisplayName = true
-            } else if index == 0 {
-                showDisplayName = true
-            } else {
-                let currMessageUserID = messages[index].user.id
-                let prevMessageUserID = messages[index - 1].user.id
-                showDisplayName = currMessageUserID != prevMessageUserID
-            }
-
-            cache[message.id] = (showDateHeader, showDisplayName)
-        }
-        
-        return cache
     }
 }
 
@@ -349,12 +249,6 @@ public extension ChatView {
         self.reachedTop = reachedTop
         _scrollTo = scrollTo
         
-        // Initialize metadata cache
-        _messageMetadataCache = State(initialValue: Self.buildInitialCache(
-            messages: messages.wrappedValue,
-            dateHeaderTimeInterval: dateHeaderTimeInterval,
-            shouldShowGroupChatHeaders: shouldShowGroupChatHeaders
-        ))
     }
 }
 
@@ -398,7 +292,7 @@ public extension ChatView {
 // MARK: - MessageRow for better scroll performance
 private struct MessageRow<Message: ChatMessage, Content: View>: View {
     let message: Message
-    let metadata: (showDateHeader: Bool, showDisplayName: Bool)
+    let metadata: MessageMetadata
     let geometrySize: CGSize
     let chatMessageViewContainer: (Message, Bool) -> Content
     let onFirstMessageAppear: () -> Void

@@ -39,6 +39,10 @@ let package = Package(
             dependencies: [
                 "SwiftyChat"
             ]
+        ),
+        .testTarget(
+            name: "SwiftyChatTests",
+            dependencies: ["SwiftyChat", "SwiftyChatMock"]
         )
     ],
     swiftLanguageModes: [.v6]

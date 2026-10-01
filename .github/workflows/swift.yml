@@ -24,6 +24,9 @@ jobs:
     - name: Build (SPM)
       run: swift build
 
+    - name: Test (SPM)
+      run: swift test
+
     - name: Build demo (iOS)
       run: xcodebuild build -project SwiftyChatDemo/SwiftyChatDemo.xcodeproj -scheme SwiftyChatDemo -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO -quiet
 
@@ -32,3 +35,14 @@ jobs:
 
     - name: Build Documentation
       run: xcodebuild docbuild -scheme SwiftyChat -destination 'generic/platform=iOS Simulator' -quiet
+
+  minimum-swift:
+    runs-on: macos-15
+
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Test with Xcode 16.4
+      run: swift test
+      env:
+        DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
