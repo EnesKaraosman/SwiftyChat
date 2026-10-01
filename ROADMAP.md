@@ -1,6 +1,6 @@
 # SwiftyChat roadmap
 
-SwiftyChat targets iOS 17+ and macOS 14+ with 11 message kinds, five theme presets in the demo, and Kingfisher as its only package dependency. The library renders supplied link-preview metadata; it does not fetch metadata from URLs.
+SwiftyChat targets iOS 17+ and macOS 14+ with 11 message kinds, five theme presets in the demo, and Kingfisher as its only package dependency. Link metadata fetching is an explicit, optional API call.
 
 ## Foundation completed
 
@@ -9,13 +9,14 @@ SwiftyChat targets iOS 17+ and macOS 14+ with 11 message kinds, five theme prese
 - Quick replies, contact actions, link previews, and video controls use semantic buttons.
 - Message IDs used for programmatic scrolling match the consumer's `ChatMessage.ID` type.
 - Package tests cover message-list decisions, carousel button identity, video selection, viewport orientation, and empty mock batches.
+- The text-chat demo exercises older-message loading, cancellable streaming replies, reply quotes, and delivery status. On iOS it also accepts photos and videos with PhotosPicker.
+- Existing `ChatMessage` conformers can omit reply and delivery metadata. `LinkPreviewMetadataLoader` caches successful title/host fetches and shares concurrent requests for the same URL.
 
 ## Candidates for the next product pass
 
-1. **Streaming chatbot example:** Update a text message in place as tokens arrive and support cancellation. Measure rendering during frequent updates.
-2. **Reply and delivery status:** Design optional metadata that existing `ChatMessage` conformers can adopt without adding required protocol properties.
-3. **Media sending example:** Use native `PhotosPicker` for image and video selection in the demo before adding a library-level input API.
-4. **Optional link metadata helper:** Fetch and cache URL metadata outside message rendering, with an explicit choice by the host app to make network requests.
+1. **Link preview richness:** Decide whether the UI should accept local preview images as well as remote image URLs. LinkPresentation does not expose a description or remote image URL through `LPLinkMetadata`.
+2. **Delivery transitions:** Connect optional delivery status to a real transport layer in a consuming app. The demo shows static states.
+3. **Media input API:** Promote the demo's picker flow into the library only if consumers need a shared attachment interface.
 
 Audio, reactions, search, and other message types remain open ideas. Add them when a concrete consumer flow and API design justify them.
 

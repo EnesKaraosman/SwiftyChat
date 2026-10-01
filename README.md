@@ -133,6 +133,20 @@ public enum ChatMessageKind: CustomStringConvertible {
 
 A built-in `BasicInputView` is included. Use it as-is, or build your own — `ChatView` accepts any view via its `inputView` closure.
 
+The demo's text chat adds pagination, streaming replies, reply quotes, delivery status, and an iOS photo/video picker. `ChatMessage` has optional `replyPreview` and `deliveryStatus` properties with `nil` defaults, so existing message types still compile.
+
+### Link previews
+
+Link metadata is fetched only when your app calls the optional helper. Keep one loader instance to reuse its in-memory cache:
+
+```swift
+let loader = LinkPreviewMetadataLoader()
+let preview = try await loader.preview(for: url)
+let kind = ChatMessageKind.linkPreview(preview)
+```
+
+The helper uses Apple's LinkPresentation to retrieve a title and host. It does not provide a description or image URL; supply your own `LinkPreviewItem` for richer previews. The macOS host app needs the network client entitlement to fetch remote metadata.
+
 ### Styling
 
 Every visual aspect is customizable through `ChatMessageCellStyle` — text styles, edge insets, avatar styles, and cell styles for every message type. Inject via `.environment(\.chatStyle, yourStyle)`. All properties have sensible defaults.
@@ -145,12 +159,9 @@ See [Styles.md](Styles.md) for the full style reference and [CustomMessage.md](C
 |-------|-------------|
 | **Modern** | Clean blue, minimal design |
 | **Classic** | Traditional green messaging |
-| **Dark Neon** | Cyberpunk with neon pink accents |
-| **Minimal** | Subtle gray tones |
-| **Ocean** | Calming teal, sea-inspired |
-| **Sunset** | Warm orange gradients |
-| **Nature** | Fresh green, eco-friendly |
-| **Lavender** | Soft purple, relaxing |
+| **Dark Neon** | Cyberpunk with glowing accents |
+| **Warm Sunset** | Orange and coral tones |
+| **Nature** | Green tones inspired by forests |
 
 See `ThemeShowcaseView` in the SwiftyChatDemo app for live demos.
 
