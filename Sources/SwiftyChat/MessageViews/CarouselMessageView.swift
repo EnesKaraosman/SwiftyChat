@@ -5,22 +5,18 @@
 //  Created by Enes Karaosman on 23.07.2020.
 //
 
+import Foundation
 import Kingfisher
 import SwiftUI
 
 public struct CarouselItemButton: Identifiable, Hashable {
-    public var id: String {
-        var hasher = Hasher()
-        hasher.combine(title)
-        hasher.combine(url?.absoluteString)
-        hasher.combine(payload)
-        return "\(hasher.finalize())"
-    }
+    public let id: String
     public let title: String
     public let url: URL?
     public let payload: String?
 
-    public init(title: String, url: URL? = nil, payload: String? = nil) {
+    public init(title: String, url: URL? = nil, payload: String? = nil, id: String = UUID().uuidString) {
+        self.id = id
         self.title = title
         self.url = url
         self.payload = payload
@@ -37,12 +33,6 @@ public struct CarouselItemButton: Identifiable, Hashable {
     }
 }
 
-private extension CarouselItem {
-    var id: String {
-        (imageURL?.absoluteString ?? "").appending(subtitle)
-    }
-}
-
 struct CarouselMessageView<Message: ChatMessage>: View {
 
     let carouselItems: [CarouselItem]
@@ -53,9 +43,9 @@ struct CarouselMessageView<Message: ChatMessage>: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
             HStack {
-                ForEach(carouselItems, id: \.id) { item in
+                ForEach(carouselItems.indices, id: \.self) { index in
                     CarouselItemView(
-                        item: item,
+                        item: carouselItems[index],
                         size: size,
                         isSender: message.isSender
                     ) { button in

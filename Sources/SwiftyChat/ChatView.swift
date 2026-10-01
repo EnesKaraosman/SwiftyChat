@@ -56,7 +56,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     @State private var videoManager = VideoManager<Message>()
     @State private var visibleBottomMessageID: Message.ID?
 
-    @Binding private var scrollTo: UUID?
+    @Binding private var scrollTo: Message.ID?
     @Binding private var scrollToBottom: Bool
 
     @State private var containerSize: CGSize = .zero
@@ -224,7 +224,7 @@ public extension ChatView {
     /// - Parameters:
     ///   - messages: Binding to the array of messages to display.
     ///   - scrollToBottom: Set to `true` to programmatically scroll to the newest message.
-    ///   - scrollTo: Set to a message UUID to scroll to that specific message.
+    ///   - scrollTo: Set to a message ID to scroll to that specific message.
     ///   - dateHeaderTimeInterval: Minimum seconds between messages before a date header is shown (default: 3600).
     ///   - shouldShowGroupChatHeaders: When `true`, shows display names and groups avatars by sender (default: `false`).
     ///   - inputView: A view builder that provides the message input bar.
@@ -233,7 +233,7 @@ public extension ChatView {
     init(
         messages: Binding<[Message]>,
         scrollToBottom: Binding<Bool> = .constant(false),
-        scrollTo: Binding<UUID?> = .constant(nil),
+        scrollTo: Binding<Message.ID?> = .constant(nil),
         dateHeaderTimeInterval: TimeInterval = 3600,
         shouldShowGroupChatHeaders: Bool = false,
         @ViewBuilder inputView: @escaping () -> InputView,

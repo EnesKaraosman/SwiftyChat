@@ -1,4 +1,5 @@
 import Foundation
+import SwiftUI
 import Testing
 @testable import SwiftyChat
 import SwiftyChatMock
@@ -48,7 +49,31 @@ import SwiftyChatMock
         #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [3, 4], newIDs: [1, 2, 3, 4], visibleBottomID: 4) == nil)
     }
 
+    @Test @MainActor func supportsNonUUIDMessageIDsForScrolling() {
+        let message = IntMessage(id: 42, user: alice, date: start)
+        let scrollTarget = Binding<Int?>.constant(42)
+
+        _ = ChatView(messages: .constant([message]), scrollTo: scrollTarget) {
+            EmptyView()
+        }
+    }
+
+    @Test func identicalCarouselButtonsHaveDistinctIDs() {
+        let first = CarouselItemButton(title: "Open")
+        let second = CarouselItemButton(title: "Open")
+
+        #expect(first.id != second.id)
+    }
+
     private func message(user: MessageMocker.ChatUserItem, at date: Date) -> MessageMocker.ChatMessageItem {
         .init(user: user, messageKind: .text("Hello"), date: date)
     }
+}
+
+private struct IntMessage: ChatMessage {
+    let id: Int
+    let user: MessageMocker.ChatUserItem
+    let date: Date
+    let messageKind: ChatMessageKind = .text("Hello")
+    let isSender = false
 }

@@ -7,12 +7,7 @@
 
 import SwiftUI
 
-struct ChatMessageViewContainer<Message: ChatMessage>: View, @preconcurrency Equatable {
-
-    static func == (lhs: ChatMessageViewContainer<Message>, rhs: ChatMessageViewContainer<Message>) -> Bool {
-        lhs.message.id == rhs.message.id &&
-        lhs.size == rhs.size
-    }
+struct ChatMessageViewContainer<Message: ChatMessage>: View {
 
     let message: Message
     let size: CGSize
