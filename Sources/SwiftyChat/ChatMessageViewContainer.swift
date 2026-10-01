@@ -88,6 +88,22 @@ struct ChatMessageViewContainer<Message: ChatMessage>: View {
     }
 
     var body: some View {
-        messageCell()
+        VStack(alignment: message.isSender ? .trailing : .leading, spacing: 2) {
+            if let reply = message.replyPreview {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(reply.author)
+                        .font(.caption.weight(.semibold))
+                    Text(reply.text)
+                        .font(.caption)
+                        .lineLimit(2)
+                }
+                .foregroundStyle(.secondary)
+                .padding(8)
+                .frame(maxWidth: size.width * 0.75, alignment: .leading)
+                .background(.quaternary, in: RoundedRectangle(cornerRadius: 8))
+                .accessibilityElement(children: .combine)
+            }
+            messageCell()
+        }
     }
 }

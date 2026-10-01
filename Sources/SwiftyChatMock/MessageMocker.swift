@@ -250,17 +250,23 @@ extension MessageMocker {
         public var messageKind: ChatMessageKind
         public var isSender: Bool
         public var date: Date
+        public var replyPreview: ChatMessageQuote?
+        public var deliveryStatus: MessageDeliveryStatus?
 
         public init(
             user: ChatUserItem,
             messageKind: ChatMessageKind,
             isSender: Bool = false,
-            date: Date = .init()
+            date: Date = .init(),
+            replyPreview: ChatMessageQuote? = nil,
+            deliveryStatus: MessageDeliveryStatus? = nil
         ) {
             self.user = user
             self.messageKind = messageKind
             self.isSender = isSender
             self.date = date
+            self.replyPreview = replyPreview
+            self.deliveryStatus = deliveryStatus
         }
     }
 

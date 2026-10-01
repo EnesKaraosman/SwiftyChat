@@ -16,12 +16,22 @@ struct BasicExampleView: View {
     @State private var olderPagesRemaining = 3
     @State private var streamTask: Task<Void, Never>?
     @State private var isStreaming = false
+    @State private var replyPreview: ChatMessageQuote?
 
     var body: some View {
         chatView
             .task {
                 if messages.isEmpty {
                     messages = MessageMocker.generate(kind: .text, count: 20)
+                    let welcome = "Try replying to a message with its context menu."
+                    messages.append(.init(user: MessageMocker.chatbot, messageKind: .text(welcome)))
+                    messages.append(.init(
+                        user: MessageMocker.sender,
+                        messageKind: .text("Got it!"),
+                        isSender: true,
+                        replyPreview: .init(author: MessageMocker.chatbot.userName, text: welcome),
+                        deliveryStatus: .read
+                    ))
                 }
             }
             .onDisappear {
@@ -31,20 +41,43 @@ struct BasicExampleView: View {
 
     private var chatView: some View {
         ChatView(messages: $messages, inputView: {
-            BasicInputView(
-                message: $message,
-                placeholder: "Type something",
-                onCommit: { messageKind in
-                    self.messages.append(
-                        .init(user: MessageMocker.sender, messageKind: messageKind, isSender: true)
-                    )
+            VStack(spacing: 0) {
+                if let replyPreview {
+                    HStack {
+                        Text("Replying to \(replyPreview.author): \(replyPreview.text)")
+                            .font(.caption)
+                            .lineLimit(1)
+                        Spacer()
+                        Button("Cancel reply", systemImage: "xmark") {
+                            self.replyPreview = nil
+                        }
+                        .labelStyle(.iconOnly)
+                    }
+                    .padding(8)
                 }
-            )
+                BasicInputView(
+                    message: $message,
+                    placeholder: "Type something",
+                    onCommit: { messageKind in
+                        self.messages.append(.init(
+                            user: MessageMocker.sender,
+                            messageKind: messageKind,
+                            isSender: true,
+                            replyPreview: replyPreview,
+                            deliveryStatus: .sent
+                        ))
+                        replyPreview = nil
+                    }
+                )
+            }
             .background(Color.primary.colorInvert())
         }, reachedTop: loadOlder)
         .messageCellContextMenu { message in
             switch message.messageKind {
             case .text(let text):
+                Button("Reply", systemImage: "arrowshape.turn.up.left") {
+                    replyPreview = .init(author: message.user.userName, text: text)
+                }
                 Button(
                     action: {
                         print("Copy Context Menu tapped!!")

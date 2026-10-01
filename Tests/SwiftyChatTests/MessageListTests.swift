@@ -77,6 +77,23 @@ import SwiftyChatMock
         #expect(first.id != second.id)
     }
 
+    @Test func replyAndDeliveryMetadataAreOptional() {
+        let existingMessage = IntMessage(id: 1, user: alice, date: start)
+        #expect(existingMessage.replyPreview == nil)
+        #expect(existingMessage.deliveryStatus == nil)
+
+        let reply = ChatMessageQuote(author: "Bob", text: "See you soon")
+        let sentMessage = MessageMocker.ChatMessageItem(
+            user: alice,
+            messageKind: .text("Thanks"),
+            isSender: true,
+            replyPreview: reply,
+            deliveryStatus: .delivered
+        )
+        #expect(sentMessage.replyPreview == reply)
+        #expect(sentMessage.deliveryStatus == .delivered)
+    }
+
     private func message(user: MessageMocker.ChatUserItem, at date: Date) -> MessageMocker.ChatMessageItem {
         .init(user: user, messageKind: .text("Hello"), date: date)
     }

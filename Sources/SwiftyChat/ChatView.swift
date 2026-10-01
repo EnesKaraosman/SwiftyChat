@@ -332,6 +332,13 @@ private struct MessageRow<Message: ChatMessage, Content: View>: View {
             }
             
             chatMessageViewContainer(message, metadata.showDisplayName)
+
+            if message.isSender, let status = message.deliveryStatus {
+                Text(status.rawValue.capitalized)
+                    .font(.caption2)
+                    .foregroundStyle(status == .failed ? .red : .secondary)
+                    .accessibilityLabel("Message \(status.rawValue)")
+            }
         }
         .onAppear {
             if isFirstMessage {
