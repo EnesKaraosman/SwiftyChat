@@ -45,7 +45,7 @@ public struct MessageMocker {
     }
 
     public static func generate(kind: MessageMocker.Kind, count: UInt) -> [ChatMessageItem] {
-        (1...count).map { _ in generate(kind: kind) }
+        (0..<count).map { _ in generate(kind: kind) }
     }
 
     public static func generate(kind: MessageMocker.Kind) -> ChatMessageItem {
@@ -199,7 +199,7 @@ public struct MessageMocker {
     }
 
     public static func generate(count: Int = 30) -> [ChatMessageItem] {
-        (1...count).map { _ in generate(kind: randomMessageKind)}
+        (0..<max(count, 0)).map { _ in generate(kind: randomMessageKind)}
     }
 }
 
