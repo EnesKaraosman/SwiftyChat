@@ -22,22 +22,16 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
     }
 
     private var playPauseButton: some View {
-        Color.secondary.colorInvert()
-            .clipShape(.rect(cornerRadius: 10))
-            .frame(width: 50, height: 40)
-            .overlay(
-                Image(systemName: playerVM.isPlaying ? "pause.fill" : "play.fill")
-                    .font(Font.body.weight(.semibold))
-                    .foregroundStyle(Color.white)
-                    .padding()
-            )
-            .onTapGesture {
-                if playerVM.isPlaying {
-                    playerVM.player.pause()
-                } else {
-                    playerVM.player.play()
-                }
+        controlButton(
+            playerVM.isPlaying ? "pause.fill" : "play.fill",
+            label: playerVM.isPlaying ? "Pause video" : "Play video"
+        ) {
+            if playerVM.isPlaying {
+                playerVM.player.pause()
+            } else {
+                playerVM.player.play()
             }
+        }
     }
 
     @ViewBuilder
@@ -50,43 +44,39 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
                     playerVM.isEditingCurrentTime = isEditing
                 }
             )
+            .accessibilityLabel("Playback position")
         } else {
             Spacer()
         }
     }
 
     private var fullScreenButton: some View {
-        Color.secondary.colorInvert()
-            .clipShape(.rect(cornerRadius: 10))
-            .frame(width: 50, height: 40)
-            .overlay(
-                Image(
-                    systemName: videoManager.isFullScreen ?
-                    "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right"
-                )
-                .font(Font.body.weight(.semibold))
-                .foregroundStyle(Color.white)
-                .padding()
-            )
-            .onTapGesture { [weak videoManager] in
-                withAnimation {
-                    videoManager?.isFullScreen.toggle()
-                }
+        controlButton(
+            videoManager.isFullScreen ? "arrow.down.right.and.arrow.up.left" : "arrow.up.left.and.arrow.down.right",
+            label: videoManager.isFullScreen ? "Exit full screen" : "Enter full screen"
+        ) { [weak videoManager] in
+            withAnimation {
+                videoManager?.isFullScreen.toggle()
             }
+        }
     }
 
     private var closeButton: some View {
-        Color.secondary.colorInvert()
-            .clipShape(.rect(cornerRadius: 10))
-            .frame(width: 50, height: 40)
-            .overlay(
-                Image(systemName: "xmark")
-                    .font(Font.body.weight(.semibold))
-                    .foregroundStyle(Color.white)
-                    .padding()
-            )
-            .onTapGesture { [weak videoManager] in
-                videoManager?.flushState()
-            }
+        controlButton("xmark", label: "Close video") { [weak videoManager] in
+            videoManager?.flushState()
+        }
+    }
+
+    private func controlButton(_ symbol: String, label: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(Font.body.weight(.semibold))
+                .foregroundStyle(.white)
+                .frame(width: 50, height: 40)
+                .background(Color.secondary.colorInvert())
+                .clipShape(.rect(cornerRadius: 10))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(label)
     }
 }

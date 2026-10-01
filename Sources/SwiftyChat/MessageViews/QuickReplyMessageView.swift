@@ -34,7 +34,11 @@ struct QuickReplyMessageView: View {
     var body: some View {
         FlowLayout(horizontalSpacing: 8, verticalSpacing: 8, alignment: .trailing) {
             ForEach(0..<quickReplies.count, id: \.self) { idx in
-            Button(action: {}, label: {
+            Button(action: {
+                selectedIndex = idx
+                isDisabled = true
+                quickReplySelected(quickReplies[idx])
+            }, label: {
                 Text(quickReplies[idx].title)
                     .fontWeight(
                         idx == selectedIndex ?
@@ -59,13 +63,7 @@ struct QuickReplyMessageView: View {
                             )
                     )
             })
-            .simultaneousGesture(
-                TapGesture().onEnded { _ in
-                    selectedIndex = idx
-                    isDisabled = true
-                    quickReplySelected(quickReplies[idx])
-                }
-            )
+            .buttonStyle(.plain)
             .padding(.vertical, 4)
             }
         }

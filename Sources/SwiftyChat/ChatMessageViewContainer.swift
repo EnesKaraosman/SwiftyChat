@@ -73,8 +73,13 @@ struct ChatMessageViewContainer<Message: ChatMessage>: View, @preconcurrency Equ
             VideoMessageView(media: videoItem, message: message, size: size)
 
         case .linkPreview(let linkItem):
-            LinkPreviewMessageView(linkItem: linkItem, message: message, size: size)
-                .onTapGesture { onLinkPreviewTapped(linkItem.url, message) }
+            Button {
+                onLinkPreviewTapped(linkItem.url, message)
+            } label: {
+                LinkPreviewMessageView(linkItem: linkItem, message: message, size: size)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(linkItem.title ?? linkItem.url.absoluteString)
 
         case .loading:
             LoadingMessageView(message: message, size: size)

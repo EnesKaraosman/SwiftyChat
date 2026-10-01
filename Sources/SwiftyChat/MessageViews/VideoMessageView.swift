@@ -30,21 +30,23 @@ struct VideoMessageView<Message: ChatMessage>: View {
     }
 
     var body: some View {
-        thumbnailView
-            .overlay(thumbnailOverlay)
-            .onTapGesture {
-                if isThisVideoPlaying { return }
-                withAnimation {
-                    videoManager.flushState()
-                    // Small delay to allow flush animation to complete
-                    Task {
-                        try? await Task.sleep(nanoseconds: 100_000_000)
-                        await MainActor.run {
-                            videoManager.message = message
-                        }
+        Button {
+            withAnimation {
+                videoManager.flushState()
+                // Small delay to allow flush animation to complete
+                Task {
+                    try? await Task.sleep(nanoseconds: 100_000_000)
+                    await MainActor.run {
+                        videoManager.message = message
                     }
                 }
             }
+        } label: {
+            thumbnailView.overlay(thumbnailOverlay)
+        }
+        .buttonStyle(.plain)
+        .disabled(isThisVideoPlaying)
+        .accessibilityLabel("Play video")
     }
 
     private var thumbnailView: some View {

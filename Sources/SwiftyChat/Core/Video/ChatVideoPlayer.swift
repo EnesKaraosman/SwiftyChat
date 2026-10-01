@@ -67,17 +67,17 @@ struct MacOSChatVideoPlayer<Message: ChatMessage>: View {
     }
 
     private var closeButton: some View {
-        Color.secondary.colorInvert()
-            .clipShape(.rect(cornerRadius: 10))
-            .frame(width: 50, height: 40)
-            .overlay(
-                Image(systemName: "xmark")
-                    .font(Font.body.weight(.semibold))
-                    .foregroundStyle(Color.white)
-                    .padding()
-            )
-            .onTapGesture {
-                self.videoManager.flushState()
-            }
+        Button {
+            videoManager.flushState()
+        } label: {
+            Image(systemName: "xmark")
+                .font(Font.body.weight(.semibold))
+                .foregroundStyle(.white)
+                .frame(width: 50, height: 40)
+                .background(Color.secondary.colorInvert())
+                .clipShape(.rect(cornerRadius: 10))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("Close video")
     }
 }

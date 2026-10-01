@@ -78,11 +78,8 @@ struct ContactMessageView<Message: ChatMessage>: View {
     private var buttonActionFooter: some View {
         HStack {
             ForEach(0..<cachedButtons.count, id: \.self) { idx in
-                Button(cachedButtons[idx].title) {}
-                    .buttonStyle(BorderlessButtonStyle())
-                    .simultaneousGesture(
-                        TapGesture().onEnded(cachedButtons[idx].action)
-                    )
+                Button(cachedButtons[idx].title, action: cachedButtons[idx].action)
+                    .buttonStyle(.borderless)
                     .frame(maxWidth: .infinity)
 
                 if idx != cachedButtons.count - 1 {
