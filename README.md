@@ -142,6 +142,31 @@ A built-in `BasicInputView` is included. Use it as-is, or build your own — `Ch
 
 The demo's text chat adds pagination, streaming replies, reply quotes, delivery status, and an iOS photo/video picker. `ChatMessage` has optional `replyPreview` and `deliveryStatus` properties with `nil` defaults, so existing message types still compile.
 
+### Conversation navigation (unreleased)
+
+The development branch adds unread indicators, a scroll-to-latest button, reply navigation, and retry actions. These APIs will be available in the next release:
+
+```swift
+ChatView(messages: $messages) { /* input view */ }
+    .unreadMessages(unreadMessageIDs)
+    .onReachedBottom { newestID in
+        markRead(through: newestID)
+    }
+    .onRetryMessage { message in
+        resend(message)
+    }
+```
+
+The app owns `unreadMessageIDs`, read persistence, and sending. The divider and count include only loaded incoming messages whose IDs are in that set; pagination and edits do not create unread messages. Use `.showsScrollToBottomButton()` to enable the button without unread tracking.
+
+Set optional `ChatMessage.replyToMessageID` to make a quote navigate to a loaded original. Use `.onReplyPreviewTapped` to load an original that is absent, then set the existing `scrollTo` binding after inserting it. Existing message models inherit a `nil` target. Retry controls appear only for failed outgoing messages when a retry handler is supplied; update `deliveryStatus` as sending progresses.
+
+The Text Chat Example demonstrates these actions through its **Demo actions** menu.
+
+| Unread messages and return to latest | Reply quote and failed-send retry |
+|:---:|:---:|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/navigation-unread-dark.png"/><img src="Documentation/Images/navigation-unread-light.png" width="270" alt="Unread divider and unread count above the chat input"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/navigation-retry-dark.png"/><img src="Documentation/Images/navigation-retry-light.png" width="270" alt="Navigable reply quote and a retry action below a failed outgoing message"/></picture> |
+
 ### Link previews
 
 Link metadata is fetched only when your app calls the optional helper. Keep one loader instance to reuse its in-memory cache:

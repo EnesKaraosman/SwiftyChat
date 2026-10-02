@@ -119,6 +119,7 @@ import SwiftyChatMock
     @Test func replyAndDeliveryMetadataAreOptional() {
         let existingMessage = IntMessage(id: 1, user: alice, date: start)
         #expect(existingMessage.replyPreview == nil)
+        #expect(existingMessage.replyToMessageID == nil)
         #expect(existingMessage.deliveryStatus == nil)
 
         let reply = ChatMessageQuote(author: "Bob", text: "See you soon")

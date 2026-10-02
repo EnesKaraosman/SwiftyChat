@@ -251,6 +251,7 @@ extension MessageMocker {
         public var isSender: Bool
         public var date: Date
         public var replyPreview: ChatMessageQuote?
+        public var replyToMessageID: UUID?
         public var deliveryStatus: MessageDeliveryStatus?
 
         public init(
@@ -259,6 +260,7 @@ extension MessageMocker {
             isSender: Bool = false,
             date: Date = .init(),
             replyPreview: ChatMessageQuote? = nil,
+            replyToMessageID: UUID? = nil,
             deliveryStatus: MessageDeliveryStatus? = nil
         ) {
             self.user = user
@@ -266,6 +268,7 @@ extension MessageMocker {
             self.isSender = isSender
             self.date = date
             self.replyPreview = replyPreview
+            self.replyToMessageID = replyToMessageID
             self.deliveryStatus = deliveryStatus
         }
     }

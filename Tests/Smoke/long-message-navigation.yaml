@@ -1,0 +1,25 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- tapOn: "Demo actions"
+- tapOn: "Receive long message"
+- assertNotVisible: "1 unread message, scroll to latest"
+- scrollUntilVisible:
+    element: "Got it!"
+    direction: UP
+    timeout: 20000
+- assertVisible: "Scroll to latest"
+- tapOn: "Scroll to latest"
+- assertNotVisible: "Scroll to latest"
+- scrollUntilVisible:
+    element: "Got it!"
+    direction: UP
+    timeout: 20000
+- tapOn: "Demo actions"
+- tapOn: "Receive message"
+- assertVisible: "1 unread message, scroll to latest"
+- assertNotVisible: "Incoming message 2"
+- tapOn: "1 unread message, scroll to latest"
+- assertVisible: "Incoming message 2"

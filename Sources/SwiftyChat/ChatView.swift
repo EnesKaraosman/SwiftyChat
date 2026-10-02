@@ -47,6 +47,11 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     private var contactCellFooterSection: (ContactItem, Message) -> [ContactCellButton] = { _, _ in [] }
     private var onCarouselItemAction: (CarouselItemButton, Message) -> Void = { (_, _) in }
     private var onLinkPreviewTapped: (URL, Message) -> Void = { (_, _) in }
+    private var onReplyPreviewTapped: ((Message) -> Void)?
+    private var onRetryMessage: ((Message) -> Void)?
+    private var onReachedBottom: ((Message.ID) -> Void)?
+    private var unreadMessageIDs: Set<Message.ID> = []
+    private var showsScrollToBottomButton = false
     private var inset: EdgeInsets
     private var dateHeaderTimeInterval: TimeInterval
     private var shouldShowGroupChatHeaders: Bool
@@ -54,8 +59,12 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     
     @State private var videoManager = VideoManager<Message>()
     @State private var visibleBottomMessageID: Message.ID?
+    @State private var pendingAutoScrollID: Message.ID?
     @State private var hasReachedBottom = false
     @State private var topReachTracker = TopReachTracker<Message.ID>()
+    @State private var bottomPosition: MessageBottomPosition<Message.ID>?
+    @State private var viewportBounds: CGRect = .zero
+    @Namespace private var scrollCoordinateSpace
 
     @Binding private var scrollTo: Message.ID?
     @Binding private var scrollToBottom: Bool
@@ -68,6 +77,11 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
             dateHeaderTimeInterval: dateHeaderTimeInterval,
             shouldShowGroupChatHeaders: shouldShowGroupChatHeaders
         )
+        let navigation = MessageNavigationState(
+            messages: messages,
+            unreadMessageIDs: unreadMessageIDs
+        )
+        let reachedBottomID = bottomPosition?.reachedMessageID(in: viewportBounds, lastMessageID: messages.last?.id)
 
         ScrollViewReader { proxy in
             ScrollView(.vertical) {
@@ -77,8 +91,16 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                             message: message,
                             metadata: messageMetadata[message.id] ?? MessageMetadata(showDateHeader: false, showDisplayName: false),
                             geometrySize: containerSize,
+                            showsUnreadDivider: message.id == navigation.firstUnreadID,
+                            onRetryMessage: onRetryMessage,
                             chatMessageViewContainer: { msg, showName in
-                                chatMessageViewContainer(in: containerSize, with: msg, with: showName)
+                                chatMessageViewContainer(
+                                    in: containerSize,
+                                    with: msg,
+                                    with: showName,
+                                    onReplyTapped: onReplyPreviewTapped != nil || msg.replyToMessageID.map { messageMetadata[$0] != nil } == true
+                                        ? { navigateToReply($0, using: proxy) } : nil
+                                )
                             },
                             onFirstMessageAppear: {
                                 if self.reachedTop != nil && self.topReachTracker.shouldReport(message.id, isReady: hasReachedBottom) {
@@ -88,25 +110,82 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                             isFirstMessage: message.id == self.messages.first?.id
                         )
                         .id(message.id)
+                        .background(alignment: .bottom) {
+                            if message.id == messages.last?.id {
+                                Color.clear.frame(height: 1)
+                                    .onGeometryChange(for: CGFloat.self) { [scrollCoordinateSpace] geometry in
+                                        geometry.frame(in: .named(scrollCoordinateSpace)).maxY
+                                    } action: {
+                                        let position = MessageBottomPosition(messageID: message.id, maxY: $0)
+                                        bottomPosition = position
+                                        // Lazy rows can finish sizing after the bound scroll request.
+                                        if pendingAutoScrollID == message.id, !viewportBounds.isEmpty,
+                                           position.reachedMessageID(in: viewportBounds, lastMessageID: message.id) == nil {
+                                            var transaction = Transaction(animation: nil)
+                                            transaction.disablesAnimations = true
+                                            withTransaction(transaction) {
+                                                proxy.scrollTo(message.id, anchor: .bottom)
+                                            }
+                                        }
+                                    }
+                                    .onDisappear {
+                                        if messages.last?.id == message.id, bottomPosition?.messageID == message.id {
+                                            bottomPosition = nil
+                                        }
+                                    }
+                            }
+                        }
                     }
                 }
                 .padding(inset)
                 .scrollTargetLayout()
             }
+            .coordinateSpace(name: scrollCoordinateSpace)
+            .onGeometryChange(for: CGSize.self) { $0.size } action: {
+                viewportBounds = CGRect(origin: .zero, size: $0)
+            }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.immediately)
             .defaultScrollAnchor(.bottom)
             .scrollPosition(id: $visibleBottomMessageID, anchor: .bottom)
-            .safeAreaInset(edge: .bottom) {
+            .simultaneousGesture(DragGesture().onChanged { _ in pendingAutoScrollID = nil })
+            .overlay(alignment: .bottomTrailing) {
+                if showsScrollToBottomButton, hasReachedBottom, reachedBottomID == nil, !messages.isEmpty {
+                    Button { scrollToLatest(using: proxy) } label: {
+                        HStack(spacing: 6) {
+                            if navigation.unreadCount > 0 {
+                                Text("\(navigation.unreadCount)")
+                                    .monospacedDigit()
+                            }
+                            Image(systemName: "arrow.down")
+                        }
+                    }
+                    .buttonStyle(.bordered)
+                    .buttonBorderShape(.capsule)
+                    .tint(.primary)
+                    .background(.regularMaterial, in: Capsule())
+                    .accessibilityLabel(navigation.unreadCount == 0
+                        ? "Scroll to latest"
+                        : "\(navigation.unreadCount) unread \(navigation.unreadCount == 1 ? "message" : "messages"), scroll to latest")
+                    .padding(.horizontal)
+                    .padding(.bottom, 8)
+                }
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
                 inputView()
             }
             .onChange(of: messages.map(\.id)) { oldIDs, newIDs in
-                if newIDs.isEmpty { hasReachedBottom = false }
+                if newIDs.isEmpty {
+                    hasReachedBottom = false
+                    pendingAutoScrollID = nil
+                }
                 if let target = MessageScrollPolicy.targetAfterUpdate(
                     oldIDs: oldIDs,
                     newIDs: newIDs,
-                    visibleBottomID: visibleBottomMessageID
+                    visibleBottomID: bottomPosition?.reachedMessageID(in: viewportBounds, lastMessageID: oldIDs.last),
+                    pendingAutoScrollID: pendingAutoScrollID
                 ) {
+                    pendingAutoScrollID = target
                     if oldIDs.isEmpty {
                         visibleBottomMessageID = target
                     } else {
@@ -116,23 +195,28 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                     }
                 }
             }
-            .onChange(of: visibleBottomMessageID) { _, visibleID in
-                if visibleID == messages.last?.id, visibleID != nil {
+            .onChange(of: reachedBottomID) { _, reachedID in
+                if let reachedID {
+                    if pendingAutoScrollID == reachedID { pendingAutoScrollID = nil }
                     hasReachedBottom = true
+                    onReachedBottom?(reachedID)
+                }
+            }
+            .onChange(of: visibleBottomMessageID) { _, visibleID in
+                if let pendingAutoScrollID, visibleID != pendingAutoScrollID {
+                    self.pendingAutoScrollID = nil
                 }
             }
             .onChange(of: scrollToBottom) { oldValue, newValue in
                 if newValue {
-                    if let last = messages.last {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            proxy.scrollTo(last.id, anchor: .bottom)
-                        }
-                    }
+                    scrollToLatest(using: proxy)
                     scrollToBottom = false
                 }
             }
             .onChange(of: scrollTo) { oldValue, newValue in
                 if let newValue {
+                    pendingAutoScrollID = nil
+                    visibleBottomMessageID = newValue
                     proxy.scrollTo(newValue, anchor: .top)
                     scrollTo = nil
                 }
@@ -152,11 +236,32 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
 }
 
 private extension ChatView {
+    func scrollToLatest(using proxy: ScrollViewProxy) {
+        guard let last = messages.last else { return }
+        pendingAutoScrollID = nil
+        withAnimation(.easeOut(duration: 0.2)) {
+            visibleBottomMessageID = last.id
+            proxy.scrollTo(last.id, anchor: .bottom)
+        }
+    }
+
+    func navigateToReply(_ message: Message, using proxy: ScrollViewProxy) {
+        pendingAutoScrollID = nil
+        if let target = message.replyToMessageID, messages.contains(where: { $0.id == target }) {
+            withAnimation(.easeOut(duration: 0.2)) {
+                visibleBottomMessageID = target
+                proxy.scrollTo(target, anchor: .center)
+            }
+        }
+        onReplyPreviewTapped?(message)
+    }
+
     // MARK: - List Item
     private func chatMessageViewContainer(
         in size: CGSize,
         with message: Message,
-        with avatarShow: Bool
+        with avatarShow: Bool,
+        onReplyTapped: ((Message) -> Void)?
     ) -> some View {
         ChatMessageViewContainer(
             message: message,
@@ -165,7 +270,8 @@ private extension ChatView {
             onQuickReplyItemSelected: onQuickReplyItemSelected,
             contactFooterSection: contactCellFooterSection,
             onCarouselItemAction: onCarouselItemAction,
-            onLinkPreviewTapped: onLinkPreviewTapped
+            onLinkPreviewTapped: onLinkPreviewTapped,
+            onReplyPreviewTapped: onReplyTapped
         )
         .onTapGesture { onMessageCellTapped(message) }
         .contextMenu(menuItems: { messageCellContextMenu(message) })
@@ -179,7 +285,6 @@ private extension ChatView {
         )
         .modifier(MessageHorizontalAlignmentModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(MessageViewEdgeInsetsModifier(isSender: message.isSender))
-        .id(message.id)
     }
 }
 
@@ -191,6 +296,41 @@ private extension ChatView {
 
 // MARK: - Initializers
 public extension ChatView {
+    /// Displays unread indicators for loaded incoming messages and enables the scroll-to-bottom button.
+    func unreadMessages(_ messageIDs: Set<Message.ID>) -> Self {
+        var view = self
+        view.unreadMessageIDs = messageIDs
+        view.showsScrollToBottomButton = true
+        return view
+    }
+
+    func showsScrollToBottomButton(_ enabled: Bool = true) -> Self {
+        var view = self
+        view.showsScrollToBottomButton = enabled
+        return view
+    }
+
+    /// Reports the newest message reached; the app decides how to persist read state.
+    func onReachedBottom(_ action: @escaping (Message.ID) -> Void) -> Self {
+        var view = self
+        view.onReachedBottom = action
+        return view
+    }
+
+    /// Called after a quote tap, including when its target needs to be loaded by the app.
+    func onReplyPreviewTapped(_ action: @escaping (Message) -> Void) -> Self {
+        var view = self
+        view.onReplyPreviewTapped = action
+        return view
+    }
+
+    /// Adds a retry action to failed outgoing messages; the app owns sending and status updates.
+    func onRetryMessage(_ action: @escaping (Message) -> Void) -> Self {
+        var view = self
+        view.onRetryMessage = action
+        return view
+    }
+
     /// Creates a new chat view.
     /// - Parameters:
     ///   - messages: Binding to the array of messages to display.
@@ -279,12 +419,23 @@ private struct MessageRow<Message: ChatMessage, Content: View>: View {
     let message: Message
     let metadata: MessageMetadata
     let geometrySize: CGSize
+    let showsUnreadDivider: Bool
+    let onRetryMessage: ((Message) -> Void)?
     let chatMessageViewContainer: (Message, Bool) -> Content
     let onFirstMessageAppear: () -> Void
     let isFirstMessage: Bool
     
     var body: some View {
         VStack(alignment: message.isSender ? .trailing : .leading, spacing: 2) {
+            if showsUnreadDivider {
+                HStack {
+                    Rectangle().frame(height: 1).accessibilityHidden(true)
+                    Text("Unread messages").font(.caption.weight(.semibold))
+                    Rectangle().frame(height: 1).accessibilityHidden(true)
+                }
+                .foregroundStyle(.secondary)
+                .padding(.vertical, 8)
+            }
             if metadata.showDateHeader {
                 Text(sharedDateFormatter.string(from: message.date))
                     .font(.subheadline)
@@ -310,6 +461,13 @@ private struct MessageRow<Message: ChatMessage, Content: View>: View {
                     .font(.caption2)
                     .foregroundStyle(status == .failed ? .red : .secondary)
                     .accessibilityLabel("Message \(status.rawValue)")
+                if status == .failed, let onRetryMessage {
+                    Button("Retry message", systemImage: "arrow.clockwise") {
+                        onRetryMessage(message)
+                    }
+                    .font(.caption)
+                    .buttonStyle(.bordered)
+                }
             }
         }
         .onAppear {
