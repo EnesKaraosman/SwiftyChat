@@ -85,7 +85,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/EnesKaraosman/SwiftyChat.git", from: "4.2.0")
+    .package(url: "https://github.com/EnesKaraosman/SwiftyChat.git", from: "4.3.0")
 ]
 ```
 
@@ -140,7 +140,7 @@ public enum ChatMessageKind: CustomStringConvertible {
 
 A built-in `BasicInputView` is included. Use it as-is, or build your own — `ChatView` accepts any view via its `inputView` closure.
 
-The upcoming release brings a unified composer with an optional attachment button. Provide `onAttachment` to open your picker; existing initializers continue to work:
+Version 4.3.0 includes a unified composer with an optional attachment button. Provide `onAttachment` to open your picker; existing initializers continue to work:
 
 ```swift
 BasicInputView(
@@ -157,9 +157,9 @@ BasicInputView(
 
 The demo's text chat adds pagination, streaming replies, reply quotes, delivery status, and an iOS photo/video picker. `ChatMessage` has optional `replyPreview` and `deliveryStatus` properties with `nil` defaults, so existing message types still compile.
 
-### Conversation navigation (unreleased)
+### Conversation navigation
 
-The development branch adds unread indicators, a scroll-to-latest button, reply navigation, and retry actions. These APIs will be available in the next release:
+Version 4.3.0 adds unread indicators, a scroll-to-latest button, reply navigation, and retry actions:
 
 ```swift
 ChatView(messages: $messages) { /* input view */ }

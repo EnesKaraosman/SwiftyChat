@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## [Unreleased]
+## [4.3.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.3.0)
+
+Released on 2026-10-02.
 
 ### Added
 
@@ -8,6 +10,11 @@
 - Optional `ChatMessage.replyToMessageID` for navigating from reply quotes to loaded messages, plus `onReplyPreviewTapped(_:)` for handling unloaded originals.
 - `onRetryMessage(_:)` for retry controls on failed outgoing messages. The app retains ownership of transport and delivery status.
 - Demo controls and smoke flows for receiving unread messages, returning to the latest message, navigating replies, and retrying failed sends.
+
+### Improved
+
+- Unified the composer surface and added an optional `BasicInputView.onAttachment` callback, with a native photo/video picker in the demo.
+- Refreshed light/dark composer and navigation screenshots and added draft-preservation, multiline-send, and attachment-picker smoke coverage.
 
 ### Fixed
 
