@@ -48,7 +48,7 @@ public enum LinkPreviewMetadataError: Error, Equatable {
         return preview
     }
 
-    private static func fetch(_ url: URL) async throws -> LinkPreviewMetadata {
+    nonisolated private static func fetch(_ url: URL) async throws -> LinkPreviewMetadata {
         let provider = LPMetadataProvider()
         provider.shouldFetchSubresources = false
         provider.timeout = 10

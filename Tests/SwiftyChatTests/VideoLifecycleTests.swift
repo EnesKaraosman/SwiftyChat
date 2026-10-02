@@ -9,12 +9,13 @@ import SwiftyChatMock
         let second = MessageMocker.generate(kind: .video)
 
         manager.play(first)
+        let firstPlayback = try #require(manager.pendingPlaybackTask)
         manager.play(second)
-        let deadline = ContinuousClock.now.advanced(by: .seconds(2))
-        while manager.message == nil && ContinuousClock.now < deadline {
-            try await Task.sleep(for: .milliseconds(10))
-        }
+        let secondPlayback = try #require(manager.pendingPlaybackTask)
+        await firstPlayback.value
+        await secondPlayback.value
 
+        #expect(firstPlayback.isCancelled)
         #expect(manager.message?.id == second.id)
     }
 
@@ -22,9 +23,11 @@ import SwiftyChatMock
         let manager = VideoManager<MessageMocker.ChatMessageItem>()
 
         manager.play(MessageMocker.generate(kind: .video))
+        let playback = try #require(manager.pendingPlaybackTask)
         manager.flushState()
-        try await Task.sleep(for: .milliseconds(150))
+        await playback.value
 
+        #expect(playback.isCancelled)
         #expect(manager.message == nil)
     }
 }

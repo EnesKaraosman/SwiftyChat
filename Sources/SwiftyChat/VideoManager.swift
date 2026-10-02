@@ -17,7 +17,7 @@ final class VideoManager<Message: ChatMessage> {
 
     var message: Message?
     var isFullScreen = false
-    private var pendingPlaybackTask: Task<Void, Never>?
+    private(set) var pendingPlaybackTask: Task<Void, Never>?
 
     var videoItem: VideoItem? {
         if let message = message,
