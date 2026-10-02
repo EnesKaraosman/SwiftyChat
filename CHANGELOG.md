@@ -13,6 +13,7 @@
 ### Documentation and tests
 
 - Replaced outdated previews with current light/dark simulator captures and component renders, with a repeatable capture script.
+- Added a message-type gallery covering all 11 kinds and replaced repetitive README previews with distinct examples.
 - Added appearance contrast and rendering checks, expanded theme smoke coverage, and added video overlay smoke tests.
 
 ---

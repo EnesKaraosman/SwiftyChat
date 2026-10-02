@@ -72,4 +72,4 @@ SWIFTYCHAT_SNAPSHOT_DIR="$PWD/Documentation/Images/components" \
 
 Review the images before committing. Check for clipped text, missing remote content, unreadable controls, and unintended appearance overrides. Avoid replacing native controls with `ImageRenderer` captures: it cannot render every platform view.
 
-The README hero uses a `<picture>` element to match the reader's appearance. The style guide shows both modes side by side so differences remain visible. Demo photos are sample content from the URLs in the demo; the gradient and mountain component fixture is drawn with SwiftUI and an SF Symbol.
+The README gallery uses `<picture>` elements to match the reader's appearance. The [message gallery](MessageTypes.md) and style guide show both modes side by side so differences remain visible. `components.yaml` captures text and emoji, images, captions, locations, contacts, quick replies, carousels, video, link previews, and loading. The custom-cell sample is a local component render. Demo photos are sample content from the URLs in the demo; the gradient and mountain component fixture is drawn with SwiftUI and an SF Symbol.

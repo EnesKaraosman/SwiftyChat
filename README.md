@@ -1,10 +1,3 @@
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/carousel-dark.png"/>
-    <img src="Documentation/Images/carousel-light.png" height="480" alt="SwiftyChat demo with messages, quick replies, and an interactive carousel"/>
-  </picture>
-</p>
-
 <h1 align="center">SwiftyChat</h1>
 
 <p align="center">
@@ -36,7 +29,7 @@ Also available for [Flutter](https://github.com/EnesKaraosman/swifty_chat).
 
 ## Why SwiftyChat?
 
-- **11 built-in message types** — text, image, video, location, carousel, quick replies, link previews, contacts, loading indicators, and more
+- **11 message kinds** — text, image, video, location, carousel, quick replies, link previews, contacts, loading indicators, and more
 - **5 demo themes** with full style customization via SwiftUI environment
 - **Cross-platform** — iOS 17+ and macOS 14+ from a single codebase
 - **Lazy message rendering** with linear header calculation and remote image loading
@@ -54,17 +47,29 @@ Also available for [Flutter](https://github.com/EnesKaraosman/swifty_chat).
 
 ## Preview
 
-Current demo captures from the iPhone 17 Pro simulator. See the [style guide](Styles.md) for individual components and all five themes in both appearances.
+Every message kind is shown below. These are current captures from the iPhone 17 Pro simulator; the screenshots follow your light/dark preference. Open the [complete message gallery](Documentation/MessageTypes.md) to compare both appearances side by side.
 
-| Conversation · light | Conversation · dark | Dark Neon |
+| Text and emoji | Images | Images with captions |
 |:---:|:---:|:---:|
-| <img src="Documentation/Images/conversation-light.png" width="230" alt="Guided chat and quick replies in light mode"/> | <img src="Documentation/Images/conversation-dark.png" width="230" alt="The same guided chat in dark mode"/> | <img src="Documentation/Images/theme-neon-light.png" width="230" alt="Dark Neon theme with carousel, contact, and map"/> |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-text-dark.png"/><img src="Documentation/Images/gallery-text-light.png" width="230" alt="Incoming and outgoing text, Markdown, links, and enlarged emoji"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-image-dark.png"/><img src="Documentation/Images/gallery-image-light.png" width="230" alt="Incoming and outgoing photo messages"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-caption-dark.png"/><img src="Documentation/Images/gallery-caption-light.png" width="230" alt="Photo messages with readable captions"/></picture> |
 
-### Adaptive components
+| Locations | Contacts | Carousels |
+|:---:|:---:|:---:|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-location-dark.png"/><img src="Documentation/Images/gallery-location-light.png" width="230" alt="Interactive MapKit location message"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-contact-dark.png"/><img src="Documentation/Images/gallery-contact-light.png" width="230" alt="Contact card with Call and Text actions"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-carousel-dark.png"/><img src="Documentation/Images/gallery-carousel-light.png" width="230" alt="Horizontal cards with images, descriptions, and action buttons"/></picture> |
 
-| Image caption · light | Image caption · dark |
+| Video | Link previews | Quick replies |
+|:---:|:---:|:---:|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-video-dark.png"/><img src="Documentation/Images/gallery-video-light.png" width="230" alt="Video thumbnail with a play control"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-link-preview-dark.png"/><img src="Documentation/Images/gallery-link-preview-light.png" width="230" alt="Rich link card with a title, description, image, and host"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/gallery-quick-reply-dark.png"/><img src="Documentation/Images/gallery-quick-reply-light.png" width="230" alt="Selected quick reply, response, and available choices"/></picture> |
+
+### Loading and custom content
+
+These close-ups are rendered from the library using local fixtures. Custom cells can contain your own SwiftUI views.
+
+| Loading indicator | Custom SwiftUI cell |
 |:---:|:---:|
-| <img src="Documentation/Images/components/image-text-light.png" width="320" alt="Image card with a readable dark caption in light mode"/> | <img src="Documentation/Images/components/image-text-dark.png" width="320" alt="Image card with a readable light caption in dark mode"/> |
+| <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/components/loading-dark.png"/><img src="Documentation/Images/components/loading-light.png" width="300" alt="Animated typing indicator inside a message bubble"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/components/custom-dark.png"/><img src="Documentation/Images/components/custom-light.png" width="300" alt="Custom SwiftUI content registered as a message cell"/></picture> |
+
+See the [style guide](Styles.md) for reply quotes, native keyboard layout, and all five demo themes.
 
 ## Installation
 

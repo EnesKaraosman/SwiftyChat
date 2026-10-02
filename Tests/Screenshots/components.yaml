@@ -2,10 +2,31 @@ appId: com.eneskaraosman.SwiftyChatDemo
 ---
 - launchApp
 - tapOn: "Message Types"
+- tapOn: "Add Text"
+- tapOn: "As Me"
+- tapOn: "Add Text"
+- tapOn: "As Me"
+- tapOn: "Emoji"
+- tapOn: "Add Emoji"
+- tapOn: "As Me"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-text-${APPEARANCE}
+- tapOn: "Clear"
+- tapOn: "Image"
+- tapOn: "Add Image"
+- tapOn: "As Me"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-image-${APPEARANCE}
+- tapOn: "Clear"
 - tapOn: "Image + Text"
 - tapOn: "Add Image + Text"
 - waitForAnimationToEnd
 - takeScreenshot: ${OUTPUT_DIR}/gallery-caption-${APPEARANCE}
+- tapOn: "Clear"
+- tapOn: "Location"
+- tapOn: "Add Location"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-location-${APPEARANCE}
 - tapOn: "Clear"
 - swipe:
     start: 85%, 17%
@@ -17,6 +38,20 @@ appId: com.eneskaraosman.SwiftyChatDemo
 - waitForAnimationToEnd
 - takeScreenshot: ${OUTPUT_DIR}/gallery-contact-${APPEARANCE}
 - tapOn: "Clear"
+- tapOn: "Quick Reply"
+- tapOn: "Add Quick Reply"
+- tapOn: ".*(Yes|Pizza|Morning).*"
+- assertVisible: "You selected: .*"
+- tapOn: "Add Quick Reply"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-quick-reply-${APPEARANCE}
+- tapOn: "Clear"
+- tapOn: "Carousel"
+- tapOn: "Add Carousel"
+- assertVisible: "Learn More"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-carousel-${APPEARANCE}
+- tapOn: "Clear"
 - swipe:
     start: 85%, 17%
     end: 15%, 17%
@@ -26,3 +61,23 @@ appId: com.eneskaraosman.SwiftyChatDemo
 - assertVisible: "Play video"
 - waitForAnimationToEnd
 - takeScreenshot: ${OUTPUT_DIR}/gallery-video-${APPEARANCE}
+- tapOn: "Clear"
+- tapOn: "Link Preview"
+- tapOn: "Add Link Preview"
+- repeat:
+    times: 6
+    commands:
+      - runFlow:
+          when:
+            notVisible: "SwiftUI - Xcode - Apple Developer"
+          commands:
+            - tapOn: "Clear"
+            - tapOn: "Add Link Preview"
+- assertVisible: "SwiftUI - Xcode - Apple Developer"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-link-preview-${APPEARANCE}
+- tapOn: "Clear"
+- tapOn: "Loading"
+- tapOn: "Add Loading"
+- assertVisible: "Today at.*"
+- takeScreenshot: ${OUTPUT_DIR}/gallery-loading-${APPEARANCE}

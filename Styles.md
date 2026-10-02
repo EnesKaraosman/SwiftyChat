@@ -2,6 +2,8 @@
 
 `ChatMessageCellStyle` controls the appearance of each message kind. Inject it with `.environment(\.chatStyle, style)`. Its defaults work on light and dark system backgrounds; custom colors should be checked in both appearances.
 
+See the [message gallery](Documentation/MessageTypes.md) for light/dark examples of every supported kind, including native demo captures.
+
 ## System appearance
 
 Use semantic colors such as `.primary` for text on adaptive surfaces. Set foreground and background together when using a fixed fill. SwiftyChat inherits the host app's appearance and does not force a color scheme.
