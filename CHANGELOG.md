@@ -7,6 +7,7 @@
 - Improved light/dark contrast for default message bubbles, image captions, reply quotes, carousel actions and descriptions, and link preview metadata.
 - Kept selected quick replies and active video thumbnails readable without disabled-state fading; improved video control contrast.
 - Replaced manual keyboard offsets with native SwiftUI keyboard layout so messages stay below surrounding headers and above the keyboard.
+- Kept automatic scrolling attached to the newest message on iOS 27 when a streamed reply grows and another message is sent.
 - Made the demo's Dark Neon presentation explicitly dark and strengthened the other demo palettes.
 
 ### Documentation and tests

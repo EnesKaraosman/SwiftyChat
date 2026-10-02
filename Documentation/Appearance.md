@@ -9,10 +9,20 @@
 
 Custom host backgrounds, fonts, and colors need their own checks. The automated checks do not measure real-device frame rate or verify Picture in Picture behavior on hardware.
 
+## OS 27 and Liquid Glass
+
+The package supports iOS 17+ and macOS 14+; these are minimum deployment versions. The iOS and macOS examples build with the Xcode 27 SDKs.
+
+The demo uses native navigation, toolbars, menus, and sheets, which adopt the system's new appearance when built with the latest SDK. It does not opt out with `UIDesignRequiresCompatibility`. See Apple's [Adopting Liquid Glass](https://developer.apple.com/documentation/technologyoverviews/adopting-liquid-glass) guidance.
+
+Liquid Glass adoption is partial: `BasicInputView` and the themed composers use custom solid backgrounds, while `VideoPlayerOverlay` uses `thinMaterial` and custom buttons. They do not explicitly use Liquid Glass APIs. A future visual refresh can focus on these controls while preserving readable message content and the existing deployment targets.
+
 ## Verification recorded on 2026-10-02
 
 - 22 package tests passed on both Xcode 26.6 and Xcode 27.
 - All 10 demo smoke flows passed in each system appearance on the iPhone 17 Pro / iOS 26.5 simulator.
+- OS 27 follow-up: all 10 flows passed in dark mode on the iPhone 18 Pro / iOS 27 simulator. The initial light run exposed a streaming/auto-scroll bug; the existing basic flow reproduced it and passed after automatic scrolling was changed to update the bound scroll position. Sending after streaming, pagination, and replies also passed again on iOS 26.5.
+- The iOS 27 software keyboard layout was visually checked in both appearances, including a live dark-to-light switch with the sent message and theme header preserved.
 - Native keyboard layout was checked with the theme header and a sent message visible above the keyboard.
 - A live system appearance change preserved the open conversation and its sent message.
 - The iOS and macOS demos built successfully; native macOS theme selection and message entry were checked.

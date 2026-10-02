@@ -111,7 +111,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                         visibleBottomMessageID = target
                     } else {
                         withAnimation(.easeOut(duration: 0.2)) {
-                            proxy.scrollTo(target, anchor: .bottom)
+                            visibleBottomMessageID = target
                         }
                     }
                 }
