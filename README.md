@@ -140,6 +140,21 @@ public enum ChatMessageKind: CustomStringConvertible {
 
 A built-in `BasicInputView` is included. Use it as-is, or build your own — `ChatView` accepts any view via its `inputView` closure.
 
+The upcoming release brings a unified composer with an optional attachment button. Provide `onAttachment` to open your picker; existing initializers continue to work:
+
+```swift
+BasicInputView(
+    message: $message,
+    placeholder: "Write a message…",
+    onAttachment: { isPickerPresented = true },
+    onCommit: sendMessage
+)
+```
+
+| Composer | With keyboard |
+|:---:|:---:|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/composer-dark.png"/><img src="Documentation/Images/composer-light.png" width="280" alt="Unified composer with integrated attachment and send buttons"/></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/composer-keyboard-dark.png"/><img src="Documentation/Images/composer-keyboard-light.png" width="280" alt="Composer with a draft and the native keyboard open"/></picture> |
+
 The demo's text chat adds pagination, streaming replies, reply quotes, delivery status, and an iOS photo/video picker. `ChatMessage` has optional `replyPreview` and `deliveryStatus` properties with `nil` defaults, so existing message types still compile.
 
 ### Conversation navigation (unreleased)

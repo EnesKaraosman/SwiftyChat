@@ -1,0 +1,32 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- assertVisible:
+    text: "Send message"
+    enabled: false
+- tapOn: "Type something"
+- inputText: "Draft to keep"
+- tapOn: "Add attachment"
+- assertVisible:
+    id: "Cancel"
+- tapOn:
+    id: "Cancel"
+- assertVisible: "Draft to keep"
+- eraseText
+- inputText: "   "
+- assertVisible:
+    text: "Send message"
+    enabled: false
+- eraseText
+- inputText: "First line\nSecond line\nThird line"
+- assertVisible:
+    text: "Send message"
+    enabled: true
+- tapOn: "Send message"
+- assertVisible: "First line.*Second line.*Third line"
+- assertVisible: "Type something"
+- assertVisible:
+    text: "Send message"
+    enabled: false

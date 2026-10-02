@@ -28,6 +28,7 @@ struct BasicExampleView: View {
     @State private var incomingMessageCount = 0
     #if os(iOS)
     @State private var selectedMedia: PhotosPickerItem?
+    @State private var isMediaPickerPresented = false
     @State private var mediaError: String?
     #endif
 
@@ -85,31 +86,31 @@ struct BasicExampleView: View {
                     }
                     .padding(8)
                 }
-                HStack {
-                    #if os(iOS)
-                    PhotosPicker(selection: $selectedMedia, matching: .any(of: [.images, .videos])) {
-                        Image(systemName: "paperclip")
+                BasicInputView(
+                    message: $message,
+                    placeholder: "Type something",
+                    onAttachment: attachmentAction,
+                    onCommit: { messageKind in
+                        self.messages.append(.init(
+                            user: MessageMocker.sender,
+                            messageKind: messageKind,
+                            isSender: true,
+                            replyPreview: replyPreview,
+                            replyToMessageID: replyToMessageID,
+                            deliveryStatus: .sent
+                        ))
+                        replyPreview = nil
+                        replyToMessageID = nil
+                        scrollToBottom = true
                     }
-                    .accessibilityLabel("Attach photo or video")
-                    #endif
-                    BasicInputView(
-                        message: $message,
-                        placeholder: "Type something",
-                        onCommit: { messageKind in
-                            self.messages.append(.init(
-                                user: MessageMocker.sender,
-                                messageKind: messageKind,
-                                isSender: true,
-                                replyPreview: replyPreview,
-                                replyToMessageID: replyToMessageID,
-                                deliveryStatus: .sent
-                            ))
-                            replyPreview = nil
-                            replyToMessageID = nil
-                            scrollToBottom = true
-                        }
-                    )
-                }
+                )
+                #if os(iOS)
+                .photosPicker(
+                    isPresented: $isMediaPickerPresented,
+                    selection: $selectedMedia,
+                    matching: .any(of: [.images, .videos])
+                )
+                #endif
             }
             .background(Color.primary.colorInvert())
         }, reachedTop: loadOlder)
@@ -199,6 +200,14 @@ struct BasicExampleView: View {
             .labelStyle(.iconOnly)
             .accessibilityLabel("Demo actions")
         }
+    }
+
+    private var attachmentAction: (() -> Void)? {
+        #if os(iOS)
+        { isMediaPickerPresented = true }
+        #else
+        nil
+        #endif
     }
 
     private func receiveMessage(_ text: String) {

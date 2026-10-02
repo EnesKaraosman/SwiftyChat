@@ -58,6 +58,19 @@ struct ContentView: View {
 
 ## Customize the Style
 
+``BasicInputView`` keeps the text field and send action in one adaptive surface. To include an attachment button, pass `onAttachment` and present your app's picker from the callback:
+
+```swift
+BasicInputView(
+    message: $inputText,
+    placeholder: "Write a message…",
+    onAttachment: { isPickerPresented = true },
+    onCommit: sendMessage
+)
+```
+
+Omit `onAttachment` for a text-only composer.
+
 Inject a ``ChatMessageCellStyle`` via the environment to control colors, fonts, corner radii, avatars, and more:
 
 ```swift
