@@ -1,5 +1,8 @@
 <p align="center">
-  <img src="Sources/SwiftyChat/Demo/Preview/swiftyChatGIF.gif" height="380" alt="Animated preview of the SwiftyChat chat UI"/>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="Documentation/Images/carousel-dark.png"/>
+    <img src="Documentation/Images/carousel-light.png" height="480" alt="SwiftyChat demo with messages, quick replies, and an interactive carousel"/>
+  </picture>
 </p>
 
 <h1 align="center">SwiftyChat</h1>
@@ -51,18 +54,17 @@ Also available for [Flutter](https://github.com/EnesKaraosman/swifty_chat).
 
 ## Preview
 
-| Light | Dark | Theme Showcase |
+Current demo captures from the iPhone 17 Pro simulator. See the [style guide](Styles.md) for individual components and all five themes in both appearances.
+
+| Conversation · light | Conversation · dark | Dark Neon |
 |:---:|:---:|:---:|
-| <img src="Sources/SwiftyChat/Demo/Preview/basic-1.png" width="220" alt="Light mode chat demo"/> | <img src="Sources/SwiftyChat/Demo/Preview/basic-2.png" width="220" alt="Dark mode chat demo"/> | <img src="Sources/SwiftyChat/Demo/Preview/theme-showcase.png" width="220" alt="Theme showcase with carousel and map"/> |
+| <img src="Documentation/Images/conversation-light.png" width="230" alt="Guided chat and quick replies in light mode"/> | <img src="Documentation/Images/conversation-dark.png" width="230" alt="The same guided chat in dark mode"/> | <img src="Documentation/Images/theme-neon-light.png" width="230" alt="Dark Neon theme with carousel, contact, and map"/> |
 
-<details>
-  <summary>More screenshots</summary>
+### Adaptive components
 
-  | Advanced Features | Theme (Dark) | Chatbot Demo |
-  |:---:|:---:|:---:|
-  | <img src="Sources/SwiftyChat/Demo/Preview/advanced-features.png" width="220" alt="Advanced features with link preview"/> | <img src="Sources/SwiftyChat/Demo/Preview/theme-showcase-dark.png" width="220" alt="Theme showcase in dark mode"/> | <img src="Sources/SwiftyChat/Demo/Preview/chatbot-demo.png" width="220" alt="Chatbot demo with quick replies"/> |
-
-</details>
+| Image caption · light | Image caption · dark |
+|:---:|:---:|
+| <img src="Documentation/Images/components/image-text-light.png" width="320" alt="Image card with a readable dark caption in light mode"/> | <img src="Documentation/Images/components/image-text-dark.png" width="320" alt="Image card with a readable light caption in dark mode"/> |
 
 ## Installation
 
@@ -149,7 +151,7 @@ The helper uses Apple's LinkPresentation to retrieve a title and host. It does n
 
 ### Styling
 
-Every visual aspect is customizable through `ChatMessageCellStyle` — text styles, edge insets, avatar styles, and cell styles for every message type. Inject via `.environment(\.chatStyle, yourStyle)`. All properties have sensible defaults.
+Every visual aspect is customizable through `ChatMessageCellStyle` — text styles, edge insets, avatar styles, and cell styles for every message type. Inject via `.environment(\.chatStyle, yourStyle)`. The default text and surface colors support light and dark appearance. When supplying custom colors, check their contrast on your app's background in both modes.
 
 See [Styles.md](Styles.md) for the full style reference and [CustomMessage.md](CustomMessage.md) for custom cell types.
 
@@ -158,18 +160,23 @@ See [Styles.md](Styles.md) for the full style reference and [CustomMessage.md](C
 | Theme | Description |
 |-------|-------------|
 | **Modern** | Clean blue, minimal design |
-| **Classic** | Traditional green messaging |
+| **Classic** | Traditional blue messaging |
 | **Dark Neon** | Cyberpunk with glowing accents |
 | **Warm Sunset** | Orange and coral tones |
 | **Nature** | Green tones inspired by forests |
 
-See `ThemeShowcaseView` in the SwiftyChatDemo app for live demos.
+These presets live in the [demo app](SwiftyChatDemo/SwiftyChatDemo/Themes/ChatThemes.swift). Modern, Classic, Warm Sunset, and Nature follow the system appearance. Dark Neon explicitly uses a dark appearance. See [Styles.md](Styles.md) for customization and screenshots.
 
 ## AI & Chatbot Use Case
 
 SwiftyChat is especially well-suited for AI and chatbot interfaces. Built-in support for carousels, quick reply buttons, loading indicators, and link previews means you can build a rich conversational UI without custom cells:
 
 ```swift
+struct Reply: QuickReplyItem {
+    let title: String
+    var payload: String { title }
+}
+
 // Show a loading indicator while the AI responds
 messages.append(Message(user: bot, messageKind: .loading))
 
@@ -183,8 +190,8 @@ messages[messages.count - 1] = Message(
 messages.append(Message(
     user: bot,
     messageKind: .quickReply([
-        QuickReplyItem(title: "Tell me more"),
-        QuickReplyItem(title: "Something else"),
+        Reply(title: "Tell me more"),
+        Reply(title: "Something else"),
     ])
 ))
 ```
@@ -193,7 +200,7 @@ Building a ChatGPT-style app, a customer support bot, or an in-app assistant? Sw
 
 ## Testing
 
-Run package tests with `swift test`. The iOS demo also has [Maestro smoke flows](Tests/Smoke) for basic chat controls, pagination, the guided conversation, themes, message actions, and the advanced example. After building and installing `SwiftyChatDemo` on a booted iOS simulator, run `maestro test --udid <simulator-udid> Tests/Smoke`.
+Run package tests with `swift test`, including default color contrast checks and component rendering in light and dark mode. The iOS demo also has [Maestro smoke flows](Tests/Smoke) for basic chat controls, pagination, the guided conversation, themes, message actions, and the advanced example. After building and installing `SwiftyChatDemo` on a booted iOS simulator, run `maestro test --udid <simulator-udid> Tests/Smoke`. See [appearance verification](Documentation/Appearance.md) for running both system appearances and regenerating the screenshots.
 
 ## Contributing
 

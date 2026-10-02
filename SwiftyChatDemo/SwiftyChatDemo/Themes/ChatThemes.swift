@@ -41,14 +41,6 @@ private extension Color {
         Color(nsColor: .separatorColor)
         #endif
     }
-    
-    static var systemBlueColor: Color {
-        #if os(iOS)
-        Color(.systemBlue)
-        #else
-        Color(nsColor: .systemBlue)
-        #endif
-    }
 }
 
 // MARK: - Theme Definition
@@ -92,7 +84,7 @@ extension ChatTheme {
                     font: .system(size: 16, weight: .regular, design: .rounded)
                 ),
                 textPadding: 14,
-                cellBackgroundColor: Color.blue,
+                cellBackgroundColor: Color.chatActionBlue,
                 cellCornerRadius: 20,
                 cellBorderColor: .clear,
                 cellBorderWidth: 0,
@@ -101,14 +93,14 @@ extension ChatTheme {
                 cellRoundedCorners: [.topLeft, .bottomRight, .bottomLeft]
             ),
             quickReplyCellStyle: QuickReplyCellStyle(
-                selectedItemColor: .blue,
+                selectedItemColor: .primary,
                 selectedItemBackgroundColor: Color.blue.opacity(0.15),
-                unselectedItemColor: .blue,
+                unselectedItemColor: .primary,
                 itemCornerRadius: 20
             ),
             carouselCellStyle: CarouselCellStyle(
                 buttonTitleColor: .white,
-                buttonBackgroundColor: .blue,
+                buttonBackgroundColor: .chatActionBlue,
                 cellCornerRadius: 16
             ),
             incomingAvatarStyle: AvatarStyle(
@@ -223,11 +215,7 @@ extension ChatTheme {
                     font: .system(size: 16, weight: .regular, design: .serif)
                 ),
                 textPadding: 14,
-                cellBackgroundColor: LinearGradient(
-                    colors: [Color.orange, Color(red: 1, green: 0.4, blue: 0.3)],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                ).asColor,
+                cellBackgroundColor: Color(red: 0.68, green: 0.26, blue: 0.04),
                 cellCornerRadius: 16,
                 cellBorderColor: .clear,
                 cellBorderWidth: 0,
@@ -237,15 +225,15 @@ extension ChatTheme {
             ),
             quickReplyCellStyle: QuickReplyCellStyle(
                 selectedItemColor: .white,
-                selectedItemBackgroundColor: .orange,
-                unselectedItemColor: .orange,
+                selectedItemBackgroundColor: Color(red: 0.68, green: 0.26, blue: 0.04),
+                unselectedItemColor: .primary,
                 itemCornerRadius: 16
             ),
             carouselCellStyle: CarouselCellStyle(
                 titleLabelStyle: CommonTextStyle(textColor: .primary, font: .title3, fontWeight: .bold),
-                subtitleLabelStyle: CommonTextStyle(textColor: .secondary, font: .subheadline),
+                subtitleLabelStyle: CommonTextStyle(textColor: .primary.opacity(0.75), font: .subheadline),
                 buttonTitleColor: .white,
-                buttonBackgroundColor: .orange,
+                buttonBackgroundColor: Color(red: 0.68, green: 0.26, blue: 0.04),
                 cellBackgroundColor: Color.secondarySystemBackground,
                 cellCornerRadius: 16
             ),
@@ -294,7 +282,7 @@ extension ChatTheme {
                     font: .system(size: 16, weight: .regular)
                 ),
                 textPadding: 12,
-                cellBackgroundColor: Color(red: 0.2, green: 0.6, blue: 0.4),
+                cellBackgroundColor: Color(red: 0.12, green: 0.43, blue: 0.27),
                 cellCornerRadius: 18,
                 cellBorderColor: .clear,
                 cellBorderWidth: 0,
@@ -304,15 +292,15 @@ extension ChatTheme {
             ),
             quickReplyCellStyle: QuickReplyCellStyle(
                 selectedItemColor: .white,
-                selectedItemBackgroundColor: Color(red: 0.2, green: 0.6, blue: 0.4),
-                unselectedItemColor: Color(red: 0.2, green: 0.6, blue: 0.4),
+                selectedItemBackgroundColor: Color(red: 0.12, green: 0.43, blue: 0.27),
+                unselectedItemColor: .primary,
                 itemCornerRadius: 18
             ),
             carouselCellStyle: CarouselCellStyle(
                 titleLabelStyle: CommonTextStyle(textColor: .primary, font: .headline, fontWeight: .bold),
-                subtitleLabelStyle: CommonTextStyle(textColor: .secondary, font: .subheadline),
+                subtitleLabelStyle: CommonTextStyle(textColor: .primary.opacity(0.75), font: .subheadline),
                 buttonTitleColor: .white,
-                buttonBackgroundColor: Color(red: 0.2, green: 0.6, blue: 0.4),
+                buttonBackgroundColor: Color(red: 0.12, green: 0.43, blue: 0.27),
                 cellBackgroundColor: Color.secondarySystemBackground,
                 cellCornerRadius: 14
             ),
@@ -361,7 +349,7 @@ extension ChatTheme {
                     font: .system(size: 17)
                 ),
                 textPadding: 12,
-                cellBackgroundColor: Color.systemBlueColor,
+                cellBackgroundColor: Color.chatActionBlue,
                 cellCornerRadius: 18,
                 cellBorderColor: .clear,
                 cellBorderWidth: 0,
@@ -370,9 +358,9 @@ extension ChatTheme {
                 cellRoundedCorners: [.topLeft, .bottomRight, .bottomLeft]
             ),
             quickReplyCellStyle: QuickReplyCellStyle(
-                selectedItemColor: .blue,
+                selectedItemColor: .primary,
                 selectedItemBackgroundColor: Color.blue.opacity(0.1),
-                unselectedItemColor: .blue,
+                unselectedItemColor: .primary,
                 itemCornerRadius: 16
             ),
             incomingAvatarStyle: AvatarStyle(
@@ -396,12 +384,4 @@ extension ChatTheme {
         .warmSunset,
         .nature
     ]
-}
-
-// MARK: - Helper to convert gradient to color
-private extension LinearGradient {
-    var asColor: Color {
-        // This is a workaround - in practice, the gradient start color
-        Color.orange
-    }
 }

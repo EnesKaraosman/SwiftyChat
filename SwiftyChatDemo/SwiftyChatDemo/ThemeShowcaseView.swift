@@ -75,6 +75,7 @@ struct ThemeShowcaseView: View {
         .task {
             loadSampleMessages()
         }
+        .preferredColorScheme(selectedTheme.id == ChatTheme.darkNeon.id ? .dark : nil)
     }
     
     // MARK: - Theme Header
@@ -114,7 +115,7 @@ struct ThemeShowcaseView: View {
         }
         .padding(.horizontal)
         .padding(.vertical, 12)
-        .background(Color.adaptiveSecondaryBackground)
+        .background(selectedTheme.inputBackgroundColor)
     }
     
     // MARK: - Themed Input View
@@ -141,7 +142,7 @@ struct ThemeShowcaseView: View {
             .padding(.vertical, 10)
             .padding(.bottom, 20)
         }
-        .background(Color.adaptiveSecondaryBackground)
+        .background(selectedTheme.inputBackgroundColor)
     }
     
     // MARK: - Actions

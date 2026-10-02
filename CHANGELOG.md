@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Improved light/dark contrast for default message bubbles, image captions, reply quotes, carousel actions and descriptions, and link preview metadata.
+- Kept selected quick replies and active video thumbnails readable without disabled-state fading; improved video control contrast.
+- Replaced manual keyboard offsets with native SwiftUI keyboard layout so messages stay below surrounding headers and above the keyboard.
+- Made the demo's Dark Neon presentation explicitly dark and strengthened the other demo palettes.
+
+### Documentation and tests
+
+- Replaced outdated previews with current light/dark simulator captures and component renders, with a repeatable capture script.
+- Added appearance contrast and rendering checks, expanded theme smoke coverage, and added video overlay smoke tests.
+
 ---
 
 ## [4.1.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.1.1)

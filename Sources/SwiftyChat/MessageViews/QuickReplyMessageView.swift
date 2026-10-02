@@ -63,11 +63,17 @@ struct QuickReplyMessageView: View {
                             )
                     )
             })
-            .buttonStyle(.plain)
+            .buttonStyle(QuickReplyButtonStyle())
             .padding(.vertical, 4)
             }
         }
         .disabled(isDisabled)
         .fixedSize(horizontal: false, vertical: true)
+    }
+}
+
+private struct QuickReplyButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.opacity(configuration.isPressed ? 0.8 : 1)
     }
 }

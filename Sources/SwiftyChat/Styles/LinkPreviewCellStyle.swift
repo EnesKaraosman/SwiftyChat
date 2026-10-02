@@ -31,12 +31,12 @@ public struct LinkPreviewCellStyle: CommonViewStyle {
             fontWeight: .semibold
         ),
         descriptionStyle: CommonTextStyle = CommonTextStyle(
-            textColor: .secondary,
+            textColor: .primary.opacity(0.75),
             font: .subheadline,
             fontWeight: .regular
         ),
         hostStyle: CommonTextStyle = CommonTextStyle(
-            textColor: .secondary,
+            textColor: .primary.opacity(0.75),
             font: .caption,
             fontWeight: .regular
         ),

@@ -1,0 +1,29 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Message Types"
+- tapOn: "Image + Text"
+- tapOn: "Add Image + Text"
+- assertVisible: "Today at.*"
+- tapOn: "Clear"
+- swipe:
+    start: 85%, 17%
+    end: 15%, 17%
+    duration: 600
+- swipe:
+    start: 85%, 17%
+    end: 15%, 17%
+    duration: 600
+- tapOn: "Video"
+- tapOn: "Add Video"
+- assertVisible: "Play video"
+- tapOn: "Play video"
+- extendedWaitUntil:
+    visible: "Close video"
+    timeout: 15000
+- tapOn: "Close video"
+- assertVisible: "Play video"
+- tapOn: "Clear"
+- tapOn: "Loading"
+- tapOn: "Add Loading"
+- assertVisible: "Today at.*"

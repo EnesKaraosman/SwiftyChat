@@ -434,7 +434,7 @@ private struct LocationRow: LocationItem {
                 font: .system(size: 16, weight: .regular, design: .rounded)
             ),
             textPadding: 14,
-            cellBackgroundColor: Color.blue,
+            cellBackgroundColor: Color.chatActionBlue,
             cellCornerRadius: 20,
             cellBorderColor: .clear,
             cellBorderWidth: 0,
@@ -444,17 +444,17 @@ private struct LocationRow: LocationItem {
         ),
         quickReplyCellStyle: QuickReplyCellStyle(
             selectedItemColor: .white,
-            selectedItemBackgroundColor: .blue,
-            unselectedItemColor: .blue,
+            selectedItemBackgroundColor: .chatActionBlue,
+            unselectedItemColor: .primary,
             unselectedItemBackgroundColor: Color.blue.opacity(0.1),
             itemBorderWidth: 1.5,
             itemCornerRadius: 18
         ),
         carouselCellStyle: CarouselCellStyle(
             titleLabelStyle: CommonTextStyle(textColor: .primary, font: .headline, fontWeight: .semibold),
-            subtitleLabelStyle: CommonTextStyle(textColor: .secondary, font: .subheadline),
+            subtitleLabelStyle: CommonTextStyle(textColor: .primary.opacity(0.75), font: .subheadline),
             buttonTitleColor: .white,
-            buttonBackgroundColor: .blue,
+            buttonBackgroundColor: .chatActionBlue,
             cellBackgroundColor: Color.adaptiveSecondaryBackground,
             cellCornerRadius: 16,
             cellBorderColor: Color.secondary.opacity(0.3),

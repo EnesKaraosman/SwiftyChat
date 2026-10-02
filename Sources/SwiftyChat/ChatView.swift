@@ -61,9 +61,6 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     @Binding private var scrollToBottom: Bool
 
     @State private var containerSize: CGSize = .zero
-    #if os(iOS)
-    @State private var keyboardHeight: CGFloat = 0
-    #endif
 
     public var body: some View {
         let messageMetadata = MessageMetadataBuilder.build(
@@ -141,29 +138,6 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                 }
             }
         }
-        #if os(iOS)
-        .offset(y: -keyboardHeight)
-        .ignoresSafeArea(.keyboard)
-        .onReceive(
-            NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)
-        ) { notification in
-            if let frame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
-                let bottomInset = UIApplication.shared.connectedScenes
-                    .compactMap({ $0 as? UIWindowScene }).first?
-                    .windows.first?.safeAreaInsets.bottom ?? 0
-                withAnimation(Self.keyboardAnimation(from: notification)) {
-                    keyboardHeight = frame.height - bottomInset
-                }
-            }
-        }
-        .onReceive(
-            NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)
-        ) { notification in
-            withAnimation(Self.keyboardAnimation(from: notification)) {
-                keyboardHeight = 0
-            }
-        }
-        #endif
         .onGeometryChange(for: CGSize.self) { proxy in
             proxy.size
         } action: { newSize in
@@ -175,19 +149,6 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
         .environment(videoManager)
         .dismissKeyboardOnTappingOutside()
     }
-
-    #if os(iOS)
-    private static func keyboardAnimation(from notification: Notification) -> Animation {
-        let duration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double ?? 0.25
-        let curveRaw = notification.userInfo?[UIResponder.keyboardAnimationCurveUserInfoKey] as? UInt ?? 7
-        if curveRaw == 7 {
-            // iOS keyboard uses a custom spring curve (raw value 7)
-            return .spring(duration: duration, bounce: 0, blendDuration: 0)
-        }
-        return .easeOut(duration: duration)
-    }
-    #endif
-
 }
 
 private extension ChatView {

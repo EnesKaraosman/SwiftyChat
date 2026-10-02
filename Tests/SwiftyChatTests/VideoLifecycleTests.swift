@@ -10,7 +10,10 @@ import SwiftyChatMock
 
         manager.play(first)
         manager.play(second)
-        try await Task.sleep(for: .milliseconds(150))
+        let deadline = ContinuousClock.now.advanced(by: .seconds(2))
+        while manager.message == nil && ContinuousClock.now < deadline {
+            try await Task.sleep(for: .milliseconds(10))
+        }
 
         #expect(manager.message?.id == second.id)
     }

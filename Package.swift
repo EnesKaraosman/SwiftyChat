@@ -29,8 +29,7 @@ let package = Package(
             dependencies: [
                 .byName(name: "Kingfisher")
                 
-            ],
-            exclude: ["Demo/Preview"]
+            ]
         ),
         .target(
             name: "SwiftyChatMock",

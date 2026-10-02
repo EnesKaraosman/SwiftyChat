@@ -28,7 +28,7 @@ public struct TextCellStyle: CommonViewStyle {
             fontWeight: .regular
         ),
         textPadding: CGFloat = 10,
-        cellBackgroundColor: Color = Color.purple.opacity(0.8),
+        cellBackgroundColor: Color = Color(red: 0.43, green: 0.22, blue: 0.68),
         cellCornerRadius: CGFloat = 8,
         cellBorderColor: Color = .clear,
         cellBorderWidth: CGFloat = 1,

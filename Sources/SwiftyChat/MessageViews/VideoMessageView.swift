@@ -30,16 +30,25 @@ struct VideoMessageView<Message: ChatMessage>: View {
     }
 
     var body: some View {
-        Button {
-            withAnimation {
-                videoManager.play(message)
+        if isThisVideoPlaying {
+            thumbnail
+        } else {
+            Button {
+                withAnimation {
+                    videoManager.play(message)
+                }
+            } label: {
+                thumbnail
             }
-        } label: {
-            thumbnailView.overlay(thumbnailOverlay)
+            .buttonStyle(.plain)
+            .accessibilityLabel("Play video")
         }
-        .buttonStyle(.plain)
-        .disabled(isThisVideoPlaying)
-        .accessibilityLabel("Play video")
+    }
+
+    private var thumbnail: some View {
+        thumbnailView.overlay {
+            thumbnailOverlay.clipShape(.rect(cornerRadius: cellStyle.cellCornerRadius))
+        }
     }
 
     private var thumbnailView: some View {
@@ -70,7 +79,8 @@ struct VideoMessageView<Message: ChatMessage>: View {
             .resizable()
             .scaledToFit()
             .frame(width: 40)
-            .foregroundStyle(.secondary)
+            .symbolRenderingMode(.palette)
+            .foregroundStyle(.white, .black.opacity(0.7))
     }
 
     private var pipMessageView: some View {
@@ -93,6 +103,8 @@ struct VideoMessageView<Message: ChatMessage>: View {
     private var thumbnailOverlay: some View {
         if isThisVideoPlaying {
             pipMessageView
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(.black.opacity(0.65))
         } else {
             playButton
         }

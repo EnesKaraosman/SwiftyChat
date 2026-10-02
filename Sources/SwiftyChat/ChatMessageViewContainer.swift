@@ -97,7 +97,7 @@ struct ChatMessageViewContainer<Message: ChatMessage>: View {
                         .font(.caption)
                         .lineLimit(2)
                 }
-                .foregroundStyle(.secondary)
+                .foregroundStyle(.primary.opacity(0.75))
                 .padding(8)
                 .frame(maxWidth: size.width * 0.75, alignment: .leading)
                 .background(.quaternary, in: RoundedRectangle(cornerRadius: 8))

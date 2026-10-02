@@ -74,7 +74,7 @@ struct MacOSChatVideoPlayer<Message: ChatMessage>: View {
                 .font(Font.body.weight(.semibold))
                 .foregroundStyle(.white)
                 .frame(width: 50, height: 40)
-                .background(Color.secondary.colorInvert())
+                .background(.black.opacity(0.75))
                 .clipShape(.rect(cornerRadius: 10))
         }
         .buttonStyle(.plain)

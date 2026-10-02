@@ -1,0 +1,28 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Message Types"
+- tapOn: "Image + Text"
+- tapOn: "Add Image + Text"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-caption-${APPEARANCE}
+- tapOn: "Clear"
+- swipe:
+    start: 85%, 17%
+    end: 15%, 17%
+    duration: 600
+- tapOn: "Contact"
+- tapOn: "Add Contact"
+- assertVisible: "📞 Call"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-contact-${APPEARANCE}
+- tapOn: "Clear"
+- swipe:
+    start: 85%, 17%
+    end: 15%, 17%
+    duration: 600
+- tapOn: "Video"
+- tapOn: "Add Video"
+- assertVisible: "Play video"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/gallery-video-${APPEARANCE}

@@ -1,0 +1,49 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Interactive Demo"
+- extendedWaitUntil:
+    visible: "Show me features!"
+    timeout: 15000
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/conversation-${APPEARANCE}
+- tapOn: "Show me features!"
+- extendedWaitUntil:
+    visible: "Try It"
+    timeout: 15000
+- waitForAnimationToEnd
+- scrollUntilVisible:
+    element:
+      text: "Try It"
+    direction: DOWN
+    visibilityPercentage: 100
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/carousel-${APPEARANCE}
+- launchApp
+- tapOn: "Theme Showcase"
+- assertVisible: "Modern"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/theme-modern-${APPEARANCE}
+- tapOn: "Choose theme"
+- tapOn: "Dark Neon"
+- assertVisible: "Theme: Dark Neon"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/theme-neon-${APPEARANCE}
+- tapOn: "Choose theme"
+- tapOn: "Warm Sunset"
+- assertVisible: "Theme: Warm Sunset"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/theme-sunset-${APPEARANCE}
+- tapOn: "Choose theme"
+- tapOn: "Nature"
+- assertVisible: "Theme: Nature"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/theme-nature-${APPEARANCE}
+- tapOn: "Choose theme"
+- tapOn: "Classic"
+- assertVisible: "Theme: Classic"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/theme-classic-${APPEARANCE}
+- tapOn: "Choose theme"
+- tapOn: "Modern"
+- assertVisible: "Theme: Modern"

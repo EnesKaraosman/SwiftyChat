@@ -24,7 +24,7 @@ public struct ImageTextCellStyle: CommonViewStyle {
 
     public init(
         textStyle: CommonTextStyle = CommonTextStyle(
-            textColor: .white,
+            textColor: .primary,
             font: .body,
             fontWeight: .regular
         ),

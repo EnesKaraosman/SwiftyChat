@@ -166,7 +166,7 @@ struct MessageTypesGalleryView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 16)
                     .padding(.vertical, 10)
-                    .background(Color.blue)
+                    .background(Color.chatActionBlue)
                     .cornerRadius(20)
                 }
                 
@@ -367,7 +367,7 @@ struct MessageTypeButton: View {
             }
             .frame(width: 70, height: 50)
             .foregroundColor(isSelected ? .white : .primary)
-            .background(isSelected ? Color.blue : Color.adaptiveTertiaryBackground)
+            .background(isSelected ? Color.chatActionBlue : Color.adaptiveTertiaryBackground)
             .cornerRadius(10)
         }
     }
@@ -428,23 +428,23 @@ private struct LinkPreviewRow: LinkPreviewItem {
         outgoingTextStyle: TextCellStyle(
             textStyle: CommonTextStyle(textColor: .white, font: .body),
             textPadding: 12,
-            cellBackgroundColor: .blue,
+            cellBackgroundColor: .chatActionBlue,
             cellCornerRadius: 16,
             cellShadowRadius: 2,
             cellShadowColor: Color.blue.opacity(0.3),
             cellRoundedCorners: [.topLeft, .bottomRight, .bottomLeft]
         ),
         quickReplyCellStyle: QuickReplyCellStyle(
-            selectedItemColor: .blue,
+            selectedItemColor: .primary,
             selectedItemBackgroundColor: Color.blue.opacity(0.15),
-            unselectedItemColor: .blue,
+            unselectedItemColor: .primary,
             itemCornerRadius: 16
         ),
         carouselCellStyle: CarouselCellStyle(
             titleLabelStyle: CommonTextStyle(textColor: .primary, font: .headline, fontWeight: .bold),
-            subtitleLabelStyle: CommonTextStyle(textColor: .secondary, font: .subheadline),
+            subtitleLabelStyle: CommonTextStyle(textColor: .primary.opacity(0.75), font: .subheadline),
             buttonTitleColor: .white,
-            buttonBackgroundColor: .blue,
+            buttonBackgroundColor: .chatActionBlue,
             cellBackgroundColor: Color.adaptiveSecondaryBackground,
             cellCornerRadius: 12
         ),

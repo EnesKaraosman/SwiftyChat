@@ -57,7 +57,7 @@ public struct ChatMessageCellStyle {
                 textColor: .white,
                 font: Font.custom("Futura", size: 17)
             ),
-            cellBackgroundColor: Color.pink.opacity(0.8)
+            cellBackgroundColor: Color(red: 0.72, green: 0.12, blue: 0.32)
         ),
         outgoingTextStyle: TextCellStyle = TextCellStyle(
             textStyle: CommonTextStyle(

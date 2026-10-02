@@ -1,0 +1,13 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Theme Showcase"
+- tapOn: "Message..."
+- inputText: "Readable with the keyboard open"
+- tapOn: "Arrow Up Circle"
+- assertVisible: "Readable with the keyboard open"
+- assertVisible: "Modern"
+- assertVisible:
+    id: "space"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/keyboard-${APPEARANCE}

@@ -45,6 +45,7 @@ extension Color {
 
 // MARK: - App Colors
 extension Color {
+    static let chatActionBlue = Color(red: 0.08, green: 0.30, blue: 0.70)
     static let chatBlue = Color(#colorLiteral(red: 0.1405690908, green: 0.1412397623, blue: 0.25395751, alpha: 1))
     static let chatGray = Color(#colorLiteral(red: 0.7861273885, green: 0.7897668481, blue: 0.7986581922, alpha: 1))
     static let chatGreen = Color(red: 0.2, green: 0.7, blue: 0.4)
@@ -100,16 +101,16 @@ let modernFont = Font.system(size: 16, weight: .medium)
                 font: roundedFont
             ),
             textPadding: 14,
-            cellBackgroundColor: .blue,
+            cellBackgroundColor: .chatActionBlue,
             cellCornerRadius: 20,
             cellShadowRadius: 4,
             cellShadowColor: Color.blue.opacity(0.3),
             cellRoundedCorners: [.topLeft, .bottomRight, .bottomLeft]
         ),
         quickReplyCellStyle: QuickReplyCellStyle(
-            selectedItemColor: .blue,
+            selectedItemColor: .primary,
             selectedItemBackgroundColor: Color.blue.opacity(0.15),
-            unselectedItemColor: .blue,
+            unselectedItemColor: .primary,
             itemCornerRadius: 20
         ),
         incomingAvatarStyle: AvatarStyle(

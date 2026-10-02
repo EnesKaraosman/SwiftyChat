@@ -32,7 +32,7 @@ public struct QuickReplyCellStyle {
 
     public init(
         characterLimitToChangeStackOrientation: Int = 30,
-        selectedItemColor: Color = .green,
+        selectedItemColor: Color = .primary,
         selectedItemFont: Font = .callout,
         selectedItemFontWeight: Font.Weight = .semibold,
         selectedItemBackgroundColor: Color = Color.green.opacity(0.3),

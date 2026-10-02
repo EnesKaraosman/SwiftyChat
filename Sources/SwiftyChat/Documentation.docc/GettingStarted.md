@@ -63,16 +63,19 @@ Inject a ``ChatMessageCellStyle`` via the environment to control colors, fonts, 
 ```swift
 .environment(\.chatStyle, ChatMessageCellStyle(
     incomingTextStyle: TextCellStyle(
+        textStyle: CommonTextStyle(textColor: .primary),
         cellBackgroundColor: .gray.opacity(0.2),
         cellCornerRadius: 16
     ),
     outgoingTextStyle: TextCellStyle(
         textStyle: CommonTextStyle(textColor: .white),
-        cellBackgroundColor: .blue,
+        cellBackgroundColor: Color(red: 0.08, green: 0.30, blue: 0.70),
         cellCornerRadius: 16
     )
 ))
 ```
+
+Use semantic text colors on adaptive surfaces. SwiftyChat inherits the host app's color scheme; preview custom styles in both light and dark appearances.
 
 ## Handle Interactive Messages
 

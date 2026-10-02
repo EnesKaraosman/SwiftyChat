@@ -35,12 +35,12 @@ public struct CarouselCellStyle: CommonViewStyle {
             fontWeight: .bold
         ),
         subtitleLabelStyle: CommonTextStyle = CommonTextStyle(
-            textColor: .secondary,
+            textColor: .primary.opacity(0.75),
             font: .body
         ),
         buttonFont: Font = .body,
         buttonTitleColor: Color = .white,
-        buttonBackgroundColor: Color = .blue,
+        buttonBackgroundColor: Color = Color(red: 0.08, green: 0.30, blue: 0.70),
         buttonTitleFontWeight: Font.Weight = .semibold,
         cellWidth: @escaping (CGSize) -> CGFloat = { size in
             if !size.isChatLandscape {
