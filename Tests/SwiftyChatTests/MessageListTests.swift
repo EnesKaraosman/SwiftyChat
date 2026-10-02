@@ -40,6 +40,38 @@ import SwiftyChatMock
         #expect(metadata[first.id] == .init(showDateHeader: false, showDisplayName: true))
     }
 
+    @Test func dateHeaderThresholdIsStrictAndGroupNamesAreOptional() {
+        let first = message(user: alice, at: start)
+        let second = message(user: bob, at: start.addingTimeInterval(3_600))
+        let third = message(user: bob, at: start.addingTimeInterval(7_201))
+
+        let metadata = MessageMetadataBuilder.build(
+            [first, second, third],
+            dateHeaderTimeInterval: 3_600,
+            shouldShowGroupChatHeaders: false
+        )
+
+        #expect(metadata[first.id] == .init(showDateHeader: true, showDisplayName: false))
+        #expect(metadata[second.id] == .init(showDateHeader: false, showDisplayName: false))
+        #expect(metadata[third.id] == .init(showDateHeader: true, showDisplayName: false))
+    }
+
+    @Test func buildsMetadataForLargeHistory() {
+        let messages = (0..<10_000).map {
+            IntMessage(id: $0, user: alice, date: start.addingTimeInterval(Double($0)))
+        }
+
+        let metadata = MessageMetadataBuilder.build(
+            messages,
+            dateHeaderTimeInterval: 3_600,
+            shouldShowGroupChatHeaders: true
+        )
+
+        #expect(metadata.count == messages.count)
+        #expect(metadata[0] == .init(showDateHeader: true, showDisplayName: true))
+        #expect(metadata[9_999] == .init(showDateHeader: false, showDisplayName: false))
+    }
+
     @Test func followsAppendOnlyWhenReaderIsAtBottom() {
         #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [1, 2], newIDs: [1, 2, 3], visibleBottomID: 2) == 3)
         #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [1, 2], newIDs: [1, 2, 3], visibleBottomID: 1) == nil)
@@ -47,6 +79,7 @@ import SwiftyChatMock
 
     @Test func initiallyLoadedMessagesOpenAtBottom() {
         #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [], newIDs: [1, 2], visibleBottomID: nil) == 2)
+        #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [1, 2], newIDs: [], visibleBottomID: 2) == nil)
     }
 
     @Test func preservesPositionWhenHistoryIsPrepended() {

@@ -193,7 +193,7 @@ Building a ChatGPT-style app, a customer support bot, or an in-app assistant? Sw
 
 ## Testing
 
-Run package tests with `swift test`. The iOS demo also has [Maestro smoke flows](Tests/Smoke) for sending, streaming, replies, and pagination. After building and installing `SwiftyChatDemo` on a booted iOS simulator, run `maestro test --udid <simulator-udid> Tests/Smoke`.
+Run package tests with `swift test`. The iOS demo also has [Maestro smoke flows](Tests/Smoke) for basic chat controls, pagination, the guided conversation, themes, message actions, and the advanced example. After building and installing `SwiftyChatDemo` on a booted iOS simulator, run `maestro test --udid <simulator-udid> Tests/Smoke`.
 
 ## Contributing
 

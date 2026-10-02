@@ -1,0 +1,26 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Message Types"
+- tapOn: "Add Text"
+- assertVisible: "Today at.*"
+- tapOn: "As Me"
+- tapOn: "Clear"
+- assertNotVisible: "Today at.*"
+- swipe:
+    start: 85%, 17%
+    end: 15%, 17%
+    duration: 600
+- tapOn: "Quick Reply"
+- tapOn: "Add Quick Reply"
+- assertVisible: "Clear"
+- tapOn: ".*(Yes|Pizza|Morning).*"
+- assertVisible: "You selected: .*"
+- tapOn: "Carousel"
+- tapOn: "Add Carousel"
+- tapOn: "Learn More"
+- assertVisible: "Carousel action: Learn More"
+- tapOn: "Contact"
+- tapOn: "Add Contact"
+- tapOn: "📞 Call"
+- assertVisible: "Calling .*"

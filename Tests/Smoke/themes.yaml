@@ -1,0 +1,13 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Theme Showcase"
+- assertVisible: "Modern"
+- tapOn: "Choose theme"
+- assertVisible: "Choose Theme"
+- tapOn: "Dark Neon"
+- assertVisible: "Dark Neon"
+- tapOn: "Message..."
+- inputText: "Theme smoke message"
+- tapOn: "Arrow Up Circle"
+- assertVisible: "Theme smoke message"

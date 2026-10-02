@@ -1,0 +1,22 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Interactive Demo"
+- extendedWaitUntil:
+    visible: "Free chat mode"
+    timeout: 15000
+- tapOn: "Free chat mode"
+- extendedWaitUntil:
+    visible: "You're now in free chat mode! Type anything and I'll respond. 💬"
+    timeout: 10000
+- tapOn: "Type a message..."
+- inputText: "hello"
+- tapOn: "Arrow Up Circle"
+- assertVisible: "hello"
+- extendedWaitUntil:
+    visible: ".*(Hello!|Hey there!|Hi! How can I help?).*"
+    timeout: 10000
+- tapOn: "Restart"
+- extendedWaitUntil:
+    visible: "Show me features!"
+    timeout: 15000

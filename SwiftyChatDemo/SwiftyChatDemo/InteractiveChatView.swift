@@ -16,6 +16,7 @@ struct InteractiveChatView: View {
     @State private var inputMessage = ""
     @State private var isTyping = false
     @State private var conversationState: ConversationState = .greeting
+    @State private var conversationRevision = 0
     
     enum ConversationState {
         case greeting
@@ -106,13 +107,13 @@ struct InteractiveChatView: View {
         conversationState = .greeting
         
         // Initial greeting
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        schedule(after: 0.5) {
             showTypingThenSend("Hey there! 👋 Welcome to the SwiftyChat demo!")
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            schedule(after: 2) {
                 showTypingThenSend("I'm SwiftyBot, and I'll show you what this library can do.")
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                schedule(after: 2) {
                     conversationState = .askingName
                     addBotMessage(.quickReply([
                         QuickReplyRow(title: "Show me features!", payload: "features"),
@@ -127,7 +128,7 @@ struct InteractiveChatView: View {
     private func handleQuickReply(_ reply: QuickReplyItem) {
         sendUserMessage(reply.title)
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        schedule(after: 0.5) {
             switch reply.payload {
             case "features":
                 showFeatureDemo()
@@ -164,7 +165,7 @@ struct InteractiveChatView: View {
     private func handleCarouselAction(_ button: CarouselItemButton) {
         sendUserMessage("Selected: \(button.title)")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        schedule(after: 0.5) {
             showTypingThenSend("Great! You're interested in \(button.title). Here's what you can do with it! ✨")
             showFoodQuestion()
         }
@@ -175,7 +176,7 @@ struct InteractiveChatView: View {
         
         showTypingThenSend("Let me show you the different message types! 🎨")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        schedule(after: 1.5) {
             addBotMessage(.carousel([
                 CarouselRow(
                     title: "Text Messages",
@@ -202,10 +203,10 @@ struct InteractiveChatView: View {
     private func showMoreInfo() {
         showTypingThenSend("SwiftyChat is a powerful, customizable chat UI framework for SwiftUI! 💪")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        schedule(after: 2) {
             showTypingThenSend("It supports:\n• Multiple message types\n• Custom theming\n• Avatar customization\n• Markdown in text\n• And much more!")
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            schedule(after: 2) {
                 addBotMessage(.quickReply([
                     QuickReplyRow(title: "Show features", payload: "features"),
                     QuickReplyRow(title: "Free chat", payload: "free")
@@ -217,13 +218,13 @@ struct InteractiveChatView: View {
     private func showFoodQuestion() {
         conversationState = .askingFavoriteFood
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        schedule(after: 1) {
             showTypingThenSend("Now, let me ask you something fun! 😋")
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            schedule(after: 1.5) {
                 showTypingThenSend("What's your favorite food?")
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                schedule(after: 1) {
                     addBotMessage(.quickReply([
                         QuickReplyRow(title: "🍕 Pizza", payload: "food_pizza"),
                         QuickReplyRow(title: "🍣 Sushi", payload: "food_sushi"),
@@ -238,10 +239,10 @@ struct InteractiveChatView: View {
     private func showLocationDemo() {
         conversationState = .askingLocation
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        schedule(after: 1.5) {
             showTypingThenSend("SwiftyChat can also show locations on a map! 🗺️")
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            schedule(after: 1) {
                 addBotMessage(.quickReply([
                     QuickReplyRow(title: "📍 Show me!", payload: "share_location"),
                     QuickReplyRow(title: "Skip", payload: "skip_location")
@@ -253,10 +254,10 @@ struct InteractiveChatView: View {
     private func showLocationOnMap() {
         showTypingThenSend("Here's a sample location - Istanbul, Turkey! 🇹🇷")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+        schedule(after: 1) {
             addBotMessage(.location(LocationRow(latitude: 41.0082, longitude: 28.9784)))
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            schedule(after: 1.5) {
                 showFarewell()
             }
         }
@@ -267,13 +268,13 @@ struct InteractiveChatView: View {
         
         showTypingThenSend("That's a wrap on the demo! 🎉")
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        schedule(after: 2) {
             showTypingThenSend("Feel free to explore the code and customize everything to your needs!")
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            schedule(after: 2) {
                 addBotMessage(.contact(ContactRow(displayName: "SwiftyChat on GitHub")))
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                schedule(after: 1.5) {
                     addBotMessage(.quickReply([
                         QuickReplyRow(title: "🔄 Restart", payload: "restart"),
                         QuickReplyRow(title: "💬 Free chat", payload: "continue")
@@ -289,9 +290,17 @@ struct InteractiveChatView: View {
     }
     
     private func restartConversation() {
+        conversationRevision += 1
+        isTyping = false
         messages.removeAll()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            startConversation()
+        startConversation()
+    }
+
+    private func schedule(after delay: Double, _ action: @escaping () -> Void) {
+        let revision = conversationRevision
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+            guard revision == conversationRevision else { return }
+            action()
         }
     }
     
@@ -329,7 +338,7 @@ struct InteractiveChatView: View {
     private func showTypingThenSend(_ text: String, delay: Double = 1.0) {
         isTyping = true
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+        schedule(after: delay) {
             isTyping = false
             addBotMessage(.text(text))
         }
@@ -338,7 +347,7 @@ struct InteractiveChatView: View {
     private func respondToFreeChat(_ message: String) {
         let lowercased = message.lowercased()
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        schedule(after: 0.5) {
             isTyping = true
             
             let response: String
@@ -368,7 +377,7 @@ struct InteractiveChatView: View {
                 response = responses.randomElement()!
             }
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            schedule(after: 1) {
                 isTyping = false
                 addBotMessage(.text(response))
             }

@@ -46,4 +46,42 @@ import Testing
 
         #expect(fetchCount == 1)
     }
+
+    @Test @MainActor func failedFetchCanBeRetried() async throws {
+        let url = URL(string: "https://example.com/retry")!
+        var fetchCount = 0
+        let loader = LinkPreviewMetadataLoader { url in
+            fetchCount += 1
+            if fetchCount == 1 { throw TestFetchError.failed }
+            return LinkPreviewMetadata(url: url, title: "Recovered")
+        }
+
+        await #expect(throws: TestFetchError.failed) {
+            try await loader.preview(for: url)
+        }
+        let preview = try await loader.preview(for: url)
+
+        #expect(preview.title == "Recovered")
+        #expect(fetchCount == 2)
+    }
+
+    @Test @MainActor func cachesEachURLSeparately() async throws {
+        let firstURL = URL(string: "https://example.com/first")!
+        let secondURL = URL(string: "https://example.com/second")!
+        var fetchCount = 0
+        let loader = LinkPreviewMetadataLoader { url in
+            fetchCount += 1
+            return LinkPreviewMetadata(url: url)
+        }
+
+        _ = try await loader.preview(for: firstURL)
+        _ = try await loader.preview(for: secondURL)
+        _ = try await loader.preview(for: firstURL)
+
+        #expect(fetchCount == 2)
+    }
+}
+
+private enum TestFetchError: Error, Equatable {
+    case failed
 }

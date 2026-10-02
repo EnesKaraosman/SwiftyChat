@@ -1,0 +1,9 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Advanced Example"
+- assertVisible: "Type something"
+- tapOn: "Type something"
+- inputText: "Advanced smoke message"
+- tapOn: "Send message"
+- assertVisible: "Advanced smoke message"

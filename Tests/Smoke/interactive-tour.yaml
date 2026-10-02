@@ -1,0 +1,26 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Interactive Demo"
+- extendedWaitUntil:
+    visible: "Show me features!"
+    timeout: 15000
+- tapOn: "Show me features!"
+- extendedWaitUntil:
+    visible: "Try It"
+    timeout: 10000
+- tapOn: "Try It"
+- extendedWaitUntil:
+    visible: "🍕 Pizza"
+    timeout: 15000
+- tapOn: "🍕 Pizza"
+- extendedWaitUntil:
+    visible: "📍 Show me!"
+    timeout: 15000
+- tapOn: "📍 Show me!"
+- extendedWaitUntil:
+    visible: "That's a wrap on the demo! 🎉"
+    timeout: 15000
+- extendedWaitUntil:
+    visible: "SwiftyChat on GitHub"
+    timeout: 15000

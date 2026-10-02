@@ -51,16 +51,6 @@ struct ThemeShowcaseView: View {
                         )
                     )
                 }
-                .contactItemButtons { contact, _ in
-                    [
-                        ContactCellButton(title: "Call", action: {
-                            print("Calling \(contact.displayName)")
-                        }),
-                        ContactCellButton(title: "Message", action: {
-                            print("Messaging \(contact.displayName)")
-                        })
-                    ]
-                }
                 .environment(\.chatStyle, selectedTheme.style)
             }
         }
@@ -76,6 +66,7 @@ struct ThemeShowcaseView: View {
                     Image(systemName: "paintpalette.fill")
                         .foregroundColor(selectedTheme.accentColor)
                 }
+                .accessibilityLabel("Choose theme")
             }
         }
         .sheet(isPresented: $showThemePicker) {
@@ -132,15 +123,6 @@ struct ThemeShowcaseView: View {
             Divider()
             
             HStack(spacing: 12) {
-                // Attachment button
-                Button {
-                    // Add attachment
-                } label: {
-                    Image(systemName: "plus.circle.fill")
-                        .font(.title2)
-                        .foregroundColor(selectedTheme.accentColor)
-                }
-                
                 // Text field
                 TextField("Message...", text: $inputMessage)
                     .textFieldStyle(.roundedBorder)

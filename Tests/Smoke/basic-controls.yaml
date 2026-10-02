@@ -1,0 +1,16 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- longPressOn: "Try replying to a message with its context menu."
+- tapOn: "Reply"
+- assertVisible: "Replying to Chatbot.*"
+- tapOn: "Cancel reply"
+- assertNotVisible: "Replying to Chatbot.*"
+- tapOn: "Stream reply"
+- assertVisible: "Stop stream"
+- tapOn: "Stop stream"
+- extendedWaitUntil:
+    visible: "Stream reply"
+    timeout: 10000
