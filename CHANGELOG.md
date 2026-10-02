@@ -9,6 +9,10 @@
 - `onRetryMessage(_:)` for retry controls on failed outgoing messages. The app retains ownership of transport and delivery status.
 - Demo controls and smoke flows for receiving unread messages, returning to the latest message, navigating replies, and retrying failed sends.
 
+### Fixed
+
+- Preserve the reading position when messages arrive beneath a long message; resume automatic following only after returning to the latest message.
+
 ---
 
 ## [4.2.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.2.0)

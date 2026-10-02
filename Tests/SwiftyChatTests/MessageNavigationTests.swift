@@ -58,24 +58,28 @@ import SwiftyChatMock
         #expect(bottom.reachedMessageID(in: .zero, lastMessageID: 3) == nil)
     }
 
-    @Test func followsAppendsWhileAnEarlierFollowIsPending() {
-        let target = MessageScrollPolicy.targetAfterUpdate(
-            oldIDs: [1, 2], newIDs: [1, 2, 3],
-            visibleBottomID: nil, pendingAutoScrollID: 2
-        )
-
-        #expect(target == 3)
+    @Test func passingBottomDuringAGestureDoesNotResumeFollowing() {
+        var state = MessageScrollState()
+        state.interactionChanged(true, isAtBottom: true)
+        state.reachedBottom()
+        #expect(!state.followsLatest)
+        state.interactionChanged(false, isAtBottom: false)
+        #expect(!state.followsLatest)
     }
 
-    @Test func staleOrCancelledFollowRequestsDoNotPullTheReaderDown() {
-        for pendingID: Int? in [1, nil] {
-            let target = MessageScrollPolicy.targetAfterUpdate(
-                oldIDs: [1, 2], newIDs: [1, 2, 3],
-                visibleBottomID: nil, pendingAutoScrollID: pendingID
-            )
+    @Test func finishingAGestureAtBottomResumesFollowing() {
+        var state = MessageScrollState()
+        state.interactionChanged(true, isAtBottom: false)
+        state.interactionChanged(false, isAtBottom: true)
+        #expect(state.followsLatest)
+    }
 
-            #expect(target == nil)
-        }
+    @Test func manualReturnToLatestSurvivesAnimationCompletionBeforeArrival() {
+        var state = MessageScrollState()
+        state.followsLatest = false
+        state.followsLatest = true
+        state.interactionChanged(false, isAtBottom: false)
+        #expect(state.followsLatest)
     }
 
     private func message(_ id: Int, isSender: Bool = false) -> IntMessage {

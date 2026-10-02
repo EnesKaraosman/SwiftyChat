@@ -5,7 +5,7 @@
 - `AppearanceTests` resolves the default text and background colors in light and dark mode, composites translucent colors over white/black canvases, and checks a minimum 4.5:1 contrast ratio. It covers incoming/outgoing text, captions, contacts, carousel titles/subtitles/actions, selected/unselected quick replies, and link titles/descriptions/hosts.
 - `ComponentRenderingTests` renders local SwiftUI fixtures in both appearances, checks that rendering succeeds, and optionally exports PNGs. It covers text, links, emoji, images, captions, replies, contacts without native actions, quick replies, link previews, loading, custom content, and video thumbnail states. It also measures the contrast of actual rendered reply-quote pixels. The other samples are render smoke tests, not pixel comparison tests.
 - Maestro runs the demo's interactive flows. The theme flow cycles through all five presets, sends a message, and checks that it survives theme changes. The media flow opens and closes the video overlay.
-- Navigation flows cover unread counts, returning to the latest message, quote targets, failed-send retries, partially visible long messages, and closely spaced incoming messages. Read callbacks are checked through the demo's unread state.
+- Navigation flows cover unread counts, returning to the latest message, quote targets, failed-send retries, empty conversations, partially visible long messages, and closely spaced incoming messages. Read callbacks are checked through the demo's unread state.
 - The screenshot flows capture native controls in the running iOS demo, including carousels, contact actions, maps, input fields, and the software keyboard. These need visual inspection; an accessibility assertion alone does not prove contrast or layout.
 
 Custom host backgrounds, fonts, and colors need their own checks. The automated checks do not measure real-device frame rate or verify Picture in Picture behavior on hardware.
@@ -31,11 +31,12 @@ Liquid Glass adoption is partial: `BasicInputView` and the themed composers use 
 
 ## Conversation-navigation development checks on 2026-10-02
 
-- 31 package tests passed on Xcode 27.
-- All 14 demo smoke flows passed in dark mode on iPhone 18 Pro / iOS 27. The new navigation and rapid-arrival scenarios also received focused light-mode checks.
+- 29 package tests passed on Xcode 27. Initial loading, appends, and pagination are exercised by native smoke flows after replacing the old scroll-decision helper with SwiftUI scroll anchors.
+- All 15 demo smoke flows passed in dark mode on iPhone 18 Pro / iOS 27, including a focused rerun after stabilizing the interactive tour's tap timing. The new navigation and rapid-arrival scenarios also received focused light-mode checks.
 - The demo built with Xcode 26.6 for iOS 26.5 and with Xcode 27 for macOS. DocC built successfully.
+- Eight focused short-conversation, navigation, pagination, streaming, and retry flows passed on iOS 26.5 in light mode, including the final empty-conversation regression. The long-message flow checks that incoming messages preserve the reader's position until they choose to return to the latest message.
 - Native unread and retry screenshots were captured in both appearances. The button floats above the composer without changing the scroll viewport when it appears or disappears.
-- Native macOS trackpad/wheel interruption during a pending scroll was not validated in this pass; macOS verification here is compilation and package tests.
+- Native macOS trackpad/wheel interruption during automatic scrolling was not validated in this pass; macOS verification here is compilation and package tests. iOS 17 and macOS 14 runtime checks were unavailable locally; minimum-toolchain compilation is covered by CI.
 
 ## Run the checks
 

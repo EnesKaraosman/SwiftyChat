@@ -114,8 +114,9 @@ struct BasicExampleView: View {
             .background(Color.primary.colorInvert())
         }, reachedTop: loadOlder)
         .unreadMessages(unreadMessageIDs)
-        .onReachedBottom { _ in
-            unreadMessageIDs.subtract(messages.map(\.id))
+        .onReachedBottom { newestID in
+            guard let index = messages.firstIndex(where: { $0.id == newestID }) else { return }
+            unreadMessageIDs.subtract(messages[...index].map(\.id))
         }
         .onRetryMessage { failedMessage in
             guard let index = messages.firstIndex(where: { $0.id == failedMessage.id }),
@@ -162,6 +163,16 @@ struct BasicExampleView: View {
                 }
             }
             Menu("Demo actions", systemImage: "ellipsis.circle") {
+                Button("Start new conversation", systemImage: "square.and.pencil") {
+                    streamTask?.cancel()
+                    isStreaming = false
+                    messages = []
+                    unreadMessageIDs = []
+                    replyPreview = nil
+                    replyToMessageID = nil
+                    incomingMessageCount = 0
+                    olderPagesRemaining = 0
+                }
                 Button("Receive message", systemImage: "bubble.left") {
                     receiveMessage("Incoming message \(incomingMessageCount + 1)")
                 }

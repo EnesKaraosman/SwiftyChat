@@ -72,20 +72,6 @@ import SwiftyChatMock
         #expect(metadata[9_999] == .init(showDateHeader: false, showDisplayName: false))
     }
 
-    @Test func followsAppendOnlyWhenReaderIsAtBottom() {
-        #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [1, 2], newIDs: [1, 2, 3], visibleBottomID: 2) == 3)
-        #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [1, 2], newIDs: [1, 2, 3], visibleBottomID: 1) == nil)
-    }
-
-    @Test func initiallyLoadedMessagesOpenAtBottom() {
-        #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [], newIDs: [1, 2], visibleBottomID: nil) == 2)
-        #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [1, 2], newIDs: [], visibleBottomID: 2) == nil)
-    }
-
-    @Test func preservesPositionWhenHistoryIsPrepended() {
-        #expect(MessageScrollPolicy.targetAfterUpdate(oldIDs: [3, 4], newIDs: [1, 2, 3, 4], visibleBottomID: 4) == nil)
-    }
-
     @Test func reportsTopOnceUntilOldestMessageChanges() {
         var tracker = TopReachTracker<Int>()
 

@@ -58,8 +58,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     private var reachedTop: (() -> Void)?
     
     @State private var videoManager = VideoManager<Message>()
-    @State private var visibleBottomMessageID: Message.ID?
-    @State private var pendingAutoScrollID: Message.ID?
+    @State private var scrollState = MessageScrollState()
     @State private var hasReachedBottom = false
     @State private var topReachTracker = TopReachTracker<Message.ID>()
     @State private var bottomPosition: MessageBottomPosition<Message.ID>?
@@ -103,7 +102,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                                 )
                             },
                             onFirstMessageAppear: {
-                                if self.reachedTop != nil && self.topReachTracker.shouldReport(message.id, isReady: hasReachedBottom) {
+                                if self.reachedTop != nil && self.topReachTracker.shouldReport(message.id, isReady: hasReachedBottom && !scrollState.followsLatest) {
                                     self.reachedTop?()
                                 }
                             },
@@ -116,17 +115,8 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
                                     .onGeometryChange(for: CGFloat.self) { [scrollCoordinateSpace] geometry in
                                         geometry.frame(in: .named(scrollCoordinateSpace)).maxY
                                     } action: {
-                                        let position = MessageBottomPosition(messageID: message.id, maxY: $0)
-                                        bottomPosition = position
-                                        // Lazy rows can finish sizing after the bound scroll request.
-                                        if pendingAutoScrollID == message.id, !viewportBounds.isEmpty,
-                                           position.reachedMessageID(in: viewportBounds, lastMessageID: message.id) == nil {
-                                            var transaction = Transaction(animation: nil)
-                                            transaction.disablesAnimations = true
-                                            withTransaction(transaction) {
-                                                proxy.scrollTo(message.id, anchor: .bottom)
-                                            }
-                                        }
+                                        guard message.id == messages.last?.id else { return }
+                                        bottomPosition = MessageBottomPosition(messageID: message.id, maxY: $0)
                                     }
                                     .onDisappear {
                                         if messages.last?.id == message.id, bottomPosition?.messageID == message.id {
@@ -146,9 +136,10 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
             }
             .scrollIndicators(.hidden)
             .scrollDismissesKeyboard(.immediately)
-            .defaultScrollAnchor(.bottom)
-            .scrollPosition(id: $visibleBottomMessageID, anchor: .bottom)
-            .simultaneousGesture(DragGesture().onChanged { _ in pendingAutoScrollID = nil })
+            .chatScrollTarget(scrollState.followsLatest ? messages.last?.id : nil)
+            .chatScrollBehavior(followsLatest: scrollState.followsLatest) { active in
+                scrollState.interactionChanged(active, isAtBottom: reachedBottomID != nil)
+            }
             .overlay(alignment: .bottomTrailing) {
                 if showsScrollToBottomButton, hasReachedBottom, reachedBottomID == nil, !messages.isEmpty {
                     Button { scrollToLatest(using: proxy) } label: {
@@ -174,37 +165,18 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
             .safeAreaInset(edge: .bottom, spacing: 0) {
                 inputView()
             }
-            .onChange(of: messages.map(\.id)) { oldIDs, newIDs in
-                if newIDs.isEmpty {
+            .onChange(of: messages.isEmpty) { _, isEmpty in
+                if isEmpty {
                     hasReachedBottom = false
-                    pendingAutoScrollID = nil
-                }
-                if let target = MessageScrollPolicy.targetAfterUpdate(
-                    oldIDs: oldIDs,
-                    newIDs: newIDs,
-                    visibleBottomID: bottomPosition?.reachedMessageID(in: viewportBounds, lastMessageID: oldIDs.last),
-                    pendingAutoScrollID: pendingAutoScrollID
-                ) {
-                    pendingAutoScrollID = target
-                    if oldIDs.isEmpty {
-                        visibleBottomMessageID = target
-                    } else {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            visibleBottomMessageID = target
-                        }
-                    }
+                    bottomPosition = nil
+                    scrollState = MessageScrollState()
                 }
             }
             .onChange(of: reachedBottomID) { _, reachedID in
                 if let reachedID {
-                    if pendingAutoScrollID == reachedID { pendingAutoScrollID = nil }
+                    scrollState.reachedBottom()
                     hasReachedBottom = true
                     onReachedBottom?(reachedID)
-                }
-            }
-            .onChange(of: visibleBottomMessageID) { _, visibleID in
-                if let pendingAutoScrollID, visibleID != pendingAutoScrollID {
-                    self.pendingAutoScrollID = nil
                 }
             }
             .onChange(of: scrollToBottom) { oldValue, newValue in
@@ -215,8 +187,7 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
             }
             .onChange(of: scrollTo) { oldValue, newValue in
                 if let newValue {
-                    pendingAutoScrollID = nil
-                    visibleBottomMessageID = newValue
+                    scrollState.followsLatest = false
                     proxy.scrollTo(newValue, anchor: .top)
                     scrollTo = nil
                 }
@@ -238,18 +209,16 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
 private extension ChatView {
     func scrollToLatest(using proxy: ScrollViewProxy) {
         guard let last = messages.last else { return }
-        pendingAutoScrollID = nil
+        scrollState.followsLatest = true
         withAnimation(.easeOut(duration: 0.2)) {
-            visibleBottomMessageID = last.id
             proxy.scrollTo(last.id, anchor: .bottom)
         }
     }
 
     func navigateToReply(_ message: Message, using proxy: ScrollViewProxy) {
-        pendingAutoScrollID = nil
+        scrollState.followsLatest = false
         if let target = message.replyToMessageID, messages.contains(where: { $0.id == target }) {
             withAnimation(.easeOut(duration: 0.2)) {
-                visibleBottomMessageID = target
                 proxy.scrollTo(target, anchor: .center)
             }
         }
@@ -285,6 +254,39 @@ private extension ChatView {
         )
         .modifier(MessageHorizontalAlignmentModifier(messageKind: message.messageKind, isSender: message.isSender))
         .modifier(MessageViewEdgeInsetsModifier(isSender: message.isSender))
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func chatScrollTarget<ID: Hashable>(_ target: ID?) -> some View {
+        // OS 27 reanchors growing rows with an ID binding; older versions need it for initial loading.
+        if #available(iOS 27.0, macOS 27.0, *) {
+            self
+        } else {
+            scrollPosition(id: .constant(target), anchor: .bottom)
+        }
+    }
+
+    @ViewBuilder
+    func chatScrollBehavior(followsLatest: Bool, onInteraction action: @escaping (Bool) -> Void) -> some View {
+        if #available(iOS 18.0, macOS 15.0, *) {
+            defaultScrollAnchor(.bottom, for: .initialOffset)
+                .defaultScrollAnchor(.bottom, for: .alignment)
+                .defaultScrollAnchor(followsLatest ? .bottom : nil, for: .sizeChanges)
+                .onScrollPhaseChange { _, phase in
+                    if phase == .interacting || phase == .decelerating {
+                        action(true)
+                    } else if phase == .idle {
+                        action(false)
+                    }
+                }
+        } else {
+            defaultScrollAnchor(.bottom)
+                .simultaneousGesture(DragGesture()
+                    .onChanged { _ in action(true) }
+                    .onEnded { _ in action(false) })
+        }
     }
 }
 

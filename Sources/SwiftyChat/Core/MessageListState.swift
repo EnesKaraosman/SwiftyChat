@@ -29,19 +29,21 @@ enum MessageMetadataBuilder {
     }
 }
 
-enum MessageScrollPolicy {
-    static func targetAfterUpdate<ID: Equatable>(
-        oldIDs: [ID],
-        newIDs: [ID],
-        visibleBottomID: ID?,
-        pendingAutoScrollID: ID? = nil
-    ) -> ID? {
-        if oldIDs.isEmpty { return newIDs.last }
-        guard !oldIDs.isEmpty,
-              newIDs.count > oldIDs.count,
-              newIDs.starts(with: oldIDs),
-              visibleBottomID == oldIDs.last || pendingAutoScrollID == oldIDs.last else { return nil }
-        return newIDs.last
+struct MessageScrollState {
+    var followsLatest = true
+    private var isInteracting = false
+
+    mutating func interactionChanged(_ active: Bool, isAtBottom: Bool) {
+        isInteracting = active
+        if active {
+            followsLatest = false
+        } else if isAtBottom {
+            followsLatest = true
+        }
+    }
+
+    mutating func reachedBottom() {
+        if !isInteracting { followsLatest = true }
     }
 }
 
