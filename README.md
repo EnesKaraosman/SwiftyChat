@@ -85,7 +85,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/EnesKaraosman/SwiftyChat.git", from: "4.1.1")
+    .package(url: "https://github.com/EnesKaraosman/SwiftyChat.git", from: "4.2.0")
 ]
 ```
 

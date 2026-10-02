@@ -2,8 +2,32 @@
 
 ## [Unreleased]
 
+---
+
+## [4.2.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.2.0)
+
+Released on 2026-10-02.
+
+### Added
+
+- Optional reply quotes and delivery states through `ChatMessage.replyPreview`, `ChatMessage.deliveryStatus`, `ChatMessageQuote`, and `MessageDeliveryStatus`. Existing message conformances inherit `nil` defaults.
+- An opt-in `LinkPreviewMetadataLoader` with an in-memory cache and shared requests for the same URL. Its LinkPresentation implementation supplies a title and host; apps can provide richer metadata through `LinkPreviewItem`.
+- Demo examples for history pagination, cancellable streaming replies, reply selection, delivery status, and an iOS photo/video picker.
+
+### Improved
+
+- Generalized `ChatView.scrollTo` to the message's ID type, including non-UUID IDs.
+- Preserved the reader's position when older history is inserted, opened initial conversations at the newest message, and refreshed date/group metadata after reorders and edits.
+- Converted message actions to accessible buttons and added explicit playback-control labels.
+- Derived component layout from the available viewport instead of the main screen and removed the SwiftUIEKtensions dependency.
+- Updated Kingfisher to the 8.12 series while retaining the Swift 6.0 package requirement; updated the demo and CI builds.
+
 ### Fixed
 
+- Cancelled superseded or dismissed video playback work and cleaned up player observation tasks.
+- Gave identical carousel actions distinct IDs, with an optional caller-supplied ID for stable identity.
+- Allowed empty mock-message batches and prevented whitespace-only messages from being sent.
+- Fixed demo reply, streaming cancellation, carousel, quick-reply, and media controls.
 - Improved light/dark contrast for default message bubbles, image captions, reply quotes, carousel actions and descriptions, and link preview metadata.
 - Kept selected quick replies and active video thumbnails readable without disabled-state fading; improved video control contrast.
 - Replaced manual keyboard offsets with native SwiftUI keyboard layout so messages stay below surrounding headers and above the keyboard.
@@ -15,6 +39,14 @@
 - Replaced outdated previews with current light/dark simulator captures and component renders, with a repeatable capture script.
 - Added a message-type gallery covering all 11 kinds and replaced repetitive README previews with distinct examples.
 - Added appearance contrast and rendering checks, expanded theme smoke coverage, and added video overlay smoke tests.
+- Added 22 package tests and 10 repeatable demo smoke flows covering message metadata, scrolling, video lifecycle, link metadata caching, message actions, and system appearance.
+
+### Compatibility
+
+- Minimum requirements remain Swift 6.0, iOS 17, and macOS 14.
+- `scrollTo` now accepts `Binding<Message.ID?>`; UUID-based message models keep the same binding type.
+- The examples build with Xcode 27. Native navigation and controls adopt the system appearance; custom composers and video controls retain their existing styling.
+- See [appearance verification](Documentation/Appearance.md) for the tested OS/toolchain matrix and remaining hardware-validation limits.
 
 ---
 
