@@ -1,0 +1,13 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/composer-${APPEARANCE}
+- tapOn: "Type something"
+- inputText: "Let's make something great together."
+- assertVisible:
+    id: "space"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/composer-keyboard-${APPEARANCE}

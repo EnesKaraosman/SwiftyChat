@@ -1,0 +1,25 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- scrollUntilVisible:
+    element: "Earlier page 3, message 1"
+    direction: UP
+    timeout: 20000
+- tapOn: "Demo actions"
+- tapOn: "Receive message"
+- assertVisible: "1 unread message, scroll to latest"
+- assertNotVisible: "Incoming message 1"
+- tapOn: "Demo actions"
+- tapOn: "Receive message"
+- assertVisible: "2 unread messages, scroll to latest"
+- tapOn: "2 unread messages, scroll to latest"
+- assertVisible: "Incoming message 2"
+- assertNotVisible: "2 unread messages, scroll to latest"
+- tapOn: "Demo actions"
+- tapOn: "Simulate failed send"
+- assertVisible: "This message failed to send."
+- tapOn: "Retry message"
+- assertNotVisible: "Retry message"
+- assertVisible: "Message sent"

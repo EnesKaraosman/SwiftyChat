@@ -13,6 +13,10 @@ appId: com.eneskaraosman.SwiftyChatDemo
 - extendedWaitUntil:
     visible: "🍕 Pizza"
     timeout: 15000
+- extendedWaitUntil:
+    notVisible: "SwiftyBot is typing..."
+    timeout: 5000
+- waitForAnimationToEnd
 - tapOn: "🍕 Pizza"
 - extendedWaitUntil:
     visible: "📍 Show me!"

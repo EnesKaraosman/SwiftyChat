@@ -25,11 +25,14 @@ public protocol ChatMessage: Identifiable {
 
     var replyPreview: ChatMessageQuote? { get }
 
+    var replyToMessageID: ID? { get }
+
     var deliveryStatus: MessageDeliveryStatus? { get }
 }
 
 public extension ChatMessage {
     var replyPreview: ChatMessageQuote? { nil }
+    var replyToMessageID: ID? { nil }
     var deliveryStatus: MessageDeliveryStatus? { nil }
 }
 

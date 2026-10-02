@@ -13,6 +13,12 @@ SwiftyChat targets iOS 17+ and macOS 14+ with 11 message kinds, five theme prese
 - The text-chat demo exercises older-message loading, cancellable streaming replies, reply quotes, and delivery status. On iOS it also accepts photos and videos with PhotosPicker.
 - Existing `ChatMessage` conformers can omit reply and delivery metadata. `LinkPreviewMetadataLoader` caches successful title/host fetches and shares concurrent requests for the same URL.
 
+## Next release
+
+- App-owned unread indicators and a scroll-to-latest button.
+- Reply-target navigation, with a callback for loading missing originals.
+- Retry callbacks for failed outgoing messages, demonstrated without adding a transport dependency.
+
 ## Candidates for the next product pass
 
 1. **Link preview richness:** Decide whether the UI should accept local preview images as well as remote image URLs. LinkPresentation does not expose a description or remote image URL through `LPLinkMetadata`.

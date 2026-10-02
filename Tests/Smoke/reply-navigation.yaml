@@ -1,0 +1,22 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- scrollUntilVisible:
+    element: "Earlier page 3, message 1"
+    direction: UP
+    timeout: 20000
+- longPressOn: "Earlier page 3, message 1"
+- tapOn: "Reply"
+- tapOn: "Type something"
+- inputText: "Reply navigation smoke"
+- tapOn: "Send message"
+- assertVisible: "Reply navigation smoke"
+- assertNotVisible: "Earlier page 3, message 2"
+- tapOn: "Go to original message: Chatbot, Earlier page 3, message 1"
+- assertVisible: "Earlier page 3, message 1"
+- assertVisible: "Earlier page 3, message 2"
+- assertNotVisible: "Reply navigation smoke"
+- tapOn: "Scroll to latest"
+- assertVisible: "Reply navigation smoke"

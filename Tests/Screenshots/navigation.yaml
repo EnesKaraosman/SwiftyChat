@@ -1,0 +1,26 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- scrollUntilVisible:
+    element: "Earlier page 3, message 1"
+    direction: UP
+    timeout: 20000
+- tapOn: "Demo actions"
+- tapOn: "Receive long message"
+- assertVisible: "1 unread message, scroll to latest"
+- scrollUntilVisible:
+    element: "Unread messages"
+    direction: DOWN
+    timeout: 20000
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/navigation-unread-${APPEARANCE}
+- launchApp
+- tapOn: "Text Chat Example"
+- assertVisible: "Got it!"
+- tapOn: "Demo actions"
+- tapOn: "Simulate failed send"
+- assertVisible: "Retry message"
+- waitForAnimationToEnd
+- takeScreenshot: ${OUTPUT_DIR}/navigation-retry-${APPEARANCE}

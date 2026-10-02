@@ -63,7 +63,7 @@ struct ChatListView: View {
                             icon: "text.bubble",
                             iconColor: .green,
                             title: "Text Chat Example",
-                            subtitle: "Pagination, replies, streaming, and iOS media"
+                            subtitle: "Unread messages, replies, retries, and streaming"
                         )
                     }
 

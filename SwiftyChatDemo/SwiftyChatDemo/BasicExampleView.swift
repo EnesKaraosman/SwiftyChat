@@ -22,8 +22,13 @@ struct BasicExampleView: View {
     @State private var streamTask: Task<Void, Never>?
     @State private var isStreaming = false
     @State private var replyPreview: ChatMessageQuote?
+    @State private var replyToMessageID: UUID?
+    @State private var unreadMessageIDs: Set<UUID> = []
+    @State private var scrollToBottom = false
+    @State private var incomingMessageCount = 0
     #if os(iOS)
     @State private var selectedMedia: PhotosPickerItem?
+    @State private var isMediaPickerPresented = false
     @State private var mediaError: String?
     #endif
 
@@ -33,12 +38,14 @@ struct BasicExampleView: View {
                 if messages.isEmpty {
                     messages = MessageMocker.generate(kind: .text, count: 20)
                     let welcome = "Try replying to a message with its context menu."
-                    messages.append(.init(user: MessageMocker.chatbot, messageKind: .text(welcome)))
+                    let original = MessageMocker.ChatMessageItem(user: MessageMocker.chatbot, messageKind: .text(welcome))
+                    messages.append(original)
                     messages.append(.init(
                         user: MessageMocker.sender,
                         messageKind: .text("Got it!"),
                         isSender: true,
                         replyPreview: .init(author: MessageMocker.chatbot.userName, text: welcome),
+                        replyToMessageID: original.id,
                         deliveryStatus: .read
                     ))
                 }
@@ -63,7 +70,7 @@ struct BasicExampleView: View {
     }
 
     private var chatView: some View {
-        ChatView(messages: $messages, inputView: {
+        ChatView(messages: $messages, scrollToBottom: $scrollToBottom, inputView: {
             VStack(spacing: 0) {
                 if let replyPreview {
                     HStack {
@@ -73,41 +80,56 @@ struct BasicExampleView: View {
                         Spacer()
                         Button("Cancel reply", systemImage: "xmark") {
                             self.replyPreview = nil
+                            replyToMessageID = nil
                         }
                         .labelStyle(.iconOnly)
                     }
                     .padding(8)
                 }
-                HStack {
-                    #if os(iOS)
-                    PhotosPicker(selection: $selectedMedia, matching: .any(of: [.images, .videos])) {
-                        Image(systemName: "paperclip")
+                BasicInputView(
+                    message: $message,
+                    placeholder: "Type something",
+                    onAttachment: attachmentAction,
+                    onCommit: { messageKind in
+                        self.messages.append(.init(
+                            user: MessageMocker.sender,
+                            messageKind: messageKind,
+                            isSender: true,
+                            replyPreview: replyPreview,
+                            replyToMessageID: replyToMessageID,
+                            deliveryStatus: .sent
+                        ))
+                        replyPreview = nil
+                        replyToMessageID = nil
+                        scrollToBottom = true
                     }
-                    .accessibilityLabel("Attach photo or video")
-                    #endif
-                    BasicInputView(
-                        message: $message,
-                        placeholder: "Type something",
-                        onCommit: { messageKind in
-                            self.messages.append(.init(
-                                user: MessageMocker.sender,
-                                messageKind: messageKind,
-                                isSender: true,
-                                replyPreview: replyPreview,
-                                deliveryStatus: .sent
-                            ))
-                            replyPreview = nil
-                        }
-                    )
-                }
+                )
+                #if os(iOS)
+                .photosPicker(
+                    isPresented: $isMediaPickerPresented,
+                    selection: $selectedMedia,
+                    matching: .any(of: [.images, .videos])
+                )
+                #endif
             }
             .background(Color.primary.colorInvert())
         }, reachedTop: loadOlder)
+        .unreadMessages(unreadMessageIDs)
+        .onReachedBottom { newestID in
+            guard let index = messages.firstIndex(where: { $0.id == newestID }) else { return }
+            unreadMessageIDs.subtract(messages[...index].map(\.id))
+        }
+        .onRetryMessage { failedMessage in
+            guard let index = messages.firstIndex(where: { $0.id == failedMessage.id }),
+                  messages[index].deliveryStatus == .failed else { return }
+            messages[index].deliveryStatus = .sent
+        }
         .messageCellContextMenu { message in
             switch message.messageKind {
             case .text(let text):
                 Button("Reply", systemImage: "arrowshape.turn.up.left") {
                     replyPreview = .init(author: message.user.userName, text: text)
+                    replyToMessageID = message.id
                 }
                 Button(
                     action: {
@@ -141,7 +163,63 @@ struct BasicExampleView: View {
                     startStreaming()
                 }
             }
+            Menu("Demo actions", systemImage: "ellipsis.circle") {
+                Button("Start new conversation", systemImage: "square.and.pencil") {
+                    streamTask?.cancel()
+                    isStreaming = false
+                    messages = []
+                    unreadMessageIDs = []
+                    replyPreview = nil
+                    replyToMessageID = nil
+                    incomingMessageCount = 0
+                    olderPagesRemaining = 0
+                }
+                Button("Receive message", systemImage: "bubble.left") {
+                    receiveMessage("Incoming message \(incomingMessageCount + 1)")
+                }
+                Button("Receive long message", systemImage: "text.alignleft") {
+                    receiveLongMessage()
+                }
+                Button("Receive message burst", systemImage: "bubble.left.and.bubble.right") {
+                    Task { @MainActor in
+                        receiveMessage("The next reply arrives before scrolling finishes.")
+                        try? await Task.sleep(for: .milliseconds(80))
+                        receiveLongMessage()
+                    }
+                }
+                Button("Simulate failed send", systemImage: "exclamationmark.bubble") {
+                    messages.append(.init(
+                        user: MessageMocker.sender,
+                        messageKind: .text("This message failed to send."),
+                        isSender: true,
+                        deliveryStatus: .failed
+                    ))
+                    scrollToBottom = true
+                }
+            }
+            .labelStyle(.iconOnly)
+            .accessibilityLabel("Demo actions")
         }
+    }
+
+    private var attachmentAction: (() -> Void)? {
+        #if os(iOS)
+        { isMediaPickerPresented = true }
+        #else
+        nil
+        #endif
+    }
+
+    private func receiveMessage(_ text: String) {
+        incomingMessageCount += 1
+        let incoming = MessageMocker.ChatMessageItem(user: MessageMocker.chatbot, messageKind: .text(text))
+        unreadMessageIDs.insert(incoming.id)
+        messages.append(incoming)
+    }
+
+    private func receiveLongMessage() {
+        let paragraphs = (1...30).map { "Part \($0): Keep reading this long message without losing your place when another reply arrives." }
+        receiveMessage((["Long message begins."] + paragraphs + ["Long message ends."]).joined(separator: "\n\n"))
     }
 
     private func startStreaming() {
@@ -211,9 +289,12 @@ struct BasicExampleView: View {
                 messageKind: kind,
                 isSender: true,
                 replyPreview: replyPreview,
+                replyToMessageID: replyToMessageID,
                 deliveryStatus: .sent
             ))
             replyPreview = nil
+            replyToMessageID = nil
+            scrollToBottom = true
         } catch {
             mediaError = error.localizedDescription
         }
