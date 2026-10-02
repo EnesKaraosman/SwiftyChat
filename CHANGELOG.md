@@ -24,6 +24,7 @@ Released on 2026-10-02.
 
 ### Fixed
 
+- Kept link metadata fetching outside the main actor so older SDKs do not send non-Sendable LinkPresentation objects across actor boundaries.
 - Cancelled superseded or dismissed video playback work and cleaned up player observation tasks.
 - Gave identical carousel actions distinct IDs, with an optional caller-supplied ID for stable identity.
 - Allowed empty mock-message batches and prevented whitespace-only messages from being sent.
@@ -40,6 +41,7 @@ Released on 2026-10-02.
 - Added a message-type gallery covering all 11 kinds and replaced repetitive README previews with distinct examples.
 - Added appearance contrast and rendering checks, expanded theme smoke coverage, and added video overlay smoke tests.
 - Added 22 package tests and 10 repeatable demo smoke flows covering message metadata, scrolling, video lifecycle, link metadata caching, message actions, and system appearance.
+- Made video lifecycle tests await pending work so concurrent component rendering cannot exhaust a timing deadline.
 
 ### Compatibility
 
