@@ -198,7 +198,7 @@ The helper uses Apple's LinkPresentation to retrieve a title and host. It does n
 
 Every visual aspect is customizable through `ChatMessageCellStyle` — text styles, edge insets, avatar styles, and cell styles for every message type. Inject via `.environment(\.chatStyle, yourStyle)`. The default text and surface colors support light and dark appearance. When supplying custom colors, check their contrast on your app's background in both modes.
 
-See [Styles.md](Styles.md) for the full style reference and [CustomMessage.md](CustomMessage.md) for custom cell types.
+See [Styles.md](Styles.md) for the full style reference, [Accessibility.md](Documentation/Accessibility.md) for Dynamic Type and accessibility behavior, and [CustomMessage.md](CustomMessage.md) for custom cell types.
 
 ## Pre-built Themes
 

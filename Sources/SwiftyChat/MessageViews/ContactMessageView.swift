@@ -29,6 +29,7 @@ struct ContactMessageView<Message: ChatMessage>: View {
     private let cachedButtons: [ContactCellButton]
 
     @Environment(\.chatStyle) var style
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
     init(contact: ContactItem, message: Message, size: CGSize, footerSection: @escaping (ContactItem, Message) -> [ContactCellButton]) {
         self.contact = contact
@@ -75,19 +76,30 @@ struct ContactMessageView<Message: ChatMessage>: View {
         }
     }
 
+    @ViewBuilder
     private var buttonActionFooter: some View {
-        HStack {
-            ForEach(0..<cachedButtons.count, id: \.self) { idx in
-                Button(cachedButtons[idx].title, action: cachedButtons[idx].action)
-                    .buttonStyle(.borderless)
-                    .frame(maxWidth: .infinity)
-
-                if idx != cachedButtons.count - 1 {
-                    Divider()
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(spacing: 0) {
+                ForEach(cachedButtons.indices, id: \.self) { index in
+                    if index > 0 { Divider() }
+                    contactActionButton(at: index)
+                }
+            }
+        } else {
+            HStack(spacing: 0) {
+                ForEach(cachedButtons.indices, id: \.self) { index in
+                    if index > 0 { Divider() }
+                    contactActionButton(at: index)
                 }
             }
         }
-        .frame(height: 40)
+    }
+
+    private func contactActionButton(at index: Int) -> some View {
+        Button(cachedButtons[index].title, action: cachedButtons[index].action)
+            .buttonStyle(.borderless)
+            .frame(maxWidth: .infinity, minHeight: 44)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     var body: some View {
@@ -98,6 +110,7 @@ struct ContactMessageView<Message: ChatMessage>: View {
                 Spacer()
                 Image(systemName: "chevron.right")
                     .shadow(color: .secondary, radius: 1)
+                    .accessibilityHidden(true)
 
             }.padding()
 
@@ -128,5 +141,7 @@ struct ContactMessageView<Message: ChatMessage>: View {
             .font(cellStyle.fullNameLabelStyle.font)
             .fontWeight(cellStyle.fullNameLabelStyle.fontWeight)
             .foregroundStyle(cellStyle.fullNameLabelStyle.textColor)
+            .fixedSize(horizontal: false, vertical: true)
+            .layoutPriority(1)
     }
 }

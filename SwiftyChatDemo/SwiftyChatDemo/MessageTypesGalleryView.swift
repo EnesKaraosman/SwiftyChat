@@ -15,6 +15,7 @@ struct MessageTypesGalleryView: View {
     @State private var scrollToBottom = false
     @State private var inputMessage = ""
     @State private var selectedMessageType: MessageType = .text
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
     enum MessageType: String, CaseIterable, Identifiable {
         case text = "Text"
@@ -118,18 +119,24 @@ struct MessageTypesGalleryView: View {
     // MARK: - Message Type Selector
     private var messageTypeSelector: some View {
         VStack(spacing: 8) {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
-                    ForEach(MessageType.allCases) { type in
-                        MessageTypeButton(
-                            type: type,
-                            isSelected: selectedMessageType == type
-                        ) {
-                            selectedMessageType = type
+            ScrollViewReader { proxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(MessageType.allCases) { type in
+                            MessageTypeButton(
+                                type: type,
+                                isSelected: selectedMessageType == type
+                            ) {
+                                selectedMessageType = type
+                                withAnimation {
+                                    proxy.scrollTo(type.id, anchor: .center)
+                                }
+                            }
+                            .id(type.id)
                         }
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
             
             // Description
@@ -152,45 +159,64 @@ struct MessageTypesGalleryView: View {
     private var inputView: some View {
         VStack(spacing: 0) {
             Divider()
-            
-            HStack(spacing: 12) {
-                // Add sample message button
-                Button {
-                    addSampleMessage(type: selectedMessageType)
-                } label: {
-                    HStack {
-                        Image(systemName: selectedMessageType.icon)
-                        Text("Add \(selectedMessageType.rawValue)")
-                    }
-                    .font(.subheadline.weight(.medium))
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 10)
-                    .background(Color.chatActionBlue)
-                    .cornerRadius(20)
-                }
-                
-                Spacer()
-                
-                // Toggle sender
-                Button {
-                    addSampleMessage(type: selectedMessageType, asSender: true)
-                } label: {
-                    Text("As Me")
-                        .font(.subheadline.weight(.medium))
-                        .foregroundColor(.blue)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 10)
-                        .background(Color.blue.opacity(0.1))
-                        .cornerRadius(20)
-                }
-            }
-            .padding()
-            .padding(.bottom, 20)
+            inputActions
+                .padding()
+                .padding(.bottom, 20)
         }
         .background(Color.adaptiveSecondaryBackground)
     }
-    
+
+    @ViewBuilder
+    private var inputActions: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .trailing, spacing: 12) {
+                addMessageButton.frame(maxWidth: .infinity, alignment: .leading)
+                senderButton
+            }
+        } else {
+            HStack(spacing: 12) {
+                addMessageButton
+                Spacer()
+                senderButton
+            }
+        }
+    }
+
+    private var addMessageButton: some View {
+        Button {
+            addSampleMessage(type: selectedMessageType)
+        } label: {
+            HStack {
+                Image(systemName: selectedMessageType.icon)
+                Text("Add \(selectedMessageType.rawValue)")
+            }
+            .font(.subheadline.weight(.medium))
+            .foregroundColor(.white)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 10)
+            .background(Color.chatActionBlue)
+            .cornerRadius(20)
+            .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(minHeight: 44)
+    }
+
+    private var senderButton: some View {
+        Button {
+            addSampleMessage(type: selectedMessageType, asSender: true)
+        } label: {
+            Text("As Me")
+                .font(.subheadline.weight(.medium))
+                .foregroundColor(.blue)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 10)
+                .background(Color.blue.opacity(0.1))
+                .cornerRadius(20)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(minHeight: 44)
+    }
+
     // MARK: - Add Sample Messages
     private func addSampleMessage(type: MessageType, asSender: Bool = false) {
         let user = asSender ? MessageMocker.sender : MessageMocker.chatbot
@@ -356,6 +382,7 @@ struct MessageTypeButton: View {
     let type: MessageTypesGalleryView.MessageType
     let isSelected: Bool
     let action: () -> Void
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     
     var body: some View {
         Button(action: action) {
@@ -365,7 +392,9 @@ struct MessageTypeButton: View {
                 Text(type.rawValue)
                     .font(.caption2)
             }
-            .frame(width: 70, height: 50)
+            .padding(4)
+            .fixedSize(horizontal: dynamicTypeSize.isAccessibilitySize, vertical: true)
+            .frame(minWidth: 70, minHeight: 50)
             .foregroundColor(isSelected ? .white : .primary)
             .background(isSelected ? Color.chatActionBlue : Color.adaptiveTertiaryBackground)
             .cornerRadius(10)

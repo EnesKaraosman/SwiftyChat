@@ -65,6 +65,7 @@ private struct CarouselItemView: View {
     let isSender: Bool
     let callback: (CarouselItemButton) -> Void
     @Environment(\.chatStyle) var style
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var cellStyle: CarouselCellStyle {
         style.carouselCellStyle
@@ -99,14 +100,14 @@ private struct CarouselItemView: View {
                     .font(cellStyle.titleLabelStyle.font)
                     .foregroundStyle(cellStyle.titleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
+                    .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 2)
 
                 Text(item.subtitle)
                     .fontWeight(cellStyle.subtitleLabelStyle.fontWeight)
                     .font(cellStyle.subtitleLabelStyle.font)
                     .foregroundStyle(cellStyle.subtitleLabelStyle.textColor)
                     .multilineTextAlignment(.center)
-                    .lineLimit(2)
+                    .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 2)
 
             }
             .fixedSize(horizontal: false, vertical: true)
