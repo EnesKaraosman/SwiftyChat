@@ -1,0 +1,28 @@
+appId: com.eneskaraosman.SwiftyChatDemo
+---
+- launchApp
+- scrollUntilVisible:
+    element: "Message Types"
+    direction: DOWN
+    timeout: 20000
+- tapOn: "Message Types"
+- swipe:
+    start: 85%, 17%
+    end: 15%, 17%
+    duration: 600
+- runFlow:
+    when:
+      notVisible: "Contact"
+    commands:
+      - swipe:
+          start: 85%, 17%
+          end: 15%, 17%
+          duration: 600
+- tapOn: "Contact"
+- tapOn: "Add Contact"
+- assertVisible: "📞 Call"
+- assertVisible: "💬 Text"
+- takeScreenshot: ${OUTPUT_DIR}/contact-accessibility
+- tapOn: "📞 Call"
+- assertVisible: "Calling .*"
+- tapOn: "As Me"

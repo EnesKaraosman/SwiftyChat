@@ -14,6 +14,7 @@ struct LinkPreviewMessageView<Message: ChatMessage>: View {
     let size: CGSize
 
     @Environment(\.chatStyle) var style
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var cellStyle: LinkPreviewCellStyle {
         style.linkPreviewCellStyle
@@ -47,7 +48,7 @@ struct LinkPreviewMessageView<Message: ChatMessage>: View {
                         .font(cellStyle.titleStyle.font)
                         .fontWeight(cellStyle.titleStyle.fontWeight)
                         .foregroundStyle(cellStyle.titleStyle.textColor)
-                        .lineLimit(2)
+                        .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 2)
                 }
 
                 if let description = linkItem.description {
@@ -55,14 +56,14 @@ struct LinkPreviewMessageView<Message: ChatMessage>: View {
                         .font(cellStyle.descriptionStyle.font)
                         .fontWeight(cellStyle.descriptionStyle.fontWeight)
                         .foregroundStyle(cellStyle.descriptionStyle.textColor)
-                        .lineLimit(3)
+                        .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 3)
                 }
 
                 Text(linkItem.host ?? linkItem.url.host() ?? linkItem.url.absoluteString)
                     .font(cellStyle.hostStyle.font)
                     .fontWeight(cellStyle.hostStyle.fontWeight)
                     .foregroundStyle(cellStyle.hostStyle.textColor)
-                    .lineLimit(1)
+                    .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 1)
             }
             .padding(cellStyle.textPadding)
         }
