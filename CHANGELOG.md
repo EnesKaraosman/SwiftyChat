@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## Unreleased
+
+### Changed
+
+- **Breaking:** The minimum supported Swift version is now 6.2 (Xcode 26), up from 6.0.
+- Updated Kingfisher to the 8.13 series.
+
+---
+
 ## [4.3.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.3.0)
 
 Released on 2026-10-02.

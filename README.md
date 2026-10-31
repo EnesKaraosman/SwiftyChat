@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/EnesKaraosman/SwiftyChat/stargazers"><img src="https://img.shields.io/github/stars/EnesKaraosman/SwiftyChat?style=social" alt="GitHub Stars"/></a>
   <a href="https://github.com/EnesKaraosman/SwiftyChat/network/members"><img src="https://img.shields.io/github/forks/EnesKaraosman/SwiftyChat?style=social" alt="GitHub Forks"/></a>
-  <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift 6.0"/>
+  <img src="https://img.shields.io/badge/Swift-6.2-orange.svg" alt="Swift 6.2"/>
   <img src="https://img.shields.io/badge/iOS-17%2B-blue.svg" alt="iOS 17+"/>
   <img src="https://img.shields.io/badge/macOS-14%2B-blue.svg" alt="macOS 14+"/>
   <a href="https://swiftpackageindex.com/EnesKaraosman/SwiftyChat"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEnesKaraosman%2FSwiftyChat%2Fbadge%3Ftype%3Dplatforms" alt="Swift Package Index"/></a>
