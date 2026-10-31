@@ -42,7 +42,12 @@ jobs:
     steps:
     - uses: actions/checkout@v5
 
-    - name: Test with Xcode 16.4
+    - name: Select oldest Xcode 26 (Swift 6.2)
+      run: |
+        OLDEST_XCODE_26=$(ls -1d /Applications/Xcode_26*.app 2>/dev/null | sort -V | head -1)
+        echo "Using $OLDEST_XCODE_26"
+        sudo xcode-select -s "$OLDEST_XCODE_26/Contents/Developer"
+        swift --version
+
+    - name: Test with Swift 6.2
       run: swift test
-      env:
-        DEVELOPER_DIR: /Applications/Xcode_16.4.app/Contents/Developer
