@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [5.0.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/5.0.1)
+
+Released on 2026-11-01.
+
+### Changed
+
+- Updated Kingfisher to the 8.14 series.
+
+---
+
 ## [5.0.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/5.0.0)
 
 Released on 2026-10-31.
