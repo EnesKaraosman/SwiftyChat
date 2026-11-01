@@ -20,7 +20,7 @@ let package = Package(
         ),
     ],
     dependencies: [
-        .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMinor(from: "8.13.0"))
+        .package(url: "https://github.com/onevcat/Kingfisher.git", .upToNextMinor(from: "8.14.0"))
     ],
     targets: [
         .target(
