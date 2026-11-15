@@ -2,7 +2,7 @@
 
 SwiftyChat uses a `LazyVStack` for message rows and calculates date and sender metadata in one pass over the current messages. This keeps headers correct when messages are edited, reordered, appended, or prepended. A shared `DateFormatter` formats visible date headers. Kingfisher loads remote images.
 
-These are implementation choices, not benchmark results. The repository does not currently have a measured frame-rate or memory baseline.
+A repeatable release-mode message-processing benchmark is recorded in the [performance baseline](Documentation/PerformanceBaseline.md). There is no measured device frame-rate, media-memory, or leak baseline yet.
 
 ## What to measure next
 

@@ -1,0 +1,9 @@
+BENCHMARK metadata n=1000 median_ms=0.398042 p95_ms=0.424791 checksum=25000
+BENCHMARK unread n=1000 median_ms=0.10125 p95_ms=0.1095 checksum=2500
+BENCHMARK prepend50+metadata n=1000 median_ms=0.443916 p95_ms=0.45975 checksum=26250
+BENCHMARK metadata n=10000 median_ms=3.999208 p95_ms=4.086041 checksum=250000
+BENCHMARK unread n=10000 median_ms=1.072458 p95_ms=1.120417 checksum=2500
+BENCHMARK prepend50+metadata n=10000 median_ms=4.204125 p95_ms=4.3755 checksum=251250
+BENCHMARK metadata n=50000 median_ms=19.885791 p95_ms=20.339583 checksum=1250000
+BENCHMARK unread n=50000 median_ms=5.254625 p95_ms=5.414917 checksum=2500
+BENCHMARK prepend50+metadata n=50000 median_ms=20.983459 p95_ms=21.467708 checksum=1251250
