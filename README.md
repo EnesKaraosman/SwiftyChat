@@ -7,7 +7,7 @@
 <p align="center">
   <a href="https://github.com/EnesKaraosman/SwiftyChat/stargazers"><img src="https://img.shields.io/github/stars/EnesKaraosman/SwiftyChat?style=social" alt="GitHub Stars"/></a>
   <a href="https://github.com/EnesKaraosman/SwiftyChat/network/members"><img src="https://img.shields.io/github/forks/EnesKaraosman/SwiftyChat?style=social" alt="GitHub Forks"/></a>
-  <img src="https://img.shields.io/badge/Swift-6.0-orange.svg" alt="Swift 6.0"/>
+  <img src="https://img.shields.io/badge/Swift-6.2-orange.svg" alt="Swift 6.2"/>
   <img src="https://img.shields.io/badge/iOS-17%2B-blue.svg" alt="iOS 17+"/>
   <img src="https://img.shields.io/badge/macOS-14%2B-blue.svg" alt="macOS 14+"/>
   <a href="https://swiftpackageindex.com/EnesKaraosman/SwiftyChat"><img src="https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2FEnesKaraosman%2FSwiftyChat%2Fbadge%3Ftype%3Dplatforms" alt="Swift Package Index"/></a>
@@ -85,7 +85,7 @@ Or add it to your `Package.swift`:
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/EnesKaraosman/SwiftyChat.git", from: "4.3.0")
+    .package(url: "https://github.com/EnesKaraosman/SwiftyChat.git", from: "5.0.1")
 ]
 ```
 
@@ -198,7 +198,7 @@ The helper uses Apple's LinkPresentation to retrieve a title and host. It does n
 
 Every visual aspect is customizable through `ChatMessageCellStyle` — text styles, edge insets, avatar styles, and cell styles for every message type. Inject via `.environment(\.chatStyle, yourStyle)`. The default text and surface colors support light and dark appearance. When supplying custom colors, check their contrast on your app's background in both modes.
 
-See [Styles.md](Styles.md) for the full style reference and [CustomMessage.md](CustomMessage.md) for custom cell types.
+See [Styles.md](Styles.md) for the full style reference, [Accessibility.md](Documentation/Accessibility.md) for Dynamic Type and accessibility behavior, and [CustomMessage.md](CustomMessage.md) for custom cell types.
 
 ## Pre-built Themes
 

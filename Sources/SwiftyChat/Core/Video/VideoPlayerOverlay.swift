@@ -72,7 +72,7 @@ struct VideoPlayerOverlay<Message: ChatMessage>: View {
             Image(systemName: symbol)
                 .font(Font.body.weight(.semibold))
                 .foregroundStyle(.white)
-                .frame(width: 50, height: 40)
+                .frame(width: 50, height: 44)
                 .background(.black.opacity(0.75))
                 .clipShape(.rect(cornerRadius: 10))
         }

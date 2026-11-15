@@ -12,6 +12,7 @@ struct QuickReplyMessageView: View {
     let quickReplies: [QuickReplyItem]
     let quickReplySelected: (QuickReplyItem) -> Void
     @Environment(\.chatStyle) var style
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     private var cellStyle: QuickReplyCellStyle {
         style.quickReplyCellStyle
@@ -47,7 +48,8 @@ struct QuickReplyMessageView: View {
                     .font(idx == selectedIndex ? cellStyle.selectedItemFont : cellStyle.unselectedItemFont)
                     .padding(.vertical, cellStyle.itemVerticalPadding)
                     .padding(.horizontal, cellStyle.itemHorizontalPadding)
-                    .frame(height: cellStyle.itemHeight)
+                    .frame(minHeight: max(cellStyle.itemHeight, dynamicTypeSize.isAccessibilitySize ? 44 : 0))
+                    .fixedSize(horizontal: false, vertical: true)
                     .background(itemBackground(for: idx))
                     .foregroundStyle(itemColor(for: idx))
                     .overlay(

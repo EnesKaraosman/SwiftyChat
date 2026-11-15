@@ -75,7 +75,11 @@ struct ChatMessageViewContainer<Message: ChatMessage>: View {
                 LinkPreviewMessageView(linkItem: linkItem, message: message, size: size)
             }
             .buttonStyle(.plain)
-            .accessibilityLabel(linkItem.title ?? linkItem.url.absoluteString)
+            .accessibilityLabel([
+                linkItem.title,
+                linkItem.description,
+                linkItem.host ?? linkItem.url.host()
+            ].compactMap { $0 }.joined(separator: ". "))
 
         case .loading:
             LoadingMessageView(message: message, size: size)

@@ -1,5 +1,31 @@
 # CHANGELOG
 
+## [5.0.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/5.0.1)
+
+Released on 2026-11-01.
+
+### Changed
+
+- Updated Kingfisher to the 8.14 series.
+
+---
+
+## [5.0.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/5.0.0)
+
+Released on 2026-10-31.
+
+### Changed
+
+- **Breaking:** The minimum supported Swift version is now 6.2 (Xcode 26), up from 6.0.
+- Updated Kingfisher to the 8.13 series.
+
+### Fixed
+
+- Contact, quick-reply, carousel, and link-preview text expands at accessibility Dynamic Type sizes instead of clipping; contact and quick-reply actions have 44-point minimum targets and video controls are 44 points tall.
+- Improved VoiceOver labels for link previews and hid the decorative contact-card chevron. See [Accessibility.md](Documentation/Accessibility.md).
+
+---
+
 ## [4.3.0](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/4.3.0)
 
 Released on 2026-10-02.
