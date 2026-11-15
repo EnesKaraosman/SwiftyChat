@@ -57,7 +57,8 @@ public struct ChatView<Message: ChatMessage, InputView: View>: View {
     private var shouldShowGroupChatHeaders: Bool
     private var reachedTop: (() -> Void)?
     
-    @State private var videoManager = VideoManager<Message>()
+    // Set in init: an inline initial value runs in @State's nonisolated closure and warns about isolated conformances.
+    @State private var videoManager: VideoManager<Message>
     @State private var scrollState = MessageScrollState()
     @State private var hasReachedBottom = false
     @State private var topReachTracker = TopReachTracker<Message.ID>()
@@ -361,7 +362,7 @@ public extension ChatView {
         self.shouldShowGroupChatHeaders = shouldShowGroupChatHeaders
         self.reachedTop = reachedTop
         _scrollTo = scrollTo
-        
+        _videoManager = State(initialValue: VideoManager())
     }
 }
 
