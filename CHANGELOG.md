@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## [5.0.2](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/5.0.2)
+
+Released on 2026-11-16.
+
+### Fixed
+
+- Building with Swift 6.4 (Xcode 27) no longer reports isolated conformance warnings in `ChatView`.
+
+### Documentation and tests
+
+- Added an opt-in release-mode performance benchmark (`SWIFTYCHAT_BENCHMARK=1`) and recorded baseline results. See [PerformanceBaseline.md](Documentation/PerformanceBaseline.md).
+
+---
+
 ## [5.0.1](https://github.com/EnesKaraosman/SwiftyChat/releases/tag/5.0.1)
 
 Released on 2026-11-01.
